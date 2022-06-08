@@ -21,7 +21,7 @@ class WarmUpScreen extends StatefulWidget {
   State<WarmUpScreen> createState() => _WarmUpScreenState();
 }
 
-class _WarmUpScreenState extends State<WarmUpScreen> {
+class _WarmUpScreenState extends State<WarmUpScreen> with SingleTickerProviderStateMixin {
   Stopwatch watch = Stopwatch();
   Timer? timer;
   bool startStop = true;
@@ -69,6 +69,29 @@ class _WarmUpScreenState extends State<WarmUpScreen> {
         }
       });
     }
+  }
+
+  AnimationController? _animationController;
+  Animation? _animation;
+  bool animation_started = false;
+
+  start_animation() {
+    setState((){
+      animation_started = true;
+      print(animation_started);
+    });
+    _animationController =
+        AnimationController(vsync: this, duration: Duration(seconds: 1));
+    _animationController!.repeat(reverse: true);
+    _animation = Tween(begin: 0.0, end: 15.0)
+        .animate(_animationController!)
+      ..addListener(() {
+      });
+  }
+  @override
+  dispose() {
+    _animationController!.dispose(); // you need this
+    super.dispose();
   }
 
   @override
@@ -175,7 +198,8 @@ class _WarmUpScreenState extends State<WarmUpScreen> {
                   AvatarGlow(
                     endRadius: 100.0,
                     showTwoGlows: true,
-                    animate: (startStop ? false : true),
+                    animate: false,
+                    // (startStop ? false : true),
                     duration: Duration(milliseconds: 900),
                     repeat: true,
                     child: GestureDetector(
@@ -196,10 +220,18 @@ class _WarmUpScreenState extends State<WarmUpScreen> {
                           height: 125,
                           width: 125,
                           decoration: BoxDecoration(
-                            image: DecorationImage(
+                              shape: BoxShape.circle,
+                              image: DecorationImage(
                                 alignment: Alignment
                                     .center,
                                 image: AssetImage(AssetUtils.home_button)),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: HexColor('#409C46'),
+                                  blurRadius: (animation_started?_animation!.value : 0),
+                                  spreadRadius: (animation_started ?_animation!.value: 0),
+                                )
+                              ]
                           ),
                           child: Stack(
                             children: [
@@ -240,8 +272,9 @@ class _WarmUpScreenState extends State<WarmUpScreen> {
                   GestureDetector(
                     onTap: () async {
                       if (started) {
-                        startTimer();
+                      startTimer();
                         Future.delayed(Duration(seconds: 3), () {
+                          start_animation();
                           startWatch();
                         });
                       } else {
@@ -414,6 +447,7 @@ class _WarmUpScreenState extends State<WarmUpScreen> {
     setState(() {
       startStop = true;
       started = false;
+      animation_started = false;
       watch.stop();
       setTime_finish();
     });

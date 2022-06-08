@@ -26,7 +26,7 @@ class M_ScreenMetal extends StatefulWidget {
   State<M_ScreenMetal> createState() => _M_ScreenMetalState();
 }
 
-class _M_ScreenMetalState extends State<M_ScreenMetal> {
+class _M_ScreenMetalState extends State<M_ScreenMetal>  with SingleTickerProviderStateMixin{
   Stopwatch watch = Stopwatch();
   Timer? timer;
   bool startStop = true;
@@ -103,25 +103,6 @@ class _M_ScreenMetalState extends State<M_ScreenMetal> {
   Timer? countdownTimer;
   Duration myDuration = Duration(seconds: 3);
 
-  void startTimer() {
-    countdownTimer =
-        Timer.periodic(Duration(seconds: 1), (_) => setCountDown());
-  }
-
-  void setCountDown() {
-    final reduceSecondsBy = 1;
-    if (mounted) {
-      setState(() {
-        final seconds = myDuration.inSeconds - reduceSecondsBy;
-        if (seconds < 0) {
-          countdownTimer!.cancel();
-          print('timesup');
-        } else {
-          myDuration = Duration(seconds: seconds);
-        }
-      });
-    }
-  }
 
   @override
   void initState() {
@@ -134,11 +115,30 @@ class _M_ScreenMetalState extends State<M_ScreenMetal> {
   TextEditingController method_new = new TextEditingController();
 
   double percent = 0.0;
+  AnimationController? _animationController;
+  Animation? _animation;
+  bool animation_started = false;
 
+  start_animation() {
+    setState((){
+      animation_started = true;
+      print(animation_started);
+    });
+    _animationController =
+        AnimationController(vsync: this, duration: Duration(seconds: 1));
+    _animationController!.repeat(reverse: true);
+    _animation = Tween(begin: 0.0, end: 15.0)
+        .animate(_animationController!)
+      ..addListener(() {
+      });
+  }
+  @override
+  dispose() {
+    _animationController!.dispose(); // you need this
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
-    final seconds = myDuration.inSeconds.remainder(60);
-
     return Stack(
       children: [
         Container(
@@ -356,7 +356,8 @@ class _M_ScreenMetalState extends State<M_ScreenMetal> {
                   AvatarGlow(
                     endRadius: 100.0,
                     showTwoGlows: true,
-                    animate: (startStop ? false : true),
+                    animate: false,
+                    // (startStop ? false : true),
                     duration: Duration(milliseconds: 900),
                     repeat: true,
                     child: GestureDetector(
@@ -377,10 +378,17 @@ class _M_ScreenMetalState extends State<M_ScreenMetal> {
                           height: 125,
                           width: 125,
                           decoration: BoxDecoration(
-                            image: DecorationImage(
-                                alignment: Alignment
-                                    .center,
-                                image: AssetImage(AssetUtils.home_button)),
+                              shape: BoxShape.circle,
+                              image: DecorationImage(
+                                  alignment: Alignment.center,
+                                  image: AssetImage(AssetUtils.home_button)),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: HexColor('#DD3931'),
+                                  blurRadius: (animation_started?_animation!.value : 0),
+                                  spreadRadius: (animation_started ?_animation!.value: 0),
+                                )
+                              ]
                           ),
                           child: Stack(
                             children: [
@@ -398,22 +406,10 @@ class _M_ScreenMetalState extends State<M_ScreenMetal> {
                               Container(
                                 alignment: Alignment.center,
                                 child: Text(
-                                  ('$seconds' == '3'
-                                      ? 'Ready'
-                                      : ('$seconds' == '2'
-                                      ? 'Set'
-                                      : ('$seconds' == '1'
-                                      ? 'Masturbate'
-                                      : elapsedTime))),
+                                       elapsedTime,
                                   style: TextStyle(
                                       color: Colors.white,
-                                      fontSize: ('$seconds' == '3'
-                                          ? 25
-                                          : ('$seconds' == '2'
-                                          ? 25
-                                          : ('$seconds' == '1'
-                                          ? 15
-                                          : 25))),
+                                      fontSize: 25,
                                       fontWeight: FontWeight.w900),
                                 ),
                               ),
@@ -785,10 +781,8 @@ class _M_ScreenMetalState extends State<M_ScreenMetal> {
                     onTap: () async {
                       if (method_selected.isNotEmpty) {
                         if (started) {
-                          startTimer();
-                          Future.delayed(Duration(seconds: 3), () {
+                          start_animation();
                             startWatch();
-                          });
                         } else {
                           await stopWatch_finish();
                           method_time.add(ListMethodClass(
@@ -2139,6 +2133,7 @@ class _M_ScreenMetalState extends State<M_ScreenMetal> {
     setState(() {
       startStop = true;
       started = false;
+      animation_started = false;
       watch.stop();
       setTime_finish();
     });

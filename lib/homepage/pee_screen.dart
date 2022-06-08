@@ -20,8 +20,8 @@ class PeeScreen extends StatefulWidget {
   State<PeeScreen> createState() => _PeeScreenState();
 }
 
-class _PeeScreenState extends State<PeeScreen> {
-
+class _PeeScreenState extends State<PeeScreen>
+    with SingleTickerProviderStateMixin {
   List urine_test_text = [
     "Doing ok, you're probably well hydrated",
     "Sample text here regarding the urine",
@@ -66,29 +66,30 @@ class _PeeScreenState extends State<PeeScreen> {
   Timer? countdownTimer;
   Duration myDuration = Duration(seconds: 3);
 
-  void startTimer() {
-    countdownTimer =
-        Timer.periodic(Duration(seconds: 1), (_) => setCountDown());
+  AnimationController? _animationController;
+  Animation? _animation;
+  bool animation_started = false;
+
+  start_animation() {
+    setState(() {
+      animation_started = true;
+      print(animation_started);
+    });
+    _animationController =
+        AnimationController(vsync: this, duration: Duration(seconds: 1));
+    _animationController!.repeat(reverse: true);
+    _animation = Tween(begin: 0.0, end: 15.0).animate(_animationController!)
+      ..addListener(() {});
   }
 
-  void setCountDown() {
-    final reduceSecondsBy = 1;
-    if (mounted) {
-      setState(() {
-        final seconds = myDuration.inSeconds - reduceSecondsBy;
-        if (seconds < 0) {
-          countdownTimer!.cancel();
-          print('timesup');
-        } else {
-          myDuration = Duration(seconds: seconds);
-        }
-      });
-    }
+  @override
+  dispose() {
+    _animationController!.dispose(); // you need this
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final seconds = myDuration.inSeconds.remainder(60);
     return Stack(
       children: [
         Container(
@@ -103,27 +104,28 @@ class _PeeScreenState extends State<PeeScreen> {
           //     fit: BoxFit.cover,
           //   ),
           // ),
-          decoration: (back_wallpaper ?
-          BoxDecoration(
-            // gradient: LinearGradient(
-            //   begin: Alignment.topCenter,
-            //   end: Alignment.bottomCenter,
-            //   // stops: [0.1, 0.5, 0.7, 0.9],
-            //   colors: [
-            //     HexColor("#000000").withOpacity(0.86),
-            //     HexColor("#000000").withOpacity(0.81),
-            //     HexColor("#000000").withOpacity(0.44),
-            //     HexColor("#000000").withOpacity(1),
-            //
-            //   ],
-            // ),
-            image: DecorationImage(
-              fit: BoxFit.fill,
-              image: AssetImage(
-                AssetUtils.p_screen_back,
-              ),
-            ),
-          ) : BoxDecoration()),
+          decoration: (back_wallpaper
+              ? BoxDecoration(
+                  // gradient: LinearGradient(
+                  //   begin: Alignment.topCenter,
+                  //   end: Alignment.bottomCenter,
+                  //   // stops: [0.1, 0.5, 0.7, 0.9],
+                  //   colors: [
+                  //     HexColor("#000000").withOpacity(0.86),
+                  //     HexColor("#000000").withOpacity(0.81),
+                  //     HexColor("#000000").withOpacity(0.44),
+                  //     HexColor("#000000").withOpacity(1),
+                  //
+                  //   ],
+                  // ),
+                  image: DecorationImage(
+                    fit: BoxFit.fill,
+                    image: AssetImage(
+                      AssetUtils.p_screen_back,
+                    ),
+                  ),
+                )
+              : BoxDecoration()),
         ),
         Scaffold(
           backgroundColor: Colors.transparent,
@@ -162,7 +164,8 @@ class _PeeScreenState extends State<PeeScreen> {
                   AvatarGlow(
                     endRadius: 100.0,
                     showTwoGlows: true,
-                    animate: (startStop ? false : true),
+                    animate: false,
+                    // (startStop ? false : true),
                     duration: Duration(milliseconds: 900),
                     repeat: true,
                     child: GestureDetector(
@@ -183,10 +186,21 @@ class _PeeScreenState extends State<PeeScreen> {
                           height: 125,
                           width: 125,
                           decoration: BoxDecoration(
-                            image: DecorationImage(
-                                alignment: Alignment.center,
-                                image: AssetImage(AssetUtils.home_button)),
-                          ),
+                              shape: BoxShape.circle,
+                              image: DecorationImage(
+                                  alignment: Alignment.center,
+                                  image: AssetImage(AssetUtils.home_button)),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: HexColor('#F5C921'),
+                                  blurRadius: (animation_started
+                                      ? _animation!.value
+                                      : 0),
+                                  spreadRadius: (animation_started
+                                      ? _animation!.value
+                                      : 0),
+                                )
+                              ]),
                           child: Stack(
                             children: [
                               Container(
@@ -203,13 +217,7 @@ class _PeeScreenState extends State<PeeScreen> {
                               Container(
                                 alignment: Alignment.center,
                                 child: Text(
-                                  ('$seconds' == '3'
-                                      ? 'Ready'
-                                      : ('$seconds' == '2'
-                                          ? 'Set'
-                                          : ('$seconds' == '1'
-                                              ? 'Pee'
-                                              : elapsedTime))),
+                                  elapsedTime,
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 25,
@@ -230,10 +238,8 @@ class _PeeScreenState extends State<PeeScreen> {
                   GestureDetector(
                     onTap: () async {
                       if (started) {
-                        startTimer();
-                        Future.delayed(Duration(seconds: 3), () {
-                          startWatch();
-                        });
+                        start_animation();
+                        startWatch();
                       } else {
                         await stopWatch_finish();
                         setState(() {
@@ -576,6 +582,8 @@ class _PeeScreenState extends State<PeeScreen> {
     setState(() {
       startStop = true;
       started = true;
+      animation_started = false;
+
       watch.stop();
       setTime_finish();
     });

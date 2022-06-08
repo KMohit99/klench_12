@@ -22,7 +22,8 @@ class KegelScreen extends StatefulWidget {
   State<KegelScreen> createState() => _KegelScreenState();
 }
 
-class _KegelScreenState extends State<KegelScreen> {
+class _KegelScreenState extends State<KegelScreen>
+    with SingleTickerProviderStateMixin {
   Stopwatch watch = Stopwatch();
   Timer? timer;
   bool startStop = true;
@@ -46,7 +47,6 @@ class _KegelScreenState extends State<KegelScreen> {
   }
 
   double percent = 0.0;
-
 
   bool back_wallpaper = false;
 
@@ -73,6 +73,29 @@ class _KegelScreenState extends State<KegelScreen> {
     }
   }
 
+  AnimationController? _animationController;
+  Animation? _animation;
+  bool animation_started = false;
+
+  start_animation() {
+    setState((){
+      animation_started = true;
+      print(animation_started);
+    });
+    _animationController =
+        AnimationController(vsync: this, duration: Duration(seconds: 1));
+    _animationController!.repeat(reverse: true);
+    _animation = Tween(begin: 0.0, end: 15.0)
+        .animate(_animationController!)
+        ..addListener(() {
+    });
+  }
+  @override
+  dispose() {
+    _animationController!.dispose(); // you need this
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final seconds = myDuration.inSeconds.remainder(60);
@@ -81,7 +104,10 @@ class _KegelScreenState extends State<KegelScreen> {
       children: [
         Container(
           color: Colors.black,
-          height: MediaQuery.of(context).size.height,
+          height: MediaQuery
+              .of(context)
+              .size
+              .height,
         ),
         Container(
           // decoration: BoxDecoration(
@@ -91,8 +117,8 @@ class _KegelScreenState extends State<KegelScreen> {
           //     fit: BoxFit.cover,
           //   ),
           // ),
-          decoration: (back_wallpaper ?
-          BoxDecoration(
+          decoration: (back_wallpaper
+              ? BoxDecoration(
             // gradient: LinearGradient(
             //   begin: Alignment.topCenter,
             //   end: Alignment.bottomCenter,
@@ -111,7 +137,8 @@ class _KegelScreenState extends State<KegelScreen> {
                 AssetUtils.k_screen_back,
               ),
             ),
-          ) : BoxDecoration()),
+          )
+              : BoxDecoration()),
         ),
         Scaffold(
           backgroundColor: Colors.transparent,
@@ -210,7 +237,8 @@ class _KegelScreenState extends State<KegelScreen> {
                   AvatarGlow(
                     endRadius: 100.0,
                     showTwoGlows: true,
-                    animate: (startStop ? false : true),
+                    animate: false,
+                    // (startStop ? false : true),
                     duration: Duration(milliseconds: 900),
                     repeat: true,
                     child: GestureDetector(
@@ -231,11 +259,17 @@ class _KegelScreenState extends State<KegelScreen> {
                           height: 125,
                           width: 125,
                           decoration: BoxDecoration(
-                            image: DecorationImage(
-                                alignment: Alignment
-                                    .center,
-                                image: AssetImage(AssetUtils.home_button)),
-                          ),
+                              shape: BoxShape.circle,
+                              image: DecorationImage(
+                                  alignment: Alignment.center,
+                                  image: AssetImage(AssetUtils.home_button)),
+                              boxShadow: [
+                                BoxShadow(
+                                    color: HexColor('#E64A9B'),
+                                    blurRadius: (animation_started?_animation!.value : 0),
+                                    spreadRadius: (animation_started ?_animation!.value: 0),
+                                )
+                              ]),
                           child: Stack(
                             children: [
                               Container(
@@ -244,7 +278,7 @@ class _KegelScreenState extends State<KegelScreen> {
                                   'K',
                                   style: TextStyle(
                                       color:
-                                          HexColor('#E64A9B').withOpacity(0.4),
+                                      HexColor('#E64A9B').withOpacity(0.4),
                                       fontSize: 70,
                                       fontWeight: FontWeight.w600),
                                 ),
@@ -280,6 +314,7 @@ class _KegelScreenState extends State<KegelScreen> {
                       if (started) {
                         startTimer();
                         Future.delayed(Duration(seconds: 3), () {
+                          start_animation();
                           startWatch();
                         });
                       } else {
@@ -330,7 +365,7 @@ class _KegelScreenState extends State<KegelScreen> {
                   ),
                   Container(
                     decoration: BoxDecoration(
-                        // color: Colors.black.withOpacity(0.65),
+                      // color: Colors.black.withOpacity(0.65),
                         gradient: LinearGradient(
                           begin: Alignment.centerLeft,
                           end: Alignment.centerRight,
@@ -347,7 +382,10 @@ class _KegelScreenState extends State<KegelScreen> {
                               blurRadius: 20)
                         ],
                         borderRadius: BorderRadius.circular(20)),
-                    width: MediaQuery.of(context).size.width,
+                    width: MediaQuery
+                        .of(context)
+                        .size
+                        .width,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -366,7 +404,6 @@ class _KegelScreenState extends State<KegelScreen> {
                           margin: EdgeInsets.only(top: 0, left: 27),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
-
                             children: [
                               Container(
                                 child: Text(
@@ -468,6 +505,7 @@ class _KegelScreenState extends State<KegelScreen> {
     setState(() {
       startStop = true;
       started = true;
+      animation_started = false;
       watch.stop();
       setTime_finish();
     });
