@@ -148,12 +148,12 @@ class _PeeScreenState extends State<PeeScreen>
             ),
             centerTitle: true,
             actions: [
-              IconButton(
-                  onPressed: () {},
-                  icon: Icon(
-                    Icons.notifications_none_rounded,
-                    color: ColorUtils.primary_gold,
-                  ))
+              // IconButton(
+              //     onPressed: () {},
+              //     icon: Icon(
+              //       Icons.notifications_none_rounded,
+              //       color: ColorUtils.primary_gold,
+              //     ))
             ],
           ),
           body: SingleChildScrollView(
@@ -206,7 +206,7 @@ class _PeeScreenState extends State<PeeScreen>
                               Container(
                                 alignment: Alignment.center,
                                 child: Text(
-                                  'K',
+                                  'P',
                                   style: TextStyle(
                                       color:
                                           HexColor('#F5C921').withOpacity(0.2),

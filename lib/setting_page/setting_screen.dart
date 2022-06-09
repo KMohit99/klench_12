@@ -1,16 +1,17 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:klench_/Authentication/SingIn/SigIn_screen.dart';
+import 'package:klench_/notifications/notifications_screen.dart';
 import 'package:klench_/setting_page/help_support.dart';
+import 'package:klench_/setting_page/intro_video.dart';
 import 'package:klench_/setting_page/privacy_policy_screen.dart';
 import 'package:klench_/setting_page/qr_code_screen.dart';
+import 'package:klench_/setting_page/refferal_link.dart';
 import 'package:klench_/setting_page/terms_conditions.dart';
 
 import '../front_page/FrontpageScreen.dart';
@@ -24,6 +25,7 @@ import 'About_us_screen.dart';
 import 'FAQ.dart';
 import 'Reset_Password.dart';
 import 'contact_screen.dart';
+import 'notification_settings.dart';
 
 class SettingScreen extends StatefulWidget {
   const SettingScreen({Key? key}) : super(key: key);
@@ -132,7 +134,20 @@ class _SettingScreenState extends State<SettingScreen> {
                                                     : (index == 7
                                                         ? Get.to(
                                                             ResetPassword())
-                                                        : null))))))));
+                                                        : (index == 8
+                                                            ? Get.to(
+                                                                Intro_videoScreen())
+                                                            : (index == 9
+                                                                ? Get.to(
+                                                                    RefferalLinkScreen())
+                                                                : (index == 10
+                                                                    ? Get.to(
+                                                                        NotificationSettings())
+                                                                    : (index ==
+                                                                            11
+                                                                        ? Get.to(
+                                                                            FrontScreen())
+                                                                        : null))))))))))));
                         // if(index == 0){
                         //   Get.to(QrCodeScreen());
                         // }else if(index == 1){

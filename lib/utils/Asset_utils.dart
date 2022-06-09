@@ -69,7 +69,7 @@ class AssetUtils {
   static const Foursquare_icons = root + 'Group 32.png';
 
   //background images
-  static const m_screen_trophy = root + 'Group 83.png';
+  static const m_screen_trophy = root + 'Group 100.png';
   static const front_back = root + 'Premium.jpg';
   static const home_back = root + 'home.png';
   static const m_screen_back = root + 'm_screen_back.png';

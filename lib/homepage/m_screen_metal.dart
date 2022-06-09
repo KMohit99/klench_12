@@ -26,7 +26,8 @@ class M_ScreenMetal extends StatefulWidget {
   State<M_ScreenMetal> createState() => _M_ScreenMetalState();
 }
 
-class _M_ScreenMetalState extends State<M_ScreenMetal>  with SingleTickerProviderStateMixin{
+class _M_ScreenMetalState extends State<M_ScreenMetal>
+    with SingleTickerProviderStateMixin {
   Stopwatch watch = Stopwatch();
   Timer? timer;
   bool startStop = true;
@@ -34,7 +35,7 @@ class _M_ScreenMetalState extends State<M_ScreenMetal>  with SingleTickerProvide
 
   String elapsedTime = '00:00';
   List method_list = ['Hand', 'Flashlight'];
-  String method_selected = 'hand';
+  String method_selected = '';
   List<ListMethodClass> method_time = [];
 
   updateTime(Timer timer) {
@@ -103,7 +104,6 @@ class _M_ScreenMetalState extends State<M_ScreenMetal>  with SingleTickerProvide
   Timer? countdownTimer;
   Duration myDuration = Duration(seconds: 3);
 
-
   @override
   void initState() {
     _tooltipBehavior = TooltipBehavior(
@@ -120,23 +120,23 @@ class _M_ScreenMetalState extends State<M_ScreenMetal>  with SingleTickerProvide
   bool animation_started = false;
 
   start_animation() {
-    setState((){
+    setState(() {
       animation_started = true;
       print(animation_started);
     });
     _animationController =
         AnimationController(vsync: this, duration: Duration(seconds: 1));
     _animationController!.repeat(reverse: true);
-    _animation = Tween(begin: 0.0, end: 15.0)
-        .animate(_animationController!)
-      ..addListener(() {
-      });
+    _animation = Tween(begin: 0.0, end: 15.0).animate(_animationController!)
+      ..addListener(() {});
   }
+
   @override
   dispose() {
     _animationController!.dispose(); // you need this
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -211,25 +211,25 @@ class _M_ScreenMetalState extends State<M_ScreenMetal>  with SingleTickerProvide
             ),
             centerTitle: true,
             actions: [
-              Container(
-                  width: 41,
-                  margin: EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(100),
-                      gradient: LinearGradient(
-                          begin: Alignment(-1.0, -4.0),
-                          end: Alignment(1.0, 4.0),
-                          colors: [HexColor('#020204'), HexColor('#36393E')])),
-                  child: Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Image.asset(
-                      AssetUtils.notification_icon,
-                      color: ColorUtils.primary_gold,
-                      height: 14,
-                      width: 15,
-                    ),
-                  ))
+              // Container(
+              //     width: 41,
+              //     margin: EdgeInsets.all(8),
+              //     decoration: BoxDecoration(
+              //         color: Colors.white,
+              //         borderRadius: BorderRadius.circular(100),
+              //         gradient: LinearGradient(
+              //             begin: Alignment(-1.0, -4.0),
+              //             end: Alignment(1.0, 4.0),
+              //             colors: [HexColor('#020204'), HexColor('#36393E')])),
+              //     child: Padding(
+              //       padding: const EdgeInsets.all(10.0),
+              //       child: Image.asset(
+              //         AssetUtils.notification_icon,
+              //         color: ColorUtils.primary_gold,
+              //         height: 14,
+              //         width: 15,
+              //       ),
+              //     ))
             ],
           ),
           body: SingleChildScrollView(
@@ -385,11 +385,14 @@ class _M_ScreenMetalState extends State<M_ScreenMetal>  with SingleTickerProvide
                               boxShadow: [
                                 BoxShadow(
                                   color: HexColor('#DD3931'),
-                                  blurRadius: (animation_started?_animation!.value : 0),
-                                  spreadRadius: (animation_started ?_animation!.value: 0),
+                                  blurRadius: (animation_started
+                                      ? _animation!.value
+                                      : 0),
+                                  spreadRadius: (animation_started
+                                      ? _animation!.value
+                                      : 0),
                                 )
-                              ]
-                          ),
+                              ]),
                           child: Stack(
                             children: [
                               Container(
@@ -398,7 +401,7 @@ class _M_ScreenMetalState extends State<M_ScreenMetal>  with SingleTickerProvide
                                   'M',
                                   style: TextStyle(
                                       color:
-                                      HexColor('#DD3931').withOpacity(0.2),
+                                          HexColor('#DD3931').withOpacity(0.2),
                                       fontSize: 70,
                                       fontWeight: FontWeight.w600),
                                 ),
@@ -406,7 +409,7 @@ class _M_ScreenMetalState extends State<M_ScreenMetal>  with SingleTickerProvide
                               Container(
                                 alignment: Alignment.center,
                                 child: Text(
-                                       elapsedTime,
+                                  elapsedTime,
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 25,
@@ -416,7 +419,6 @@ class _M_ScreenMetalState extends State<M_ScreenMetal>  with SingleTickerProvide
                             ],
                           ),
                         ),
-
                       ),
                     ),
                     glowColor: Colors.white,
@@ -438,136 +440,131 @@ class _M_ScreenMetalState extends State<M_ScreenMetal>  with SingleTickerProvide
                               contentPadding: EdgeInsets.zero,
                               elevation: 0.0,
                               // title: Center(child: Text("Evaluation our APP")),
-                              content: Container(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Stack(
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Container(
-                                            height: height/2,
-                                            decoration: BoxDecoration(
-                                                // color: Colors.black.withOpacity(0.65),
-                                                gradient: LinearGradient(
-                                                  begin: Alignment.centerLeft,
-                                                  end: Alignment.centerRight,
-                                                  // stops: [0.1, 0.5, 0.7, 0.9],
-                                                  colors: [
-                                                    HexColor("#020204")
-                                                        .withOpacity(1),
-                                                    HexColor("#36393E")
-                                                        .withOpacity(1),
-                                                  ],
-                                                ),
-                                                boxShadow: [
-                                                  BoxShadow(
-                                                      color:
-                                                          HexColor('#04060F'),
-                                                      offset: Offset(10, 10),
-                                                      blurRadius: 10)
+                              content: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Stack(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Container(
+                                          height: 100,
+                                          width: double.maxFinite,
+                                          decoration: BoxDecoration(
+                                              // color: Colors.black.withOpacity(0.65),
+                                              gradient: LinearGradient(
+                                                begin: Alignment.centerLeft,
+                                                end: Alignment.centerRight,
+                                                // stops: [0.1, 0.5, 0.7, 0.9],
+                                                colors: [
+                                                  HexColor("#020204")
+                                                      .withOpacity(1),
+                                                  HexColor("#36393E")
+                                                      .withOpacity(1),
                                                 ],
-                                                borderRadius:
-                                                    BorderRadius.circular(
-                                                        20)),
-                                            margin: EdgeInsets.symmetric(
-                                                horizontal: 10, vertical: 0),
-                                            // height: 122,
-                                            // width: 133,
-                                            // padding: const EdgeInsets.all(8.0),
-                                            alignment: Alignment.center,
-                                            child: Align(
+                                              ),
+                                              boxShadow: [
+                                                BoxShadow(
+                                                    color: HexColor('#04060F'),
+                                                    offset: Offset(10, 10),
+                                                    blurRadius: 10)
+                                              ],
+                                              borderRadius:
+                                                  BorderRadius.circular(20)),
+                                          margin: EdgeInsets.symmetric(
+                                              horizontal: 10, vertical: 0),
+                                          // height: 122,
+                                          // width: 133,
+                                          // padding: const EdgeInsets.all(8.0),
+                                          alignment: Alignment.center,
+                                          child: Align(
                                               alignment: Alignment.center,
                                               child: ListView.builder(
-                                                padding: EdgeInsets.symmetric(vertical: 10,horizontal: 5),
+                                                padding: EdgeInsets.symmetric(
+                                                    vertical: 10,
+                                                    horizontal: 5),
                                                 itemCount: method_list.length,
                                                 shrinkWrap: true,
-                                                itemBuilder: (BuildContext context,
+                                                itemBuilder:
+                                                    (BuildContext context,
                                                     int index) {
                                                   return GestureDetector(
                                                     onTap: () {
                                                       setState(() {
                                                         method_selected =
-                                                        method_list[
-                                                        index];
+                                                        method_list[index];
                                                         print(
                                                             "method_selected $method_selected");
                                                         started = true;
                                                       });
-                                                      Navigator.pop(
-                                                          context);
+                                                      Navigator.pop(context);
                                                     },
                                                     child: Container(
-                                                      margin: EdgeInsets.symmetric(vertical: 8.5),
-                                                      alignment: Alignment
-                                                          .center,
+                                                      margin:
+                                                      EdgeInsets.symmetric(
+                                                          vertical: 8.5),
+                                                      alignment:
+                                                      Alignment.center,
                                                       child: Text(
-                                                        method_list[
-                                                        index],
+                                                        method_list[index],
                                                         style: FontStyleUtility.h15(
-                                                            fontColor:
-                                                            ColorUtils
+                                                            fontColor: ColorUtils
                                                                 .primary_grey,
                                                             family: 'PM'),
                                                       ),
                                                     ),
                                                   );
-                                                    },
+                                                },
                                               ),
-                                            ),
-                                          ),
+                                              ),
                                         ),
-                                        GestureDetector(
-                                          onTap: () {
-                                            Navigator.pop(context);
-                                          },
+                                      ),
+                                      GestureDetector(
+                                        onTap: () {
+                                          Navigator.pop(context);
+                                        },
+                                        child: Container(
+                                          margin: EdgeInsets.only(right: 15),
+                                          alignment: Alignment.topRight,
                                           child: Container(
-                                            margin:
-                                                EdgeInsets.only(right: 15),
-                                            alignment: Alignment.topRight,
-                                            child: Container(
-                                                decoration: BoxDecoration(
-                                                    // color: Colors.black.withOpacity(0.65),
-                                                    gradient: LinearGradient(
-                                                      begin: Alignment
-                                                          .centerLeft,
-                                                      end: Alignment
-                                                          .centerRight,
-                                                      // stops: [0.1, 0.5, 0.7, 0.9],
-                                                      colors: [
-                                                        HexColor("#36393E")
-                                                            .withOpacity(1),
-                                                        HexColor("#020204")
-                                                            .withOpacity(1),
-                                                      ],
-                                                    ),
-                                                    boxShadow: [
-                                                      BoxShadow(
-                                                          color: HexColor(
-                                                              '#04060F'),
-                                                          offset:
-                                                              Offset(0, 3),
-                                                          blurRadius: 5)
+                                              decoration: BoxDecoration(
+                                                  // color: Colors.black.withOpacity(0.65),
+                                                  gradient: LinearGradient(
+                                                    begin: Alignment.centerLeft,
+                                                    end: Alignment.centerRight,
+                                                    // stops: [0.1, 0.5, 0.7, 0.9],
+                                                    colors: [
+                                                      HexColor("#36393E")
+                                                          .withOpacity(1),
+                                                      HexColor("#020204")
+                                                          .withOpacity(1),
                                                     ],
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            20)),
-                                                child: Padding(
-                                                  padding: const EdgeInsets.all(4.0),
-                                                  child: Icon(
-                                                    Icons.cancel_outlined,
-                                                    size: 13,
-                                                    color:
-                                                        ColorUtils.primary_grey,
                                                   ),
-                                                )),
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  ],
-                                ),
+                                                  boxShadow: [
+                                                    BoxShadow(
+                                                        color:
+                                                            HexColor('#04060F'),
+                                                        offset: Offset(0, 3),
+                                                        blurRadius: 5)
+                                                  ],
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          20)),
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(4.0),
+                                                child: Icon(
+                                                  Icons.cancel_outlined,
+                                                  size: 13,
+                                                  color:
+                                                      ColorUtils.primary_grey,
+                                                ),
+                                              )),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ],
                               ));
                         },
                       );
@@ -782,7 +779,7 @@ class _M_ScreenMetalState extends State<M_ScreenMetal>  with SingleTickerProvide
                       if (method_selected.isNotEmpty) {
                         if (started) {
                           start_animation();
-                            startWatch();
+                          startWatch();
                         } else {
                           await stopWatch_finish();
                           method_time.add(ListMethodClass(
@@ -1169,41 +1166,38 @@ class _M_ScreenMetalState extends State<M_ScreenMetal>  with SingleTickerProvide
                                                             elevation: 0.0,
                                                             // title: Center(child: Text("Evaluation our APP")),
                                                             content: Column(
-                                                              mainAxisAlignment: MainAxisAlignment.center,
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .center,
                                                               children: [
                                                                 Stack(
                                                                   children: [
                                                                     Padding(
-                                                                      padding: const EdgeInsets.all(8.0),
-                                                                      child: Container(
-                                                                        decoration: BoxDecoration(
-                                                                          // color: Colors.black.withOpacity(0.65),
-                                                                            gradient: LinearGradient(
-                                                                              begin: Alignment.centerLeft,
-                                                                              end: Alignment.centerRight,
-                                                                              // stops: [0.1, 0.5, 0.7, 0.9],
-                                                                              colors: [
-                                                                                HexColor("#020204")
-                                                                                    .withOpacity(1),
-                                                                                HexColor("#36393E")
-                                                                                    .withOpacity(1),
-                                                                              ],
-                                                                            ),
-                                                                            boxShadow: [
-                                                                              BoxShadow(
-                                                                                  color:
-                                                                                  HexColor('#04060F'),
-                                                                                  offset: Offset(10, 10),
-                                                                                  blurRadius: 10)
-                                                                            ],
-                                                                            borderRadius:
-                                                                            BorderRadius.circular(
-                                                                                15)),
+                                                                      padding:
+                                                                          const EdgeInsets.all(
+                                                                              8.0),
+                                                                      child:
+                                                                          Container(
+                                                                        decoration:
+                                                                            BoxDecoration(
+                                                                                // color: Colors.black.withOpacity(0.65),
+                                                                                gradient:
+                                                                                    LinearGradient(
+                                                                                  begin: Alignment.centerLeft,
+                                                                                  end: Alignment.centerRight,
+                                                                                  // stops: [0.1, 0.5, 0.7, 0.9],
+                                                                                  colors: [
+                                                                                    HexColor("#020204").withOpacity(1),
+                                                                                    HexColor("#36393E").withOpacity(1),
+                                                                                  ],
+                                                                                ),
+                                                                                boxShadow: [
+                                                                                  BoxShadow(color: HexColor('#04060F'), offset: Offset(10, 10), blurRadius: 10)
+                                                                                ],
+                                                                                borderRadius: BorderRadius.circular(15)),
                                                                         child: Align(
-                                                                            alignment: Alignment
-                                                                                .center,
-                                                                            child:
-                                                                            Padding(
+                                                                            alignment: Alignment.center,
+                                                                            child: Padding(
                                                                               padding: const EdgeInsets.all(8.0),
                                                                               child: Column(
                                                                                 children: [
@@ -1216,9 +1210,7 @@ class _M_ScreenMetalState extends State<M_ScreenMetal>  with SingleTickerProvide
                                                                                     children: [
                                                                                       Container(
                                                                                         margin: EdgeInsets.only(left: 18),
-                                                                                        child: Text('Add more method',
-                                                                                            style: FontStyleUtility.h14(
-                                                                                                fontColor: ColorUtils.primary_grey, family: 'Pr')),
+                                                                                        child: Text('Add more method', style: FontStyleUtility.h14(fontColor: ColorUtils.primary_grey, family: 'Pr')),
                                                                                       ),
                                                                                       SizedBox(
                                                                                         height: 11,
@@ -1226,54 +1218,44 @@ class _M_ScreenMetalState extends State<M_ScreenMetal>  with SingleTickerProvide
                                                                                       Container(
                                                                                         margin: EdgeInsets.symmetric(horizontal: 10),
                                                                                         // width: 300,
-                                                                                        decoration: BoxDecoration(
-                                                                                          // color: Colors.black.withOpacity(0.65),
-                                                                                            gradient: LinearGradient(
-                                                                                              begin: Alignment.centerLeft,
-                                                                                              end: Alignment.centerRight,
-                                                                                              // stops: [0.1, 0.5, 0.7, 0.9],
-                                                                                              colors: [
-
-                                                                                                HexColor("#36393E")
-                                                                                                    .withOpacity(1),
-                                                                                                HexColor("#020204")
-                                                                                                    .withOpacity(1),
-                                                                                              ],
-                                                                                            ),
-                                                                                            boxShadow: [
-                                                                                              BoxShadow(
-                                                                                                  color:
-                                                                                                  HexColor('#04060F'),
-                                                                                                  offset: Offset(10, 10),
-                                                                                                  blurRadius: 10)
-                                                                                            ],
-                                                                                            borderRadius:
-                                                                                            BorderRadius.circular(
-                                                                                                20)),
+                                                                                        decoration:
+                                                                                            BoxDecoration(
+                                                                                                // color: Colors.black.withOpacity(0.65),
+                                                                                                gradient:
+                                                                                                    LinearGradient(
+                                                                                                  begin: Alignment.centerLeft,
+                                                                                                  end: Alignment.centerRight,
+                                                                                                  // stops: [0.1, 0.5, 0.7, 0.9],
+                                                                                                  colors: [
+                                                                                                    HexColor("#36393E").withOpacity(1),
+                                                                                                    HexColor("#020204").withOpacity(1),
+                                                                                                  ],
+                                                                                                ),
+                                                                                                boxShadow: [
+                                                                                                  BoxShadow(color: HexColor('#04060F'), offset: Offset(10, 10), blurRadius: 10)
+                                                                                                ],
+                                                                                                borderRadius: BorderRadius.circular(20)),
 
                                                                                         child: TextFormField(
                                                                                           maxLength: 150,
                                                                                           decoration: InputDecoration(
-                                                                                              contentPadding:
-                                                                                              EdgeInsets.only(left: 20, top: 14, bottom: 14),
-                                                                                              alignLabelWithHint: false,
-                                                                                              isDense: true,
-                                                                                              hintText: 'Add more method',
-                                                                                              counterStyle: TextStyle(
-                                                                                                height: double.minPositive,
-                                                                                              ),
-                                                                                              counterText: "",
-                                                                                              filled: true,
-                                                                                              border: InputBorder.none,
-                                                                                              enabledBorder: const OutlineInputBorder(
-                                                                                                borderSide: BorderSide(color: Colors.transparent, width: 1),
-                                                                                                borderRadius: BorderRadius.all(Radius.circular(10)),
-                                                                                              ),
-                                                                                              hintStyle: FontStyleUtility.h14(
-                                                                                                  fontColor: HexColor('#CBCBCB'), family: 'PR'),
-                                                                                             ),
-                                                                                          style: FontStyleUtility.h14(
-                                                                                              fontColor: ColorUtils.primary_grey, family: 'PR'),
+                                                                                            contentPadding: EdgeInsets.only(left: 20, top: 14, bottom: 14),
+                                                                                            alignLabelWithHint: false,
+                                                                                            isDense: true,
+                                                                                            hintText: 'Add more method',
+                                                                                            counterStyle: TextStyle(
+                                                                                              height: double.minPositive,
+                                                                                            ),
+                                                                                            counterText: "",
+                                                                                            filled: true,
+                                                                                            border: InputBorder.none,
+                                                                                            enabledBorder: const OutlineInputBorder(
+                                                                                              borderSide: BorderSide(color: Colors.transparent, width: 1),
+                                                                                              borderRadius: BorderRadius.all(Radius.circular(10)),
+                                                                                            ),
+                                                                                            hintStyle: FontStyleUtility.h14(fontColor: HexColor('#CBCBCB'), family: 'PR'),
+                                                                                          ),
+                                                                                          style: FontStyleUtility.h14(fontColor: ColorUtils.primary_grey, family: 'PR'),
                                                                                           controller: method_new,
                                                                                           keyboardType: TextInputType.text,
                                                                                         ),
@@ -1313,53 +1295,47 @@ class _M_ScreenMetalState extends State<M_ScreenMetal>  with SingleTickerProvide
                                                                       ),
                                                                     ),
                                                                     GestureDetector(
-                                                                      onTap: () {
-                                                                        Navigator.pop(context);
+                                                                      onTap:
+                                                                          () {
+                                                                        Navigator.pop(
+                                                                            context);
                                                                       },
-                                                                      child: Container(
-                                                                        margin:
-                                                                        EdgeInsets.only(right: 10),
-                                                                        alignment: Alignment.topRight,
-                                                                        child: Container(
-                                                                            decoration: BoxDecoration(
-                                                                              // color: Colors.black.withOpacity(0.65),
-                                                                                gradient: LinearGradient(
-                                                                                  begin: Alignment
-                                                                                      .centerLeft,
-                                                                                  end: Alignment
-                                                                                      .centerRight,
-                                                                                  // stops: [0.1, 0.5, 0.7, 0.9],
-                                                                                  colors: [
-                                                                                    HexColor("#36393E")
-                                                                                        .withOpacity(1),
-                                                                                    HexColor("#020204")
-                                                                                        .withOpacity(1),
-                                                                                  ],
-                                                                                ),
-                                                                                boxShadow: [
-                                                                                  BoxShadow(
-                                                                                      color: HexColor(
-                                                                                          '#04060F'),
-                                                                                      offset:
-                                                                                      Offset(0, 3),
-                                                                                      blurRadius: 5)
-                                                                                ],
-                                                                                borderRadius:
-                                                                                BorderRadius.circular(
-                                                                                    20)),
-                                                                            child: Padding(
-                                                                              padding: const EdgeInsets.all(4.0),
-                                                                              child: Icon(
-                                                                                Icons.cancel_outlined,
-                                                                                size: 13,
-                                                                                color:
-                                                                                ColorUtils.primary_grey,
-                                                                              ),
-                                                                            )),
+                                                                      child:
+                                                                          Container(
+                                                                        margin: EdgeInsets.only(
+                                                                            right:
+                                                                                10),
+                                                                        alignment:
+                                                                            Alignment.topRight,
+                                                                        child:
+                                                                            Container(
+                                                                                decoration:
+                                                                                    BoxDecoration(
+                                                                                        // color: Colors.black.withOpacity(0.65),
+                                                                                        gradient:
+                                                                                            LinearGradient(
+                                                                                          begin: Alignment.centerLeft,
+                                                                                          end: Alignment.centerRight,
+                                                                                          // stops: [0.1, 0.5, 0.7, 0.9],
+                                                                                          colors: [
+                                                                                            HexColor("#36393E").withOpacity(1),
+                                                                                            HexColor("#020204").withOpacity(1),
+                                                                                          ],
+                                                                                        ),
+                                                                                        boxShadow: [
+                                                                                          BoxShadow(color: HexColor('#04060F'), offset: Offset(0, 3), blurRadius: 5)
+                                                                                        ],
+                                                                                        borderRadius: BorderRadius.circular(20)),
+                                                                                child: Padding(
+                                                                                  padding: const EdgeInsets.all(4.0),
+                                                                                  child: Icon(
+                                                                                    Icons.cancel_outlined,
+                                                                                    size: 13,
+                                                                                    color: ColorUtils.primary_grey,
+                                                                                  ),
+                                                                                )),
                                                                       ),
                                                                     )
-
-
                                                                   ],
                                                                 ),
                                                               ],
@@ -1640,14 +1616,15 @@ class _M_ScreenMetalState extends State<M_ScreenMetal>  with SingleTickerProvide
                                         children: [
                                           Expanded(
                                             child: Container(
-                                              alignment: Alignment.centerLeft,
+                                              alignment: Alignment.center,
                                               child: Image.asset(
                                                 AssetUtils.m_screen_trophy,
-                                                height: 19,
-                                                width: 17,
+                                                height: 25,
+                                                width: 20,
                                               ),
                                             ),
                                           ),
+                                          SizedBox(width: 5,),
                                           Expanded(
                                             flex: 2,
                                             child: Container(
@@ -1679,14 +1656,14 @@ class _M_ScreenMetalState extends State<M_ScreenMetal>  with SingleTickerProvide
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.start,
                                                 children: [
-                                                  Text('Best result',
+                                                  Text('Last measurement',
                                                       style:
                                                           FontStyleUtility.h14(
                                                               fontColor:
                                                                   HexColor(
                                                                       '#A2A2A2'),
                                                               family: 'PR')),
-                                                  Text('72 sec',
+                                                  Text('26 days ago',
                                                       style:
                                                           FontStyleUtility.h14(
                                                               fontColor:
@@ -1987,99 +1964,92 @@ class _M_ScreenMetalState extends State<M_ScreenMetal>  with SingleTickerProvide
                                 ),
                               ),
                               Container(
-                                margin: EdgeInsets.all(15),
-                                decoration: BoxDecoration(
-                                    // color: Colors.black.withOpacity(0.65),
-                                    gradient: LinearGradient(
-                                      begin: Alignment.centerLeft,
-                                      end: Alignment.centerRight,
-                                      // stops: [0.1, 0.5, 0.7, 0.9],
-                                      colors: [
-                                        HexColor("#020204").withOpacity(1),
-                                        HexColor("#36393E").withOpacity(1),
+                                  margin: EdgeInsets.all(15),
+                                  decoration: BoxDecoration(
+                                      // color: Colors.black.withOpacity(0.65),
+                                      gradient: LinearGradient(
+                                        begin: Alignment.centerLeft,
+                                        end: Alignment.centerRight,
+                                        // stops: [0.1, 0.5, 0.7, 0.9],
+                                        colors: [
+                                          HexColor("#020204").withOpacity(1),
+                                          HexColor("#36393E").withOpacity(1),
+                                        ],
+                                      ),
+                                      boxShadow: [
+                                        BoxShadow(
+                                            color: HexColor('#04060F'),
+                                            offset: Offset(10, 10),
+                                            blurRadius: 10)
                                       ],
-                                    ),
-                                    boxShadow: [
-                                      BoxShadow(
-                                          color: HexColor('#04060F'),
-                                          offset: Offset(10, 10),
-                                          blurRadius: 10)
+                                      borderRadius: BorderRadius.circular(20)),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(
+                                              left: 40,
+                                              top: 15,
+                                              right: 15,
+                                              bottom: 15),
+                                          child: Text(
+                                            "Technique",
+                                            style: FontStyleUtility.h15(
+                                                fontColor:
+                                                    ColorUtils.primary_grey,
+                                                family: 'PM'),
+                                          ),
+                                        ),
+                                      ),
+                                      ListTile(
+                                        title: Text(
+                                          '1.   Use different tools',
+                                          style: FontStyleUtility.h15(
+                                              fontColor:
+                                                  ColorUtils.primary_grey,
+                                              family: 'PM'),
+                                        ),
+                                      ),
+                                      ListTile(
+                                        title: Text(
+                                          '2.   Try edging',
+                                          style: FontStyleUtility.h15(
+                                              fontColor:
+                                                  ColorUtils.primary_grey,
+                                              family: 'PM'),
+                                        ),
+                                      ),
+                                      ListTile(
+                                        title: Text(
+                                          '3.   Use different tools',
+                                          style: FontStyleUtility.h15(
+                                              fontColor:
+                                                  ColorUtils.primary_grey,
+                                              family: 'PM'),
+                                        ),
+                                      ),
+                                      ListTile(
+                                        title: Text(
+                                          '4.   Try edging',
+                                          style: FontStyleUtility.h15(
+                                              fontColor:
+                                                  ColorUtils.primary_grey,
+                                              family: 'PM'),
+                                        ),
+                                      ),
+                                      ListTile(
+                                        title: Text(
+                                          '5.   Use different tools',
+                                          style: FontStyleUtility.h15(
+                                              fontColor:
+                                                  ColorUtils.primary_grey,
+                                              family: 'PM'),
+                                        ),
+                                      ),
                                     ],
-                                    borderRadius: BorderRadius.circular(20)),
-                                child: ExpansionTile(
-                                  iconColor: ColorUtils.primary_grey,
-                                  collapsedIconColor: ColorUtils.primary_grey,
-                                  title: Container(
-                                    // decoration: BoxDecoration(
-                                    //   // color: Colors.black.withOpacity(0.65),
-                                    //     gradient: LinearGradient(
-                                    //       begin: Alignment.centerLeft,
-                                    //       end: Alignment.centerRight,
-                                    //       // stops: [0.1, 0.5, 0.7, 0.9],
-                                    //       colors: [
-                                    //         HexColor("#020204").withOpacity(1),
-                                    //         HexColor("#36393E").withOpacity(1),
-                                    //
-                                    //       ],
-                                    //     ),
-                                    //     borderRadius: BorderRadius.circular(20)),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(15.0),
-                                      child: Text(
-                                        "Technique",
-                                        style: FontStyleUtility.h15(
-                                            fontColor: ColorUtils.primary_grey,
-                                            family: 'PM'),
-                                      ),
-                                    ),
-                                  ),
-                                  childrenPadding:
-                                      EdgeInsets.symmetric(horizontal: 20),
-                                  // trailing: const SizedBox.shrink(),
-                                  children: <Widget>[
-                                    ListTile(
-                                      title: Text(
-                                        '1.   Use different tools',
-                                        style: FontStyleUtility.h15(
-                                            fontColor: ColorUtils.primary_grey,
-                                            family: 'PM'),
-                                      ),
-                                    ),
-                                    ListTile(
-                                      title: Text(
-                                        '2.   Try edging',
-                                        style: FontStyleUtility.h15(
-                                            fontColor: ColorUtils.primary_grey,
-                                            family: 'PM'),
-                                      ),
-                                    ),
-                                    ListTile(
-                                      title: Text(
-                                        '3.   Use different tools',
-                                        style: FontStyleUtility.h15(
-                                            fontColor: ColorUtils.primary_grey,
-                                            family: 'PM'),
-                                      ),
-                                    ),
-                                    ListTile(
-                                      title: Text(
-                                        '4.   Try edging',
-                                        style: FontStyleUtility.h15(
-                                            fontColor: ColorUtils.primary_grey,
-                                            family: 'PM'),
-                                      ),
-                                    ),
-                                    ListTile(
-                                      title: Text(
-                                        '5.   Use different tools',
-                                        style: FontStyleUtility.h15(
-                                            fontColor: ColorUtils.primary_grey,
-                                            family: 'PM'),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
+                                  )),
                               SizedBox(
                                 height: 20,
                               ),
@@ -2129,7 +2099,8 @@ class _M_ScreenMetalState extends State<M_ScreenMetal>  with SingleTickerProvide
       setTime();
     });
   }
-   stopWatch_finish() {
+
+  stopWatch_finish() {
     setState(() {
       startStop = true;
       started = false;
@@ -2150,7 +2121,8 @@ class _M_ScreenMetalState extends State<M_ScreenMetal>  with SingleTickerProvide
     print("elapsedTime $elapsedTime");
     print("elapsedTime Listtttttt $paused_time");
   }
- setTime_finish() {
+
+  setTime_finish() {
     var timeSoFar = watch.elapsedMilliseconds;
     setState(() {
       elapsedTime = transformMilliSeconds(timeSoFar);
@@ -2159,7 +2131,6 @@ class _M_ScreenMetalState extends State<M_ScreenMetal>  with SingleTickerProvide
     print("elapsedTime $elapsedTime");
     print("elapsedTime Listtttttt $paused_time");
   }
-
 
   transformMilliSeconds(int milliseconds) {
     int hundreds = (milliseconds / 10).truncate();

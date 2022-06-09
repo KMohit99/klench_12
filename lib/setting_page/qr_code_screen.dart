@@ -252,13 +252,13 @@ class _QrCodeScreenState extends State<QrCodeScreen> {
                             Center(
                                 child: Container(
                               child: Text(
-                                'firser',
+                                'Second',
                                 style: TextStyle(color: Colors.white),
                               ),
                             )),
                             Center(
                                 child: Container(
-                              child: Text('second',
+                              child: Text('Third',
                                   style: TextStyle(color: Colors.white)),
                             ))
                           ],

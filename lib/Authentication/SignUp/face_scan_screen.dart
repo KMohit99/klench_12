@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:klench_/Authentication/welcom_video/welcome_video_screen.dart';
+import 'package:klench_/Dashboard/dashboard_screen.dart';
 
 import '../../front_page/FrontpageScreen.dart';
 import '../../utils/Asset_utils.dart';
@@ -156,31 +157,36 @@ class _FaceScanScreenState extends State<FaceScanScreen> {
                             height: 1,
                             color: ColorUtils.light_black,
                           ),
-                          Container(
-                            decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                  begin: Alignment.bottomLeft,
-                                  end: Alignment.topRight,
-                                  colors: [
-                                    HexColor("#020204").withOpacity(1),
-                                    HexColor("#36393E").withOpacity(1),
-                                  ],
-                                ),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: HexColor('#04060F'),
-                                    offset: Offset(3, 3),
-                                    blurRadius: 10,
+                          GestureDetector(
+                            onTap: (){
+                              Get.to(DashboardScreen());
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    begin: Alignment.bottomLeft,
+                                    end: Alignment.topRight,
+                                    colors: [
+                                      HexColor("#020204").withOpacity(1),
+                                      HexColor("#36393E").withOpacity(1),
+                                    ],
                                   ),
-                                ],
-                                borderRadius: BorderRadius.circular(10)),
-                            child: Padding(
-                              padding: const EdgeInsets.all(10.0),
-                              child: Image.asset(
-                                AssetUtils.Face_unlock_icon,
-                                color: ColorUtils.primary_grey,
-                                height: 80,
-                                width: 80,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: HexColor('#04060F'),
+                                      offset: Offset(3, 3),
+                                      blurRadius: 10,
+                                    ),
+                                  ],
+                                  borderRadius: BorderRadius.circular(10)),
+                              child: Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: Image.asset(
+                                  AssetUtils.Face_unlock_icon,
+                                  color: ColorUtils.primary_grey,
+                                  height: 80,
+                                  width: 80,
+                                ),
                               ),
                             ),
                           ),
@@ -191,47 +197,52 @@ class _FaceScanScreenState extends State<FaceScanScreen> {
                                     fontColor: ColorUtils.primary_grey,
                                     family: 'PR')),
                           ),
-                          Container(
-                            decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                  begin: Alignment.bottomLeft,
-                                  end: Alignment.topRight,
-                                  colors: [
-                                    HexColor("#020204").withOpacity(1),
-                                    HexColor("#36393E").withOpacity(1),
-                                  ],
-                                ),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: HexColor('#04060F'),
-                                    offset: Offset(3, 3),
-                                    blurRadius: 10,
+                          GestureDetector(
+                            onTap: (){
+                              Get.to(DashboardScreen());
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    begin: Alignment.bottomLeft,
+                                    end: Alignment.topRight,
+                                    colors: [
+                                      HexColor("#020204").withOpacity(1),
+                                      HexColor("#36393E").withOpacity(1),
+                                    ],
                                   ),
-                                ],
-                                borderRadius: BorderRadius.circular(10)),
-                            child: Padding(
-                                padding: const EdgeInsets.all(10.0),
-                                child: Stack(
-                                    children: [
-                                  Opacity(
-                                      child: Image.asset(
-                                        AssetUtils.Finger_print_icon,
-                                        color: Colors.white,
-                                        height: 80,
-                                        width: 80,
-                                      ),
-                                      opacity: 0.2),
-                                  ClipRect(
-                                      child: BackdropFilter(
-                                          filter: ImageFilter.blur(
-                                              sigmaX: 5.0, sigmaY: 5.0),
-                                          child: Image.asset(
-                                            AssetUtils.Finger_print_icon,
-                                            color: Colors.black,
-                                            height: 80,
-                                            width: 80,
-                                          )))
-                                ])),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: HexColor('#04060F'),
+                                      offset: Offset(3, 3),
+                                      blurRadius: 10,
+                                    ),
+                                  ],
+                                  borderRadius: BorderRadius.circular(10)),
+                              child: Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: Stack(
+                                      children: [
+                                    Opacity(
+                                        child: Image.asset(
+                                          AssetUtils.Finger_print_icon,
+                                          color: Colors.white,
+                                          height: 80,
+                                          width: 80,
+                                        ),
+                                        opacity: 0.2),
+                                    ClipRect(
+                                        child: BackdropFilter(
+                                            filter: ImageFilter.blur(
+                                                sigmaX: 5.0, sigmaY: 5.0),
+                                            child: Image.asset(
+                                              AssetUtils.Finger_print_icon,
+                                              color: Colors.black,
+                                              height: 80,
+                                              width: 80,
+                                            )))
+                                  ])),
+                            ),
                           ),
                           Container(
                             margin: EdgeInsets.only(top: 20),

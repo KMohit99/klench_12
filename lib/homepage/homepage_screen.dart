@@ -53,7 +53,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
             image: DecorationImage(
               fit: BoxFit.cover,
               colorFilter: new ColorFilter.mode(
-                  Colors.black.withOpacity(0.5), BlendMode.dst),
+                  Colors.black.withOpacity(0.5), BlendMode.darken),
               image: AssetImage(
                 AssetUtils.home_back,
               ),
@@ -76,213 +76,209 @@ class _HomepageScreenState extends State<HomepageScreen> {
               ),
               centerTitle: true,
               actions: [
-                GestureDetector(
-                  onTap: (){
-                    Get.to(NotificationsScreen());
-                  },
-                  child: Container(
-                      width: 41,
-                      margin: EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(100),
-                          gradient: LinearGradient(
-                              begin: Alignment(-1.0, -4.0),
-                              end: Alignment(1.0, 4.0),
-                              colors: [
-                                HexColor('#020204'),
-                                HexColor('#36393E')
-                              ])),
-                      child: Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Image.asset(
-                          AssetUtils.notification_icon,
-                          color: ColorUtils.primary_gold,
-                          height: 22,
-                          width: 18,
-                        ),
-                      )),
-                )
+                // GestureDetector(
+                //   onTap: (){
+                //     Get.to(NotificationsScreen());
+                //   },
+                //   child: Container(
+                //       width: 41,
+                //       margin: EdgeInsets.all(8),
+                //       decoration: BoxDecoration(
+                //           color: Colors.white,
+                //           borderRadius: BorderRadius.circular(100),
+                //           gradient: LinearGradient(
+                //               begin: Alignment(-1.0, -4.0),
+                //               end: Alignment(1.0, 4.0),
+                //               colors: [
+                //                 HexColor('#020204'),
+                //                 HexColor('#36393E')
+                //               ])),
+                //       child: Padding(
+                //         padding: const EdgeInsets.all(10.0),
+                //         child: Image.asset(
+                //           AssetUtils.notification_icon,
+                //           color: ColorUtils.primary_gold,
+                //           height: 22,
+                //           width: 18,
+                //         ),
+                //       )),
+                // )
               ],
             ),
           ),
           body: SingleChildScrollView(
-            child: Stack(
-              children: [
-                // Container(
-                //   height: screenHeight,
-                //   color: Colors.black,
-                // ),
-                // ClipPath(
-                //   clipper: CustomShape(),
-                //   // this is my own class which extendsCustomClipper
-                //   child: Container(
-                //     height: 160,
-                //     width: screenWidth,
-                //     color: Colors.white,
-                //     child: Container(
-                //         margin: EdgeInsets.all(30),
-                //         alignment: Alignment.topCenter,
-                //         child: Row(
-                //           mainAxisAlignment: MainAxisAlignment.end,
-                //           children: [
-                //             Image.asset(
-                //               AssetUtils.star_icon,
-                //               height: 22,
-                //               width: 22,
-                //             ),
-                //             SizedBox(
-                //               width: 7,
-                //             ),
-                //             Image.asset(
-                //               AssetUtils.star_icon,
-                //               height: 22,
-                //               width: 22,
-                //             ),
-                //             SizedBox(
-                //               width: 7,
-                //             ),
-                //             Image.asset(
-                //               AssetUtils.star_icon,
-                //               height: 22,
-                //               width: 22,
-                //             ),
-                //           ],
-                //         )),
-                //   ),
-                // ),
-                Container(
-                  color: Colors.transparent,
-                  margin: EdgeInsets.only(top: 20, right: 15, left: 15),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Container(
-                          margin: EdgeInsets.all(0),
-                          alignment: Alignment.topCenter,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              Image.asset(
-                                AssetUtils.star_icon,
-                                height: 22,
-                                width: 22,
-                              ),
-                              SizedBox(
-                                width: 7,
-                              ),
-                              Image.asset(
-                                AssetUtils.star_icon,
-                                height: 22,
-                                width: 22,
-                              ),
-                              SizedBox(
-                                width: 7,
-                              ),
-                              Image.asset(
-                                AssetUtils.star_icon,
-                                height: 22,
-                                width: 22,
-                              ),
-                            ],
-                          )),
-                      GestureDetector(
-                        onTap: () {
-                          Get.to(KegelScreen());
-                        },
-                        child: Container(
-                            margin: EdgeInsets.only(top: 0),
-                            height: 140,
-                            width: 140,
-                            // decoration: BoxDecoration(
-                            //   gradient: RadialGradient(
-                            //     center: const Alignment(0.0, 0.0),
-                            //     radius: 0.5,
-                            //     colors: [
-                            //       ColorUtils.color1,
-                            //       HexColor('#BF2777'),
-                            //     ],
-                            //   ),
-                            //   boxShadow: [
-                            //     BoxShadow(
-                            //         color: ColorUtils.primary_grey
-                            //             .withOpacity(0.5),
-                            //         blurRadius: 5,
-                            //         offset: Offset(0, 5))
-                            //   ],
-                            //   borderRadius: BorderRadius.circular(100),
-                            // ),
-                            child: Container(
-                              height: 140,
-                              width: 135,
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                    alignment: Alignment
-                                        .center,
-                                    image: AssetImage(AssetUtils.home_button)),
-                              ),
-                              child: Container(
-                                alignment: Alignment.center,
-                                child: Text('K',
-                                    style: GoogleFonts.sourceSerifPro(
-                                      textStyle: TextStyle(
-                                          color: HexColor('#EE499E'),
-                                          shadows: [
-                                            Shadow(
-                                                color: HexColor('#EE499E'),
-                                                offset: Offset(0,10),
-                                                blurRadius: 30
-                                            )
-                                          ],
-                                          fontSize: 64,
-                                          fontWeight: FontWeight.w600),
-                                    )),
-                              ),
+            child: LayoutBuilder(
+              builder: (BuildContext context, BoxConstraints constraints) =>
+              Container(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                        margin: EdgeInsets.all(0),
+                        alignment: Alignment.topCenter,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Image.asset(
+                              AssetUtils.star_icon,
+                              height: 22,
+                              width: 22,
                             ),
-                        ),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                            SizedBox(
+                              width: 7,
+                            ),
+                            Image.asset(
+                              AssetUtils.star_icon,
+                              height: 22,
+                              width: 22,
+                            ),
+                            SizedBox(
+                              width: 7,
+                            ),
+                            Image.asset(
+                              AssetUtils.star_icon,
+                              height: 22,
+                              width: 22,
+                            ),
+                          ],
+                        )),
+
+                    Container(
+                      margin:  EdgeInsets.symmetric(vertical: 100),
+                      child: Column(
                         children: [
                           GestureDetector(
                             onTap: () {
-                              Get.to(WarmUpScreen());
+                              Get.to(KegelScreen());
                             },
                             child: Container(
-                              height: 140,
-                              width: 135,
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                    alignment: Alignment
-                                        .center,
-                                    image: AssetImage(AssetUtils.home_button)),
-                              ),
-                              child: Container(
-                                alignment: Alignment.center,
-                                child: Text('W',
-                                    style: GoogleFonts.sourceSerifPro(
-                                      textStyle: TextStyle(
-                                          color: HexColor('#3EA244'),
-                                          shadows: [
-                                            Shadow(
-                                                color: HexColor('#3EA244'),
-                                                offset: Offset(0,10),
-                                                blurRadius: 30
-                                            )
-                                          ],
-                                          fontSize: 64,
-                                          fontWeight: FontWeight.w600),
-                                    )),
-                              ),
+                                margin: EdgeInsets.only(top: 0),
+                                height: 140,
+                                width: 140,
+                                // decoration: BoxDecoration(
+                                //   gradient: RadialGradient(
+                                //     center: const Alignment(0.0, 0.0),
+                                //     radius: 0.5,
+                                //     colors: [
+                                //       ColorUtils.color1,
+                                //       HexColor('#BF2777'),
+                                //     ],
+                                //   ),
+                                //   boxShadow: [
+                                //     BoxShadow(
+                                //         color: ColorUtils.primary_grey
+                                //             .withOpacity(0.5),
+                                //         blurRadius: 5,
+                                //         offset: Offset(0, 5))
+                                //   ],
+                                //   borderRadius: BorderRadius.circular(100),
+                                // ),
+                                child: Container(
+                                  height: 140,
+                                  width: 135,
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                        alignment: Alignment
+                                            .center,
+                                        image: AssetImage(AssetUtils.home_button)),
+                                  ),
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    child: Text('K',
+                                        style: GoogleFonts.sourceSerifPro(
+                                          textStyle: TextStyle(
+                                              color: HexColor('#EE499E'),
+                                              shadows: [
+                                                Shadow(
+                                                    color: HexColor('#EE499E'),
+                                                    offset: Offset(0,10),
+                                                    blurRadius: 30
+                                                )
+                                              ],
+                                              fontSize: 64,
+                                              fontWeight: FontWeight.w600),
+                                        )),
+                                  ),
+                                ),
                             ),
                           ),
-                          SizedBox(
-                            width: 70,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  Get.to(WarmUpScreen());
+                                },
+                                child: Container(
+                                  height: 140,
+                                  width: 135,
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                        alignment: Alignment
+                                            .center,
+                                        image: AssetImage(AssetUtils.home_button)),
+                                  ),
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    child: Text('W',
+                                        style: GoogleFonts.sourceSerifPro(
+                                          textStyle: TextStyle(
+                                              color: HexColor('#3EA244'),
+                                              shadows: [
+                                                Shadow(
+                                                    color: HexColor('#3EA244'),
+                                                    offset: Offset(0,10),
+                                                    blurRadius: 30
+                                                )
+                                              ],
+                                              fontSize: 64,
+                                              fontWeight: FontWeight.w600),
+                                        )),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                width: 70,
+                              ),
+                              GestureDetector(
+                                onTap: () {
+                                  Get.to(M_ScreenMetal());
+                                },
+                                child: Container(
+                                  height: 140,
+                                  width: 135,
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                        alignment: Alignment
+                                            .center,
+                                        image: AssetImage(AssetUtils.home_button)),
+                                  ),
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    child: Text('M',
+                                        style: GoogleFonts.sourceSerifPro(
+                                          textStyle: TextStyle(
+                                              color: HexColor('#ED4A42'),
+                                              shadows: [
+                                                Shadow(
+                                                    color: HexColor('#ED4A42'),
+                                                    offset: Offset(0,10),
+                                                    blurRadius: 30
+                                                )
+                                              ],
+                                              fontSize: 64,
+                                              fontWeight: FontWeight.w600),
+                                        )),
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                           GestureDetector(
                             onTap: () {
-                              Get.to(M_ScreenMetal());
+                              Get.to(PeeScreen());
                             },
                             child: Container(
                               height: 140,
@@ -295,13 +291,13 @@ class _HomepageScreenState extends State<HomepageScreen> {
                               ),
                               child: Container(
                                 alignment: Alignment.center,
-                                child: Text('M',
+                                child: Text('P',
                                     style: GoogleFonts.sourceSerifPro(
                                       textStyle: TextStyle(
-                                          color: HexColor('#ED4A42'),
+                                          color: HexColor('#F8D44D'),
                                           shadows: [
                                             Shadow(
-                                                color: HexColor('#ED4A42'),
+                                                color: HexColor('#F8D44D'),
                                                 offset: Offset(0,10),
                                                 blurRadius: 30
                                             )
@@ -314,44 +310,223 @@ class _HomepageScreenState extends State<HomepageScreen> {
                           ),
                         ],
                       ),
-                      GestureDetector(
-                        onTap: () {
-                          Get.to(PeeScreen());
-                        },
-                        child: Container(
-                          height: 140,
-                          width: 135,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                                alignment: Alignment
-                                    .center,
-                                image: AssetImage(AssetUtils.home_button)),
-                          ),
-                          child: Container(
-                            alignment: Alignment.center,
-                            child: Text('P',
-                                style: GoogleFonts.sourceSerifPro(
-                                  textStyle: TextStyle(
-                                      color: HexColor('#F8D44D'),
-                                      shadows: [
-                                        Shadow(
-                                            color: HexColor('#F8D44D'),
-                                            offset: Offset(0,10),
-                                            blurRadius: 30
-                                        )
-                                      ],
-                                      fontSize: 64,
-                                      fontWeight: FontWeight.w600),
-                                )),
-                          ),
-                        ),
-                      ),
+                    ),
 
-                    ],
-                  ),
+
+                  ],
                 ),
-              ],
+              ),
+
             ),
+
+            // Container(
+            //   child: Column(
+            //     crossAxisAlignment: CrossAxisAlignment.center,
+            //     mainAxisAlignment: MainAxisAlignment.end,
+            //     mainAxisSize: MainAxisSize.min,
+            //     children: [
+            //       Container(
+            //           margin: EdgeInsets.all(0),
+            //           alignment: Alignment.topCenter,
+            //           child: Row(
+            //             mainAxisAlignment: MainAxisAlignment.end,
+            //             children: [
+            //               Image.asset(
+            //                 AssetUtils.star_icon,
+            //                 height: 22,
+            //                 width: 22,
+            //               ),
+            //               SizedBox(
+            //                 width: 7,
+            //               ),
+            //               Image.asset(
+            //                 AssetUtils.star_icon,
+            //                 height: 22,
+            //                 width: 22,
+            //               ),
+            //               SizedBox(
+            //                 width: 7,
+            //               ),
+            //               Image.asset(
+            //                 AssetUtils.star_icon,
+            //                 height: 22,
+            //                 width: 22,
+            //               ),
+            //             ],
+            //           )),
+            //
+            //
+            //       Container(
+            //         margin: EdgeInsets.symmetric(vertical: 100),
+            //         child: Column(
+            //           children: [
+            //             GestureDetector(
+            //               onTap: () {
+            //                 Get.to(KegelScreen());
+            //               },
+            //               child: Container(
+            //                   margin: EdgeInsets.only(top: 0),
+            //                   height: 140,
+            //                   width: 140,
+            //                   // decoration: BoxDecoration(
+            //                   //   gradient: RadialGradient(
+            //                   //     center: const Alignment(0.0, 0.0),
+            //                   //     radius: 0.5,
+            //                   //     colors: [
+            //                   //       ColorUtils.color1,
+            //                   //       HexColor('#BF2777'),
+            //                   //     ],
+            //                   //   ),
+            //                   //   boxShadow: [
+            //                   //     BoxShadow(
+            //                   //         color: ColorUtils.primary_grey
+            //                   //             .withOpacity(0.5),
+            //                   //         blurRadius: 5,
+            //                   //         offset: Offset(0, 5))
+            //                   //   ],
+            //                   //   borderRadius: BorderRadius.circular(100),
+            //                   // ),
+            //                   child: Container(
+            //                     height: 140,
+            //                     width: 135,
+            //                     decoration: BoxDecoration(
+            //                       image: DecorationImage(
+            //                           alignment: Alignment
+            //                               .center,
+            //                           image: AssetImage(AssetUtils.home_button)),
+            //                     ),
+            //                     child: Container(
+            //                       alignment: Alignment.center,
+            //                       child: Text('K',
+            //                           style: GoogleFonts.sourceSerifPro(
+            //                             textStyle: TextStyle(
+            //                                 color: HexColor('#EE499E'),
+            //                                 shadows: [
+            //                                   Shadow(
+            //                                       color: HexColor('#EE499E'),
+            //                                       offset: Offset(0,10),
+            //                                       blurRadius: 30
+            //                                   )
+            //                                 ],
+            //                                 fontSize: 64,
+            //                                 fontWeight: FontWeight.w600),
+            //                           )),
+            //                     ),
+            //                   ),
+            //               ),
+            //             ),
+            //             Row(
+            //               mainAxisAlignment: MainAxisAlignment.center,
+            //               children: [
+            //                 GestureDetector(
+            //                   onTap: () {
+            //                     Get.to(WarmUpScreen());
+            //                   },
+            //                   child: Container(
+            //                     height: 140,
+            //                     width: 135,
+            //                     decoration: BoxDecoration(
+            //                       image: DecorationImage(
+            //                           alignment: Alignment
+            //                               .center,
+            //                           image: AssetImage(AssetUtils.home_button)),
+            //                     ),
+            //                     child: Container(
+            //                       alignment: Alignment.center,
+            //                       child: Text('W',
+            //                           style: GoogleFonts.sourceSerifPro(
+            //                             textStyle: TextStyle(
+            //                                 color: HexColor('#3EA244'),
+            //                                 shadows: [
+            //                                   Shadow(
+            //                                       color: HexColor('#3EA244'),
+            //                                       offset: Offset(0,10),
+            //                                       blurRadius: 30
+            //                                   )
+            //                                 ],
+            //                                 fontSize: 64,
+            //                                 fontWeight: FontWeight.w600),
+            //                           )),
+            //                     ),
+            //                   ),
+            //                 ),
+            //                 SizedBox(
+            //                   width: 70,
+            //                 ),
+            //                 GestureDetector(
+            //                   onTap: () {
+            //                     Get.to(M_ScreenMetal());
+            //                   },
+            //                   child: Container(
+            //                     height: 140,
+            //                     width: 135,
+            //                     decoration: BoxDecoration(
+            //                       image: DecorationImage(
+            //                           alignment: Alignment
+            //                               .center,
+            //                           image: AssetImage(AssetUtils.home_button)),
+            //                     ),
+            //                     child: Container(
+            //                       alignment: Alignment.center,
+            //                       child: Text('M',
+            //                           style: GoogleFonts.sourceSerifPro(
+            //                             textStyle: TextStyle(
+            //                                 color: HexColor('#ED4A42'),
+            //                                 shadows: [
+            //                                   Shadow(
+            //                                       color: HexColor('#ED4A42'),
+            //                                       offset: Offset(0,10),
+            //                                       blurRadius: 30
+            //                                   )
+            //                                 ],
+            //                                 fontSize: 64,
+            //                                 fontWeight: FontWeight.w600),
+            //                           )),
+            //                     ),
+            //                   ),
+            //                 ),
+            //               ],
+            //             ),
+            //             GestureDetector(
+            //               onTap: () {
+            //                 Get.to(PeeScreen());
+            //               },
+            //               child: Container(
+            //                 height: 140,
+            //                 width: 135,
+            //                 decoration: BoxDecoration(
+            //                   image: DecorationImage(
+            //                       alignment: Alignment
+            //                           .center,
+            //                       image: AssetImage(AssetUtils.home_button)),
+            //                 ),
+            //                 child: Container(
+            //                   alignment: Alignment.center,
+            //                   child: Text('P',
+            //                       style: GoogleFonts.sourceSerifPro(
+            //                         textStyle: TextStyle(
+            //                             color: HexColor('#F8D44D'),
+            //                             shadows: [
+            //                               Shadow(
+            //                                   color: HexColor('#F8D44D'),
+            //                                   offset: Offset(0,10),
+            //                                   blurRadius: 30
+            //                               )
+            //                             ],
+            //                             fontSize: 64,
+            //                             fontWeight: FontWeight.w600),
+            //                       )),
+            //                 ),
+            //               ),
+            //             ),
+            //           ],
+            //         ),
+            //       ),
+            //
+            //
+            //     ],
+            //   ),
+            // ),
           ),
         ),
       ],

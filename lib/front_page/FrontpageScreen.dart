@@ -160,7 +160,7 @@ class _FrontScreenState extends State<FrontScreen> {
                                       child: Text(
                                         '6',
                                         style: FontStyleUtility.h22(
-                                            fontColor: HexColor('#606060')),
+                                            fontColor: HexColor('#606060'),family: 'PR'),
                                       ),
                                     ),
                                   ),
@@ -283,7 +283,7 @@ class _FrontScreenState extends State<FrontScreen> {
                                         child: Text(
                                           '6',
                                           style: FontStyleUtility.h22(
-                                              fontColor: Colors.black),
+                                              fontColor: Colors.black,family: 'PR'),
                                         ),
                                       ),
                                     ],
@@ -466,14 +466,14 @@ class _FrontScreenState extends State<FrontScreen> {
                           ),
                         ),
                         Container(
-                          margin: EdgeInsets.only(top: 43.5),
+                          margin: EdgeInsets.only(top: 23.5),
                           height: 1,
                           color: Colors.white,
                         ),
                         Container(
                           margin: EdgeInsets.symmetric(vertical: 17.5),
                           child: Text(
-                            '\$1/month after the 6 month subscription',
+                            '\$2/month after the 6 month subscription',
                             style: FontStyleUtility.h14(
                                 fontColor: Colors.white,
                                 family: 'PM'
@@ -481,7 +481,7 @@ class _FrontScreenState extends State<FrontScreen> {
                           ),
                         ),
                         Container(
-                          margin: EdgeInsets.only(bottom: 43.5),
+                          margin: EdgeInsets.only(bottom: 23.5),
                           height: 1,
                           color: Colors.white,
                         ),

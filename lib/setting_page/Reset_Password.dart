@@ -218,7 +218,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                                 onTap: () {
                                   selectTowerBottomSheet(context);
                                 },
-                                title_text: 'Done',
+                                title_text: 'Save',
                               ),
                             ],
                           ),
@@ -302,7 +302,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                         onTap: () {
                           Get.to(DashboardScreen());
                         },
-                        title_text: 'Proceed',
+                        title_text: 'Go to Dashboard',
                       ),
                     ],
                   ),

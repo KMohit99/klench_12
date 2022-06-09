@@ -168,25 +168,25 @@ class _WarmUpScreenState extends State<WarmUpScreen> with SingleTickerProviderSt
             ),
             centerTitle: true,
             actions: [
-              Container(
-                  width: 41,
-                  margin: EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(100),
-                      gradient: LinearGradient(
-                          begin: Alignment(-1.0, -4.0),
-                          end: Alignment(1.0, 4.0),
-                          colors: [HexColor('#020204'), HexColor('#36393E')])),
-                  child: Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Image.asset(
-                      AssetUtils.notification_icon,
-                      color: ColorUtils.primary_gold,
-                      height: 14,
-                      width: 15,
-                    ),
-                  ))
+              // Container(
+              //     width: 41,
+              //     margin: EdgeInsets.all(8),
+              //     decoration: BoxDecoration(
+              //         color: Colors.white,
+              //         borderRadius: BorderRadius.circular(100),
+              //         gradient: LinearGradient(
+              //             begin: Alignment(-1.0, -4.0),
+              //             end: Alignment(1.0, 4.0),
+              //             colors: [HexColor('#020204'), HexColor('#36393E')])),
+              //     child: Padding(
+              //       padding: const EdgeInsets.all(10.0),
+              //       child: Image.asset(
+              //         AssetUtils.notification_icon,
+              //         color: ColorUtils.primary_gold,
+              //         height: 14,
+              //         width: 15,
+              //       ),
+              //     ))
             ],
           ),
           body: SingleChildScrollView(

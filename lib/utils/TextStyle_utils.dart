@@ -70,13 +70,15 @@ class FontStyleUtility {
   }
   static TextStyle? h22({
     @required Color? fontColor,
+    @required String? family
+
     // FWT fontWeight = FWT.regular,
   }) {
     return TextStyle(
         color: fontColor,
         // fontWeight: getFontSize(fontWeight),
         fontSize: 22,
-        fontFamily: 'PR'
+        fontFamily: family
     );
   }
 static TextStyle? h16({

@@ -57,7 +57,7 @@ class _ContactScreenState extends State<ContactScreen> {
         title: Text(
           "Contact us",
           style: FontStyleUtility.h16(
-              fontColor: ColorUtils.primary_gold, family: 'PM'),
+              fontColor: ColorUtils.primary_grey, family: 'PM'),
         ),
         centerTitle: true,
       ),
@@ -80,8 +80,8 @@ class _ContactScreenState extends State<ContactScreen> {
                 //   ),
                 // ],
                 borderRadius: BorderRadius.circular(15)),
-            margin: EdgeInsets.only(bottom: 20, right: 8, left:8  ),
-            child:Padding(
+            margin: EdgeInsets.only(bottom: 20, right: 8, left: 8),
+            child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -91,14 +91,24 @@ class _ContactScreenState extends State<ContactScreen> {
                     height: 5,
                   ),
                   Container(
-                    margin: EdgeInsets.only(right:14, left:14  ),
+                    margin: EdgeInsets.only(right: 14, left: 14),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(10),
                       child: Image.asset(AssetUtils.user_icon3),
                     ),
                   ),
+                  Container(
+                    margin: EdgeInsets.only(
+                        right: 14, left: 14, top: 20, bottom: 20),
+                    child: Text(
+                      "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. ",
+                      textAlign: TextAlign.justify,
+                      style: FontStyleUtility.h14(
+                          fontColor: Colors.white, family: 'PR'),
+                    ),
+                  ),
                   SizedBox(
-                    height: 30,
+                    height: 0,
                   ),
                   Container(
                     decoration: BoxDecoration(
@@ -118,9 +128,10 @@ class _ContactScreenState extends State<ContactScreen> {
                           ),
                         ],
                         borderRadius: BorderRadius.circular(15)),
-                    margin: EdgeInsets.only(bottom: 20, right: 8, left:8  ),
+                    margin: EdgeInsets.only(bottom: 20, right: 8, left: 8),
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 13,horizontal: 22),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 13, horizontal: 22),
                       child: Column(
                         children: [
                           Container(
@@ -128,7 +139,8 @@ class _ContactScreenState extends State<ContactScreen> {
                               title: 'Username',
                               labelText: 'Enter Username',
                               iconData: IconButton(
-                                visualDensity: VisualDensity(horizontal: -4,vertical: -4),
+                                visualDensity:
+                                    VisualDensity(horizontal: -4, vertical: -4),
                                 icon: Icon(
                                   Icons.person_outline,
                                   size: 20,
@@ -138,23 +150,29 @@ class _ContactScreenState extends State<ContactScreen> {
                               ),
                             ),
                           ),
-                          SizedBox(height: 20,),
+                          SizedBox(
+                            height: 20,
+                          ),
                           Container(
                             child: CommonTextFormField_text(
                               title: 'Email',
                               labelText: 'Enter Email',
                               iconData: IconButton(
-                                visualDensity: VisualDensity(horizontal: -4,vertical: -4),
-                                icon: Icon(
-                                  Icons.face_unlock_sharp,
-                                  size: 20,
+                                visualDensity:
+                                    VisualDensity(horizontal: -4, vertical: -4),
+                                icon:  Image.asset(
+                                  AssetUtils.message_icons,
+                                  height: 17,
+                                  width: 15,
                                   color: ColorUtils.primary_grey,
                                 ),
                                 onPressed: () {},
                               ),
                             ),
                           ),
-                          SizedBox(height: 20,),
+                          SizedBox(
+                            height: 20,
+                          ),
                           // Container(
                           //   child: CommonTextFormField_text(
                           //     title: 'Reason',
@@ -178,7 +196,8 @@ class _ContactScreenState extends State<ContactScreen> {
                                 margin: EdgeInsets.only(left: 18),
                                 child: Text('Reason',
                                     style: FontStyleUtility.h15(
-                                        fontColor: HexColor('#9F9F9F'), family: 'PM')),
+                                        fontColor: HexColor('#9F9F9F'),
+                                        family: 'PM')),
                               ),
                               SizedBox(
                                 height: 11,
@@ -186,7 +205,7 @@ class _ContactScreenState extends State<ContactScreen> {
                               Container(
                                 // width: 300,
                                 decoration: BoxDecoration(
-                                  // color: Colors.black.withOpacity(0.65),
+                                    // color: Colors.black.withOpacity(0.65),
                                     gradient: LinearGradient(
                                       begin: Alignment.centerLeft,
                                       end: Alignment.centerRight,
@@ -199,36 +218,39 @@ class _ContactScreenState extends State<ContactScreen> {
                                     boxShadow: [
                                       BoxShadow(
                                         color: HexColor('#04060F'),
-                                        offset: Offset(10,10),
+                                        offset: Offset(10, 10),
                                         blurRadius: 20,
                                       ),
                                     ],
                                     borderRadius: BorderRadius.circular(10)),
                                 child: TextFormField(
                                   maxLength: 150,
-                                  maxLines:5,
+                                  maxLines: 5,
                                   decoration: InputDecoration(
-                                      contentPadding:
-                                      EdgeInsets.only(left: 20, top: 14, bottom: 14),
-                                      alignLabelWithHint: false,
-                                      isDense: true,
-                                      hintText: 'Enter Details',
-                                      counterStyle: TextStyle(
-                                        height: double.minPositive,
-                                      ),
-                                      counterText: "",
-
-                                      filled: true,
-                                      border: InputBorder.none,
-                                      enabledBorder: const OutlineInputBorder(
-                                        borderSide: BorderSide(color: Colors.transparent, width: 1),
-                                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                                      ),
-                                      hintStyle: FontStyleUtility.h15(
-                                          fontColor: ColorUtils.primary_grey, family: 'PM'),
-                                      ),
+                                    contentPadding: EdgeInsets.only(
+                                        left: 20, top: 14, bottom: 14),
+                                    alignLabelWithHint: false,
+                                    isDense: true,
+                                    hintText: 'Enter Details',
+                                    counterStyle: TextStyle(
+                                      height: double.minPositive,
+                                    ),
+                                    counterText: "",
+                                    filled: true,
+                                    border: InputBorder.none,
+                                    enabledBorder: const OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Colors.transparent, width: 1),
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(10)),
+                                    ),
+                                    hintStyle: FontStyleUtility.h15(
+                                        fontColor: ColorUtils.primary_grey,
+                                        family: 'PM'),
+                                  ),
                                   style: FontStyleUtility.h15(
-                                      fontColor: ColorUtils.primary_gold, family: 'PM'),
+                                      fontColor: ColorUtils.primary_gold,
+                                      family: 'PM'),
                                   // controller: controller,
                                   // keyboardType: keyboardType ?? TextInputType.multiline,
                                 ),
@@ -239,14 +261,13 @@ class _ContactScreenState extends State<ContactScreen> {
                       ),
                     ),
                   ),
-
                   Align(
                     alignment: FractionalOffset.bottomCenter,
                     child: Container(
                       height: 50,
-                      margin: EdgeInsets.only(bottom: 10,left: 22,right: 22),
+                      margin: EdgeInsets.only(bottom: 10, left: 22, right: 22),
                       child: common_button_gold(
-                        onTap: (){
+                        onTap: () {
                           selectTowerBottomSheet(context);
                           // Get.to(DashboardScreen());
                         },
@@ -254,7 +275,6 @@ class _ContactScreenState extends State<ContactScreen> {
                       ),
                     ),
                   )
-
                 ],
               ),
             )),
@@ -304,7 +324,8 @@ class _ContactScreenState extends State<ContactScreen> {
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(30.0),
                     topRight: Radius.circular(30.0),
-                  ),),
+                  ),
+                ),
                 child: Padding(
                   padding: const EdgeInsets.all(33.9),
                   child: Column(
@@ -317,12 +338,13 @@ class _ContactScreenState extends State<ContactScreen> {
                           width: 50,
                         ),
                       ),
-
                       Container(
                         margin: EdgeInsets.symmetric(vertical: 42),
-                        child: Text('You have successfully submitted your enquiry',
+                        child: Text(
+                            'You have successfully submitted your enquiry',
                             style: FontStyleUtility.h15(
-                                fontColor: ColorUtils.primary_grey, family: 'PR')),
+                                fontColor: ColorUtils.primary_grey,
+                                family: 'PR')),
                       ),
                       common_button_gold(
                         onTap: () {
@@ -340,5 +362,4 @@ class _ContactScreenState extends State<ContactScreen> {
       },
     );
   }
-
 }

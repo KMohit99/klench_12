@@ -77,7 +77,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         color: Colors.transparent,
         shape: CircularNotchedRectangle(),
         child: Container(
-          margin: EdgeInsets.symmetric(vertical: 0,horizontal: 19),
+          margin: EdgeInsets.symmetric(vertical: 5,horizontal: 19),
           decoration: BoxDecoration(
             // color: Colors.black.withOpacity(0.65),
               gradient: LinearGradient(

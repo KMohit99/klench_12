@@ -58,14 +58,30 @@ class _PaymentScreenState extends State<PaymentScreen> {
             headerSliverBuilder: (context, innerBoxIsScrolled) => [
               SliverAppBar(
                 backgroundColor: Colors.transparent,
-                leading: IconButton(
-                  onPressed: () {
+                leading:GestureDetector(
+                  onTap: () {
                     Navigator.pop(context);
                   },
-                  icon: Icon(
-                    Icons.arrow_back,
-                    color: ColorUtils.primary_gold,
-                  ),
+                  child: Container(
+                      width: 41,
+                      margin: EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(100),
+                          gradient: LinearGradient(
+                          colors: [HexColor('#020204'), HexColor('#36393E')],
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
+
+                          )),
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Image.asset(
+                          AssetUtils.arrow_back,
+                          height: 14,
+                          width: 15,
+                        ),
+                      )),
                 ),
                 title: Text(
                   'Payment',
@@ -251,6 +267,17 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                                   ColorUtils.primary_grey,
                                               family: 'PR'),
                                         ),
+
+                                        SizedBox(
+                                          height: 2,
+                                        ),
+                                        (widget.payment != 'normal'?
+                                        Text(
+                                          'Save \$20',
+                                          style: FontStyleUtility.h12(
+                                              fontColor: ColorUtils.primary_gold,
+                                              family: 'PR'),
+                                        ):SizedBox.shrink()),
                                       ],
                                     ),
                                   ),
@@ -362,7 +389,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                   width: 100,
                                   child: CommonTextFormField_noicon(
                                     readOnly: true,
-                                    labelText: '20 USD',
+                                    labelText: '100 USD',
                                     // style_color: ColorUtils.primary_gold,
                                     // background_color: Colors.black,
                                     // hint_color: ColorUtils.primary_gold,
@@ -452,12 +479,26 @@ class _PaymentScreenState extends State<PaymentScreen> {
                       ),
                       Container(
                         margin: EdgeInsets.symmetric(vertical: 42),
-                        child: Text(
-                            'You have successfully paid for plan 6 month',
-                            textAlign: TextAlign.center,
-                            style: FontStyleUtility.h15(
-                                fontColor: ColorUtils.primary_grey,
-                                family: 'PR')),
+
+                        child: Column(
+                          children: [
+                            Container(
+                              child: Text(
+                                  'Thank You!',
+                                  textAlign: TextAlign.center,
+                                  style: FontStyleUtility.h15(
+                                      fontColor: ColorUtils.primary_grey,
+                                      family: 'PR')),
+                            ),Container(
+                              child: Text(
+                                  'You have successfully paid for plan 6 month',
+                                  textAlign: TextAlign.center,
+                                  style: FontStyleUtility.h15(
+                                      fontColor: ColorUtils.primary_grey,
+                                      family: 'PR')),
+                            ),
+                          ],
+                        ),
                       ),
                       common_button_gold(
                         onTap: () {
