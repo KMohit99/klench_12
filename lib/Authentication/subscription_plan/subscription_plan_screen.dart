@@ -430,7 +430,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                             },
                           ),
                           Container(
-                            margin: EdgeInsets.symmetric(vertical: 26),
+                            margin: EdgeInsets.symmetric(vertical: 16),
                             child: Text(
                               'OR',
                               style: TextStyle(
@@ -481,7 +481,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                             ),
                           ),
                           Container(
-                            margin: EdgeInsets.only(bottom: 43.5),
+                            margin: EdgeInsets.only(bottom: 20.5),
                             height: 1,
                             color: Colors.white,
                           ),

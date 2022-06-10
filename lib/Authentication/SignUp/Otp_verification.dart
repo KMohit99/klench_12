@@ -293,7 +293,7 @@ class _VerifyOtpState extends State<VerifyOtp> {
                                     vertical: 12,
                                   ),
                                   child: Text(
-                                    'Next',
+                                    'Verify',
                                     style: FontStyleUtility.h15(
                                         fontColor: ColorUtils.primary_grey,
                                         family: 'PM'),

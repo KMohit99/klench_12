@@ -1,6 +1,7 @@
 
 
 import 'package:get/get.dart';
+import 'package:klench_/homepage/swipe_screen.dart';
 
 import '../splash_Screen.dart';
 import 'Bindings_class.dart';
@@ -18,6 +19,7 @@ class AppPages {
       page: () => SplashScreen(),
       binding: Frontpage_Bindnig(),
     ),
+
 
   ];
 }

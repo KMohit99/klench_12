@@ -6,5 +6,5 @@ class BindingUtils {
 
   static final String AuthenticationScreenRoute = '/authentication_screen.dart';
   static final String FrontpageScreenScreenRoute = '/FrontpageScreen.dart';
-
+  static final String swiprScreenRoute = '/swipe_screen.dart';
 }

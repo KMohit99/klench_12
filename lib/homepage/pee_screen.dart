@@ -78,7 +78,7 @@ class _PeeScreenState extends State<PeeScreen>
     _animationController =
         AnimationController(vsync: this, duration: Duration(seconds: 1));
     _animationController!.repeat(reverse: true);
-    _animation = Tween(begin: 0.0, end: 15.0).animate(_animationController!)
+    _animation = Tween(begin: 0.0, end: 25.0).animate(_animationController!)
       ..addListener(() {});
   }
 
@@ -132,19 +132,33 @@ class _PeeScreenState extends State<PeeScreen>
           appBar: AppBar(
             backgroundColor: Colors.transparent,
             automaticallyImplyLeading: false,
-            leading: IconButton(
-              onPressed: () {
+            leading:GestureDetector(
+              onTap: () {
                 Navigator.pop(context);
               },
-              icon: Icon(
-                Icons.arrow_back,
-                color: ColorUtils.primary_gold,
-              ),
+              child: Container(
+                  width: 41,
+                  margin: EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(100),
+                      gradient: LinearGradient(
+                          begin: Alignment(-1.0, -4.0),
+                          end: Alignment(1.0, 4.0),
+                          colors: [HexColor('#020204'), HexColor('#36393E')])),
+                  child: Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Image.asset(
+                      AssetUtils.arrow_back,
+                      height: 14,
+                      width: 15,
+                    ),
+                  )),
             ),
             title: Text(
               Textutils.pee,
               style: FontStyleUtility.h16(
-                  fontColor: ColorUtils.primary_gold, family: 'PM'),
+                  fontColor: ColorUtils.primary_grey, family: 'PM'),
             ),
             centerTitle: true,
             actions: [
@@ -161,6 +175,9 @@ class _PeeScreenState extends State<PeeScreen>
               margin: EdgeInsets.only(top: 15, left: 8, right: 8),
               child: Column(
                 children: [
+                  SizedBox(
+                    height: 15,
+                  ),
                   AvatarGlow(
                     endRadius: 100.0,
                     showTwoGlows: true,
@@ -171,7 +188,7 @@ class _PeeScreenState extends State<PeeScreen>
                     child: GestureDetector(
                       onTap: () {
                         print('helllllllooooooooooooooo');
-                        startOrStop();
+                        // startOrStop();
                       },
                       child: CircularPercentIndicator(
                         circularStrokeCap: CircularStrokeCap.round,
@@ -180,7 +197,7 @@ class _PeeScreenState extends State<PeeScreen>
                         animateFromLastPercent: true,
                         radius: 61,
                         lineWidth: 0,
-                        progressColor: Colors.white,
+                        progressColor: Colors.transparent,
                         backgroundColor: Colors.transparent,
                         center: Container(
                           height: 125,
@@ -192,7 +209,7 @@ class _PeeScreenState extends State<PeeScreen>
                                   image: AssetImage(AssetUtils.home_button)),
                               boxShadow: [
                                 BoxShadow(
-                                  color: HexColor('#F5C921'),
+                                  color:(animation_started ?  HexColor('#F5C921') : Colors.transparent),
                                   blurRadius: (animation_started
                                       ? _animation!.value
                                       : 0),
@@ -590,7 +607,7 @@ class _PeeScreenState extends State<PeeScreen>
     Fluttertoast.showToast(
       msg: "Plese review Performance",
       textColor: Colors.white,
-      backgroundColor: Colors.red,
+      backgroundColor: Colors.black87,
       toastLength: Toast.LENGTH_LONG,
       gravity: ToastGravity.BOTTOM,
     );

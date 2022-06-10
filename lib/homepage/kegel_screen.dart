@@ -23,7 +23,7 @@ class KegelScreen extends StatefulWidget {
 }
 
 class _KegelScreenState extends State<KegelScreen>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   Stopwatch watch = Stopwatch();
   Timer? timer;
   bool startStop = true;
@@ -75,24 +75,89 @@ class _KegelScreenState extends State<KegelScreen>
 
   AnimationController? _animationController;
   Animation? _animation;
+
+  AnimationController? _animationController_button;
+  Animation? _animation_button;
+
+  AnimationController? _animationController_textK;
+  Animation? _animation_textK;
+
+  AnimationController? _animationController_textTime;
+  Animation? _animation_textTime;
+
   bool animation_started = false;
+  double button_height = 200;
+  double text_k_size = 100;
+  double text_time_size = 40;
 
   start_animation() {
-    setState((){
+    setState(() {
       animation_started = true;
       print(animation_started);
     });
     _animationController =
         AnimationController(vsync: this, duration: Duration(seconds: 1));
     _animationController!.repeat(reverse: true);
-    _animation = Tween(begin: 0.0, end: 15.0)
-        .animate(_animationController!)
-        ..addListener(() {
-    });
+    _animation = Tween(begin: 0.0, end: 25.0).animate(_animationController!)
+      ..addListener(() {});
+
+    _animationController_button =
+        AnimationController(vsync: this, duration: Duration(seconds: 5));
+    _animationController_button!.forward();
+    _animation_button =
+        Tween(begin: 200.0, end: 120.0).animate(_animationController_button!)
+          ..addStatusListener((status) {
+            // print(status);
+            // if (status == AnimationStatus.completed) {
+            //   setState(() {});
+            //   _animationController_button!.reverse();
+            // } else if (status == AnimationStatus.dismissed) {
+            //   setState(() {});
+            //   _animationController_button!.forward();
+            // }
+          });
+
+    _animationController_textK =
+        AnimationController(vsync: this, duration: Duration(seconds: 5));
+    _animationController_textK!.forward();
+    _animation_textK =
+        Tween(begin: 100.0, end: 70.0).animate(_animationController_textK!)
+          ..addStatusListener((status) {
+            // print(status);
+            // if (status == AnimationStatus.completed) {
+            //   setState(() {});
+            //   _animationController_button!.reverse();
+            // } else if (status == AnimationStatus.dismissed) {
+            //   setState(() {});
+            //   _animationController_button!.forward();
+            // }
+          });
+
+    _animationController_textTime =
+        AnimationController(vsync: this, duration: Duration(seconds: 5));
+    _animationController_textTime!.forward();
+    _animation_textTime =
+        Tween(begin: 40.0, end: 25.0).animate(_animationController_textTime!)
+          ..addStatusListener((status) {
+            // print(status);
+            // if (status == AnimationStatus.completed) {
+            //   setState(() {});
+            //   _animationController_button!.reverse();
+            // } else if (status == AnimationStatus.dismissed) {
+            //   setState(() {});
+            //   _animationController_button!.forward();
+            // }
+          });
   }
+
+
+
   @override
   dispose() {
     _animationController!.dispose(); // you need this
+    _animationController_button!.dispose();
+    _animationController_textTime!.dispose();
+    _animationController_textK!.dispose();// you need this
     super.dispose();
   }
 
@@ -104,10 +169,7 @@ class _KegelScreenState extends State<KegelScreen>
       children: [
         Container(
           color: Colors.black,
-          height: MediaQuery
-              .of(context)
-              .size
-              .height,
+          height: MediaQuery.of(context).size.height,
         ),
         Container(
           // decoration: BoxDecoration(
@@ -119,25 +181,25 @@ class _KegelScreenState extends State<KegelScreen>
           // ),
           decoration: (back_wallpaper
               ? BoxDecoration(
-            // gradient: LinearGradient(
-            //   begin: Alignment.topCenter,
-            //   end: Alignment.bottomCenter,
-            //   // stops: [0.1, 0.5, 0.7, 0.9],
-            //   colors: [
-            //     HexColor("#000000").withOpacity(0.86),
-            //     HexColor("#000000").withOpacity(0.81),
-            //     HexColor("#000000").withOpacity(0.44),
-            //     HexColor("#000000").withOpacity(1),
-            //
-            //   ],
-            // ),
-            image: DecorationImage(
-              fit: BoxFit.fill,
-              image: AssetImage(
-                AssetUtils.k_screen_back,
-              ),
-            ),
-          )
+                  // gradient: LinearGradient(
+                  //   begin: Alignment.topCenter,
+                  //   end: Alignment.bottomCenter,
+                  //   // stops: [0.1, 0.5, 0.7, 0.9],
+                  //   colors: [
+                  //     HexColor("#000000").withOpacity(0.86),
+                  //     HexColor("#000000").withOpacity(0.81),
+                  //     HexColor("#000000").withOpacity(0.44),
+                  //     HexColor("#000000").withOpacity(1),
+                  //
+                  //   ],
+                  // ),
+                  image: DecorationImage(
+                    fit: BoxFit.fill,
+                    image: AssetImage(
+                      AssetUtils.k_screen_back,
+                    ),
+                  ),
+                )
               : BoxDecoration()),
         ),
         Scaffold(
@@ -234,7 +296,10 @@ class _KegelScreenState extends State<KegelScreen>
                   SizedBox(
                     height: 15,
                   ),
-                  AvatarGlow(
+                  Container(
+
+                      // color: Colors.white,
+                      child: AvatarGlow(
                     endRadius: 100.0,
                     showTwoGlows: true,
                     animate: false,
@@ -244,68 +309,64 @@ class _KegelScreenState extends State<KegelScreen>
                     child: GestureDetector(
                       onTap: () {
                         print('helllllllooooooooooooooo');
-                        startOrStop();
+                        // startOrStop();
                       },
-                      child: CircularPercentIndicator(
-                        circularStrokeCap: CircularStrokeCap.round,
-                        percent: percent / 100,
-                        animation: true,
-                        animateFromLastPercent: true,
-                        radius: 61,
-                        lineWidth: 0,
-                        progressColor: Colors.white,
-                        backgroundColor: Colors.transparent,
-                        center: Container(
-                          height: 125,
-                          width: 125,
-                          decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              image: DecorationImage(
-                                  alignment: Alignment.center,
-                                  image: AssetImage(AssetUtils.home_button)),
-                              boxShadow: [
-                                BoxShadow(
-                                    color: HexColor('#E64A9B'),
-                                    blurRadius: (animation_started?_animation!.value : 0),
-                                    spreadRadius: (animation_started ?_animation!.value: 0),
-                                )
-                              ]),
-                          child: Stack(
-                            children: [
-                              Container(
+                      child: Container(
+                        height: (animation_started
+                            ? _animation_button!.value
+                            : button_height),
+                        width: (animation_started
+                            ? _animation_button!.value
+                            : button_height),
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            image: DecorationImage(
                                 alignment: Alignment.center,
-                                child: Text(
-                                  'K',
-                                  style: TextStyle(
-                                      color:
-                                      HexColor('#E64A9B').withOpacity(0.4),
-                                      fontSize: 70,
-                                      fontWeight: FontWeight.w600),
-                                ),
+                                image: AssetImage(AssetUtils.home_button)),
+                            boxShadow: [
+                              BoxShadow(
+                                color: (animation_started
+                                    ? HexColor('#E64A9B')
+                                    : Colors.transparent),
+                                blurRadius:
+                                    (animation_started ? _animation!.value : 0),
+                                spreadRadius:
+                                    (animation_started ? _animation!.value : 0),
+                              )
+                            ]),
+                        child: Stack(
+                          children: [
+                            Container(
+                              alignment: Alignment.center,
+                              child: Text(
+                                'K',
+                                style: TextStyle(
+                                    color: HexColor('#E64A9B').withOpacity(0.4),
+                                    fontSize: (animation_started ? _animation_textK!.value : text_k_size),
+                                    fontWeight: FontWeight.w600),
                               ),
-                              Container(
-                                alignment: Alignment.center,
-                                child: Text(
-                                  ('$seconds' == '3'
-                                      ? 'Ready'
-                                      : ('$seconds' == '2'
-                                      ? 'Set'
-                                      : ('$seconds' == '1'
-                                      ? 'Kegel'
-                                      : elapsedTime))),
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 25,
-                                      fontWeight: FontWeight.w900),
-                                ),
+                            ),
+                            Container(
+                              alignment: Alignment.center,
+                              child: Text(
+                                ('$seconds' == '3'
+                                    ? 'Ready'
+                                    : ('$seconds' == '2'
+                                        ? 'Set'
+                                        : ('$seconds' == '1'
+                                            ? 'Kegel'
+                                            : elapsedTime))),
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: (animation_started ? _animation_textTime!.value : text_time_size),
+                                    fontWeight: FontWeight.w900),
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
-                    glowColor: Colors.white,
-                  ),
+                  )),
                   SizedBox(
                     height: 28,
                   ),
@@ -315,6 +376,7 @@ class _KegelScreenState extends State<KegelScreen>
                         startTimer();
                         Future.delayed(Duration(seconds: 3), () {
                           start_animation();
+                          // start_button_animation();
                           startWatch();
                         });
                       } else {
@@ -323,6 +385,9 @@ class _KegelScreenState extends State<KegelScreen>
                           elapsedTime = '00:00';
                           percent = 0.0;
                           back_wallpaper = true;
+                          button_height = 120;
+                          text_k_size = 70;
+                          text_time_size = 25;
                           watch.reset();
                           // paused_time.clear();
                         });
@@ -365,7 +430,7 @@ class _KegelScreenState extends State<KegelScreen>
                   ),
                   Container(
                     decoration: BoxDecoration(
-                      // color: Colors.black.withOpacity(0.65),
+                        // color: Colors.black.withOpacity(0.65),
                         gradient: LinearGradient(
                           begin: Alignment.centerLeft,
                           end: Alignment.centerRight,
@@ -382,10 +447,7 @@ class _KegelScreenState extends State<KegelScreen>
                               blurRadius: 20)
                         ],
                         borderRadius: BorderRadius.circular(20)),
-                    width: MediaQuery
-                        .of(context)
-                        .size
-                        .width,
+                    width: MediaQuery.of(context).size.width,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [

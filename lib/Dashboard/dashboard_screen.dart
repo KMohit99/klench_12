@@ -6,6 +6,7 @@ import 'package:klench_/utils/Asset_utils.dart';
 import 'package:klench_/utils/TextStyle_utils.dart';
 
 import '../homepage/Breathing_screen.dart';
+import '../homepage/swipe_screen.dart';
 import '../profile_page/profilePage_screen.dart';
 import '../setting_page/setting_screen.dart';
 import '../utils/colorUtils.dart';
@@ -50,6 +51,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       return const ProfilePageScreen();
     } else if (_page == 1) {
       return const HomepageScreen();
+      // return const SwipeScreen();
     } else if (_page == 2) {
       return const BreathingScreen();
     } else if (_page == 3) {

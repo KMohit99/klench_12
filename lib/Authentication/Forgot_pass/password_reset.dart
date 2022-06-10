@@ -250,7 +250,7 @@ class _PasswordResetScreenState extends State<PasswordResetScreen> {
                         onTap: () {
                           Get.to(SignInScreen());
                         },
-                        title_text: 'Proceed',
+                        title_text: 'Login now',
                       ),
                     ],
                   ),

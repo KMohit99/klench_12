@@ -277,7 +277,7 @@ class _OtpScreenState extends State<OtpScreen> {
 
                           GestureDetector(
                             onTap: () {
-                              Get.to(PasswordResetScreen());
+                              selectTowerBottomSheet(context);
                             },
                             child: Container(
                               decoration: BoxDecoration(
@@ -306,7 +306,7 @@ class _OtpScreenState extends State<OtpScreen> {
                                     vertical: 12,
                                   ),
                                   child: Text(
-                                    'Next',
+                                    'Verify',
                                     style: FontStyleUtility.h15(
                                         fontColor: ColorUtils.primary_grey,
                                         family: 'PM'),
@@ -326,6 +326,86 @@ class _OtpScreenState extends State<OtpScreen> {
           ),
         ),
       ],
+    );
+  }
+  selectTowerBottomSheet(BuildContext context) {
+    final screenheight = MediaQuery.of(context).size.height;
+    final screenwidth = MediaQuery.of(context).size.width;
+    showModalBottomSheet(
+      backgroundColor: Colors.black,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(30.0),
+          topRight: Radius.circular(30.0),
+        ),
+      ),
+      isScrollControlled: true,
+      context: context,
+      builder: (BuildContext context) {
+        return BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+          child: StatefulBuilder(
+            builder: (context, state) {
+              return Container(
+                height: screenheight * 0.445,
+                width: screenwidth,
+                decoration: BoxDecoration(
+                  // color: Colors.black.withOpacity(0.65),
+                  gradient: LinearGradient(
+                    begin: Alignment.centerLeft,
+                    end: Alignment.centerRight,
+                    // stops: [0.1, 0.5, 0.7, 0.9],
+                    colors: [
+                      HexColor("#020204").withOpacity(1),
+                      HexColor("#36393E").withOpacity(1),
+                    ],
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: HexColor('#04060F'),
+                      offset: Offset(10, 10),
+                      blurRadius: 20,
+                    ),
+                  ],
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(30.0),
+                    topRight: Radius.circular(30.0),
+                  ),),
+                child: Padding(
+                  padding: const EdgeInsets.all(33.9),
+                  child: Column(
+                    children: [
+                      Container(
+                        child: Image.asset(
+                          AssetUtils.happy_Face_icon,
+                          color: ColorUtils.primary_grey,
+                          height: 50,
+                          width: 50,
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.symmetric(vertical: 42),
+                        child: Text(
+                            'OTP has been verified',
+                            textAlign: TextAlign.center,
+                            style: FontStyleUtility.h15(
+                                fontColor: ColorUtils.primary_grey,
+                                family: 'PR')),
+                      ),
+                      common_button_gold(
+                        onTap: () {
+                          Get.to(PasswordResetScreen());
+                        },
+                        title_text: 'Create a new password',
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
+        );
+      },
     );
   }
 

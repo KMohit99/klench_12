@@ -181,12 +181,12 @@ class _BreathingScreenState extends State<BreathingScreen>
             ),
             centerTitle: true,
             actions: [
-              IconButton(
-                  onPressed: () {},
-                  icon: Icon(
-                    Icons.notifications_none_rounded,
-                    color: ColorUtils.primary_gold,
-                  ))
+              // IconButton(
+              //     onPressed: () {},
+              //     icon: Icon(
+              //       Icons.notifications_none_rounded,
+              //       color: ColorUtils.primary_gold,
+              //     ))
             ],
           ),
           body: SingleChildScrollView(

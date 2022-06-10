@@ -384,7 +384,7 @@ class _M_ScreenMetalState extends State<M_ScreenMetal>
                                   image: AssetImage(AssetUtils.home_button)),
                               boxShadow: [
                                 BoxShadow(
-                                  color: HexColor('#DD3931'),
+                                  color:(animation_started ?  HexColor('#DD3931') : Colors.transparent),
                                   blurRadius: (animation_started
                                       ? _animation!.value
                                       : 0),
@@ -905,14 +905,13 @@ class _M_ScreenMetalState extends State<M_ScreenMetal>
                   (method_time.length > 0
                       ? Container(
                           decoration: BoxDecoration(
-                              // color: Colors.black.withOpacity(0.65),
                               gradient: LinearGradient(
                                 begin: Alignment.centerLeft,
                                 end: Alignment.centerRight,
                                 // stops: [0.1, 0.5, 0.7, 0.9],
                                 colors: [
-                                  HexColor("#36393E").withOpacity(1),
-                                  HexColor("#020204").withOpacity(1),
+                                  HexColor("#36393E").withOpacity(0.45),
+                                  HexColor("#020204").withOpacity(0.45),
                                 ],
                               ),
                               borderRadius: BorderRadius.circular(20)),
@@ -925,7 +924,7 @@ class _M_ScreenMetalState extends State<M_ScreenMetal>
                                   'Progress Tracker',
                                   style: FontStyleUtility.h14(
                                       fontColor: ColorUtils.primary_gold,
-                                      family: 'PR'),
+                                      family: 'PMB'),
                                 ),
                               ),
                               // SizedBox(
@@ -943,16 +942,16 @@ class _M_ScreenMetalState extends State<M_ScreenMetal>
                                         end: Alignment.centerRight,
                                         // stops: [0.1, 0.5, 0.7, 0.9],
                                         colors: [
-                                          HexColor("#020204").withOpacity(1),
-                                          HexColor("#36393E").withOpacity(1),
+                                          HexColor("#020204").withOpacity(0.65),
+                                          HexColor("#36393E").withOpacity(0.65),
                                         ],
                                       ),
-                                      boxShadow: [
-                                        BoxShadow(
-                                            color: HexColor('#04060F'),
-                                            offset: Offset(10, 10),
-                                            blurRadius: 10)
-                                      ],
+                                      // boxShadow: [
+                                      //   BoxShadow(
+                                      //       color: HexColor('#04060F'),
+                                      //       offset: Offset(10, 10),
+                                      //       blurRadius: 10)
+                                      // ],
                                       borderRadius: BorderRadius.circular(20)),
                                   child: Column(
                                     children: [
@@ -1044,6 +1043,7 @@ class _M_ScreenMetalState extends State<M_ScreenMetal>
                                       ListView.builder(
                                         shrinkWrap: true,
                                         itemCount: method_time.length,
+                                        padding: EdgeInsets.zero,
                                         itemBuilder:
                                             (BuildContext context, int index) {
                                           return Container(
@@ -1458,22 +1458,16 @@ class _M_ScreenMetalState extends State<M_ScreenMetal>
                               Container(
                                 margin: EdgeInsets.all(15),
                                 decoration: BoxDecoration(
-                                    // color: Colors.black.withOpacity(0.65),
                                     gradient: LinearGradient(
                                       begin: Alignment.centerLeft,
                                       end: Alignment.centerRight,
                                       // stops: [0.1, 0.5, 0.7, 0.9],
                                       colors: [
-                                        HexColor("#020204").withOpacity(1),
-                                        HexColor("#36393E").withOpacity(1),
+                                        HexColor("#020204").withOpacity(0.65),
+                                        HexColor("#36393E").withOpacity(0.65),
                                       ],
                                     ),
-                                    boxShadow: [
-                                      BoxShadow(
-                                          color: HexColor('#04060F'),
-                                          offset: Offset(10, 10),
-                                          blurRadius: 10)
-                                    ],
+
                                     borderRadius: BorderRadius.circular(20)),
                                 child: Column(
                                   children: [
@@ -1596,16 +1590,16 @@ class _M_ScreenMetalState extends State<M_ScreenMetal>
                                       end: Alignment.centerRight,
                                       // stops: [0.1, 0.5, 0.7, 0.9],
                                       colors: [
-                                        HexColor("#020204").withOpacity(1),
-                                        HexColor("#36393E").withOpacity(1),
+                                        HexColor("#020204").withOpacity(0.65),
+                                        HexColor("#36393E").withOpacity(0.65),
                                       ],
                                     ),
-                                    boxShadow: [
-                                      BoxShadow(
-                                          color: HexColor('#04060F'),
-                                          offset: Offset(10, 10),
-                                          blurRadius: 10)
-                                    ],
+                                    // boxShadow: [
+                                    //   BoxShadow(
+                                    //       color: HexColor('#04060F'),
+                                    //       offset: Offset(10, 10),
+                                    //       blurRadius: 10)
+                                    // ],
                                     borderRadius: BorderRadius.circular(20)),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -1678,7 +1672,7 @@ class _M_ScreenMetalState extends State<M_ScreenMetal>
                                     ),
                                     Container(
                                       decoration: BoxDecoration(
-                                          color: HexColor('#181A1F'),
+                                          color: HexColor('#181A1F').withOpacity(0.65),
                                           borderRadius: BorderRadius.only(
                                               bottomRight: Radius.circular(20),
                                               bottomLeft: Radius.circular(20))),
@@ -1785,13 +1779,13 @@ class _M_ScreenMetalState extends State<M_ScreenMetal>
                               Container(
                                 width: 250,
                                 decoration: BoxDecoration(
-                                    color: HexColor('#181B23'),
-                                    boxShadow: [
-                                      BoxShadow(
-                                          color: HexColor('#000000'),
-                                          offset: Offset(0, 6),
-                                          blurRadius: 6)
-                                    ],
+                                    color: HexColor('#181B23').withOpacity(0.65),
+                                    // boxShadow: [
+                                    //   BoxShadow(
+                                    //       color: HexColor('#000000'),
+                                    //       offset: Offset(0, 6),
+                                    //       blurRadius: 6)
+                                    // ],
                                     borderRadius: BorderRadius.circular(100)),
                                 margin: EdgeInsets.symmetric(vertical: 7),
                                 child: Padding(
@@ -1893,16 +1887,16 @@ class _M_ScreenMetalState extends State<M_ScreenMetal>
                                       end: Alignment.centerRight,
                                       // stops: [0.1, 0.5, 0.7, 0.9],
                                       colors: [
-                                        HexColor("#020204").withOpacity(1),
-                                        HexColor("#36393E").withOpacity(1),
+                                        HexColor("#020204").withOpacity(0.65),
+                                        HexColor("#36393E").withOpacity(0.65),
                                       ],
                                     ),
-                                    boxShadow: [
-                                      BoxShadow(
-                                          color: HexColor('#04060F'),
-                                          offset: Offset(10, 10),
-                                          blurRadius: 10)
-                                    ],
+                                    // boxShadow: [
+                                    //   BoxShadow(
+                                    //       color: HexColor('#04060F'),
+                                    //       offset: Offset(10, 10),
+                                    //       blurRadius: 10)
+                                    // ],
                                     borderRadius: BorderRadius.circular(20)),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -1972,16 +1966,16 @@ class _M_ScreenMetalState extends State<M_ScreenMetal>
                                         end: Alignment.centerRight,
                                         // stops: [0.1, 0.5, 0.7, 0.9],
                                         colors: [
-                                          HexColor("#020204").withOpacity(1),
-                                          HexColor("#36393E").withOpacity(1),
+                                          HexColor("#020204").withOpacity(0.65),
+                                          HexColor("#36393E").withOpacity(0.65),
                                         ],
                                       ),
-                                      boxShadow: [
-                                        BoxShadow(
-                                            color: HexColor('#04060F'),
-                                            offset: Offset(10, 10),
-                                            blurRadius: 10)
-                                      ],
+                                      // boxShadow: [
+                                      //   BoxShadow(
+                                      //       color: HexColor('#04060F'),
+                                      //       offset: Offset(10, 10),
+                                      //       blurRadius: 10)
+                                      // ],
                                       borderRadius: BorderRadius.circular(20)),
                                   child: Column(
                                     crossAxisAlignment:

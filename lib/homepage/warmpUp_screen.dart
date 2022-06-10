@@ -83,7 +83,7 @@ class _WarmUpScreenState extends State<WarmUpScreen> with SingleTickerProviderSt
     _animationController =
         AnimationController(vsync: this, duration: Duration(seconds: 1));
     _animationController!.repeat(reverse: true);
-    _animation = Tween(begin: 0.0, end: 15.0)
+    _animation = Tween(begin: 0.0, end: 25.0)
         .animate(_animationController!)
       ..addListener(() {
       });
@@ -195,6 +195,9 @@ class _WarmUpScreenState extends State<WarmUpScreen> with SingleTickerProviderSt
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
+                  SizedBox(
+                    height: 15,
+                  ),
                   AvatarGlow(
                     endRadius: 100.0,
                     showTwoGlows: true,
@@ -205,16 +208,16 @@ class _WarmUpScreenState extends State<WarmUpScreen> with SingleTickerProviderSt
                     child: GestureDetector(
                       onTap: () {
                         print('helllllllooooooooooooooo');
-                        startOrStop();
+                        // startOrStop();
                       },
                       child: CircularPercentIndicator(
                         circularStrokeCap: CircularStrokeCap.round,
                         percent: percent / 100,
                         animation: true,
                         animateFromLastPercent: true,
-                        radius: 61,
+                        radius: 62,
                         lineWidth: 0,
-                        progressColor: Colors.white,
+                        progressColor: Colors.transparent,
                         backgroundColor: Colors.transparent,
                         center: Container(
                           height: 125,
@@ -227,7 +230,7 @@ class _WarmUpScreenState extends State<WarmUpScreen> with SingleTickerProviderSt
                                 image: AssetImage(AssetUtils.home_button)),
                               boxShadow: [
                                 BoxShadow(
-                                  color: HexColor('#409C46'),
+                                  color:(animation_started? HexColor('#409C46') : Colors.transparent),
                                   blurRadius: (animation_started?_animation!.value : 0),
                                   spreadRadius: (animation_started ?_animation!.value: 0),
                                 )
@@ -268,6 +271,9 @@ class _WarmUpScreenState extends State<WarmUpScreen> with SingleTickerProviderSt
                       ),
                     ),
                     glowColor: Colors.white,
+                  ),
+                  SizedBox(
+                    height: 28,
                   ),
                   GestureDetector(
                     onTap: () async {
@@ -401,6 +407,9 @@ class _WarmUpScreenState extends State<WarmUpScreen> with SingleTickerProviderSt
                                   style: FontStyleUtility.h16(
                                       fontColor: HexColor('#DCDCDC'), family: 'PR'),
                                 ),
+                              ),
+                              SizedBox(
+                                height: 17,
                               ),
                             ],
                           ),

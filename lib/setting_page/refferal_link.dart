@@ -372,13 +372,13 @@ class _RefferalLinkScreenState extends State<RefferalLinkScreen> {
                                 ))
                           ],
                           scrollDirection: Axis.horizontal,
-
                           // reverse: true,
                           // physics: BouncingScrollPhysics(),
                           controller: controller,
                           onPageChanged: (num) {
                             setState(() {
                               _curr = num;
+                              print(_curr);
                             });
                           },
                         ),
