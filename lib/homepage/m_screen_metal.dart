@@ -27,11 +27,12 @@ class M_ScreenMetal extends StatefulWidget {
 }
 
 class _M_ScreenMetalState extends State<M_ScreenMetal>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   Stopwatch watch = Stopwatch();
   Timer? timer;
   bool startStop = true;
   bool started = true;
+  bool button_keep = true;
 
   String elapsedTime = '00:00';
   List method_list = ['Hand', 'Flashlight'];
@@ -774,6 +775,7 @@ class _M_ScreenMetalState extends State<M_ScreenMetal>
                   // SizedBox(
                   //   height: 20,
                   // ),
+
                   GestureDetector(
                     onTap: () async {
                       if (method_selected.isNotEmpty) {
@@ -784,10 +786,11 @@ class _M_ScreenMetalState extends State<M_ScreenMetal>
                           await stopWatch_finish();
                           method_time.add(ListMethodClass(
                               method_name: method_selected,
-                              total_time: elapsedTime));
+                              total_time: elapsedTime) );
                           setState(() {
                             elapsedTime = '00:00';
                             percent = 0.0;
+                            method_selected = '';
                             watch.reset();
                             // paused_time.clear();
                           });

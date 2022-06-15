@@ -21,7 +21,13 @@ class _SwipeScreenState extends State<SwipeScreen> {
   final Ledger_Setup_controller _ledgerScreenSetup_customer_Controller =
   Get.put(Ledger_Setup_controller(),tag: Ledger_Setup_controller().toString());
 
-
+  List<Widget> widget_list =
+  [
+    KegelScreen(),
+    M_ScreenMetal(),
+    PeeScreen(),
+    WarmUpScreen(),
+  ];
   @override
   void initState() {
     _pageController_customer = PageController(initialPage: widget.PageNo, keepPage: false);
@@ -33,15 +39,20 @@ class _SwipeScreenState extends State<SwipeScreen> {
       init: _ledgerScreenSetup_customer_Controller,
       builder: (_) {
         return Container(
-          child: PageView(
+          child: PageView.builder(
+            itemBuilder: (context , int index){
+              return Center(
+                child: widget_list[index % widget_list.length],
+              );
+            },
             controller: _pageController_customer,
             physics: AlwaysScrollableScrollPhysics(),
-            children: [
-              KegelScreen(),
-              WarmUpScreen(),
-              M_ScreenMetal(),
-              PeeScreen()
-            ],
+            // children: [
+            //   KegelScreen(),
+            //   WarmUpScreen(),
+            //   M_ScreenMetal(),
+            //   PeeScreen()
+            // ],
           ),
         );
       },

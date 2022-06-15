@@ -68,6 +68,19 @@ class FontStyleUtility {
         fontFamily: family
     );
   }
+  static TextStyle? h25({
+    @required Color? fontColor,
+    @required String? family
+
+    // FWT fontWeight = FWT.regular,
+  }) {
+    return TextStyle(
+        color: fontColor,
+        // fontWeight: getFontSize(fontWeight),
+        fontSize: 25,
+        fontFamily: family
+    );
+  }
   static TextStyle? h22({
     @required Color? fontColor,
     @required String? family

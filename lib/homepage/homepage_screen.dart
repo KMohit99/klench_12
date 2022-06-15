@@ -216,9 +216,8 @@ class _HomepageScreenState extends State<HomepageScreen> {
                             children: [
                               GestureDetector(
                                 onTap: () {
-                                  final int page_no = 1;
+                                  final int page_no = 3;
                                   Get.to(SwipeScreen(PageNo: page_no,));
-
                                 },
                                 child: Container(
                                   height: 140,
@@ -252,7 +251,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
                               ),
                               GestureDetector(
                                 onTap: () {
-                                  final int page_no =2;
+                                  final int page_no =1;
                                   Get.to(SwipeScreen(PageNo: page_no,));
                                 },
                                 child: Container(
@@ -286,7 +285,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
                           ),
                           GestureDetector(
                             onTap: () {
-                              final int page_no = 3;
+                              final int page_no = 2;
                               Get.to(SwipeScreen(PageNo: page_no,));
                               },
                             child: Container(

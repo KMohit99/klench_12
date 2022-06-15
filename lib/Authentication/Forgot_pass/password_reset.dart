@@ -64,121 +64,123 @@ class _PasswordResetScreenState extends State<PasswordResetScreen> {
         ),
         centerTitle: true,
       ),
-      body: Container(
-        color: Colors.transparent,
-        margin: EdgeInsets.symmetric(horizontal: 15),
-        child: Column(
-          children: [
-            Container(
-              child: Container(
-                  height: 49,
-                  width: 170,
-                  alignment: Alignment.topCenter,
-                  margin: EdgeInsets.only(top: 20, bottom: 50),
-                  child: Image.asset(AssetUtils.Logo_white_icon)),
-            ),
-            Container(
-              decoration: BoxDecoration(
-                // color: Colors.black.withOpacity(0.65),
-                  gradient: LinearGradient(
-                    begin: Alignment.centerLeft,
-                    end: Alignment.centerRight,
-                    // stops: [0.1, 0.5, 0.7, 0.9],
-                    colors: [
-                      HexColor("#36393E").withOpacity(1),
-                      HexColor("#020204").withOpacity(1),
+      body: SingleChildScrollView(
+        child: Container(
+          color: Colors.transparent,
+          margin: EdgeInsets.symmetric(horizontal: 15),
+          child: Column(
+            children: [
+              Container(
+                child: Container(
+                    height: 49,
+                    width: 170,
+                    alignment: Alignment.topCenter,
+                    margin: EdgeInsets.only(top: 20, bottom: 50),
+                    child: Image.asset(AssetUtils.Logo_white_icon)),
+              ),
+              Container(
+                decoration: BoxDecoration(
+                  // color: Colors.black.withOpacity(0.65),
+                    gradient: LinearGradient(
+                      begin: Alignment.centerLeft,
+                      end: Alignment.centerRight,
+                      // stops: [0.1, 0.5, 0.7, 0.9],
+                      colors: [
+                        HexColor("#36393E").withOpacity(1),
+                        HexColor("#020204").withOpacity(1),
 
+                      ],
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: HexColor('#2A2A29'),
+                        offset: Offset(5, 5),
+                        blurRadius: 20,
+                      ),
+                    ],
+                    borderRadius: BorderRadius.circular(20)),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 36,horizontal: 14),
+                  child: Column(
+
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(100),
+                            gradient: LinearGradient(
+                                colors: [HexColor('#36393E'),HexColor('#020204')]),
+                          boxShadow: [
+                            BoxShadow(
+                              color: HexColor('#04060F'),
+                              offset: Offset(3,3),
+                              blurRadius: 10
+                            )
+                          ]
+
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(27.0),
+                          child: Image.asset(
+                            AssetUtils.key_icons_big,
+                            color: ColorUtils.primary_grey,
+                            height: 26,
+                            width: 26,
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 40,
+                      ),
+                      Container(
+                        child: CommonTextFormField_text_reversed(
+                          title: 'New password',
+                          labelText: 'xxxxxxxxx',
+                          iconData: IconButton(
+                            visualDensity: VisualDensity(horizontal: -4,vertical: -4),
+                            icon: Image.asset(
+                              AssetUtils.key_icons,
+                              color: ColorUtils.primary_grey,
+                              height: 17,
+                              width: 15,
+                            ),
+                            onPressed: () {},
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 15,
+                      ),
+                      Container(
+                        child: CommonTextFormField_text_reversed(
+                          title: 'Confirm new password',
+                          labelText: 'xxxxxxxxxx',
+                          iconData: IconButton(
+                            visualDensity: VisualDensity(horizontal: -4,vertical: -4),
+                            icon: Image.asset(
+                              AssetUtils.key_icons,
+                              color: ColorUtils.primary_grey,
+                              height: 17,
+                              width: 15,
+                            ),
+                            onPressed: () {},
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 52,
+                      ),
+                      common_button_gold(
+                        onTap: () {
+                          selectTowerBottomSheet(context);
+                        },
+                        title_text: 'Done',
+                      ),
                     ],
                   ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: HexColor('#2A2A29'),
-                      offset: Offset(5, 5),
-                      blurRadius: 20,
-                    ),
-                  ],
-                  borderRadius: BorderRadius.circular(20)),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 36,horizontal: 14),
-                child: Column(
-
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(100),
-                          gradient: LinearGradient(
-                              colors: [HexColor('#36393E'),HexColor('#020204')]),
-                        boxShadow: [
-                          BoxShadow(
-                            color: HexColor('#04060F'),
-                            offset: Offset(3,3),
-                            blurRadius: 10
-                          )
-                        ]
-
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(27.0),
-                        child: Image.asset(
-                          AssetUtils.key_icons_big,
-                          color: ColorUtils.primary_grey,
-                          height: 26,
-                          width: 26,
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 40,
-                    ),
-                    Container(
-                      child: CommonTextFormField_text_reversed(
-                        title: 'New password',
-                        labelText: 'xxxxxxxxx',
-                        iconData: IconButton(
-                          visualDensity: VisualDensity(horizontal: -4,vertical: -4),
-                          icon: Image.asset(
-                            AssetUtils.key_icons,
-                            color: ColorUtils.primary_grey,
-                            height: 17,
-                            width: 15,
-                          ),
-                          onPressed: () {},
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 15,
-                    ),
-                    Container(
-                      child: CommonTextFormField_text_reversed(
-                        title: 'Confirm new password',
-                        labelText: 'xxxxxxxxxx',
-                        iconData: IconButton(
-                          visualDensity: VisualDensity(horizontal: -4,vertical: -4),
-                          icon: Image.asset(
-                            AssetUtils.key_icons,
-                            color: ColorUtils.primary_grey,
-                            height: 17,
-                            width: 15,
-                          ),
-                          onPressed: () {},
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 52,
-                    ),
-                    common_button_gold(
-                      onTap: () {
-                        selectTowerBottomSheet(context);
-                      },
-                      title_text: 'Done',
-                    ),
-                  ],
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

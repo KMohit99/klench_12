@@ -12,6 +12,7 @@ import '../../utils/Common_buttons.dart';
 import '../../utils/Common_container_color.dart';
 import '../../utils/TextStyle_utils.dart';
 import '../../utils/colorUtils.dart';
+import 'controller/sign_up_controller.dart';
 import 'face_scan_screen.dart';
 
 class VerifyOtp extends StatefulWidget {
@@ -22,9 +23,12 @@ class VerifyOtp extends StatefulWidget {
 }
 
 class _VerifyOtpState extends State<VerifyOtp> {
-  final TextEditingController _pinOTPController = TextEditingController();
   final FocusNode _pinOTPFocus = FocusNode();
   String? varification;
+  final SignUpScreenController _signUpScreenController = Get.put(
+      SignUpScreenController(),
+      tag: SignUpScreenController().toString());
+
 
   final BoxDecoration pinOTPDecoration = BoxDecoration(
 // color: Colors.black.withOpacity(0.65),
@@ -97,217 +101,222 @@ class _VerifyOtpState extends State<VerifyOtp> {
               .size
               .height,
         ),
-
-        Scaffold(
-          backgroundColor: Colors.transparent,
-          // resizeToAvoidBottomInset: true,
-          appBar: AppBar(
+        GestureDetector(
+          onTap: (){
+            FocusScope.of(context).requestFocus(FocusNode());
+          },
+          child: Scaffold(
             backgroundColor: Colors.transparent,
-            automaticallyImplyLeading: false,
-            leading: GestureDetector(
-              onTap: () {
-                Navigator.pop(context);
-              },
-              child: Container(
-                  width: 41,
-                  margin: EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(100),
-                      gradient: LinearGradient(
-                          begin: Alignment(-1.0, -4.0),
-                          end: Alignment(1.0, 4.0),
-                          colors: [HexColor('#020204'), HexColor('#36393E')])),
-                  child: Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Image.asset(
-                      AssetUtils.arrow_back,
-                      height: 14,
-                      width: 15,
-                    ),
-                  )),
-            ),
-            title: Text(
-              'Verify OTP',
-              style: FontStyleUtility.h16(
-                  fontColor: ColorUtils.primary_grey, family: 'PM'),
-            ),
-            centerTitle: true,
-          ),
-
-          body: SingleChildScrollView(
-            child: Container(
-              color: Colors.transparent,
-              margin: EdgeInsets.symmetric(horizontal: 15),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                      height: 49,
-                      width: 170,
-                      alignment: Alignment.topCenter,
-                      margin: EdgeInsets.only(top: 20, bottom: 0),
-                      child: Image.asset(AssetUtils.Logo_white_icon)),
-                  Container(
-                    margin: const EdgeInsets.only(
-                        left: 30, right: 30, top: 35, bottom: 35),
-                    child: Text(
-                      'Enter OTP',
-                      style: FontStyleUtility.h16(
-                          fontColor: ColorUtils.primary_grey, family: 'PM'),
-                    ),
-                  ),
-                  Container(
+            // resizeToAvoidBottomInset: true,
+            appBar: AppBar(
+              backgroundColor: Colors.transparent,
+              automaticallyImplyLeading: false,
+              leading: GestureDetector(
+                onTap: () {
+                  Navigator.pop(context);
+                },
+                child: Container(
+                    width: 41,
+                    margin: EdgeInsets.all(8),
                     decoration: BoxDecoration(
-                      // color: Colors.black.withOpacity(0.65),
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(100),
                         gradient: LinearGradient(
-                          begin: Alignment.centerLeft,
-                          end: Alignment.centerRight,
-                          // stops: [0.1, 0.5, 0.7, 0.9],
-                          colors: [
-                            HexColor("#020204").withOpacity(1),
-                            HexColor("#36393E").withOpacity(1),
-                          ],
-                        ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: HexColor('#04060F'),
-                            offset: Offset(10, 10),
-                            blurRadius: 20,
-                          ),
-                        ],
-                        borderRadius: BorderRadius.circular(20)),
+                            begin: Alignment(-1.0, -4.0),
+                            end: Alignment(1.0, 4.0),
+                            colors: [HexColor('#020204'), HexColor('#36393E')])),
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 15, horizontal: 30),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                            child: PinPut(
-                              fieldsCount: 4,
-                              textStyle: TextStyle(
-                                  fontFamily: 'PM',
-                                  fontSize: 25,
-                                  color: ColorUtils.primary_gold),
-                              eachFieldHeight: 45,
-                              eachFieldWidth: 45,
-                              eachFieldMargin: EdgeInsets.all(7),
-                              focusNode: _pinOTPFocus,
-                              controller: _pinOTPController,
-                              submittedFieldDecoration: pinOTPDecoration,
-                              selectedFieldDecoration: pinOTPDecoration,
-                              followingFieldDecoration: pinOTPDecoration,
-                              pinAnimationType: PinAnimationType.scale,
-                            ),
-                          ),
-                          SizedBox(height: 28,),
-                          Container(
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Container(
-                                    decoration: BoxDecoration(
-                                        gradient: LinearGradient(
-                                          begin: Alignment.bottomLeft,
-                                          end: Alignment.topRight,
-                                          colors: [
-                                            HexColor("#020204").withOpacity(1),
-                                            HexColor("#36393E").withOpacity(1),
-                                          ],
-                                        ),
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: HexColor('#2E2E2D'),
-                                            offset: Offset(0, 3),
-                                            blurRadius: 6,
-                                          ),
-                                          BoxShadow(
-                                            color: HexColor('#04060F'),
-                                            offset: Offset(10, 10),
-                                            blurRadius: 20,
-                                          ),
-                                        ],
-                                        borderRadius: BorderRadius.circular(
-                                            50)),
-                                    child: IconButton(
-                                      visualDensity: VisualDensity(
-                                          horizontal: -4, vertical: -4),
-                                      onPressed: () {},
-                                      icon: Icon(Icons.access_time_rounded),
-                                      color: ColorUtils.primary_grey,
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: 7,
-                                  ),
-                                  Text(
-                                    '${seconds} S',
-                                    style: TextStyle(
-                                        fontSize: 12,
-                                        fontFamily: 'PR',
-                                        color: ColorUtils.primary_grey),
-                                  ),
-                                ],
-                              )),
-                          Container(
-                            margin: const EdgeInsets.only(top: 28, bottom: 28),
-                            child: Text(
-                              'Resend',
-                              style: FontStyleUtility.h12(
-                                  fontColor: HexColor('#818181'), family: 'PM'),
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 20,
-                          ),
+                      padding: const EdgeInsets.all(10.0),
+                      child: Image.asset(
+                        AssetUtils.arrow_back,
+                        height: 14,
+                        width: 15,
+                      ),
+                    )),
+              ),
+              title: Text(
+                'Verify OTP',
+                style: FontStyleUtility.h16(
+                    fontColor: ColorUtils.primary_grey, family: 'PM'),
+              ),
+              centerTitle: true,
+            ),
 
-                          GestureDetector(
-                            onTap: () {
-                              selectTowerBottomSheet(context);
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                // color: Colors.black.withOpacity(0.65),
-                                  gradient: LinearGradient(
-                                    begin: Alignment.centerLeft,
-                                    end: Alignment.centerRight,
-                                    // stops: [0.1, 0.5, 0.7, 0.9],
-                                    colors: [
-                                      HexColor("#020204").withOpacity(1),
-                                      HexColor("#36393E").withOpacity(1),
-                                    ],
-                                  ),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: HexColor('#04060F'),
-                                      offset: Offset(10, 10),
-                                      blurRadius: 20,
-                                    ),
-                                  ],
-                                  borderRadius: BorderRadius.circular(10)),
-
-                              child: Container(
-                                  alignment: Alignment.center,
-                                  margin: EdgeInsets.symmetric(
-                                    vertical: 12,
-                                  ),
-                                  child: Text(
-                                    'Verify',
-                                    style: FontStyleUtility.h15(
-                                        fontColor: ColorUtils.primary_grey,
-                                        family: 'PM'),
-                                  )),
-                            ),
-                          ),
-                        ],
+            body: SingleChildScrollView(
+              child: Container(
+                color: Colors.transparent,
+                margin: EdgeInsets.symmetric(horizontal: 15),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                        height: 49,
+                        width: 170,
+                        alignment: Alignment.topCenter,
+                        margin: EdgeInsets.only(top: 20, bottom: 0),
+                        child: Image.asset(AssetUtils.Logo_white_icon)),
+                    Container(
+                      margin: const EdgeInsets.only(
+                          left: 30, right: 30, top: 35, bottom: 35),
+                      child: Text(
+                        'Enter OTP',
+                        style: FontStyleUtility.h16(
+                            fontColor: ColorUtils.primary_grey, family: 'PM'),
                       ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                ],
+                    Container(
+                      decoration: BoxDecoration(
+                        // color: Colors.black.withOpacity(0.65),
+                          gradient: LinearGradient(
+                            begin: Alignment.centerLeft,
+                            end: Alignment.centerRight,
+                            // stops: [0.1, 0.5, 0.7, 0.9],
+                            colors: [
+                              HexColor("#020204").withOpacity(1),
+                              HexColor("#36393E").withOpacity(1),
+                            ],
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: HexColor('#04060F'),
+                              offset: Offset(10, 10),
+                              blurRadius: 20,
+                            ),
+                          ],
+                          borderRadius: BorderRadius.circular(20)),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 15, horizontal: 30),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              child: PinPut(
+                                fieldsCount: 4,
+                                textStyle: TextStyle(
+                                    fontFamily: 'PM',
+                                    fontSize: 25,
+                                    color: ColorUtils.primary_gold),
+                                eachFieldHeight: 45,
+                                eachFieldWidth: 45,
+                                eachFieldMargin: EdgeInsets.all(7),
+                                focusNode: _pinOTPFocus,
+                                controller: _signUpScreenController.OtpController,
+                                submittedFieldDecoration: pinOTPDecoration,
+                                selectedFieldDecoration: pinOTPDecoration,
+                                followingFieldDecoration: pinOTPDecoration,
+                                pinAnimationType: PinAnimationType.scale,
+                              ),
+                            ),
+                            SizedBox(height: 28,),
+                            Container(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      decoration: BoxDecoration(
+                                          gradient: LinearGradient(
+                                            begin: Alignment.bottomLeft,
+                                            end: Alignment.topRight,
+                                            colors: [
+                                              HexColor("#020204").withOpacity(1),
+                                              HexColor("#36393E").withOpacity(1),
+                                            ],
+                                          ),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: HexColor('#2E2E2D'),
+                                              offset: Offset(0, 3),
+                                              blurRadius: 6,
+                                            ),
+                                            BoxShadow(
+                                              color: HexColor('#04060F'),
+                                              offset: Offset(10, 10),
+                                              blurRadius: 20,
+                                            ),
+                                          ],
+                                          borderRadius: BorderRadius.circular(
+                                              50)),
+                                      child: IconButton(
+                                        visualDensity: VisualDensity(
+                                            horizontal: -4, vertical: -4),
+                                        onPressed: () {},
+                                        icon: Icon(Icons.access_time_rounded),
+                                        color: ColorUtils.primary_grey,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 7,
+                                    ),
+                                    Text(
+                                      '${seconds} S',
+                                      style: TextStyle(
+                                          fontSize: 12,
+                                          fontFamily: 'PR',
+                                          color: ColorUtils.primary_grey),
+                                    ),
+                                  ],
+                                )),
+                            Container(
+                              margin: const EdgeInsets.only(top: 28, bottom: 28),
+                              child: Text(
+                                'Resend',
+                                style: FontStyleUtility.h12(
+                                    fontColor: HexColor('#818181'), family: 'PM'),
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+
+                            GestureDetector(
+                              onTap: () async {
+                                await _signUpScreenController.VerifyOtpAPi(context: context);
+                                await selectTowerBottomSheet(context);
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  // color: Colors.black.withOpacity(0.65),
+                                    gradient: LinearGradient(
+                                      begin: Alignment.centerLeft,
+                                      end: Alignment.centerRight,
+                                      // stops: [0.1, 0.5, 0.7, 0.9],
+                                      colors: [
+                                        HexColor("#020204").withOpacity(1),
+                                        HexColor("#36393E").withOpacity(1),
+                                      ],
+                                    ),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: HexColor('#04060F'),
+                                        offset: Offset(10, 10),
+                                        blurRadius: 20,
+                                      ),
+                                    ],
+                                    borderRadius: BorderRadius.circular(10)),
+
+                                child: Container(
+                                    alignment: Alignment.center,
+                                    margin: EdgeInsets.symmetric(
+                                      vertical: 12,
+                                    ),
+                                    child: Text(
+                                      'Verify',
+                                      style: FontStyleUtility.h15(
+                                          fontColor: ColorUtils.primary_grey,
+                                          family: 'PM'),
+                                    )),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

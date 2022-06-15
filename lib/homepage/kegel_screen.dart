@@ -426,7 +426,15 @@ class _KegelScreenState extends State<KegelScreen>
                     ),
                   ),
                   SizedBox(
-                    height: 28,
+                    height: 12,
+                  ),
+                  Text(
+                    ('5/12'),
+                    style: FontStyleUtility.h25(
+                        fontColor: ColorUtils.primary_gold, family: 'PM')
+                  ),
+                  SizedBox(
+                    height: 27,
                   ),
                   Container(
                     decoration: BoxDecoration(
