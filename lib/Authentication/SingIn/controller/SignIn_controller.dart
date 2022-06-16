@@ -55,12 +55,16 @@ class SignInScreenController extends GetxController {
       if (singInModel!.error == false) {
         await PreferenceManager()
             .setPref(URLConstants.id, singInModel!.user![0].id!);
+        await PreferenceManager()
+            .setPref(URLConstants.username, singInModel!.user![0].username!);
         print(singInModel!.user![0].id!);
         // await PreferenceManager()
         //     .setPref(URLConstants.type, signUpModel!.user![0].type!);
         // await CreatorgetUserInfo_Email(UserId: signUpModel!.user![0].id!);
         await CommonWidget().showToaster(msg: 'Successfully Loggedin');
+        await clear_method();
         await Get.to(DashboardScreen());
+
         hideLoader(context);
       } else {
         hideLoader(context);
@@ -69,4 +73,8 @@ class SignInScreenController extends GetxController {
     } else {}
   }
 
+  clear_method(){
+    usernameController.clear();
+    passwordController.clear();
+  }
 }

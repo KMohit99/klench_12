@@ -90,7 +90,7 @@ class SignUpScreenController extends GetxController {
   // }
 
 
-  Future<dynamic> uploadImage({required BuildContext context}) async {
+  Future<dynamic> SignUpAPi({required BuildContext context}) async {
     showLoader(context);
     var url = (URLConstants.base_url + URLConstants.signUpApi);
     var request = http.MultipartRequest('POST', Uri.parse(url));
@@ -121,19 +121,21 @@ class SignUpScreenController extends GetxController {
       signUpModel = SignUpModel.fromJson(data);
       print(signUpModel);
       if (signUpModel!.error == false) {
+        await PreferenceManager()
+            .setPref(URLConstants.id, signUpModel!.user![0].id!);
         // await PreferenceManager()
         //     .setPref(URLConstants.id, signUpModel!.user![0].id!);
         // await PreferenceManager()
         //     .setPref(URLConstants.type, signUpModel!.user![0].type!);
         // await CreatorgetUserInfo_Email(UserId: signUpModel!.user![0].id!);
         await CommonWidget().showToaster(msg: 'User Created');
-        await Get.to(DashboardScreen());
+        // await Get.to(DashboardScreen());
         hideLoader(context);
       } else {
         hideLoader(context);
         CommonWidget().showErrorToaster(msg: "Invalid Details");
-        print('Please try again');
-        print('Please try again');
+        // print('Please try again');
+        // print('Please try again');
       }
       hideLoader(context);
     } else {
@@ -225,7 +227,7 @@ class SignUpScreenController extends GetxController {
       if (verifyOtpModel!.error == false) {
         await CommonWidget().showToaster(msg: "Otp Verified");
         // await SignUpAPi(context: context);
-        await uploadImage(context: context);
+        await SignUpAPi(context: context);
       } else {
         hideLoader(context);
         CommonWidget().showErrorToaster(msg: "Invalid Otp");

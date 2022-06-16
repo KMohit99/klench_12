@@ -272,7 +272,9 @@ class _VerifyOtpState extends State<VerifyOtp> {
                             GestureDetector(
                               onTap: () async {
                                 await _signUpScreenController.VerifyOtpAPi(context: context);
-                                await selectTowerBottomSheet(context);
+                                if(_signUpScreenController.signUpModel!.error == false) {
+                                  await selectTowerBottomSheet(context);
+                                }
                               },
                               child: Container(
                                 decoration: BoxDecoration(

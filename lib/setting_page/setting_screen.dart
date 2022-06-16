@@ -10,7 +10,7 @@ import 'package:klench_/notifications/notifications_screen.dart';
 import 'package:klench_/setting_page/help_support.dart';
 import 'package:klench_/setting_page/intro_video.dart';
 import 'package:klench_/setting_page/privacy_policy_screen.dart';
-import 'package:klench_/setting_page/qr_code_screen.dart';
+import 'package:klench_/setting_page/qr_code/qr_code_screen.dart';
 import 'package:klench_/setting_page/refferal_link.dart';
 import 'package:klench_/setting_page/terms_conditions.dart';
 
@@ -20,6 +20,7 @@ import '../utils/Common_buttons.dart';
 import '../utils/Common_textfeild.dart';
 import '../utils/TexrUtils.dart';
 import '../utils/TextStyle_utils.dart';
+import '../utils/UrlConstrant.dart';
 import '../utils/colorUtils.dart';
 import 'About_us_screen.dart';
 import 'FAQ.dart';
@@ -145,8 +146,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                                                         NotificationSettings())
                                                                     : (index ==
                                                                             11
-                                                                        ? Get.to(
-                                                                            FrontScreen())
+                                                                        ? logout()
                                                                         : null))))))))))));
                         // if(index == 0){
                         //   Get.to(QrCodeScreen());
@@ -200,4 +200,17 @@ class _SettingScreenState extends State<SettingScreen> {
           )),
     );
   }
+
+  logout() async {
+    await PreferenceManager()
+        .setPref(URLConstants.id, 'id');
+    await PreferenceManager()
+        .setPref(URLConstants.username, 'username');
+
+    String id_user = await PreferenceManager().getPref(URLConstants.id);
+
+    print(id_user);
+    await Get.to(FrontScreen());
+  }
+
 }

@@ -470,45 +470,47 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(33.9),
-                  child: Column(
-                    children: [
-                      Container(
-                        child: Image.asset(
-                          AssetUtils.happy_Face_icon,
-                          color: ColorUtils.primary_grey,
-                          height: 50,
-                          width: 50,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        Container(
+                          child: Image.asset(
+                            AssetUtils.happy_Face_icon,
+                            color: ColorUtils.primary_grey,
+                            height: 50,
+                            width: 50,
+                          ),
                         ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.symmetric(vertical: 42),
-                        child: Column(
-                          children: [
-                            Container(
-                              child: Text('Thank You!',
-                                  textAlign: TextAlign.center,
-                                  style: FontStyleUtility.h15(
-                                      fontColor: ColorUtils.primary_grey,
-                                      family: 'PR')),
-                            ),
-                            Container(
-                              child: Text(
-                                  'You have successfully paid for plan 6 month',
-                                  textAlign: TextAlign.center,
-                                  style: FontStyleUtility.h15(
-                                      fontColor: ColorUtils.primary_grey,
-                                      family: 'PR')),
-                            ),
-                          ],
+                        Container(
+                          margin: EdgeInsets.symmetric(vertical: 35),
+                          child: Column(
+                            children: [
+                              Container(
+                                child: Text('Thank You!',
+                                    textAlign: TextAlign.center,
+                                    style: FontStyleUtility.h15(
+                                        fontColor: ColorUtils.primary_grey,
+                                        family: 'PR')),
+                              ),
+                              Container(
+                                child: Text(
+                                    'You have successfully paid for plan 6 month',
+                                    textAlign: TextAlign.center,
+                                    style: FontStyleUtility.h15(
+                                        fontColor: ColorUtils.primary_grey,
+                                        family: 'PR')),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                      common_button_gold(
-                        onTap: () {
-                          Get.to(DashboardScreen());
-                        },
-                        title_text: 'Go to Dashboard',
-                      ),
-                    ],
+                        common_button_gold(
+                          onTap: () {
+                            Get.to(DashboardScreen());
+                          },
+                          title_text: 'Go to Dashboard',
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               );

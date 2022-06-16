@@ -390,6 +390,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                           child: GestureDetector(
                                             onTap: () {
                                               openCamera();
+                                              Navigator.pop(context);
                                             },
                                             child: Container(
                                               margin:
@@ -421,6 +422,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                           child: GestureDetector(
                                             onTap: () {
                                               openGallery();
+                                              Navigator.pop(context);
                                             },
                                             child: Container(
                                               margin:

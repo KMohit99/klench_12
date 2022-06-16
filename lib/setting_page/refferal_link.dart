@@ -7,6 +7,7 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:klench_/utils/Asset_utils.dart';
 import 'package:klench_/utils/TextStyle_utils.dart';
 import 'package:klench_/utils/colorUtils.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../../front_page/FrontpageScreen.dart';
 import '../utils/Common_buttons.dart';
@@ -23,10 +24,14 @@ class RefferalLinkScreen extends StatefulWidget {
 class _RefferalLinkScreenState extends State<RefferalLinkScreen> {
   TextEditingController Emailcontroller = new TextEditingController();
 
+  String link = 'https://foxytechnologies.com/';
+
   @override
   void initState() {
-    Emailcontroller.text = 'Edgarapp.com/12.wb';
+    Emailcontroller.text = link;
+    print(Emailcontroller.text);
   }
+
   PageController? controller;
   int _curr = 0;
 
@@ -50,7 +55,6 @@ class _RefferalLinkScreenState extends State<RefferalLinkScreen> {
     "Instagram",
     "Foursquare",
   ];
-
 
   @override
   Widget build(BuildContext context) {
@@ -201,8 +205,9 @@ class _RefferalLinkScreenState extends State<RefferalLinkScreen> {
                             height: 35,
                           ),
                           GestureDetector(
-                            onTap: (){
-                              selectTowerBottomSheet(context);
+                            onTap: () {
+                              _onShare(context);
+                              // selectTowerBottomSheet(context);
                             },
                             child: Container(
                               height: 80,
@@ -261,6 +266,7 @@ class _RefferalLinkScreenState extends State<RefferalLinkScreen> {
       ),
     );
   }
+
   selectTowerBottomSheet(BuildContext context) {
     final screenheight = MediaQuery.of(context).size.height;
     final screenwidth = MediaQuery.of(context).size.width;
@@ -303,7 +309,8 @@ class _RefferalLinkScreenState extends State<RefferalLinkScreen> {
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(30.0),
                     topRight: Radius.circular(30.0),
-                  ),),
+                  ),
+                ),
                 child: Padding(
                   padding: const EdgeInsets.all(33.9),
                   child: Column(
@@ -327,10 +334,10 @@ class _RefferalLinkScreenState extends State<RefferalLinkScreen> {
                               child: GridView.builder(
                                   padding: EdgeInsets.zero,
                                   gridDelegate:
-                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisSpacing: 20,
-                                      crossAxisCount: 4,
-                                      mainAxisSpacing: 20),
+                                      const SliverGridDelegateWithFixedCrossAxisCount(
+                                          crossAxisSpacing: 20,
+                                          crossAxisCount: 4,
+                                          mainAxisSpacing: 20),
                                   itemCount: 8,
                                   itemBuilder: (BuildContext ctx, index) {
                                     return Container(
@@ -360,16 +367,16 @@ class _RefferalLinkScreenState extends State<RefferalLinkScreen> {
                             ),
                             Center(
                                 child: Container(
-                                  child: Text(
-                                    'Second',
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                )),
+                              child: Text(
+                                'Second',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            )),
                             Center(
                                 child: Container(
-                                  child: Text('Third',
-                                      style: TextStyle(color: Colors.white)),
-                                ))
+                              child: Text('Third',
+                                  style: TextStyle(color: Colors.white)),
+                            ))
                           ],
                           scrollDirection: Axis.horizontal,
                           // reverse: true,
@@ -398,4 +405,8 @@ class _RefferalLinkScreenState extends State<RefferalLinkScreen> {
     );
   }
 
+  void _onShare(BuildContext context) async {
+    final box = context.findRenderObject() as RenderBox?;
+    Share.share(link, subject: 'Share App');
+  }
 }

@@ -118,7 +118,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Container(
-                        margin: EdgeInsets.all(0),
+                        margin: EdgeInsets.symmetric(horizontal: 10),
                         alignment: Alignment.topCenter,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.end,

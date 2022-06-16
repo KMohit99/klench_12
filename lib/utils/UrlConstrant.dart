@@ -5,15 +5,17 @@ class URLConstants{
   static const String base_url = "http://foxyserver.com/klench/api/";
   static const signUpApi = "signup.php";
   static const loginApi = "login.php";
+  static const EditProfileApi = "edit-profile.php";
   static const sendOtpApi = "send-otp.php";
   static const verifyOtpApi = "otp-verify.php";
+  static const ForgotpassverifyOtpApi = "forgot-verify-otp.php";
   static const getProfileApi = "get-profile.php";
-
+  static const forgotPasswordApi = "forgot-password.php";
+  static const resetPasswordApi = "reset-password.php";
 
 
   static String id = "id";
-
-
+  static String username = "username";
 
 }
 

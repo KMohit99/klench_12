@@ -30,6 +30,12 @@ dependencies:
   loading_indicator: ^3.0.2
   shared_preferences: ^2.0.13
   image_picker: ^0.8.2
+  qr_flutter: ^4.0.0
+  qr_code_scanner: ^1.0.0
+  path_provider: ^2.0.9
+
+  share_plus: ^2.1.2
+#  esys_flutter_share_plus: ^2.1.0
 
 dev_dependencies:
   flutter_test:
