@@ -66,7 +66,7 @@ class CommonTextFormField_text extends StatelessWidget {
           Container(
             // width: 300,
             decoration: BoxDecoration(
-              // color: Colors.black.withOpacity(0.65),
+                // color: Colors.black.withOpacity(0.65),
                 gradient: LinearGradient(
                   begin: Alignment.centerLeft,
                   end: Alignment.centerRight,
@@ -79,7 +79,7 @@ class CommonTextFormField_text extends StatelessWidget {
                 boxShadow: [
                   BoxShadow(
                     color: HexColor('#04060F'),
-                    offset: Offset(10,10),
+                    offset: Offset(10, 10),
                     blurRadius: 20,
                   ),
                 ],
@@ -119,10 +119,8 @@ class CommonTextFormField_text extends StatelessWidget {
                             end: Alignment.topRight,
                             // stops: [0.1, 0.5, 0.7, 0.9],
                             colors: [
-                              HexColor("#020204")
-                                  .withOpacity(1),
-                              HexColor("#36393E")
-                                  .withOpacity(1),
+                              HexColor("#020204").withOpacity(1),
+                              HexColor("#36393E").withOpacity(1),
                             ],
                           ),
                           boxShadow: [
@@ -132,8 +130,7 @@ class CommonTextFormField_text extends StatelessWidget {
                               blurRadius: 20,
                             ),
                           ],
-                          borderRadius:
-                          BorderRadius.circular(50)),
+                          borderRadius: BorderRadius.circular(50)),
                       child: iconData)),
               style: FontStyleUtility.h15(
                   fontColor: ColorUtils.primary_gold, family: 'PM'),
@@ -146,6 +143,7 @@ class CommonTextFormField_text extends StatelessWidget {
     );
   }
 }
+
 class CommonTextFormField_text_reversed extends StatelessWidget {
   final String title;
   final String? labelText;
@@ -175,7 +173,7 @@ class CommonTextFormField_text_reversed extends StatelessWidget {
     this.controller,
     this.trailingImagePath,
     this.keyboardType,
-    this.isObscure = false,
+    this.isObscure,
     this.isMobileTextField = false,
     this.color,
     this.maxLines,
@@ -209,7 +207,7 @@ class CommonTextFormField_text_reversed extends StatelessWidget {
           Container(
             // width: 300,
             decoration: BoxDecoration(
-              // color: Colors.black.withOpacity(0.65),
+                // color: Colors.black.withOpacity(0.65),
                 gradient: LinearGradient(
                   begin: Alignment.centerLeft,
                   end: Alignment.centerRight,
@@ -217,13 +215,12 @@ class CommonTextFormField_text_reversed extends StatelessWidget {
                   colors: [
                     HexColor("#020204").withOpacity(1),
                     HexColor("#36393E").withOpacity(1),
-
                   ],
                 ),
                 boxShadow: [
                   BoxShadow(
                     color: HexColor('#04060F'),
-                    offset: Offset(10,10),
+                    offset: Offset(10, 10),
                     blurRadius: 20,
                   ),
                 ],
@@ -256,7 +253,6 @@ class CommonTextFormField_text_reversed extends StatelessWidget {
                       fontColor: ColorUtils.primary_grey, family: 'PM'),
                   suffixIcon: Container(
                       margin: EdgeInsets.all(4),
-
                       decoration: BoxDecoration(
                           color: Colors.red.withOpacity(0.65),
                           gradient: LinearGradient(
@@ -264,10 +260,8 @@ class CommonTextFormField_text_reversed extends StatelessWidget {
                             end: Alignment.topRight,
                             // stops: [0.1, 0.5, 0.7, 0.9],
                             colors: [
-                              HexColor("#020204")
-                                  .withOpacity(1),
-                              HexColor("#36393E")
-                                  .withOpacity(1),
+                              HexColor("#020204").withOpacity(1),
+                              HexColor("#36393E").withOpacity(1),
                             ],
                           ),
                           boxShadow: [
@@ -277,8 +271,7 @@ class CommonTextFormField_text_reversed extends StatelessWidget {
                               blurRadius: 20,
                             ),
                           ],
-                          borderRadius:
-                          BorderRadius.circular(50)),
+                          borderRadius: BorderRadius.circular(50)),
                       child: iconData)),
               style: FontStyleUtility.h15(
                   fontColor: ColorUtils.primary_gold, family: 'PM'),
@@ -340,7 +333,7 @@ class CommonTextFormField extends StatelessWidget {
         height: 50,
         // width: 300,
         decoration: BoxDecoration(
-          // color: Colors.black.withOpacity(0.65),
+            // color: Colors.black.withOpacity(0.65),
             gradient: LinearGradient(
               begin: Alignment.centerLeft,
               end: Alignment.centerRight,
@@ -353,7 +346,7 @@ class CommonTextFormField extends StatelessWidget {
             boxShadow: [
               BoxShadow(
                 color: HexColor('#04060F'),
-                offset: Offset(10,10),
+                offset: Offset(10, 10),
                 blurRadius: 20,
               ),
             ],
@@ -382,10 +375,10 @@ class CommonTextFormField extends StatelessWidget {
                 borderSide: BorderSide(color: Colors.transparent, width: 1),
                 borderRadius: BorderRadius.all(Radius.circular(10)),
               ),
-              hintStyle:
-                  FontStyleUtility.h15(fontColor: ColorUtils.primary_grey, family: 'PM'),
+              hintStyle: FontStyleUtility.h15(
+                  fontColor: ColorUtils.primary_grey, family: 'PM'),
               suffixIcon: Container(
-                margin: EdgeInsets.all(4),
+                  margin: EdgeInsets.all(4),
                   decoration: BoxDecoration(
                       color: Colors.red.withOpacity(0.65),
                       gradient: LinearGradient(
@@ -393,10 +386,8 @@ class CommonTextFormField extends StatelessWidget {
                         end: Alignment.topRight,
                         // stops: [0.1, 0.5, 0.7, 0.9],
                         colors: [
-                          HexColor("#020204")
-                              .withOpacity(1),
-                          HexColor("#36393E")
-                              .withOpacity(1),
+                          HexColor("#020204").withOpacity(1),
+                          HexColor("#36393E").withOpacity(1),
                         ],
                       ),
                       boxShadow: [
@@ -406,8 +397,7 @@ class CommonTextFormField extends StatelessWidget {
                           blurRadius: 20,
                         ),
                       ],
-                      borderRadius:
-                      BorderRadius.circular(50)),
+                      borderRadius: BorderRadius.circular(50)),
                   child: iconData)),
           style: FontStyleUtility.h15(
               fontColor: ColorUtils.primary_gold, family: 'PM'),
@@ -418,6 +408,7 @@ class CommonTextFormField extends StatelessWidget {
     );
   }
 }
+
 class CommonTextFormField_reversed extends StatelessWidget {
   final String? labelText;
   final TextEditingController? controller;
@@ -466,7 +457,7 @@ class CommonTextFormField_reversed extends StatelessWidget {
         height: 50,
         // width: 300,
         decoration: BoxDecoration(
-          // color: Colors.black.withOpacity(0.65),
+            // color: Colors.black.withOpacity(0.65),
             gradient: LinearGradient(
               begin: Alignment.centerLeft,
               end: Alignment.centerRight,
@@ -479,7 +470,7 @@ class CommonTextFormField_reversed extends StatelessWidget {
             boxShadow: [
               BoxShadow(
                 color: HexColor('#04060F'),
-                offset: Offset(10,10),
+                offset: Offset(10, 10),
                 blurRadius: 20,
               ),
             ],
@@ -508,10 +499,10 @@ class CommonTextFormField_reversed extends StatelessWidget {
                 borderSide: BorderSide(color: Colors.transparent, width: 1),
                 borderRadius: BorderRadius.all(Radius.circular(10)),
               ),
-              hintStyle:
-                  FontStyleUtility.h15(fontColor: ColorUtils.primary_grey, family: 'PM'),
+              hintStyle: FontStyleUtility.h15(
+                  fontColor: ColorUtils.primary_grey, family: 'PM'),
               suffixIcon: Container(
-                margin: EdgeInsets.all(4),
+                  margin: EdgeInsets.all(4),
                   decoration: BoxDecoration(
                       color: Colors.red.withOpacity(0.65),
                       gradient: LinearGradient(
@@ -519,11 +510,8 @@ class CommonTextFormField_reversed extends StatelessWidget {
                         end: Alignment.topRight,
                         // stops: [0.1, 0.5, 0.7, 0.9],
                         colors: [
-                          HexColor("#36393E")
-                              .withOpacity(1),
-                          HexColor("#020204")
-                              .withOpacity(1),
-
+                          HexColor("#36393E").withOpacity(1),
+                          HexColor("#020204").withOpacity(1),
                         ],
                       ),
                       boxShadow: [
@@ -533,12 +521,12 @@ class CommonTextFormField_reversed extends StatelessWidget {
                           blurRadius: 20,
                         ),
                       ],
-                      borderRadius:
-                      BorderRadius.circular(50)),
+                      borderRadius: BorderRadius.circular(50)),
                   child: iconData)),
-
           style: FontStyleUtility.h15(
-              fontColor: ColorUtils.primary_gold, family: 'PM',),
+            fontColor: ColorUtils.primary_gold,
+            family: 'PM',
+          ),
           controller: controller,
           keyboardType: keyboardType ?? TextInputType.multiline,
         ),
@@ -546,6 +534,7 @@ class CommonTextFormField_reversed extends StatelessWidget {
     );
   }
 }
+
 class CommonTextFormField_noicon extends StatelessWidget {
   final String? labelText;
   final TextEditingController? controller;
@@ -594,7 +583,7 @@ class CommonTextFormField_noicon extends StatelessWidget {
         height: 50,
         // width: 300,
         decoration: BoxDecoration(
-          // color: Colors.black.withOpacity(0.65),
+            // color: Colors.black.withOpacity(0.65),
             gradient: LinearGradient(
               begin: Alignment.centerLeft,
               end: Alignment.centerRight,
@@ -607,7 +596,7 @@ class CommonTextFormField_noicon extends StatelessWidget {
             boxShadow: [
               BoxShadow(
                 color: HexColor('#04060F'),
-                offset: Offset(10,10),
+                offset: Offset(10, 10),
                 blurRadius: 20,
               ),
             ],
@@ -622,23 +611,23 @@ class CommonTextFormField_noicon extends StatelessWidget {
           readOnly: (readOnly ?? false),
           obscureText: isObscure ?? false,
           decoration: InputDecoration(
-              contentPadding: EdgeInsets.only(left: 20, top: 14, bottom: 14),
-              alignLabelWithHint: false,
-              isDense: true,
-              hintText: labelText ?? '',
-              counterStyle: TextStyle(
-                height: double.minPositive,
-              ),
-              counterText: "",
-              filled: true,
-              border: InputBorder.none,
-              enabledBorder: const OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.transparent, width: 1),
-                borderRadius: BorderRadius.all(Radius.circular(10)),
-              ),
-              hintStyle:
-              FontStyleUtility.h15(fontColor: ColorUtils.primary_grey, family: 'PM'),
-              ),
+            contentPadding: EdgeInsets.only(left: 20, top: 14, bottom: 14),
+            alignLabelWithHint: false,
+            isDense: true,
+            hintText: labelText ?? '',
+            counterStyle: TextStyle(
+              height: double.minPositive,
+            ),
+            counterText: "",
+            filled: true,
+            border: InputBorder.none,
+            enabledBorder: const OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.transparent, width: 1),
+              borderRadius: BorderRadius.all(Radius.circular(10)),
+            ),
+            hintStyle: FontStyleUtility.h15(
+                fontColor: ColorUtils.primary_grey, family: 'PM'),
+          ),
           style: FontStyleUtility.h15(
               fontColor: ColorUtils.primary_gold, family: 'PM'),
           controller: controller,

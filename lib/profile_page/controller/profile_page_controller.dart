@@ -16,6 +16,7 @@ import '../model/userInfoModel.dart';
 
 class Profile_page_controller extends GetxController {
 
+  TextEditingController FullnameController = new TextEditingController();
   TextEditingController nameController = new TextEditingController();
   TextEditingController phoneNumberController = new TextEditingController();
   TextEditingController emailAddressController = new TextEditingController();
@@ -55,6 +56,7 @@ class Profile_page_controller extends GetxController {
         debugPrint(
             '2-2-2-2-2-2 Inside the Get UserInfo Controller Details ${userInfoModel!.data!.length}');
         nameController.text = userInfoModel!.data![0].username!;
+        FullnameController.text = userInfoModel!.data![0].fullName!;
         phoneNumberController.text = userInfoModel!.data![0].phone!;
         emailAddressController.text = userInfoModel!.data![0].email!;
         dateOfbirthController.text = userInfoModel!.data![0].dob!;
@@ -101,6 +103,7 @@ class Profile_page_controller extends GetxController {
       request.files.add(files);
     }
     request.fields['id'] = id_user;
+    request.fields['fullName'] = id_user;
     request.fields['username'] = nameController.text;
     request.fields['phone'] = phoneNumberController.text;
     request.fields['email'] = emailAddressController.text;
@@ -121,7 +124,7 @@ class Profile_page_controller extends GetxController {
         //     .setPref(URLConstants.type, signUpModel!.user![0].type!);
         // await CreatorgetUserInfo_Email(UserId: signUpModel!.user![0].id!);
         await CommonWidget().showToaster(msg: 'User Updated');
-        // await Get.to(DashboardScreen());
+        await Get.to(DashboardScreen());
         hideLoader(context);
       } else {
         hideLoader(context);

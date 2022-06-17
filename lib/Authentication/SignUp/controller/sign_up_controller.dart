@@ -17,6 +17,7 @@ import '../model/sendOtpModel.dart';
 import '../model/signUpmodel.dart';
 
 class SignUpScreenController extends GetxController {
+  final TextEditingController fullnameController = TextEditingController();
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmPasswordController =
@@ -26,6 +27,7 @@ class SignUpScreenController extends GetxController {
   final TextEditingController DoBController = TextEditingController();
   final TextEditingController genderController = TextEditingController();
   final TextEditingController OtpController = TextEditingController();
+  String dialCodedigits = "+00";
 
   String? date_birth;
   String? selected_gender;
@@ -103,7 +105,8 @@ class SignUpScreenController extends GetxController {
         filename: imgFile!.path.split("/").last);
     request.files.add(files);
     request.fields['username'] = usernameController.text;
-    request.fields['phone'] = phoneController.text;
+    request.fields['fullName'] = fullnameController.text;
+    request.fields['phone'] = dialCodedigits + phoneController.text;
     request.fields['email'] = emailController.text;
     request.fields['dob'] = date_birth!;
     request.fields['gender'] = selected_gender!;
@@ -153,7 +156,7 @@ class SignUpScreenController extends GetxController {
     // username,phone,email,dob,gender,password,image
     Map data = {
       'email': emailController.text,
-      'phone': phoneController.text,
+      'phone': dialCodedigits + phoneController.text,
     };
     print(data);
     // String body = json.encode(data);

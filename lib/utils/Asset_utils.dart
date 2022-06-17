@@ -45,8 +45,12 @@ class AssetUtils {
   static const intro_video_icons = root+ 'Icon awesome-video.png';
   static const referralLink_icons = root+ 'Icon awesome-link.png';
   static const notification_icons = root + 'Icon awesome-bell.png';
+  static const authentication_icons = root + 'Icon awesome-lock@3x.png';
   static const logout_icons = root + 'Icon open-account-logout.png';
 
+  static const eye_open_icon = root + 'Icon ionic-ios-eye@3x.png';
+  static const eye_close_icon = root + 'Icon ionic-ios-eye-off@3x.png';
+  
   static const nextarrow_icons = root + 'Icon ionic-ios-arrow-back.png';
   static const mobile_icons = root + 'Icon feather-smartphone.png';
   static const date_icons = root + 'Icon material-date-range.png';

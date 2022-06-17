@@ -32,6 +32,7 @@ class UserInfoModel {
 
 class Data {
   String? id;
+  String? fullName;
   String? username;
   String? phone;
   String? email;
@@ -42,6 +43,7 @@ class Data {
 
   Data(
       {this.id,
+        this.fullName,
         this.username,
         this.phone,
         this.email,
@@ -52,6 +54,7 @@ class Data {
 
   Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];
+    fullName = json['fullName'];
     username = json['username'];
     phone = json['phone'];
     email = json['email'];
@@ -64,6 +67,7 @@ class Data {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
+    data['fullName'] = this.fullName;
     data['username'] = this.username;
     data['phone'] = this.phone;
     data['email'] = this.email;

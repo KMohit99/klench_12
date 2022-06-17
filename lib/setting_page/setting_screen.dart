@@ -7,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:klench_/Authentication/SingIn/SigIn_screen.dart';
 import 'package:klench_/notifications/notifications_screen.dart';
+import 'package:klench_/setting_page/authentication_screen.dart';
 import 'package:klench_/setting_page/help_support.dart';
 import 'package:klench_/setting_page/intro_video.dart';
 import 'package:klench_/setting_page/privacy_policy_screen.dart';
@@ -48,11 +49,12 @@ class _SettingScreenState extends State<SettingScreen> {
     AssetUtils.intro_video_icons,
     AssetUtils.referralLink_icons,
     AssetUtils.notification_icons,
+    AssetUtils.authentication_icons,
     AssetUtils.logout_icons,
   ];
 
   List txt_list = [
-    "My Qr",
+    "My QR",
     "Privacy Policy",
     "FAQ",
     "About us",
@@ -63,6 +65,7 @@ class _SettingScreenState extends State<SettingScreen> {
     "Intro video",
     "Referral link",
     "Notification",
+    "Authentication",
     "Logout",
   ];
 
@@ -146,8 +149,11 @@ class _SettingScreenState extends State<SettingScreen> {
                                                                         NotificationSettings())
                                                                     : (index ==
                                                                             11
-                                                                        ? logout()
-                                                                        : null))))))))))));
+                                                                        ? Get.to(Authentication_settings())
+                                                                        : (index ==
+                                                                                12
+                                                                            ? logout()
+                                                                            : null)))))))))))));
                         // if(index == 0){
                         //   Get.to(QrCodeScreen());
                         // }else if(index == 1){
@@ -202,15 +208,12 @@ class _SettingScreenState extends State<SettingScreen> {
   }
 
   logout() async {
-    await PreferenceManager()
-        .setPref(URLConstants.id, 'id');
-    await PreferenceManager()
-        .setPref(URLConstants.username, 'username');
+    await PreferenceManager().setPref(URLConstants.id, 'id');
+    await PreferenceManager().setPref(URLConstants.username, 'username');
 
     String id_user = await PreferenceManager().getPref(URLConstants.id);
 
     print(id_user);
     await Get.to(FrontScreen());
   }
-
 }

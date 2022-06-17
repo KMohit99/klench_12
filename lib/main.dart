@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:klench_/splash_Screen.dart';
+import 'package:local_auth/local_auth.dart';
 
 import 'getx_pagination/Bindings_class.dart';
 import 'getx_pagination/binding_utils.dart';
@@ -62,4 +63,7 @@ class MyApp extends StatelessWidget {
       ),
     );
   }
+
+
+
 }

@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:ui';
 
+import 'package:country_code_picker/country_code_picker.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -330,6 +331,27 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         Container(
                           child: CommonTextFormField(
                             controller:
+                                _signUpScreenController.fullnameController,
+                            labelText: 'Enter Fullname',
+                            iconData: IconButton(
+                              visualDensity:
+                                  VisualDensity(horizontal: -4, vertical: -4),
+                              icon: Image.asset(
+                                AssetUtils.signIN_user_icon,
+                                color: HexColor("#606060"),
+                                height: 17,
+                                width: 15,
+                              ),
+                              onPressed: () {},
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 15,
+                        ),
+                        Container(
+                          child: CommonTextFormField(
+                            controller:
                                 _signUpScreenController.usernameController,
                             labelText: 'Enter Username',
                             iconData: IconButton(
@@ -467,22 +489,73 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         SizedBox(
                           height: 15,
                         ),
-                        Container(
-                          child: CommonTextFormField(
-                            controller: _signUpScreenController.phoneController,
-                            labelText: 'Enter Mobile Number',
-                            iconData: IconButton(
-                              visualDensity:
-                                  VisualDensity(horizontal: -4, vertical: -4),
-                              icon: Image.asset(
-                                AssetUtils.mobile_icons,
-                                height: 17,
-                                color: HexColor("#606060"),
-                                width: 15,
+                        Row(
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                  // color: Colors.black.withOpacity(0.65),
+                                  gradient: LinearGradient(
+                                    begin: Alignment.centerLeft,
+                                    end: Alignment.centerRight,
+                                    // stops: [0.1, 0.5, 0.7, 0.9],
+                                    colors: [
+                                      HexColor("#36393E").withOpacity(1),
+                                      HexColor("#020204").withOpacity(1),
+                                    ],
+                                  ),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: HexColor('#04060F'),
+                                      offset: Offset(10, 10),
+                                      blurRadius: 20,
+                                    ),
+                                  ],
+                                  borderRadius: BorderRadius.circular(10)),
+                              child: CountryCodePicker(
+                                onChanged: (country) {
+                                  setState(() {
+                                    _signUpScreenController.dialCodedigits = country.dialCode!;
+                                    print(_signUpScreenController.dialCodedigits);
+                                  });
+                                },
+                                initialSelection: "IN",
+                                textStyle: FontStyleUtility.h15(
+                                    fontColor: ColorUtils.primary_gold,
+                                    family: 'PM'),
+                                showCountryOnly: false,
+                                showFlagMain: false,
+                                padding: EdgeInsets.zero,
+                                showFlag: true,
+                                showOnlyCountryWhenClosed: false,
+                                favorite: ["+1", "US", "+91", "IN"],
+                                barrierColor: Colors.white,
+                                backgroundColor: Colors.black,
+                                dialogSize: Size.fromHeight(screenHeight/2),
                               ),
-                              onPressed: () {},
                             ),
-                          ),
+                            Container(
+                                width: 10,),
+                            Expanded(
+                              child: Container(
+                                child: CommonTextFormField(
+                                  controller:
+                                      _signUpScreenController.phoneController,
+                                  labelText: 'Enter Mobile Number',
+                                  iconData: IconButton(
+                                    visualDensity: VisualDensity(
+                                        horizontal: -4, vertical: -4),
+                                    icon: Image.asset(
+                                      AssetUtils.mobile_icons,
+                                      height: 17,
+                                      color: HexColor("#606060"),
+                                      width: 15,
+                                    ),
+                                    onPressed: () {},
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                         SizedBox(
                           height: 15,
@@ -797,7 +870,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
       ),
     );
   }
-
 
   final imgPicker = ImagePicker();
 

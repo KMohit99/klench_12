@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -5,12 +6,15 @@ import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:klench_/Authentication/welcom_video/welcome_video_screen.dart';
 import 'package:klench_/Dashboard/dashboard_screen.dart';
+import 'package:klench_/utils/common_widgets.dart';
+import 'package:klench_/utils/page_loader.dart';
 
 import '../../front_page/FrontpageScreen.dart';
 import '../../utils/Asset_utils.dart';
 import '../../utils/Common_buttons.dart';
 import '../../utils/Common_container_color.dart';
 import '../../utils/TextStyle_utils.dart';
+import '../../utils/UrlConstrant.dart';
 import '../../utils/colorUtils.dart';
 
 class FaceScanScreen extends StatefulWidget {
@@ -21,6 +25,9 @@ class FaceScanScreen extends StatefulWidget {
 }
 
 class _FaceScanScreenState extends State<FaceScanScreen> {
+  bool face_scan_enabled = false;
+  bool finger_print_enabled = false;
+
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
@@ -158,8 +165,15 @@ class _FaceScanScreenState extends State<FaceScanScreen> {
                             color: ColorUtils.light_black,
                           ),
                           GestureDetector(
-                            onTap: (){
-                              Get.to(DashboardScreen());
+                            onTap: () {
+                              setState(() {
+                                face_scan_enabled =
+                                    (face_scan_enabled ? false : true);
+                              });
+                              (face_scan_enabled
+                                  ? print('facescan enabled')
+                                  : print('disabled'));
+                              // Get.to(DashboardScreen());
                             },
                             child: Container(
                               decoration: BoxDecoration(
@@ -171,6 +185,12 @@ class _FaceScanScreenState extends State<FaceScanScreen> {
                                       HexColor("#36393E").withOpacity(1),
                                     ],
                                   ),
+                                  border: (face_scan_enabled
+                                      ? Border.all(
+                                          color: ColorUtils.primary_gold,
+                                          width: 2)
+                                      : Border.all(
+                                          color: Colors.transparent, width: 0)),
                                   boxShadow: [
                                     BoxShadow(
                                       color: HexColor('#04060F'),
@@ -198,8 +218,12 @@ class _FaceScanScreenState extends State<FaceScanScreen> {
                                     family: 'PR')),
                           ),
                           GestureDetector(
-                            onTap: (){
-                              Get.to(DashboardScreen());
+                            onTap: () {
+                              setState(() {
+                                finger_print_enabled =
+                                    (finger_print_enabled ? false : true);
+                              });
+                              authentication_method(context);
                             },
                             child: Container(
                               decoration: BoxDecoration(
@@ -211,6 +235,12 @@ class _FaceScanScreenState extends State<FaceScanScreen> {
                                       HexColor("#36393E").withOpacity(1),
                                     ],
                                   ),
+                                  border: (finger_print_enabled
+                                      ? Border.all(
+                                          color: ColorUtils.primary_gold,
+                                          width: 2)
+                                      : Border.all(
+                                          color: Colors.transparent, width: 0)),
                                   boxShadow: [
                                     BoxShadow(
                                       color: HexColor('#04060F'),
@@ -221,8 +251,7 @@ class _FaceScanScreenState extends State<FaceScanScreen> {
                                   borderRadius: BorderRadius.circular(10)),
                               child: Padding(
                                   padding: const EdgeInsets.all(10.0),
-                                  child: Stack(
-                                      children: [
+                                  child: Stack(children: [
                                     Opacity(
                                         child: Image.asset(
                                           AssetUtils.Finger_print_icon,
@@ -279,5 +308,19 @@ class _FaceScanScreenState extends State<FaceScanScreen> {
         ),
       ],
     );
+  }
+
+ Future<dynamic> authentication_method(BuildContext context) async {
+    showLoader(context);
+    await PreferenceManager().setbool(URLConstants.authentication_enable, true);
+    CommonWidget().showToaster(msg: 'Authentication added');
+    Timer(Duration(seconds: 3), () async {
+      // Get.to(FrontScreen());
+      hideLoader(context);
+      await Get.to(DashboardScreen());
+    });
+
+    (finger_print_enabled ? print('facescan enabled') : print('disabled'));
+
   }
 }

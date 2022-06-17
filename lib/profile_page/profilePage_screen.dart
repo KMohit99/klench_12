@@ -20,6 +20,7 @@ import '../utils/Common_container_color.dart';
 import '../utils/Common_textfeild.dart';
 import '../utils/TexrUtils.dart';
 import '../utils/TextStyle_utils.dart';
+import '../utils/UrlConstrant.dart';
 import '../utils/colorUtils.dart';
 import 'controller/profile_page_controller.dart';
 
@@ -256,11 +257,15 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
   @override
   void initState() {
     init();
+
     super.initState();
   }
 
   init() async {
     await _profile_page_controller.GetUserInfo(context: context);
+    bool auth =
+        await PreferenceManager().getbool(URLConstants.authentication_enable);
+    print(auth);
   }
 
   List<Color> _kDefaultRainbowColors = [ColorUtils.primary_gold];
@@ -270,52 +275,53 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
-    return GestureDetector(
-      onTap: () {
-        FocusScope.of(context).requestFocus(FocusNode());
-      },
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          automaticallyImplyLeading: false,
-          title: Text(
-            Textutils.myprofile,
-            style: FontStyleUtility.h16(
-                fontColor: ColorUtils.primary_gold, family: 'PM'),
-          ),
-          centerTitle: true,
-        ),
-        body:
-            Obx(() => (_profile_page_controller.isuserinfoLoading.value == true
-                ? Center(
-                    child: Material(
-                      color: Color(0x66DD4D4),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Container(
-                            color: Colors.transparent,
-                            height: 80,
-                            width: 200,
-                            child: Material(
-                              color: Colors.transparent,
-                              child: LoadingIndicator(
-                                backgroundColor: Colors.transparent,
-                                indicatorType: Indicator.ballScale,
-                                colors: _kDefaultRainbowColors,
-                                strokeWidth: 4.0,
-                                pathBackgroundColor: Colors.yellow,
-                                // showPathBackground ? Colors.black45 : null,
-                              ),
-                            ),
-                          ),
-                        ],
+    return Obx(
+      () => (_profile_page_controller.isuserinfoLoading.value == true
+          ? Center(
+              child: Material(
+                color: Color(0x66DD4D4),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Container(
+                      color: Colors.transparent,
+                      height: 80,
+                      width: 200,
+                      child: Material(
+                        color: Colors.transparent,
+                        child: LoadingIndicator(
+                          backgroundColor: Colors.transparent,
+                          indicatorType: Indicator.ballScale,
+                          colors: _kDefaultRainbowColors,
+                          strokeWidth: 4.0,
+                          pathBackgroundColor: Colors.yellow,
+                          // showPathBackground ? Colors.black45 : null,
+                        ),
                       ),
                     ),
-                  )
-                : Container(
+                  ],
+                ),
+              ),
+            )
+          : GestureDetector(
+              onTap: () {
+                FocusScope.of(context).requestFocus(FocusNode());
+              },
+              child: Scaffold(
+                  backgroundColor: Colors.transparent,
+                  appBar: AppBar(
+                    backgroundColor: Colors.transparent,
+                    automaticallyImplyLeading: false,
+                    title: Text(
+                      _profile_page_controller
+                          .userInfoModel!.data![0].username!,
+                      style: FontStyleUtility.h16(
+                          fontColor: ColorUtils.primary_gold, family: 'PM'),
+                    ),
+                    centerTitle: true,
+                  ),
+                  body: Container(
                     decoration: BoxDecoration(
                         gradient: LinearGradient(
                           begin: Alignment.topCenter,
@@ -604,7 +610,7 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
                                   Container(
                                     child: CommonTextFormField(
                                       controller: _profile_page_controller
-                                          .nameController,
+                                          .FullnameController,
                                       readOnly: editable,
                                       labelText: Textutils.name_,
                                       iconData: IconButton(
@@ -983,22 +989,22 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
                               ),
                             ),
                           ),
-                          (editable ? SizedBox.shrink() :
-                          common_button_gold(
-                            onTap: () async {
-                              await _profile_page_controller.Editprofile(
-                                  context: context);
-                            },
-                            title_text: 'Save Details',
-                          )),
+                          (editable
+                              ? SizedBox.shrink()
+                              : common_button_gold(
+                                  onTap: () async {
+                                    await _profile_page_controller.Editprofile(
+                                        context: context);
+                                  },
+                                  title_text: 'Save Details',
+                                )),
                           SizedBox(
                             height: 50,
                           )
                         ],
                       ),
                     ),
-                  ))),
-      ),
+                  )))),
     );
   }
 

@@ -28,6 +28,16 @@ class _SignInScreenState extends State<SignInScreen> {
       SignInScreenController(),
       tag: SignInScreenController().toString());
 
+  bool _obscureText = true;
+
+
+  // Toggles the password show status
+  void _toggle() {
+    setState(() {
+      _obscureText = !_obscureText;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
@@ -119,14 +129,21 @@ class _SignInScreenState extends State<SignInScreen> {
                             title: 'Password',
                             labelText: 'Enter Password',
                             controller: _signInScreenController.passwordController,
+                            isObscure: _obscureText,
+                            maxLines: 1,
                             iconData: IconButton(
                               visualDensity: VisualDensity(vertical: -4,horizontal: -4),
                               icon: Image.asset(
-                                AssetUtils.Face_unlock_icon,
+                                (_obscureText
+                                  ? AssetUtils.eye_open_icon
+                                  : AssetUtils.eye_close_icon),
                                 color: HexColor("#606060"),
-
+                                height: 20,
+                                width: 20,
                               ),
-                              onPressed: () {},
+                              onPressed: () {
+                                _toggle();
+                              },
                             ),
                           ),
                         ),

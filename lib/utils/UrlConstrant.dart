@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class URLConstants{
+class URLConstants {
   static const String base_url = "http://foxyserver.com/klench/api/";
   static const signUpApi = "signup.php";
   static const loginApi = "login.php";
@@ -13,10 +13,9 @@ class URLConstants{
   static const forgotPasswordApi = "forgot-password.php";
   static const resetPasswordApi = "reset-password.php";
 
-
   static String id = "id";
   static String username = "username";
-
+  static String authentication_enable = 'Authentication';
 }
 
 class PreferenceManager {
@@ -37,6 +36,7 @@ class PreferenceManager {
     return sharedPreferences.setString(key, value);
   }
 
+
   // get data in preference
   Future<String> getPref(String key) async {
     //SharedPreferences.setMockInitialValues({});
@@ -44,5 +44,16 @@ class PreferenceManager {
     return sharedPreferences.getString(key) ?? "";
   }
 
+  Future<bool> setbool(String key, bool value) async {
+    //SharedPreferences.setMockInitialValues({});
+    sharedPreferences = await SharedPreferences.getInstance();
+    return sharedPreferences.setBool(key, value);
+  }
+
+  Future<bool> getbool(String key) async {
+    //SharedPreferences.setMockInitialValues({});
+    sharedPreferences = await SharedPreferences.getInstance();
+    return sharedPreferences.getBool(key) ?? false;
+  }
 
 }

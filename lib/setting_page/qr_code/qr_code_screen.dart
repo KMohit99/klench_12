@@ -9,6 +9,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:klench_/Authentication/SignUp/model/signUpmodel.dart';
 import 'package:klench_/utils/Common_buttons.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:qr_flutter/qr_flutter.dart';
@@ -181,7 +182,7 @@ class _QrCodeScreenState extends State<QrCodeScreen> {
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(10),
                           child: QrImage(
-                            data: Username!,
+                            data:(Username == null ? "Username" :  Username!),
                             // size: 200,
                             foregroundColor: Colors.black,
                             backgroundColor: Colors.white,
