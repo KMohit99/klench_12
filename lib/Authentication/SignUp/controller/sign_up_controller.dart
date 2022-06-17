@@ -27,7 +27,7 @@ class SignUpScreenController extends GetxController {
   final TextEditingController DoBController = TextEditingController();
   final TextEditingController genderController = TextEditingController();
   final TextEditingController OtpController = TextEditingController();
-  String dialCodedigits = "+00";
+  String dialCodedigits = "+91";
 
   String? date_birth;
   String? selected_gender;
@@ -106,6 +106,7 @@ class SignUpScreenController extends GetxController {
     request.files.add(files);
     request.fields['username'] = usernameController.text;
     request.fields['fullName'] = fullnameController.text;
+    request.fields['countryCode'] = dialCodedigits;
     request.fields['phone'] = dialCodedigits + phoneController.text;
     request.fields['email'] = emailController.text;
     request.fields['dob'] = date_birth!;
@@ -233,7 +234,7 @@ class SignUpScreenController extends GetxController {
         await SignUpAPi(context: context);
       } else {
         hideLoader(context);
-        CommonWidget().showErrorToaster(msg: "Invalid Otp");
+        CommonWidget().showToaster(msg: "Invalid Otp");
         print('Please try again');
         print('Please try again');
       }

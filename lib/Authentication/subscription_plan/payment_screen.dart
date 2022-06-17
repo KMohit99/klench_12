@@ -406,6 +406,12 @@ class _PaymentScreenState extends State<PaymentScreen> {
                         common_button_gold(
                           onTap: () {
                             selectTowerBottomSheet(context);
+                            Future.delayed(const Duration(seconds: 5), () async {
+                              Navigator.pop(context);
+                              Get.to(DashboardScreen());
+                              setState(() {
+                              });
+                            });
                           },
                           title_text: 'Pay',
                         ),

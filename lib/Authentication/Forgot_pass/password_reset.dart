@@ -186,6 +186,13 @@ class _PasswordResetScreenState extends State<PasswordResetScreen> {
                         common_button_gold(
                           onTap: () async {
                             if (_forgotPasswordController
+                                    .newPasswordController.text.length ==
+                                0) {
+                              CommonWidget()
+                                  .showErrorToaster(msg: "Password empty");
+                              return;
+                            }
+                            if (_forgotPasswordController
                                     .newPasswordController.text !=
                                 _forgotPasswordController
                                     .ConfirmNewPasswordController.text) {
@@ -201,6 +208,13 @@ class _PasswordResetScreenState extends State<PasswordResetScreen> {
                                     .passwordResetModel!.error ==
                                 false) {
                               selectTowerBottomSheet(context);
+                              Future.delayed(const Duration(seconds: 5),
+                                  () async {
+                                Navigator.pop(context);
+                                await Get.to(SignInScreen());
+
+                                setState(() {});
+                              });
                             }
                           },
                           title_text: 'Done',

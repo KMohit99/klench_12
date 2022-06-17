@@ -274,6 +274,12 @@ class _VerifyOtpState extends State<VerifyOtp> {
                                 await _signUpScreenController.VerifyOtpAPi(context: context);
                                 if(_signUpScreenController.signUpModel!.error == false) {
                                   await selectTowerBottomSheet(context);
+                                  Future.delayed(const Duration(seconds: 5), () async {
+                                    Navigator.pop(context);
+                                    await Get.to(FaceScanScreen());
+                                    setState(() {
+                                    });
+                                  });
                                 }
                               },
                               child: Container(

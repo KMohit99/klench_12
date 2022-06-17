@@ -290,6 +290,13 @@ class OtpScreenState extends State<OtpScreen> {
                                await _forgotPasswordController.VerifyOtpAPi(context: context);
                                if(_forgotPasswordController.verifyOtpModel!.error == false){
                                  await selectTowerBottomSheet(context);
+                                 Future.delayed(const Duration(seconds: 5), () async {
+                                   Navigator.pop(context);
+                                   await Get.to(PasswordResetScreen());
+
+                                   setState(() {
+                                   });
+                                 });
                                }
                               },
                               child: Container(

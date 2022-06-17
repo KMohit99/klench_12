@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -193,21 +194,71 @@ class _ForgotScreenState extends State<ForgotScreen> {
                                 fontFamily: 'PR'),
                           ),
                         ),
-                        Container(
-                          child: CommonTextFormField_reversed(
-                            labelText: 'Phone number',
-                            controller:
-                                _forgotPasswordController.MobilenoController,
-                            iconData: IconButton(
-                              visualDensity:
-                                  VisualDensity(vertical: -4, horizontal: -4),
-                              icon: Image.asset(
-                                AssetUtils.mobile_icons,
-                                color: HexColor("#606060"),
+                        Row(
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                // color: Colors.black.withOpacity(0.65),
+                                  gradient: LinearGradient(
+                                    begin: Alignment.centerLeft,
+                                    end: Alignment.centerRight,
+                                    // stops: [0.1, 0.5, 0.7, 0.9],
+                                    colors: [
+                                      HexColor("#36393E").withOpacity(1),
+                                      HexColor("#020204").withOpacity(1),
+                                    ],
+                                  ),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: HexColor('#04060F'),
+                                      offset: Offset(10, 10),
+                                      blurRadius: 20,
+                                    ),
+                                  ],
+                                  borderRadius: BorderRadius.circular(10)),
+                              child: CountryCodePicker(
+                                onChanged: (country) {
+                                  setState(() {
+                                    _forgotPasswordController.dialCodedigits = country.dialCode!;
+                                    print(_forgotPasswordController.dialCodedigits);
+                                  });
+                                },
+                                initialSelection: "IN",
+                                textStyle: FontStyleUtility.h15(
+                                    fontColor: ColorUtils.primary_gold,
+                                    family: 'PM'),
+                                showCountryOnly: false,
+                                showFlagMain: false,
+                                padding: EdgeInsets.zero,
+                                showFlag: true,
+                                showOnlyCountryWhenClosed: false,
+                                favorite: ["+1", "US", "+91", "IN"],
+                                barrierColor: Colors.white,
+                                backgroundColor: Colors.black,
+                                dialogSize: Size.fromHeight(screenHeight/2),
                               ),
-                              onPressed: () {},
                             ),
-                          ),
+                            Container(
+                              width: 10,),
+                            Expanded(
+                              child: Container(
+                                child: CommonTextFormField_reversed(
+                                  labelText: 'Phone number',
+                                  controller:
+                                      _forgotPasswordController.MobilenoController,
+                                  iconData: IconButton(
+                                    visualDensity:
+                                        VisualDensity(vertical: -4, horizontal: -4),
+                                    icon: Image.asset(
+                                      AssetUtils.mobile_icons,
+                                      color: HexColor("#606060"),
+                                    ),
+                                    onPressed: () {},
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                         SizedBox(
                           height: 71,
@@ -219,6 +270,12 @@ class _ForgotScreenState extends State<ForgotScreen> {
                                 context: context);
                             if(_forgotPasswordController.forgotPasswordModel!.error == false){
                               await selectTowerBottomSheet(context);
+                              Future.delayed(const Duration(seconds: 5), () async {
+                                Navigator.pop(context);
+                                await Get.to(OtpScreen());
+                                setState(() {
+                                });
+                              });
                             }
                           },
                           title_text: 'Verify',

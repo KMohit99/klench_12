@@ -43,7 +43,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     final DateTime? selected = await showDatePicker(
       context: context,
       initialDate: selectedDate,
-      firstDate: DateTime(2010),
+      firstDate: DateTime(1930),
       lastDate: DateTime(2025),
       builder: (context, child) {
         return Theme(
@@ -201,6 +201,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                                     _signUpScreenController
                                                             .selected_gender =
                                                         val as String?;
+                                                    _signUpScreenController
+                                                        .selected_gender =
+                                                    gender_list[index];
+                                                    _signUpScreenController
+                                                        .genderController.text =
+                                                    _signUpScreenController
+                                                        .selected_gender!;
+                                                    Navigator.pop(context);
+
                                                   });
                                                 },
                                               ),

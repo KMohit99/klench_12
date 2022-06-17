@@ -173,6 +173,8 @@ class _FaceScanScreenState extends State<FaceScanScreen> {
                               (face_scan_enabled
                                   ? print('facescan enabled')
                                   : print('disabled'));
+                              authentication_method(context);
+
                               // Get.to(DashboardScreen());
                             },
                             child: Container(
@@ -317,7 +319,7 @@ class _FaceScanScreenState extends State<FaceScanScreen> {
     Timer(Duration(seconds: 3), () async {
       // Get.to(FrontScreen());
       hideLoader(context);
-      await Get.to(DashboardScreen());
+      Get.to(WelcomeVideoScreen());
     });
 
     (finger_print_enabled ? print('facescan enabled') : print('disabled'));

@@ -22,6 +22,7 @@ class ForgotPasswordController extends GetxController {
 
   final TextEditingController newPasswordController = TextEditingController();
   final TextEditingController ConfirmNewPasswordController = TextEditingController();
+  String dialCodedigits = "+91";
 
   ForgotPasswordModel? forgotPasswordModel;
   RxBool isLoading = false.obs;
@@ -34,7 +35,7 @@ class ForgotPasswordController extends GetxController {
     // username,phone,email,dob,gender,password,image
     Map data = {
       'email': emailAddressController.text,
-      'phone': MobilenoController.text,
+      'phone': dialCodedigits +  MobilenoController.text,
     };
     print(data);
     // String body = json.encode(data);

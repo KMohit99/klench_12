@@ -208,12 +208,13 @@ class _SettingScreenState extends State<SettingScreen> {
   }
 
   logout() async {
-    await PreferenceManager().setPref(URLConstants.id, 'id');
-    await PreferenceManager().setPref(URLConstants.username, 'username');
-
-    String id_user = await PreferenceManager().getPref(URLConstants.id);
-
-    print(id_user);
+    // await PreferenceManager().setPref(URLConstants.id, 'id');
+    // await PreferenceManager().setPref(URLConstants.username, 'username');
+    //
+    // String id_user = await PreferenceManager().getPref(URLConstants.id);
+    await PreferenceManager()
+        .remove();
+    // print(id_user);
     await Get.to(FrontScreen());
   }
 }
