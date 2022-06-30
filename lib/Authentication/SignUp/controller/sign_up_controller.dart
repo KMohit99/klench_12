@@ -31,6 +31,7 @@ class SignUpScreenController extends GetxController {
 
   String? date_birth;
   String? selected_gender;
+  String? level;
 
   SignUpModel? signUpModel;
   RxBool isLoading = false.obs;
@@ -96,22 +97,26 @@ class SignUpScreenController extends GetxController {
     showLoader(context);
     var url = (URLConstants.base_url + URLConstants.signUpApi);
     var request = http.MultipartRequest('POST', Uri.parse(url));
-    List<int> imageBytes = imgFile!.readAsBytesSync();
-    String baseimage = base64Encode(imageBytes);
-    var files = await http.MultipartFile(
-        'image',
-        File(imgFile!.path).readAsBytes().asStream(),
-        File(imgFile!.path).lengthSync(),
-        filename: imgFile!.path.split("/").last);
-    request.files.add(files);
+    // List<int> imageBytes = imgFile!.readAsBytesSync();
+    // String baseimage = base64Encode(imageBytes);
+
+    if (imgFile != null) {
+      var files = await http.MultipartFile(
+          'image',
+          File(imgFile!.path).readAsBytes().asStream(),
+          File(imgFile!.path).lengthSync(),
+          filename: imgFile!.path.split("/").last);
+      request.files.add(files);
+    }
     request.fields['username'] = usernameController.text;
     request.fields['fullName'] = fullnameController.text;
     request.fields['countryCode'] = dialCodedigits;
-    request.fields['phone'] = dialCodedigits + phoneController.text;
+    request.fields['phone'] = phoneController.text;
     request.fields['email'] = emailController.text;
     request.fields['dob'] = date_birth!;
     request.fields['gender'] = selected_gender!;
     request.fields['password'] = passwordController.text;
+    request.fields['levels'] = level.toString();
 
     //userId,tagLine,description,address,postImage,uploadVideo,isVideo
     // request.files.add(await http.MultipartFile.fromPath(
@@ -119,25 +124,31 @@ class SignUpScreenController extends GetxController {
 
     var response = await request.send();
     var responsed = await http.Response.fromStream(response);
+    print(response.statusCode);
+    print("response - ${response.statusCode}");
 
     if (response.statusCode == 200) {
       final data = json.decode(responsed.body);
       signUpModel = SignUpModel.fromJson(data);
-      print(signUpModel);
+      print(signUpModel!.statusCode);
+      print(signUpModel!.message);
+      print(signUpModel!.error);
       if (signUpModel!.error == false) {
         await PreferenceManager()
             .setPref(URLConstants.id, signUpModel!.user![0].id!);
+
         // await PreferenceManager()
         //     .setPref(URLConstants.id, signUpModel!.user![0].id!);
         // await PreferenceManager()
         //     .setPref(URLConstants.type, signUpModel!.user![0].type!);
         // await CreatorgetUserInfo_Email(UserId: signUpModel!.user![0].id!);
-        await CommonWidget().showToaster(msg: 'User Created');
-        // await Get.to(DashboardScreen());
+        await CommonWidget().showToaster(msg: signUpModel!.message!);
+       // await  SendOtpAPi(context: context);
+        await Get.to(DashboardScreen());
         hideLoader(context);
       } else {
         hideLoader(context);
-        CommonWidget().showErrorToaster(msg: "Invalid Details");
+        CommonWidget().showErrorToaster(msg: signUpModel!.message!);
         // print('Please try again');
         // print('Please try again');
       }
@@ -157,12 +168,70 @@ class SignUpScreenController extends GetxController {
     // username,phone,email,dob,gender,password,image
     Map data = {
       'email': emailController.text,
-      'phone': dialCodedigits + phoneController.text,
+      'phone':phoneController.text,
+      'countryCode': dialCodedigits
     };
     print(data);
     // String body = json.encode(data);
 
     var url = (URLConstants.base_url + URLConstants.sendOtpApi);
+    print("url : $url");
+    print("body : $data");
+
+    var response = await http.post(
+      Uri.parse(url),
+      body: data,
+    );
+    print(response.body);
+    print(response.request);
+    print(response.statusCode);
+    // var final_data = jsonDecode(response.body);
+
+    // print('final data $final_data');
+
+    if (response.statusCode == 200) {
+      sendOtpLoading(false);
+      var data = jsonDecode(response.body);
+      sendOtpModel = SendOtpModel.fromJson(data);
+      print(sendOtpModel);
+      if (sendOtpModel!.error == false) {
+        CommonWidget().showToaster(msg: sendOtpModel!.message!);
+        await Get.to(VerifyOtp());
+        hideLoader(context);
+      } else {
+        hideLoader(context);
+        CommonWidget().showErrorToaster(msg: sendOtpModel!.message!);
+        print('Please try again');
+        print('Please try again');
+      }
+    } else {}
+  }
+  clear(){
+    fullnameController.clear();
+    usernameController.clear();
+    passwordController.clear();
+    confirmPasswordController.clear();
+    phoneController.clear();
+    emailController.clear();
+    DoBController.clear();
+    genderController.clear();
+    OtpController.clear();
+  }
+
+  Future<dynamic> ReSendOtpAPi({required BuildContext context}) async {
+    debugPrint('0-0-0-0-0-0-0 username');
+    sendOtpLoading(true);
+    showLoader(context);
+    // username,phone,email,dob,gender,password,image
+    Map data = {
+      'email': emailController.text,
+      'phone': phoneController.text,
+      'countryCode': dialCodedigits
+    };
+    print(data);
+    // String body = json.encode(data);
+
+    var url = (URLConstants.base_url + URLConstants.ResendOtpApi);
     print("url : $url");
     print("body : $data");
 
@@ -232,6 +301,8 @@ class SignUpScreenController extends GetxController {
         await CommonWidget().showToaster(msg: "Otp Verified");
         // await SignUpAPi(context: context);
         await SignUpAPi(context: context);
+        // await Get.to(DashboardScreen());
+
       } else {
         hideLoader(context);
         CommonWidget().showToaster(msg: "Invalid Otp");

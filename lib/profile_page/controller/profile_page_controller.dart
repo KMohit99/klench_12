@@ -23,6 +23,7 @@ class Profile_page_controller extends GetxController {
   TextEditingController dateOfbirthController = new TextEditingController();
   TextEditingController genderController = new TextEditingController();
 
+  String? dialCodedigits;
 
 
   EditProfile? editProfile;
@@ -47,6 +48,7 @@ class Profile_page_controller extends GetxController {
     request.fields['id'] = id_user;
     request.fields['fullName'] = FullnameController.text;
     // request.fields['username'] = nameController.text;
+    request.fields['countryCode'] = dialCodedigits!;
     request.fields['phone'] = phoneNumberController.text;
     request.fields['email'] = emailAddressController.text;
 

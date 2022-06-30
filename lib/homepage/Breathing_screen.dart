@@ -1,12 +1,17 @@
+import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+
+// import 'package:flutter_vibrate/flutter_vibrate.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:klench_/utils/TexrUtils.dart';
+import 'package:klench_/utils/common_widgets.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:vibration/vibration.dart';
 
 import '../Dashboard/dashboard_screen.dart';
 import '../utils/Asset_utils.dart';
@@ -22,10 +27,11 @@ class BreathingScreen extends StatefulWidget {
 }
 
 class _BreathingScreenState extends State<BreathingScreen>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   Stopwatch watch = Stopwatch();
   Timer? timer;
   bool startStop = true;
+  bool started = true;
 
   String elapsedTime = '00';
 
@@ -33,12 +39,62 @@ class _BreathingScreenState extends State<BreathingScreen>
     if (watch.isRunning) {
       if (mounted) {
         setState(() {
-          print("startstop Inside=$startStop");
+          // print("startstop Inside=$startStop");
           elapsedTime = transformMilliSeconds(watch.elapsedMilliseconds);
-          percent += 1;
-          if (percent >= 100) {
-            percent = 0.0;
+          // print("elapsedTime $elapsedTime");
+          // vibration();
+          if (elapsedTime == '12') {
+            stopWatch();
+            // _animationController_shadow1!.reverse();
+            setState(() {
+              elapsedTime = '00';
+              percent = 0.0;
+              watch.reset();
+              CommonWidget().showToaster(msg: '${9 - counter} Times left');
+              counter++;
+              print(counter);
+              // paused_time.clear();
+            });
+            Future.delayed(Duration(seconds: 2), () {
+              if (counter == 10) {
+                stopWatch();
+                setState(() {
+                  elapsedTime = '00';
+                  percent = 0.0;
+                  // watch.stop();
+                  counter = 0;
+                });
+                sets++;
+                print('Sets-------$sets');
+                if (sets == 3) {
+                  stopWatch();
+                  setState(() {
+                    elapsedTime = '00';
+                    percent = 0.0;
+                    // watch.stop();
+                    counter = 0;
+                  });
+                  CommonWidget().showToaster(msg: "Method Complete");
+                }
+              } else {
+                startWatch();
+              }
+            });
+            // start_animation();
           }
+
+          // percent += 1;
+          // if (percent >= 100) {
+          //   percent = 0.0;
+          // }
+
+          // final seconds = myDuration.inSeconds - reduceSecondsBy;
+          // if (seconds < 0) {
+          //   countdownTimer!.cancel();
+          //   print('timesup');
+          // } else {
+          //   myDuration = Duration(seconds: seconds);
+          // }
         });
       }
     }
@@ -48,15 +104,14 @@ class _BreathingScreenState extends State<BreathingScreen>
   bool back_wallpaper = false;
 
   Timer? countdownTimer;
-  Duration myDuration = Duration(seconds: 3);
+  Duration myDuration = Duration(seconds: 11);
 
   void startTimer() {
-    countdownTimer =
-        Timer.periodic(Duration(seconds: 1), (_) => setCountDown());
+    countdownTimer = Timer.periodic(Duration(microseconds: 100), setCountDown);
   }
 
-  void setCountDown() {
-    final reduceSecondsBy = 1;
+  setCountDown(Timer timer) {
+    const reduceSecondsBy = 1;
     if (mounted) {
       setState(() {
         final seconds = myDuration.inSeconds - reduceSecondsBy;
@@ -72,8 +127,68 @@ class _BreathingScreenState extends State<BreathingScreen>
 
   AnimationController? _animationController;
   Animation? _animation;
+  AnimationController? _animationController_1;
+  Animation? _animation_1;
+
+  AnimationController? _animationController_shadow1;
+  Animation? _animation_shadow1;
+  Animation? _animation_shadow1_reverse;
+  AnimationController? _animationController_shadow2;
+  Animation? _animation_shadow2;
+
   bool animation_started = false;
   String _status = 'Hold';
+  bool shadow_animation1_completed = false;
+  bool shadow_animation_pause = false;
+  int counter = 0;
+  int sets = 0;
+  bool _canVibrate = true;
+  final Iterable<Duration> pauses = [
+    const Duration(milliseconds: 1),
+    const Duration(milliseconds: 1000),
+    const Duration(milliseconds: 1),
+    const Duration(milliseconds: 1000),
+    const Duration(milliseconds: 1),
+    const Duration(milliseconds: 1000),
+  ];
+
+  Future<void> _init() async {
+    bool? canVibrate = await Vibration.hasVibrator();
+    setState(() {
+      _canVibrate = canVibrate!;
+      _canVibrate
+          ? debugPrint('This device can vibrate')
+          : debugPrint('This device cannot vibrate');
+    });
+  }
+
+  vibration() async {
+    if (_canVibrate) {
+      // Vibration.vibrate(
+      //     // pattern: [100, 100,100, 100,100, 100,100, 100,],
+      //     duration: 4000,
+      //     intensities: [1, 255]);
+      // print(
+      //     "Vibration.hasCustomVibrationsSupport() ${Vibration.hasCustomVibrationsSupport()}");
+      if (await Vibration.hasCustomVibrationsSupport() == true) {
+        print("has support");
+        Vibration.vibrate(
+          // pattern: [100, 100,100, 100,100, 100,100, 100,],
+            duration: 4000,
+            intensities: [1, 255]);
+      } else {
+        print("haddddd support");
+        Vibration.vibrate();
+        await Future.delayed(Duration(milliseconds: 500));
+        Vibration.vibrate();
+      }
+      // Vibrate.defaultVibrationDuration;
+      // Vibrate.defaultVibrationDuration;
+      // Vibrate.vibrateWithPauses(pauses);
+    } else {
+      CommonWidget().showErrorToaster(msg: 'Device Cannot vibrate');
+    }
+  }
 
   start_animation() {
     setState(() {
@@ -83,54 +198,107 @@ class _BreathingScreenState extends State<BreathingScreen>
     _animationController =
         AnimationController(vsync: this, duration: Duration(seconds: 4));
     _animationController!.forward();
+    vibration();
     setState(() {
       _status = 'Inhale';
       print(_status);
     });
     _animation = Tween(begin: 150.0, end: 170.0).animate(_animationController!)
       ..addStatusListener((status) {
+        // Vibrate.vibrateWithPauses(pauses);
+
         print(status);
         if (status == AnimationStatus.completed) {
           setState(() {
             _status = 'Hold';
-            print(_status);
+            shadow_animation_pause = true;
+            _animationController_shadow2!.stop();
+            Future.delayed(Duration(seconds: 4), () {
+              _animationController_shadow2!.repeat(reverse: true);
+              vibration();
+              setState(() {
+                // print(_status);
+                shadow_animation_pause = false;
+              });
+            });
+            // print("$_status _status");
+            // print("shadow_animation_pause $shadow_animation_pause");
           });
           Future.delayed(Duration(seconds: 4), () {
             _animationController!.reverse();
+            vibration();
             setState(() {
               _status = 'Exhale';
-              print(_status);
+              // print(_status);
             });
           });
-        }
-        else if (status == AnimationStatus.dismissed) {
+        } else if (status == AnimationStatus.dismissed) {
           setState(() {
             _status = 'Hold';
-            print(_status);
+            // print(_status);
           });
           Future.delayed(Duration(seconds: 4), () {
             _animationController!.forward();
+            vibration();
+
             setState(() {
               _status = 'Inhale';
-              print(_status);
+              // print(_status);
             });
           });
         }
-
       });
 
+    _animationController_shadow1 =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 400));
+    _animationController_shadow1!.forward();
+    _animation_shadow1 =
+        Tween(begin: 0.0, end: 40.0).animate(_animationController_shadow1!)
+          ..addStatusListener((status) {
+            print(status);
+            if (status == AnimationStatus.completed) {
+              // print("elapsedTime");
+              setState(() {
+                shadow_animation1_completed = true;
+                // print(shadow_animation1_completed);
+              });
+            }
+            // shadow_animation1_completed = true;
+          });
+
+    _animationController_shadow2 =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 100));
+    _animationController_shadow2!.repeat(reverse: true);
+    _animation_shadow2 =
+        Tween(begin: 40.0, end: 42.0).animate(_animationController_shadow2!)
+          ..addStatusListener((status) {
+            if (shadow_animation_pause == true) {}
+            // print(status);
+            // if (status == AnimationStatus.completed) {}
+            // shadow_animation1_completed = true;
+          });
 
     print(_animationController!.status);
   }
 
   @override
   dispose() {
-    _animationController!.dispose(); // you need this
+    _animationController!.dispose();
+    _animationController_shadow1!.dispose();
+    _animationController_shadow2!.dispose();
+
     super.dispose();
   }
 
   @override
+  void initState() {
+
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final seconds = myDuration.inSeconds.remainder(60);
     return Stack(
       children: [
         Container(
@@ -181,6 +349,43 @@ class _BreathingScreenState extends State<BreathingScreen>
             ),
             centerTitle: true,
             actions: [
+              Container(
+                  margin: EdgeInsets.symmetric(horizontal: 10),
+                  alignment: Alignment.center,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        AssetUtils.star_icon,
+                        color:
+                            (sets >= 1 ? ColorUtils.primary_gold : Colors.grey),
+                        height: 22,
+                        width: 22,
+                      ),
+                      SizedBox(
+                        width: 7,
+                      ),
+                      Image.asset(
+                        AssetUtils.star_icon,
+                        height: 22,
+                        color:
+                            (sets >= 2 ? ColorUtils.primary_gold : Colors.grey),
+                        width: 22,
+                      ),
+                      SizedBox(
+                        width: 7,
+                      ),
+                      Image.asset(
+                        AssetUtils.star_icon,
+                        color:
+                            (sets >= 3 ? ColorUtils.primary_gold : Colors.grey),
+                        height: 22,
+                        width: 22,
+                      ),
+                    ],
+                  )),
+
               // IconButton(
               //     onPressed: () {},
               //     icon: Icon(
@@ -196,9 +401,6 @@ class _BreathingScreenState extends State<BreathingScreen>
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  SizedBox(
-                    height: 40,
-                  ),
                   // CircularPercentIndicator(
                   //   circularStrokeCap: CircularStrokeCap.round,
                   //   percent: percent / 100,
@@ -259,188 +461,119 @@ class _BreathingScreenState extends State<BreathingScreen>
                   //
                   // ),
 
-                  Container(
-                    height: (animation_started? _animation!.value : 150),
-                    width: (animation_started ? _animation!.value : 150),
-                    decoration: BoxDecoration(
-                        border: Border.all(
-                            color: ColorUtils.primary_gold, width: 10),
-                        borderRadius: BorderRadius.circular(100)),
-                    child: Container(
-                       decoration: BoxDecoration(
-                          color: ColorUtils.primary_gold,
-                          border: Border.all(color: Colors.black, width: 10),
-                          borderRadius: BorderRadius.circular(100)),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          // IconButton(
-                          //   alignment: Alignment.center,
-                          //   // visualDensity:
-                          //   //     VisualDensity(vertical: -4, horizontal: -4),
-                          //   padding: EdgeInsets.only(left: 0.0),
-                          //   icon: Image.asset(AssetUtils.breathe_icon,
-                          //       color: Colors.black, height: 40, width: 40),
-                          //   onPressed: () {},
-                          // ),
-                          Text(_status,style: FontStyleUtility.h18(fontColor: Colors.black,family: 'PSB'),),
-                          Container(
-                            alignment: Alignment.center,
-                            child: CircleAvatar(
-                              maxRadius: 20,
-                              backgroundColor: Colors.black,
-                              child: Text(
-                                elapsedTime,
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 20,
-                                    fontFamily: 'PR',
-                                    fontWeight: FontWeight.w900),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  SizedBox(height:15),
-                  Container(
-                    decoration: BoxDecoration(
-                          color: Colors.black.withOpacity(0.58),
-                          gradient: LinearGradient(
-                            begin: Alignment.centerLeft,
-                            end: Alignment.centerRight,
-                            // stops: [0.1, 0.5, 0.7, 0.9],
-                            colors: [
-                              HexColor("#020204").withOpacity(0.8),
-                              // HexColor("#151619").withOpacity(0.63),
-                              HexColor("#36393E").withOpacity(0.8),
+                  AvatarGlow(
+                      endRadius: 130.0,
+                      showTwoGlows: true,
+                      animate: false,
+                      // (startStop ? false : true),
+                      duration: Duration(milliseconds: 900),
+                      repeat: true,
+                      child: Container(
+                        height: (animation_started ? _animation!.value : 150),
+                        width: (animation_started ? _animation!.value : 150),
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                                color: ColorUtils.primary_gold, width: 10),
+                            boxShadow: [
+                              BoxShadow(
+                                  color:
+                                      ColorUtils.primary_gold.withOpacity(0.5),
+                                  spreadRadius: (animation_started
+                                      ? (shadow_animation1_completed
+                                          ? _animation_shadow2!.value
+                                          : _animation_shadow1!.value)
+                                      : 0),
+                                  blurRadius: 0)
                             ],
-                          ),
-                          borderRadius: BorderRadius.circular(20)),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 15,horizontal:8 ),
-                      child: Column(
-                        children: [
-
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
+                            borderRadius: BorderRadius.circular(200)),
+                        child: Container(
+                          decoration: BoxDecoration(
+                              color: ColorUtils.primary_gold,
+                              border:
+                                  Border.all(color: Colors.black, width: 10),
+                              borderRadius: BorderRadius.circular(100)),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              GestureDetector(
-                                onTap: (){
-                                  // Get.to(SignUpScreen());
-                                },
-                                child: Container(
-                                  height: 50,
-                                  decoration: BoxDecoration(
-                                    // color: Colors.black.withOpacity(0.65),
-                                      gradient: LinearGradient(
-                                        begin: Alignment.centerLeft,
-                                        end: Alignment.centerRight,
-                                        // stops: [0.1, 0.5, 0.7, 0.9],
-                                        colors: [
-                                          HexColor("#020204").withOpacity(1),
-                                          HexColor("#36393E").withOpacity(1),
-                                        ],
-                                      ),
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: HexColor('#04060F'),
-                                          offset: Offset(10,10),
-                                          blurRadius: 20,
-                                        ),
-                                      ],
-                                      borderRadius: BorderRadius.circular(10)),
-
-                                  child: Container(
-                                      alignment: Alignment.center,
-                                      margin: EdgeInsets.symmetric(),
-                                      child: Text(
-                                        'Breathing information',
-                                        style: FontStyleUtility.h15(
-                                            fontColor: HexColor('#AAAAAA'), family: 'PM'),
-                                      )),
-                                ),
+                              // IconButton(
+                              //   alignment: Alignment.center,
+                              //   // visualDensity:
+                              //   //     VisualDensity(vertical: -4, horizontal: -4),
+                              //   padding: EdgeInsets.only(left: 0.0),
+                              //   icon: Image.asset(AssetUtils.breathe_icon,
+                              //       color: Colors.black, height: 40, width: 40),
+                              //   onPressed: () {},
+                              // ),
+                              Text(
+                                _status,
+                                style: FontStyleUtility.h18(
+                                    fontColor: Colors.black, family: 'PSB'),
                               ),
-
                               Container(
-                                width: MediaQuery.of(context).size.width,
-                                decoration: BoxDecoration(
-                                  // color: Colors.black.withOpacity(0.65),
-                                  //   gradient: LinearGradient(
-                                  //     begin: Alignment.centerLeft,
-                                  //     end: Alignment.centerRight,
-                                  //     // stops: [0.1, 0.5, 0.7, 0.9],
-                                  //     colors: [
-                                  //       HexColor("#020204").withOpacity(1),
-                                  //       HexColor("#36393E").withOpacity(1),
-                                  //     ],
-                                  //   ),
-                                  //   boxShadow: [
-                                  //     BoxShadow(
-                                  //       color: HexColor('#04060F'),
-                                  //       offset: Offset(10,10),
-                                  //       blurRadius: 20,
-                                  //     ),
-                                  //   ],
-                                    borderRadius: BorderRadius.circular(10)),
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 17,vertical: 24),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Container(
-                                        child: Text(
-                                          '1. Inhale 3',
-                                          style: FontStyleUtility.h15(
-                                              fontColor: HexColor('#DCDCDC'), family: 'PR'),
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: 17,
-                                      ),
-                                      Container(
-                                        child: Text(
-                                          '2. Hold 4 sec',
-                                          style: FontStyleUtility.h15(
-                                              fontColor: HexColor('#DCDCDC'), family: 'PR'),
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: 17,
-                                      ),
-                                      Container(
-                                        child: Text(
-                                          '3. Exhale 3 sec',
-                                          style: FontStyleUtility.h15(
-                                              fontColor: HexColor('#DCDCDC'), family: 'PR'),
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: 17,
-                                      ),
-                                      Container(
-                                        child: Text(
-                                          '4. Repeat process 10 times is consider 1 set',
-                                          style: FontStyleUtility.h15(
-                                              fontColor: HexColor('#DCDCDC'), family: 'PR'),
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: 20,
-                                      ),
-                                    ],
+                                alignment: Alignment.center,
+                                child: CircleAvatar(
+                                  maxRadius: 20,
+                                  backgroundColor: Colors.black,
+                                  child: Text(
+                                    elapsedTime,
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 20,
+                                        fontFamily: 'PR',
+                                        fontWeight: FontWeight.w900),
                                   ),
                                 ),
                               ),
-                              SizedBox(height: 15,),
                             ],
                           ),
-                          GestureDetector(
-                            onTap: (){
-                              startOrStop();
+                        ),
+                      )),
 
+                  Text(('$counter/10'),
+                      style: FontStyleUtility.h25(
+                          fontColor: ColorUtils.primary_gold, family: 'PM')),
+                  SizedBox(
+                    height: 12,
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                        color: Colors.black.withOpacity(0.58),
+                        gradient: LinearGradient(
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
+                          // stops: [0.1, 0.5, 0.7, 0.9],
+                          colors: [
+                            HexColor("#020204").withOpacity(0.8),
+                            // HexColor("#151619").withOpacity(0.63),
+                            HexColor("#36393E").withOpacity(0.8),
+                          ],
+                        ),
+                        borderRadius: BorderRadius.circular(20)),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 15, horizontal: 8),
+                      child: Column(
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              if (startStop) {
+                                (sets <= 3
+                                    ? startWatch()
+                                    : CommonWidget().showErrorToaster(
+                                        msg:
+                                            "You have completed your today's sets, comback tommorow"));
+                              } else {
+                                stopWatch();
+                                setState(() {
+                                  elapsedTime = '00';
+                                  percent = 0.0;
+                                  watch.reset();
+                                  counter == 0;
+                                  // paused_time.clear();
+                                });
+                              }
+                              // startOrStop();
                             },
                             child: Container(
                               height: 65,
@@ -461,7 +594,7 @@ class _BreathingScreenState extends State<BreathingScreen>
                                   boxShadow: [
                                     BoxShadow(
                                       color: HexColor('#04060F'),
-                                      offset: Offset(10,10),
+                                      offset: Offset(10, 10),
                                       blurRadius: 20,
                                     ),
                                   ],
@@ -478,13 +611,136 @@ class _BreathingScreenState extends State<BreathingScreen>
                                   )),
                             ),
                           ),
-
+                          SizedBox(
+                            height: 15,
+                          ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              GestureDetector(
+                                onTap: () {
+                                  // Get.to(SignUpScreen());
+                                },
+                                child: Container(
+                                  height: 50,
+                                  decoration: BoxDecoration(
+                                      // color: Colors.black.withOpacity(0.65),
+                                      gradient: LinearGradient(
+                                        begin: Alignment.centerLeft,
+                                        end: Alignment.centerRight,
+                                        // stops: [0.1, 0.5, 0.7, 0.9],
+                                        colors: [
+                                          HexColor("#020204").withOpacity(1),
+                                          HexColor("#36393E").withOpacity(1),
+                                        ],
+                                      ),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: HexColor('#04060F'),
+                                          offset: Offset(10, 10),
+                                          blurRadius: 20,
+                                        ),
+                                      ],
+                                      borderRadius: BorderRadius.circular(10)),
+                                  child: Container(
+                                      alignment: Alignment.center,
+                                      margin: EdgeInsets.symmetric(),
+                                      child: Text(
+                                        'Breathing information',
+                                        style: FontStyleUtility.h15(
+                                            fontColor: HexColor('#AAAAAA'),
+                                            family: 'PM'),
+                                      )),
+                                ),
+                              ),
+                              Container(
+                                width: MediaQuery.of(context).size.width,
+                                decoration: BoxDecoration(
+                                    // color: Colors.black.withOpacity(0.65),
+                                    //   gradient: LinearGradient(
+                                    //     begin: Alignment.centerLeft,
+                                    //     end: Alignment.centerRight,
+                                    //     // stops: [0.1, 0.5, 0.7, 0.9],
+                                    //     colors: [
+                                    //       HexColor("#020204").withOpacity(1),
+                                    //       HexColor("#36393E").withOpacity(1),
+                                    //     ],
+                                    //   ),
+                                    //   boxShadow: [
+                                    //     BoxShadow(
+                                    //       color: HexColor('#04060F'),
+                                    //       offset: Offset(10,10),
+                                    //       blurRadius: 20,
+                                    //     ),
+                                    //   ],
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 17, vertical: 10),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        child: Text(
+                                          '1. Inhale 4',
+                                          style: FontStyleUtility.h15(
+                                              fontColor: HexColor('#DCDCDC'),
+                                              family: 'PR'),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 17,
+                                      ),
+                                      Container(
+                                        child: Text(
+                                          '2. Hold 4 sec',
+                                          style: FontStyleUtility.h15(
+                                              fontColor: HexColor('#DCDCDC'),
+                                              family: 'PR'),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 17,
+                                      ),
+                                      Container(
+                                        child: Text(
+                                          '3. Exhale 4 sec',
+                                          style: FontStyleUtility.h15(
+                                              fontColor: HexColor('#DCDCDC'),
+                                              family: 'PR'),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 17,
+                                      ),
+                                      Container(
+                                        child: Text(
+                                          '4. Repeat process 10 times is consider 1 set',
+                                          style: FontStyleUtility.h15(
+                                              fontColor: HexColor('#DCDCDC'),
+                                              family: 'PR'),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 20,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 15,
+                              ),
+                            ],
+                          ),
                         ],
                       ),
                     ),
                   ),
-                  SizedBox(height: 80,)
-
+                  SizedBox(
+                    height: 110,
+                  )
                 ],
               ),
             ),
@@ -503,22 +759,29 @@ class _BreathingScreenState extends State<BreathingScreen>
   }
 
   startWatch() {
+    // countdownTimer =
+    //     Timer.periodic(Duration(seconds: 1), (_) => setCountDown());
+    vibration();
     start_animation();
     setState(() {
       startStop = false;
       watch.start();
-      timer = Timer.periodic(Duration(milliseconds: 100), updateTime);
+      // startTimer();
+      timer = Timer.periodic(Duration(microseconds: 100), updateTime);
     });
   }
 
   stopWatch() {
     setState(() {
       startStop = true;
+      Vibration.cancel();
       animation_started = false;
       _animationController!.dispose();
+      _animationController_shadow1!.stop();
       watch.stop();
       percent = 0.0;
       setTime();
+      print("___________$counter");
     });
   }
 
@@ -542,4 +805,8 @@ class _BreathingScreenState extends State<BreathingScreen>
 
     return secondsStr;
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }

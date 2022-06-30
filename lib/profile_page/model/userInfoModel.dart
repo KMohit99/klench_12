@@ -34,33 +34,39 @@ class Data {
   String? id;
   String? fullName;
   String? username;
+  String? countryCode;
   String? phone;
   String? email;
   String? dob;
   String? gender;
   String? image;
+  String? levels;
   String? createdDate;
 
   Data(
       {this.id,
         this.fullName,
         this.username,
+        this.countryCode,
         this.phone,
         this.email,
         this.dob,
         this.gender,
         this.image,
+        this.levels,
         this.createdDate});
 
   Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     fullName = json['fullName'];
     username = json['username'];
+    countryCode = json['countryCode'];
     phone = json['phone'];
     email = json['email'];
     dob = json['dob'];
     gender = json['gender'];
     image = json['image'];
+    levels = json['levels'];
     createdDate = json['createdDate'];
   }
 
@@ -69,11 +75,13 @@ class Data {
     data['id'] = this.id;
     data['fullName'] = this.fullName;
     data['username'] = this.username;
+    data['countryCode'] = this.countryCode;
     data['phone'] = this.phone;
     data['email'] = this.email;
     data['dob'] = this.dob;
     data['gender'] = this.gender;
     data['image'] = this.image;
+    data['levels'] = this.levels;
     data['createdDate'] = this.createdDate;
     return data;
   }

@@ -15,6 +15,7 @@ import 'package:klench_/setting_page/qr_code/qr_code_screen.dart';
 import 'package:klench_/setting_page/refferal_link.dart';
 import 'package:klench_/setting_page/terms_conditions.dart';
 
+import '../Authentication/SignUp/controller/sign_up_controller.dart';
 import '../front_page/FrontpageScreen.dart';
 import '../utils/Asset_utils.dart';
 import '../utils/Common_buttons.dart';
@@ -206,7 +207,9 @@ class _SettingScreenState extends State<SettingScreen> {
           )),
     );
   }
-
+  final SignUpScreenController _signUpScreenController = Get.put(
+      SignUpScreenController(),
+      tag: SignUpScreenController().toString());
   logout() async {
     // await PreferenceManager().setPref(URLConstants.id, 'id');
     // await PreferenceManager().setPref(URLConstants.username, 'username');
@@ -214,6 +217,7 @@ class _SettingScreenState extends State<SettingScreen> {
     // String id_user = await PreferenceManager().getPref(URLConstants.id);
     await PreferenceManager()
         .remove();
+    _signUpScreenController.clear();
     // print(id_user);
     await Get.to(FrontScreen());
   }

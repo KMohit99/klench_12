@@ -273,8 +273,6 @@ class _ForgotScreenState extends State<ForgotScreen> {
                               Future.delayed(const Duration(seconds: 5), () async {
                                 Navigator.pop(context);
                                 await Get.to(OtpScreen());
-                                setState(() {
-                                });
                               });
                             }
                           },

@@ -3,12 +3,10 @@ import 'dart:async';
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
 import '../utils/Asset_utils.dart';
-import '../utils/Common_buttons.dart';
 import '../utils/TexrUtils.dart';
 import '../utils/TextStyle_utils.dart';
 import '../utils/colorUtils.dart';
@@ -20,8 +18,7 @@ class PeeScreen extends StatefulWidget {
   State<PeeScreen> createState() => _PeeScreenState();
 }
 
-class _PeeScreenState extends State<PeeScreen>
-    with SingleTickerProviderStateMixin {
+class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
   List urine_test_text = [
     "Doing ok, you're probably well hydrated",
     "Sample text here regarding the urine",
@@ -68,7 +65,20 @@ class _PeeScreenState extends State<PeeScreen>
 
   AnimationController? _animationController;
   Animation? _animation;
+
+  AnimationController? _animationController_button;
+  Animation? _animation_button;
+
+  // AnimationController? _animationController_textK;
+  Animation? _animation_textK;
+
+  // AnimationController? _animationController_textTime;
+  Animation? _animation_textTime;
+
   bool animation_started = false;
+  double button_height = 200;
+  double text_k_size = 100;
+  double text_time_size = 40;
 
   start_animation() {
     setState(() {
@@ -80,6 +90,54 @@ class _PeeScreenState extends State<PeeScreen>
     _animationController!.repeat(reverse: true);
     _animation = Tween(begin: 0.0, end: 25.0).animate(_animationController!)
       ..addListener(() {});
+
+    _animationController_button =
+        AnimationController(vsync: this, duration: Duration(seconds: 5));
+    _animationController_button!.forward();
+    _animation_button =
+        Tween(begin: 200.0, end: 120.0).animate(_animationController_button!)
+          ..addStatusListener((status) {
+            // print(status);
+            // if (status == AnimationStatus.completed) {
+            //   setState(() {});
+            //   _animationController_button!.reverse();
+            // } else if (status == AnimationStatus.dismissed) {
+            //   setState(() {});
+            //   _animationController_button!.forward();
+            // }
+          });
+
+    // _animationController_textK =
+    //     AnimationController(vsync: this, duration: Duration(seconds: 5));
+    // _animationController_textK!.forward();
+    _animation_textK =
+        Tween(begin: 100.0, end: 70.0).animate(_animationController_button!)
+          ..addStatusListener((status) {
+            // print(status);
+            // if (status == AnimationStatus.completed) {
+            //   setState(() {});
+            //   _animationController_button!.reverse();
+            // } else if (status == AnimationStatus.dismissed) {
+            //   setState(() {});
+            //   _animationController_button!.forward();
+            // }
+          });
+
+    // _animationController_textTime =
+    //     AnimationController(vsync: this, duration: Duration(seconds: 5));
+    // _animationController_textTime!.forward();
+    _animation_textTime =
+        Tween(begin: 40.0, end: 25.0).animate(_animationController_button!)
+          ..addStatusListener((status) {
+            // print(status);
+            // if (status == AnimationStatus.completed) {
+            //   setState(() {});
+            //   _animationController_button!.reverse();
+            // } else if (status == AnimationStatus.dismissed) {
+            //   setState(() {});
+            //   _animationController_button!.forward();
+            // }
+          });
   }
 
   @override
@@ -104,8 +162,9 @@ class _PeeScreenState extends State<PeeScreen>
           //     fit: BoxFit.cover,
           //   ),
           // ),
-          decoration: (back_wallpaper
-              ? BoxDecoration(
+          decoration:
+          // (back_wallpaper ?
+          BoxDecoration(
                   // gradient: LinearGradient(
                   //   begin: Alignment.topCenter,
                   //   end: Alignment.bottomCenter,
@@ -125,14 +184,14 @@ class _PeeScreenState extends State<PeeScreen>
                     ),
                   ),
                 )
-              : BoxDecoration()),
+              // : BoxDecoration()),
         ),
         Scaffold(
           backgroundColor: Colors.transparent,
           appBar: AppBar(
             backgroundColor: Colors.transparent,
             automaticallyImplyLeading: false,
-            leading:GestureDetector(
+            leading: GestureDetector(
               onTap: () {
                 Navigator.pop(context);
               },
@@ -190,18 +249,24 @@ class _PeeScreenState extends State<PeeScreen>
                         print('helllllllooooooooooooooo');
                         // startOrStop();
                       },
-                      child: CircularPercentIndicator(
-                        circularStrokeCap: CircularStrokeCap.round,
-                        percent: percent / 100,
-                        animation: true,
-                        animateFromLastPercent: true,
-                        radius: 61,
-                        lineWidth: 0,
-                        progressColor: Colors.transparent,
-                        backgroundColor: Colors.transparent,
-                        center: Container(
-                          height: 125,
-                          width: 125,
+                      child:
+                      // CircularPercentIndicator(
+                      //   circularStrokeCap: CircularStrokeCap.round,
+                      //   percent: percent / 100,
+                      //   animation: true,
+                      //   animateFromLastPercent: true,
+                      //   radius: 61,
+                      //   lineWidth: 0,
+                      //   progressColor: Colors.transparent,
+                      //   backgroundColor: Colors.transparent,
+                      //   center:
+                        Container(
+                          height: (animation_started
+                              ? _animation_button!.value
+                              : button_height),
+                          width: (animation_started
+                              ? _animation_button!.value
+                              : button_height),
                           decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               image: DecorationImage(
@@ -209,7 +274,9 @@ class _PeeScreenState extends State<PeeScreen>
                                   image: AssetImage(AssetUtils.home_button)),
                               boxShadow: [
                                 BoxShadow(
-                                  color:(animation_started ?  HexColor('#F5C921') : Colors.transparent),
+                                  color: (animation_started
+                                      ? HexColor('#F5C921')
+                                      : Colors.transparent),
                                   blurRadius: (animation_started
                                       ? _animation!.value
                                       : 0),
@@ -227,7 +294,9 @@ class _PeeScreenState extends State<PeeScreen>
                                   style: TextStyle(
                                       color:
                                           HexColor('#F5C921').withOpacity(0.2),
-                                      fontSize: 70,
+                                      fontSize: (animation_started
+                                          ? _animation_textK!.value
+                                          : text_k_size),
                                       fontWeight: FontWeight.w600),
                                 ),
                               ),
@@ -237,14 +306,16 @@ class _PeeScreenState extends State<PeeScreen>
                                   elapsedTime,
                                   style: TextStyle(
                                       color: Colors.white,
-                                      fontSize: 25,
+                                      fontSize: (animation_started
+                                          ? _animation_textTime!.value
+                                          : text_time_size),
                                       fontWeight: FontWeight.w900),
                                 ),
                               ),
                             ],
                           ),
                         ),
-                      ),
+                      // ),
                     ),
                     glowColor: Colors.white,
                   ),
@@ -263,6 +334,9 @@ class _PeeScreenState extends State<PeeScreen>
                           elapsedTime = '00:00';
                           percent = 0.0;
                           back_wallpaper = true;
+                          button_height = 120;
+                          text_k_size = 70;
+                          text_time_size = 25;
                           watch.reset();
                           // paused_time.clear();
                         });

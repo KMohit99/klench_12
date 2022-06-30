@@ -21,7 +21,8 @@ class WarmUpScreen extends StatefulWidget {
   State<WarmUpScreen> createState() => _WarmUpScreenState();
 }
 
-class _WarmUpScreenState extends State<WarmUpScreen> with SingleTickerProviderStateMixin {
+class _WarmUpScreenState extends State<WarmUpScreen>
+    with TickerProviderStateMixin {
   Stopwatch watch = Stopwatch();
   Timer? timer;
   bool startStop = true;
@@ -44,7 +45,6 @@ class _WarmUpScreenState extends State<WarmUpScreen> with SingleTickerProviderSt
       }
     }
   }
-
 
   bool back_wallpaper = false;
 
@@ -73,24 +73,86 @@ class _WarmUpScreenState extends State<WarmUpScreen> with SingleTickerProviderSt
 
   AnimationController? _animationController;
   Animation? _animation;
+
+  AnimationController? _animationController_button;
+  Animation? _animation_button;
+
+  // AnimationController? _animationController_textK;
+  Animation? _animation_textK;
+
+  // AnimationController? _animationController_textTime;
+  Animation? _animation_textTime;
+
   bool animation_started = false;
+  double button_height = 200;
+  double text_k_size = 100;
+  double text_time_size = 35;
 
   start_animation() {
-    setState((){
+    setState(() {
       animation_started = true;
       print(animation_started);
     });
     _animationController =
         AnimationController(vsync: this, duration: Duration(seconds: 1));
     _animationController!.repeat(reverse: true);
-    _animation = Tween(begin: 0.0, end: 25.0)
-        .animate(_animationController!)
-      ..addListener(() {
-      });
+    _animation = Tween(begin: 0.0, end: 25.0).animate(_animationController!)
+      ..addListener(() {});
+
+    _animationController_button =
+        AnimationController(vsync: this, duration: Duration(seconds: 5));
+    _animationController_button!.forward();
+    _animation_button =
+        Tween(begin: 200.0, end: 120.0).animate(_animationController_button!)
+          ..addStatusListener((status) {
+            // print(status);
+            // if (status == AnimationStatus.completed) {
+            //   setState(() {});
+            //   _animationController_button!.reverse();
+            // } else if (status == AnimationStatus.dismissed) {
+            //   setState(() {});
+            //   _animationController_button!.forward();
+            // }
+          });
+
+    // _animationController_textK =
+    //     AnimationController(vsync: this, duration: Duration(seconds: 5));
+    // _animationController_textK!.forward();
+    _animation_textK =
+        Tween(begin: 100.0, end: 70.0).animate(_animationController_button!)
+          ..addStatusListener((status) {
+            // print(status);
+            // if (status == AnimationStatus.completed) {
+            //   setState(() {});
+            //   _animationController_button!.reverse();
+            // } else if (status == AnimationStatus.dismissed) {
+            //   setState(() {});
+            //   _animationController_button!.forward();
+            // }
+          });
+
+    // _animationController_textTime =
+    //     AnimationController(vsync: this, duration: Duration(seconds: 5));
+    // _animationController_textTime!.forward();
+    _animation_textTime =
+        Tween(begin: 40.0, end: 25.0).animate(_animationController_button!)
+          ..addStatusListener((status) {
+            // print(status);
+            // if (status == AnimationStatus.completed) {
+            //   setState(() {});
+            //   _animationController_button!.reverse();
+            // } else if (status == AnimationStatus.dismissed) {
+            //   setState(() {});
+            //   _animationController_button!.forward();
+            // }
+          });
   }
+
   @override
   dispose() {
-    _animationController!.dispose(); // you need this
+    _animationController!.dispose();
+    _animationController_button!.dispose();
+// you need this
     super.dispose();
   }
 
@@ -111,27 +173,29 @@ class _WarmUpScreenState extends State<WarmUpScreen> with SingleTickerProviderSt
           //     fit: BoxFit.cover,
           //   ),
           // ),
-          decoration: (back_wallpaper ?
+          decoration:
+          // (back_wallpaper ?
           BoxDecoration(
-            // gradient: LinearGradient(
-            //   begin: Alignment.topCenter,
-            //   end: Alignment.bottomCenter,
-            //   // stops: [0.1, 0.5, 0.7, 0.9],
-            //   colors: [
-            //     HexColor("#000000").withOpacity(0.86),
-            //     HexColor("#000000").withOpacity(0.81),
-            //     HexColor("#000000").withOpacity(0.44),
-            //     HexColor("#000000").withOpacity(1),
-            //
-            //   ],
-            // ),
-            image: DecorationImage(
-              fit: BoxFit.fill,
-              image: AssetImage(
-                AssetUtils.w_screen_back,
-              ),
-            ),
-          ) : BoxDecoration()),
+                  // gradient: LinearGradient(
+                  //   begin: Alignment.topCenter,
+                  //   end: Alignment.bottomCenter,
+                  //   // stops: [0.1, 0.5, 0.7, 0.9],
+                  //   colors: [
+                  //     HexColor("#000000").withOpacity(0.86),
+                  //     HexColor("#000000").withOpacity(0.81),
+                  //     HexColor("#000000").withOpacity(0.44),
+                  //     HexColor("#000000").withOpacity(1),
+                  //
+                  //   ],
+                  // ),
+                  image: DecorationImage(
+                    fit: BoxFit.fill,
+                    image: AssetImage(
+                      AssetUtils.w_screen_back,
+                    ),
+                  ),
+                )
+              // : BoxDecoration()),
         ),
         Scaffold(
           backgroundColor: Colors.transparent,
@@ -198,44 +262,44 @@ class _WarmUpScreenState extends State<WarmUpScreen> with SingleTickerProviderSt
                   SizedBox(
                     height: 15,
                   ),
-                  AvatarGlow(
-                    endRadius: 100.0,
-                    showTwoGlows: true,
-                    animate: false,
-                    // (startStop ? false : true),
-                    duration: Duration(milliseconds: 900),
-                    repeat: true,
-                    child: GestureDetector(
-                      onTap: () {
-                        print('helllllllooooooooooooooo');
-                        // startOrStop();
-                      },
-                      child: CircularPercentIndicator(
-                        circularStrokeCap: CircularStrokeCap.round,
-                        percent: percent / 100,
-                        animation: true,
-                        animateFromLastPercent: true,
-                        radius: 62,
-                        lineWidth: 0,
-                        progressColor: Colors.transparent,
-                        backgroundColor: Colors.transparent,
-                        center: Container(
-                          height: 125,
-                          width: 125,
+                  Container(
+                    child: AvatarGlow(
+                      endRadius: 100.0,
+                      showTwoGlows: true,
+                      animate: false,
+                      // (startStop ? false : true),
+                      duration: Duration(milliseconds: 900),
+                      repeat: true,
+                      child: GestureDetector(
+                        onTap: () {
+                          print('helllllllooooooooooooooo');
+                          // startOrStop();
+                        },
+                        child: Container(
+                          height: (animation_started
+                              ? _animation_button!.value
+                              : button_height),
+                          width: (animation_started
+                              ? _animation_button!.value
+                              : button_height),
                           decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               image: DecorationImage(
-                                alignment: Alignment
-                                    .center,
-                                image: AssetImage(AssetUtils.home_button)),
+                                  alignment: Alignment.center,
+                                  image: AssetImage(AssetUtils.home_button)),
                               boxShadow: [
                                 BoxShadow(
-                                  color:(animation_started? HexColor('#409C46') : Colors.transparent),
-                                  blurRadius: (animation_started?_animation!.value : 0),
-                                  spreadRadius: (animation_started ?_animation!.value: 0),
+                                  color: (animation_started
+                                      ? HexColor('#409C46')
+                                      : Colors.transparent),
+                                  blurRadius: (animation_started
+                                      ? _animation!.value
+                                      : 0),
+                                  spreadRadius: (animation_started
+                                      ? _animation!.value
+                                      : 0),
                                 )
-                              ]
-                          ),
+                              ]),
                           child: Stack(
                             children: [
                               Container(
@@ -245,7 +309,9 @@ class _WarmUpScreenState extends State<WarmUpScreen> with SingleTickerProviderSt
                                   style: TextStyle(
                                       color:
                                           HexColor('#409C46').withOpacity(0.4),
-                                      fontSize: 70,
+                                      fontSize: (animation_started
+                                          ? _animation_textK!.value
+                                          : text_k_size),
                                       fontWeight: FontWeight.w600),
                                 ),
                               ),
@@ -255,13 +321,15 @@ class _WarmUpScreenState extends State<WarmUpScreen> with SingleTickerProviderSt
                                   ('$seconds' == '3'
                                       ? 'Ready'
                                       : ('$seconds' == '2'
-                                      ? 'Set'
-                                      : ('$seconds' == '1'
-                                      ? 'Warm Up'
-                                      : elapsedTime))),
+                                          ? 'Set'
+                                          : ('$seconds' == '1'
+                                              ? 'Warm Up'
+                                              : elapsedTime))),
                                   style: TextStyle(
                                       color: Colors.white,
-                                      fontSize: 25,
+                                      fontSize: (animation_started
+                                          ? _animation_textTime!.value
+                                          : text_time_size),
                                       fontWeight: FontWeight.w900),
                                 ),
                               ),
@@ -269,8 +337,8 @@ class _WarmUpScreenState extends State<WarmUpScreen> with SingleTickerProviderSt
                           ),
                         ),
                       ),
+                      glowColor: Colors.white,
                     ),
-                    glowColor: Colors.white,
                   ),
                   SizedBox(
                     height: 28,
@@ -278,7 +346,7 @@ class _WarmUpScreenState extends State<WarmUpScreen> with SingleTickerProviderSt
                   GestureDetector(
                     onTap: () async {
                       if (started) {
-                      startTimer();
+                        startTimer();
                         Future.delayed(Duration(seconds: 3), () {
                           start_animation();
                           startWatch();
@@ -289,6 +357,9 @@ class _WarmUpScreenState extends State<WarmUpScreen> with SingleTickerProviderSt
                           elapsedTime = '00:00';
                           percent = 0.0;
                           back_wallpaper = true;
+                          button_height = 120;
+                          text_k_size = 70;
+                          text_time_size = 25;
                           watch.reset();
                           // paused_time.clear();
                         });
@@ -354,7 +425,6 @@ class _WarmUpScreenState extends State<WarmUpScreen> with SingleTickerProviderSt
                       children: [
                         Container(
                           margin: EdgeInsets.only(top: 8, left: 27),
-
                           child: Text(
                             'What to do before sex?',
                             style: FontStyleUtility.h16(
@@ -362,7 +432,6 @@ class _WarmUpScreenState extends State<WarmUpScreen> with SingleTickerProviderSt
                                 family: 'PR'),
                           ),
                         ),
-
                         SizedBox(
                           height: 12,
                         ),
@@ -375,7 +444,8 @@ class _WarmUpScreenState extends State<WarmUpScreen> with SingleTickerProviderSt
                                 child: Text(
                                   'Sample text from admin ',
                                   style: FontStyleUtility.h16(
-                                      fontColor: HexColor('#DCDCDC'), family: 'PR'),
+                                      fontColor: HexColor('#DCDCDC'),
+                                      family: 'PR'),
                                 ),
                               ),
                               SizedBox(
@@ -385,7 +455,8 @@ class _WarmUpScreenState extends State<WarmUpScreen> with SingleTickerProviderSt
                                 child: Text(
                                   'Admin will put the text here',
                                   style: FontStyleUtility.h16(
-                                      fontColor: HexColor('#DCDCDC'), family: 'PR'),
+                                      fontColor: HexColor('#DCDCDC'),
+                                      family: 'PR'),
                                 ),
                               ),
                               SizedBox(
@@ -395,7 +466,8 @@ class _WarmUpScreenState extends State<WarmUpScreen> with SingleTickerProviderSt
                                 child: Text(
                                   'Sample text from admin',
                                   style: FontStyleUtility.h16(
-                                      fontColor: HexColor('#DCDCDC'), family: 'PR'),
+                                      fontColor: HexColor('#DCDCDC'),
+                                      family: 'PR'),
                                 ),
                               ),
                               SizedBox(
@@ -405,7 +477,8 @@ class _WarmUpScreenState extends State<WarmUpScreen> with SingleTickerProviderSt
                                 child: Text(
                                   'Admin will put the text here',
                                   style: FontStyleUtility.h16(
-                                      fontColor: HexColor('#DCDCDC'), family: 'PR'),
+                                      fontColor: HexColor('#DCDCDC'),
+                                      family: 'PR'),
                                 ),
                               ),
                               SizedBox(

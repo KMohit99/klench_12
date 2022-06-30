@@ -1,12 +1,15 @@
+import 'dart:convert';
 import 'dart:io';
 import 'dart:ui';
 
+import 'package:age_calculator/age_calculator.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:http/http.dart' as http;
 
 import '../../front_page/FrontpageScreen.dart';
 import '../../utils/Asset_utils.dart';
@@ -14,12 +17,14 @@ import '../../utils/Common_buttons.dart';
 import '../../utils/Common_container_color.dart';
 import '../../utils/Common_textfeild.dart';
 import '../../utils/TextStyle_utils.dart';
+import '../../utils/UrlConstrant.dart';
 import '../../utils/colorUtils.dart';
 import 'package:intl/intl.dart';
 
 import '../../utils/common_widgets.dart';
 import 'Otp_verification.dart';
 import 'controller/sign_up_controller.dart';
+import 'model/checkUserModel.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({Key? key}) : super(key: key);
@@ -38,6 +43,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       tag: SignUpScreenController().toString());
 
   DateTime selectedDate = DateTime.now();
+  DateDuration? duration;
 
   selectDoB(BuildContext context) async {
     final DateTime? selected = await showDatePicker(
@@ -66,7 +72,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
         );
       },
     );
-    if (selected != null && selected != selectedDate) {
+    duration = AgeCalculator.age(selected!);
+    print('Your age is $duration');
+
+    setState(() {
+      (duration!.years <= 50
+          ? _signUpScreenController.level = 'Normal'
+          : _signUpScreenController.level = 'Easy');
+    });
+
+    print(_signUpScreenController.level);
+
+    if (selected != selectedDate) {
       setState(() {
         _signUpScreenController.date_birth =
             DateFormat('MM-dd-yyyy').format(selected).toString();
@@ -202,14 +219,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                                             .selected_gender =
                                                         val as String?;
                                                     _signUpScreenController
-                                                        .selected_gender =
-                                                    gender_list[index];
+                                                            .selected_gender =
+                                                        gender_list[index];
                                                     _signUpScreenController
-                                                        .genderController.text =
-                                                    _signUpScreenController
-                                                        .selected_gender!;
+                                                            .genderController
+                                                            .text =
+                                                        _signUpScreenController
+                                                            .selected_gender!;
                                                     Navigator.pop(context);
-
                                                   });
                                                 },
                                               ),
@@ -374,8 +391,32 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               ),
                               onPressed: () {},
                             ),
+                            onChanged: (value) {
+                              value = _signUpScreenController.usernameController.text;
+                              CheckUserName(context);
+                              setState(() {});
+                            },
+                            // errorText: checkUserModel!.message,
+                            tap: () {
+                              CheckUserName(context);
+                            },
                           ),
                         ),
+                        (username_error == false
+                            ? Container(
+                          margin: const EdgeInsets.symmetric(
+                              horizontal: 0, vertical: 0),
+                          alignment: Alignment.centerRight,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 1.0, horizontal: 5),
+                            child: Text(
+                              checkUserModel!.message!,
+                              style: TextStyle(color: Colors.red,fontFamily : 'PR'),
+                            ),
+                          ),
+                        )
+                            : SizedBox.shrink()),
                         SizedBox(
                           height: 15,
                         ),
@@ -523,8 +564,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               child: CountryCodePicker(
                                 onChanged: (country) {
                                   setState(() {
-                                    _signUpScreenController.dialCodedigits = country.dialCode!;
-                                    print(_signUpScreenController.dialCodedigits);
+                                    _signUpScreenController.dialCodedigits =
+                                        country.dialCode!;
+                                    print(
+                                        _signUpScreenController.dialCodedigits);
                                   });
                                 },
                                 initialSelection: "IN",
@@ -539,11 +582,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 favorite: ["+1", "US", "+91", "IN"],
                                 barrierColor: Colors.white,
                                 backgroundColor: Colors.black,
-                                dialogSize: Size.fromHeight(screenHeight/2),
+                                dialogSize: Size.fromHeight(screenHeight / 2),
                               ),
                             ),
                             Container(
-                                width: 10,),
+                              width: 10,
+                            ),
                             Expanded(
                               child: Container(
                                 child: CommonTextFormField(
@@ -561,11 +605,35 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                     ),
                                     onPressed: () {},
                                   ),
+                                  onChanged: (value) {
+                                    value = _signUpScreenController.phoneController.text;
+                                    CheckPhoneName(context);
+                                    setState(() {});
+                                  },
+                                  // errorText: checkUserModel!.message,
+                                  tap: () {
+                                    CheckPhoneName(context);
+                                  },
                                 ),
                               ),
                             ),
                           ],
                         ),
+                        (phone_error == false
+                            ? Container(
+                          margin: const EdgeInsets.symmetric(
+                              horizontal: 0, vertical: 0),
+                          alignment: Alignment.centerRight,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 1.0, horizontal: 5),
+                            child: Text(
+                              checkPhoneModel!.message!,
+                              style: TextStyle(color: Colors.red,fontFamily : 'PR'),
+                            ),
+                          ),
+                        )
+                            : SizedBox.shrink()),
                         SizedBox(
                           height: 15,
                         ),
@@ -584,8 +652,32 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               ),
                               onPressed: () {},
                             ),
+                            onChanged: (value) {
+                              value = _signUpScreenController.emailController.text;
+                              CheckEmailName(context);
+                              setState(() {});
+                            },
+                            // errorText: checkUserModel!.message,
+                            tap: () {
+                              CheckEmailName(context);
+                            },
                           ),
                         ),
+                        (email_error == false
+                            ? Container(
+                          margin: const EdgeInsets.symmetric(
+                              horizontal: 0, vertical: 0),
+                          alignment: Alignment.centerRight,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 1.0, horizontal: 5),
+                            child: Text(
+                              checkEmailModel!.message!,
+                              style: TextStyle(color: Colors.red,fontFamily : 'PR'),
+                            ),
+                          ),
+                        )
+                            : SizedBox.shrink()),
                         SizedBox(
                           height: 15,
                         ),
@@ -845,27 +937,43 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
                 common_button_gold(
                   onTap: () async {
-                    if (!reg.hasMatch(
-                        _signUpScreenController.emailController.text)) {
-                      CommonWidget()
-                          .showErrorToaster(msg: "Invalid Email Address");
-                      return;
+
+                    if (username_error == true &&
+                        email_error == true &&
+                        phone_error == true){
+                      if (value == false) {
+                        CommonWidget().showErrorToaster(
+                            msg: "Please agree Terms and Conditions");
+                        return;
+                      }
+                      if (!reg.hasMatch(
+                          _signUpScreenController.emailController.text)) {
+                        CommonWidget()
+                            .showErrorToaster(msg: "Invalid Email Address");
+                        return;
+                      }
+
+                      if (_signUpScreenController.passwordController.text !=
+                          _signUpScreenController
+                              .confirmPasswordController.text) {
+                        CommonWidget()
+                            .showErrorToaster(msg: "Password doesn't match");
+                        return;
+                      }
+                      if (_signUpScreenController.phoneController.text.length <
+                          10) {
+                        CommonWidget()
+                            .showErrorToaster(msg: "Enter valid number");
+                        return;
+                      }
+                      // if (_signUpScreenController.imgFile == null ) {
+                      //   CommonWidget()
+                      //       .showErrorToaster(msg: "Please upload Profile image");
+                      //   return;
+                      // }
+                      await _signUpScreenController.SendOtpAPi(context: context);
                     }
 
-                    if (_signUpScreenController.passwordController.text !=
-                        _signUpScreenController
-                            .confirmPasswordController.text) {
-                      CommonWidget()
-                          .showErrorToaster(msg: "Password doesn't match");
-                      return;
-                    }
-                    if (_signUpScreenController.phoneController.text.length <
-                        10) {
-                      CommonWidget()
-                          .showErrorToaster(msg: "Enter valid number");
-                      return;
-                    }
-                    await _signUpScreenController.SendOtpAPi(context: context);
                   },
                   title_text: 'Next',
                 ),
@@ -895,5 +1003,137 @@ class _SignUpScreenState extends State<SignUpScreen> {
     setState(() {
       _signUpScreenController.imgFile = File(imgCamera!.path);
     });
+  }
+
+  CheckUserModel? checkUserModel;
+  CheckUserModel? checkEmailModel;
+  CheckUserModel? checkPhoneModel;
+  bool username_error = true;
+  bool email_error = true;
+  bool phone_error = true;
+
+  Future<dynamic> CheckUserName(BuildContext context) async {
+    debugPrint('0-0-0-0-0-0-0 username');
+    Map data = {
+      'username': _signUpScreenController.usernameController.text,
+    };
+    // String body = json.encode(data);
+
+    var url = (URLConstants.base_url + URLConstants.CheckUserApi);
+    print("url : $url");
+    print("body : $data");
+
+    var response = await http.post(
+      Uri.parse(url),
+      body: data,
+    );
+    print(response.body);
+    print(response.request);
+    print(response.statusCode);
+    // var final_data = jsonDecode(response.body);
+
+    // print('final data $final_data');
+
+    if (response.statusCode == 200) {
+      var data = jsonDecode(response.body);
+      checkUserModel = CheckUserModel.fromJson(data);
+      print(checkUserModel);
+      setState(() {
+        username_error = checkUserModel!.error!;
+      });
+      if (checkUserModel!.error == false) {
+        setState(() {});
+        // Get.to(CreatorOtpVerification());
+        // Get.to(OtpScreen(received_otp: otpModel!.user![0].body!,));
+      } else {
+        print('Please try again');
+      }
+    } else {
+      print('Please try again');
+    }
+  }
+
+  Future<dynamic> CheckEmailName(BuildContext context) async {
+    debugPrint('0-0-0-0-0-0-0 username');
+    Map data = {
+      'email': _signUpScreenController.emailController.text,
+    };
+    print(data);
+    // String body = json.encode(data);
+
+    var url = (URLConstants.base_url + URLConstants.CheckUserApi);
+    print("url : $url");
+    print("body : $data");
+
+    var response = await http.post(
+      Uri.parse(url),
+      body: data,
+    );
+    print(response.body);
+    print(response.request);
+    print(response.statusCode);
+    // var final_data = jsonDecode(response.body);
+
+    // print('final data $final_data');
+
+    if (response.statusCode == 200) {
+      var data = jsonDecode(response.body);
+      checkEmailModel = CheckUserModel.fromJson(data);
+      print(checkEmailModel);
+      setState(() {
+        email_error = checkEmailModel!.error!;
+      });
+      if (checkEmailModel!.error == false) {
+        setState(() {});
+        // Get.to(CreatorOtpVerification());
+        // Get.to(OtpScreen(received_otp: otpModel!.user![0].body!,));
+      } else {
+        print('Please try again');
+      }
+    } else {
+      print('Please try again');
+    }
+  }
+
+  Future<dynamic> CheckPhoneName(BuildContext context) async {
+    debugPrint('0-0-0-0-0-0-0 username');
+    Map data = {
+      'phone': _signUpScreenController.phoneController.text,
+    };
+    print(data);
+    // String body = json.encode(data);
+
+    var url = (URLConstants.base_url + URLConstants.CheckUserApi);
+    print("url : $url");
+    print("body : $data");
+
+    var response = await http.post(
+      Uri.parse(url),
+      body: data,
+    );
+    print(response.body);
+    print(response.request);
+    print(response.statusCode);
+    // var final_data = jsonDecode(response.body);
+
+    // print('final data $final_data');
+
+    if (response.statusCode == 200) {
+      var data = jsonDecode(response.body);
+      checkPhoneModel = CheckUserModel.fromJson(data);
+      print(checkPhoneModel);
+      setState(() {
+        phone_error = checkPhoneModel!.error!;
+      });
+      if (checkPhoneModel!.error == false) {
+        setState(() {});
+        // Get.to(CreatorOtpVerification());
+        // Get.to(OtpScreen(received_otp: otpModel!.user![0].body!,));
+      } else {
+        print('Please try again');
+      }
+    } else {
+      print('Please try again');
+    }
   }
 }

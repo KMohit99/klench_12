@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:ui';
 
+import 'package:country_code_picker/country_code_picker.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
@@ -38,10 +39,10 @@ class ProfilePageScreen extends StatefulWidget {
 }
 
 class _ProfilePageScreenState extends State<ProfilePageScreen> {
-  int selectedCard = -1;
+  int selectedCard = 0;
   int infin = 0x221E;
 
-  List difficulty = ['very easy', 'easy', 'normal', 'hard', 'ထ'];
+  List difficulty = ['Very Easy', 'Easy', 'Normal', 'Hard', 'ထ'];
   List<String> gender_list = <String>['Male', 'Female', 'Prefer not say'];
   String? selected_gender;
 
@@ -375,11 +376,8 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
                                                       offset: Offset(5, 5),
                                                       blurRadius: 6)
                                                 ]),
-                                            child: (
-                                                        userInfoModel!
-                                                        .data![0]
-                                                        .image ==
-                                                    null
+                                            child: (userInfoModel!
+                                                    .data![0].image!.isEmpty
                                                 ? Image.asset(
                                                     AssetUtils.user_icon2,
                                                     height: 100,
@@ -635,22 +633,90 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
                                       height: 15,
                                     ),
                                     Container(
-                                      child: CommonTextFormField(
-                                        controller: _profile_page_controller
-                                            .phoneNumberController,
-                                        labelText: Textutils.phone_,
-                                        readOnly: editable,
-                                        iconData: IconButton(
-                                          visualDensity: VisualDensity(
-                                              horizontal: -4, vertical: -4),
-                                          icon: Image.asset(
-                                            AssetUtils.mobile_icons,
-                                            height: 17,
-                                            color: HexColor("#606060"),
-                                            width: 15,
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                            decoration: BoxDecoration(
+                                                // color: Colors.black.withOpacity(0.65),
+                                                gradient: LinearGradient(
+                                                  begin: Alignment.centerLeft,
+                                                  end: Alignment.centerRight,
+                                                  // stops: [0.1, 0.5, 0.7, 0.9],
+                                                  colors: [
+                                                    HexColor("#36393E")
+                                                        .withOpacity(1),
+                                                    HexColor("#020204")
+                                                        .withOpacity(1),
+                                                  ],
+                                                ),
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                    color: HexColor('#04060F'),
+                                                    offset: Offset(10, 10),
+                                                    blurRadius: 20,
+                                                  ),
+                                                ],
+                                                borderRadius:
+                                                    BorderRadius.circular(10)),
+                                            child: CountryCodePicker(
+                                              onChanged: (country) {
+                                                setState(() {
+                                                  _profile_page_controller
+                                                          .dialCodedigits =
+                                                      country.dialCode!;
+                                                  print(_profile_page_controller
+                                                      .dialCodedigits);
+                                                });
+                                              },
+                                              initialSelection:
+                                                  _profile_page_controller
+                                                      .dialCodedigits,
+                                              textStyle: FontStyleUtility.h15(
+                                                  fontColor:
+                                                      ColorUtils.primary_gold,
+                                                  family: 'PM'),
+                                              showCountryOnly: false,
+                                              showFlagMain: false,
+                                              padding: EdgeInsets.zero,
+                                              showFlag: true,
+                                              showOnlyCountryWhenClosed: false,
+                                              favorite: [
+                                                "+1",
+                                                "US",
+                                                "+91",
+                                                "IN"
+                                              ],
+                                              barrierColor: Colors.white,
+                                              backgroundColor: Colors.black,
+                                              dialogSize: Size.fromHeight(
+                                                  screenHeight / 2),
+                                            ),
                                           ),
-                                          onPressed: () {},
-                                        ),
+                                          Container(
+                                            width: 10,
+                                          ),
+                                          Expanded(
+                                            child: CommonTextFormField(
+                                              controller:
+                                                  _profile_page_controller
+                                                      .phoneNumberController,
+                                              labelText: Textutils.phone_,
+                                              readOnly: editable,
+                                              iconData: IconButton(
+                                                visualDensity: VisualDensity(
+                                                    horizontal: -4,
+                                                    vertical: -4),
+                                                icon: Image.asset(
+                                                  AssetUtils.mobile_icons,
+                                                  height: 17,
+                                                  color: HexColor("#606060"),
+                                                  width: 15,
+                                                ),
+                                                onPressed: () {},
+                                              ),
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ),
                                     SizedBox(
@@ -918,10 +984,10 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
                                               (BuildContext ctx, index) {
                                             return GestureDetector(
                                               onTap: () {
-                                                setState(() {
-                                                  // ontap of each card, set the defined int to the grid view index
-                                                  selectedCard = index;
-                                                });
+                                                // setState(() {
+                                                //   // ontap of each card, set the defined int to the grid view index
+                                                //   selectedCard = index;
+                                                // });
                                               },
                                               child: SizedBox(
                                                 child: Container(
@@ -957,8 +1023,7 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
                                                         ),
                                                       ],
                                                       borderRadius:
-                                                          BorderRadius.circular(
-                                                              15)),
+                                                          BorderRadius.circular(15)),
                                                   child: Container(
                                                     alignment: Alignment.center,
                                                     child: Text(
@@ -1035,6 +1100,7 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
   bool isuserinfoLoading = true;
   UserInfoModel? userInfoModel;
   var getUSerModelList = UserInfoModel().obs;
+  int? level_rank;
 
   Future<dynamic> GetUserInfo({required BuildContext context}) async {
     print('Inside creator get email');
@@ -1065,10 +1131,15 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
       if (userInfoModel!.error == false) {
         debugPrint(
             '2-2-2-2-2-2 Inside the Get UserInfo Controller Details ${userInfoModel!.data!.length}');
+        await PreferenceManager()
+            .setPref(URLConstants.levels, userInfoModel!.data![0].levels!);
+
         _profile_page_controller.nameController.text =
             userInfoModel!.data![0].username!;
         _profile_page_controller.FullnameController.text =
             userInfoModel!.data![0].fullName!;
+        _profile_page_controller.dialCodedigits =
+            userInfoModel!.data![0].countryCode!;
         _profile_page_controller.phoneNumberController.text =
             userInfoModel!.data![0].phone!;
         _profile_page_controller.emailAddressController.text =
@@ -1078,8 +1149,24 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
         _profile_page_controller.genderController.text =
             userInfoModel!.data![0].gender!;
 
+        (userInfoModel!.data![0].levels == 'Very Easy'
+            ? level_rank = 0
+            : (userInfoModel!.data![0].levels == 'Easy'
+                ? level_rank = 1
+                : (userInfoModel!.data![0].levels == 'Normal'
+                    ? level_rank = 2
+                    : (userInfoModel!.data![0].levels == 'Hard'
+                        ? level_rank = 3
+                        : (userInfoModel!.data![0].levels == 'ထ'
+                            ? level_rank = 4
+                            : level_rank = 0)))));
+
+        print("Level : ${userInfoModel!.data![0].levels}");
+        print('Rank level : $level_rank');
+
         setState(() {
           isuserinfoLoading = false;
+          selectedCard = level_rank!;
         }); // CommonWidget().showToaster(msg: data["success"].toString());
         // hideLoader(context);
         return userInfoModel;

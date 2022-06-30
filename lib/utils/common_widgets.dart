@@ -4,6 +4,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 class CommonWidget {
   showToaster({required String msg}) => Fluttertoast.showToast(
+    timeInSecForIosWeb: 4,
     msg: msg.toString(),
     textColor: Colors.white,
     backgroundColor: Colors.black,
@@ -12,6 +13,7 @@ class CommonWidget {
   );
 
   showErrorToaster({required String msg}) => Fluttertoast.showToast(
+    timeInSecForIosWeb: 4,
     msg: msg.toString(),
     textColor: Colors.white,
     backgroundColor: Colors.red,

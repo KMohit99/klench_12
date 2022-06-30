@@ -35,7 +35,8 @@ class ForgotPasswordController extends GetxController {
     // username,phone,email,dob,gender,password,image
     Map data = {
       'email': emailAddressController.text,
-      'phone': dialCodedigits +  MobilenoController.text,
+      'phone':  MobilenoController.text,
+      'countryCode': dialCodedigits ,
     };
     print(data);
     // String body = json.encode(data);

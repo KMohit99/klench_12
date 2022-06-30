@@ -25,10 +25,10 @@ class VerifyOtp extends StatefulWidget {
 class _VerifyOtpState extends State<VerifyOtp> {
   final FocusNode _pinOTPFocus = FocusNode();
   String? varification;
+  bool resend_otp = true;
   final SignUpScreenController _signUpScreenController = Get.put(
       SignUpScreenController(),
       tag: SignUpScreenController().toString());
-
 
   final BoxDecoration pinOTPDecoration = BoxDecoration(
 // color: Colors.black.withOpacity(0.65),
@@ -55,9 +55,10 @@ class _VerifyOtpState extends State<VerifyOtp> {
       ],
       borderRadius: BorderRadius.circular(6));
   Timer? countdownTimer;
-  Duration myDuration = Duration(seconds: 30);
+  Duration? myDuration;
 
   void startTimer() {
+    myDuration = Duration(seconds: 30);
     countdownTimer =
         Timer.periodic(Duration(seconds: 1), (_) => setCountDown());
   }
@@ -65,9 +66,10 @@ class _VerifyOtpState extends State<VerifyOtp> {
   void setCountDown() {
     final reduceSecondsBy = 1;
     setState(() {
-      final seconds = myDuration.inSeconds - reduceSecondsBy;
+      final seconds = myDuration!.inSeconds - reduceSecondsBy;
       if (seconds < 0) {
         countdownTimer!.cancel();
+        resend_otp = false;
         print('timesup');
       } else {
         myDuration = Duration(seconds: seconds);
@@ -83,26 +85,17 @@ class _VerifyOtpState extends State<VerifyOtp> {
 
   @override
   Widget build(BuildContext context) {
-    final seconds = myDuration.inSeconds.remainder(60);
-    final screenHeight = MediaQuery
-        .of(context)
-        .size
-        .height;
-    final screenWidth = MediaQuery
-        .of(context)
-        .size
-        .width;
+    final seconds = myDuration!.inSeconds.remainder(60);
+    final screenHeight = MediaQuery.of(context).size.height;
+    final screenWidth = MediaQuery.of(context).size.width;
     return Stack(
       children: [
         Container(
           decoration: Common_decoration(),
-          height: MediaQuery
-              .of(context)
-              .size
-              .height,
+          height: MediaQuery.of(context).size.height,
         ),
         GestureDetector(
-          onTap: (){
+          onTap: () {
             FocusScope.of(context).requestFocus(FocusNode());
           },
           child: Scaffold(
@@ -124,7 +117,10 @@ class _VerifyOtpState extends State<VerifyOtp> {
                         gradient: LinearGradient(
                             begin: Alignment(-1.0, -4.0),
                             end: Alignment(1.0, 4.0),
-                            colors: [HexColor('#020204'), HexColor('#36393E')])),
+                            colors: [
+                              HexColor('#020204'),
+                              HexColor('#36393E')
+                            ])),
                     child: Padding(
                       padding: const EdgeInsets.all(10.0),
                       child: Image.asset(
@@ -166,7 +162,7 @@ class _VerifyOtpState extends State<VerifyOtp> {
                     ),
                     Container(
                       decoration: BoxDecoration(
-                        // color: Colors.black.withOpacity(0.65),
+                          // color: Colors.black.withOpacity(0.65),
                           gradient: LinearGradient(
                             begin: Alignment.centerLeft,
                             end: Alignment.centerRight,
@@ -201,90 +197,121 @@ class _VerifyOtpState extends State<VerifyOtp> {
                                 eachFieldWidth: 45,
                                 eachFieldMargin: EdgeInsets.all(7),
                                 focusNode: _pinOTPFocus,
-                                controller: _signUpScreenController.OtpController,
+                                controller:
+                                    _signUpScreenController.OtpController,
                                 submittedFieldDecoration: pinOTPDecoration,
                                 selectedFieldDecoration: pinOTPDecoration,
                                 followingFieldDecoration: pinOTPDecoration,
                                 pinAnimationType: PinAnimationType.scale,
                               ),
                             ),
-                            SizedBox(height: 28,),
+                            SizedBox(
+                              height: 28,
+                            ),
                             Container(
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      decoration: BoxDecoration(
-                                          gradient: LinearGradient(
-                                            begin: Alignment.bottomLeft,
-                                            end: Alignment.topRight,
-                                            colors: [
-                                              HexColor("#020204").withOpacity(1),
-                                              HexColor("#36393E").withOpacity(1),
-                                            ],
-                                          ),
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color: HexColor('#2E2E2D'),
-                                              offset: Offset(0, 3),
-                                              blurRadius: 6,
-                                            ),
-                                            BoxShadow(
-                                              color: HexColor('#04060F'),
-                                              offset: Offset(10, 10),
-                                              blurRadius: 20,
-                                            ),
-                                          ],
-                                          borderRadius: BorderRadius.circular(
-                                              50)),
-                                      child: IconButton(
-                                        visualDensity: VisualDensity(
-                                            horizontal: -4, vertical: -4),
-                                        onPressed: () {},
-                                        icon: Icon(Icons.access_time_rounded),
-                                        color: ColorUtils.primary_grey,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                      gradient: LinearGradient(
+                                        begin: Alignment.bottomLeft,
+                                        end: Alignment.topRight,
+                                        colors: [
+                                          HexColor("#020204").withOpacity(1),
+                                          HexColor("#36393E").withOpacity(1),
+                                        ],
                                       ),
-                                    ),
-                                    SizedBox(
-                                      width: 7,
-                                    ),
-                                    Text(
-                                      '${seconds} S',
-                                      style: TextStyle(
-                                          fontSize: 12,
-                                          fontFamily: 'PR',
-                                          color: ColorUtils.primary_grey),
-                                    ),
-                                  ],
-                                )),
-                            Container(
-                              margin: const EdgeInsets.only(top: 28, bottom: 28),
-                              child: Text(
-                                'Resend',
-                                style: FontStyleUtility.h12(
-                                    fontColor: HexColor('#818181'), family: 'PM'),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: HexColor('#2E2E2D'),
+                                          offset: Offset(0, 3),
+                                          blurRadius: 6,
+                                        ),
+                                        BoxShadow(
+                                          color: HexColor('#04060F'),
+                                          offset: Offset(10, 10),
+                                          blurRadius: 20,
+                                        ),
+                                      ],
+                                      borderRadius: BorderRadius.circular(50)),
+                                  child: IconButton(
+                                    visualDensity: VisualDensity(
+                                        horizontal: -4, vertical: -4),
+                                    onPressed: () {},
+                                    icon: Icon(Icons.access_time_rounded),
+                                    color: ColorUtils.primary_grey,
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 7,
+                                ),
+                                Text(
+                                  '${seconds} S',
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      fontFamily: 'PR',
+                                      color: ColorUtils.primary_grey),
+                                ),
+                              ],
+                            )),
+                            GestureDetector(
+                              onTap: () {
+                                if (resend_otp == false) {
+                                  _signUpScreenController.ReSendOtpAPi(
+                                      context: context);
+                                  if (_signUpScreenController
+                                          .sendOtpModel!.error ==
+                                      false) {
+                                    resend_otp = true;
+                                    startTimer();
+                                  }
+                                }
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    border: (resend_otp
+                                        ? Border.all(
+                                            color: Colors.transparent, width: 1)
+                                        : Border.all(
+                                            color: ColorUtils.primary_gold,
+                                            width: 1))),
+                                margin:
+                                    const EdgeInsets.only(top: 28, bottom: 28),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    'Resend',
+                                    style: FontStyleUtility.h12(
+                                        fontColor: HexColor('#818181'),
+                                        family: 'PM'),
+                                  ),
+                                ),
                               ),
                             ),
                             const SizedBox(
                               height: 20,
                             ),
-
                             GestureDetector(
                               onTap: () async {
-                                await _signUpScreenController.VerifyOtpAPi(context: context);
-                                if(_signUpScreenController.signUpModel!.error == false) {
+                                await _signUpScreenController.VerifyOtpAPi(
+                                    context: context);
+                                if (_signUpScreenController
+                                        .signUpModel!.error ==
+                                    false) {
                                   await selectTowerBottomSheet(context);
-                                  Future.delayed(const Duration(seconds: 5), () async {
+                                  Future.delayed(const Duration(seconds: 5),
+                                      () async {
                                     Navigator.pop(context);
                                     await Get.to(FaceScanScreen());
-                                    setState(() {
-                                    });
+                                    setState(() {});
                                   });
                                 }
                               },
                               child: Container(
                                 decoration: BoxDecoration(
-                                  // color: Colors.black.withOpacity(0.65),
+                                    // color: Colors.black.withOpacity(0.65),
                                     gradient: LinearGradient(
                                       begin: Alignment.centerLeft,
                                       end: Alignment.centerRight,
@@ -302,7 +329,6 @@ class _VerifyOtpState extends State<VerifyOtp> {
                                       ),
                                     ],
                                     borderRadius: BorderRadius.circular(10)),
-
                                 child: Container(
                                     alignment: Alignment.center,
                                     margin: EdgeInsets.symmetric(
@@ -334,14 +360,8 @@ class _VerifyOtpState extends State<VerifyOtp> {
   }
 
   selectTowerBottomSheet(BuildContext context) {
-    final screenheight = MediaQuery
-        .of(context)
-        .size
-        .height;
-    final screenwidth = MediaQuery
-        .of(context)
-        .size
-        .width;
+    final screenheight = MediaQuery.of(context).size.height;
+    final screenwidth = MediaQuery.of(context).size.width;
     showModalBottomSheet(
       backgroundColor: Colors.black,
       shape: RoundedRectangleBorder(
@@ -362,26 +382,27 @@ class _VerifyOtpState extends State<VerifyOtp> {
                 width: screenwidth,
                 decoration: BoxDecoration(
                   // color: Colors.black.withOpacity(0.65),
-                    gradient: LinearGradient(
-                      begin: Alignment.centerLeft,
-                      end: Alignment.centerRight,
-                      // stops: [0.1, 0.5, 0.7, 0.9],
-                      colors: [
-                        HexColor("#020204").withOpacity(1),
-                        HexColor("#36393E").withOpacity(1),
-                      ],
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: HexColor('#04060F'),
-                        offset: Offset(10, 10),
-                        blurRadius: 20,
-                      ),
+                  gradient: LinearGradient(
+                    begin: Alignment.centerLeft,
+                    end: Alignment.centerRight,
+                    // stops: [0.1, 0.5, 0.7, 0.9],
+                    colors: [
+                      HexColor("#020204").withOpacity(1),
+                      HexColor("#36393E").withOpacity(1),
                     ],
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: HexColor('#04060F'),
+                      offset: Offset(10, 10),
+                      blurRadius: 20,
+                    ),
+                  ],
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(30.0),
                     topRight: Radius.circular(30.0),
-                  ),),
+                  ),
+                ),
                 child: Padding(
                   padding: const EdgeInsets.all(33.9),
                   child: Column(

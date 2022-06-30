@@ -26,6 +26,7 @@ import '../../utils/Common_buttons.dart';
 import '../../utils/Common_container_color.dart';
 import '../../utils/TextStyle_utils.dart';
 import '../../utils/colorUtils.dart';
+import '../SignUp/controller/sign_up_controller.dart';
 import 'controller/forgot_password_controller.dart';
 
 class OtpScreen extends StatefulWidget {
@@ -44,6 +45,9 @@ class OtpScreenState extends State<OtpScreen> {
       ForgotPasswordController(),
       tag: ForgotPasswordController().toString());
 
+  final SignUpScreenController _signUpScreenController = Get.put(
+      SignUpScreenController(),
+      tag: SignUpScreenController().toString());
 
   final BoxDecoration pinOTPDecoration = BoxDecoration(
 // color: Colors.black.withOpacity(0.65),
@@ -70,9 +74,12 @@ class OtpScreenState extends State<OtpScreen> {
       ],
       borderRadius: BorderRadius.circular(6));
   Timer? countdownTimer;
-  Duration myDuration = Duration(seconds: 30);
+  Duration? myDuration ;
+  bool resend_otp = true;
 
   void startTimer() {
+    myDuration = Duration(seconds: 30);
+
     countdownTimer =
         Timer.periodic(Duration(seconds: 1), (_) => setCountDown());
   }
@@ -80,9 +87,10 @@ class OtpScreenState extends State<OtpScreen> {
   void setCountDown() {
     final reduceSecondsBy = 1;
     setState(() {
-      final seconds = myDuration.inSeconds - reduceSecondsBy;
+      final seconds = myDuration!.inSeconds - reduceSecondsBy;
       if (seconds < 0) {
         countdownTimer!.cancel();
+        resend_otp = false;
         print('timesup');
       } else {
         myDuration = Duration(seconds: seconds);
@@ -98,7 +106,7 @@ class OtpScreenState extends State<OtpScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final seconds = myDuration.inSeconds.remainder(60);
+    final seconds = myDuration!.inSeconds.remainder(60);
     final screenHeight = MediaQuery
         .of(context)
         .size
@@ -273,14 +281,42 @@ class OtpScreenState extends State<OtpScreen> {
                                     ),
                                   ],
                                 )),
-                            Container(
-                              margin: const EdgeInsets.only(top: 28, bottom: 28),
-                              child: Text(
-                                'Resend',
-                                style: FontStyleUtility.h12(
-                                    fontColor: HexColor('#818181'), family: 'PM'),
+                            GestureDetector(
+                              onTap: () {
+                                if (resend_otp == false) {
+                                  _signUpScreenController.ReSendOtpAPi(
+                                      context: context);
+                                  if (_signUpScreenController
+                                      .sendOtpModel!.error ==
+                                      false) {
+                                    resend_otp = true;
+                                    startTimer();
+                                  }
+                                }
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    border: (resend_otp
+                                        ? Border.all(
+                                        color: Colors.transparent, width: 1)
+                                        : Border.all(
+                                        color: ColorUtils.primary_gold,
+                                        width: 1))),
+                                margin:
+                                const EdgeInsets.only(top: 28, bottom: 28),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    'Resend',
+                                    style: FontStyleUtility.h12(
+                                        fontColor: HexColor('#818181'),
+                                        family: 'PM'),
+                                  ),
+                                ),
                               ),
                             ),
+
                             const SizedBox(
                               height: 20,
                             ),
