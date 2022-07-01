@@ -14,6 +14,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 
+import '../Authentication/SingIn/controller/SignIn_controller.dart';
 import '../front_page/FrontpageScreen.dart';
 import '../utils/Asset_utils.dart';
 import '../utils/Common_buttons.dart';
@@ -39,7 +40,6 @@ class ProfilePageScreen extends StatefulWidget {
 }
 
 class _ProfilePageScreenState extends State<ProfilePageScreen> {
-  int selectedCard = 0;
   int infin = 0x221E;
 
   List difficulty = ['Very Easy', 'Easy', 'Normal', 'Hard', 'ထ'];
@@ -261,6 +261,11 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
       Profile_page_controller(),
       tag: Profile_page_controller().toString());
 
+  final SignInScreenController _signInScreenController = Get.put(
+      SignInScreenController(),
+      tag: SignInScreenController().toString());
+
+
   @override
   void initState() {
     init();
@@ -269,7 +274,7 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
   }
 
   init() async {
-    await GetUserInfo(context: context);
+    // await _signInScreenController.GetUserInfo(context: context);
     bool auth =
         await PreferenceManager().getbool(URLConstants.authentication_enable);
     print(auth);
@@ -283,7 +288,7 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
     return Container(
-        child: (isuserinfoLoading == true
+        child: (_signInScreenController.isuserinfoLoading.value == true
             ? Center(
                 child: Material(
                   color: Color(0x66DD4D4),
@@ -321,7 +326,7 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
                       backgroundColor: Colors.transparent,
                       automaticallyImplyLeading: false,
                       title: Text(
-                        userInfoModel!.data![0].username!,
+                        _signInScreenController.userInfoModel!.data![0].username!,
                         style: FontStyleUtility.h16(
                             fontColor: ColorUtils.primary_gold, family: 'PM'),
                       ),
@@ -376,7 +381,7 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
                                                       offset: Offset(5, 5),
                                                       blurRadius: 6)
                                                 ]),
-                                            child: (userInfoModel!
+                                            child: (_signInScreenController.userInfoModel!
                                                     .data![0].image!.isEmpty
                                                 ? Image.asset(
                                                     AssetUtils.user_icon2,
@@ -387,7 +392,7 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
                                                             .imgFile ==
                                                         null
                                                     ? Image.network(
-                                                        'http://foxyserver.com/klench/images/${userInfoModel!.data![0].image}',
+                                                        'http://foxyserver.com/klench/images/${_signInScreenController.userInfoModel!.data![0].image}',
                                                         fit: BoxFit.fill,
                                                         height: 100,
                                                         width: 100,
@@ -1029,7 +1034,7 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
                                                     child: Text(
                                                       difficulty[index],
                                                       style: FontStyleUtility.h15(
-                                                          fontColor: (selectedCard ==
+                                                          fontColor: (_signInScreenController.selectedCard ==
                                                                   index
                                                               ? ColorUtils
                                                                   .primary_gold
@@ -1097,94 +1102,5 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
     });
   }
 
-  bool isuserinfoLoading = true;
-  UserInfoModel? userInfoModel;
-  var getUSerModelList = UserInfoModel().obs;
-  int? level_rank;
 
-  Future<dynamic> GetUserInfo({required BuildContext context}) async {
-    print('Inside creator get email');
-    // showLoader(context);
-    setState(() {
-      isuserinfoLoading = true;
-    });
-    String id_user = await PreferenceManager().getPref(URLConstants.id);
-    print("UserID $id_user");
-    String url =
-        (URLConstants.base_url + URLConstants.getProfileApi + "?id=${id_user}");
-    // debugPrint('Get Sales Token ${tokens.toString()}');
-    // try {
-    // } catch (e) {
-    //   print('1-1-1-1 Get Purchase ${e.toString()}');
-    // }
-
-    http.Response response = await http.get(Uri.parse(url));
-
-    print('Response request: ${response.request}');
-    print('Response status: ${response.statusCode}');
-    print('Response body: ${response.body}');
-
-    if (response.statusCode == 200 || response.statusCode == 201) {
-      var data = convert.jsonDecode(response.body);
-      userInfoModel = UserInfoModel.fromJson(data);
-      getUSerModelList(userInfoModel);
-      if (userInfoModel!.error == false) {
-        debugPrint(
-            '2-2-2-2-2-2 Inside the Get UserInfo Controller Details ${userInfoModel!.data!.length}');
-        await PreferenceManager()
-            .setPref(URLConstants.levels, userInfoModel!.data![0].levels!);
-
-        _profile_page_controller.nameController.text =
-            userInfoModel!.data![0].username!;
-        _profile_page_controller.FullnameController.text =
-            userInfoModel!.data![0].fullName!;
-        _profile_page_controller.dialCodedigits =
-            userInfoModel!.data![0].countryCode!;
-        _profile_page_controller.phoneNumberController.text =
-            userInfoModel!.data![0].phone!;
-        _profile_page_controller.emailAddressController.text =
-            userInfoModel!.data![0].email!;
-        _profile_page_controller.dateOfbirthController.text =
-            userInfoModel!.data![0].dob!;
-        _profile_page_controller.genderController.text =
-            userInfoModel!.data![0].gender!;
-
-        (userInfoModel!.data![0].levels == 'Very Easy'
-            ? level_rank = 0
-            : (userInfoModel!.data![0].levels == 'Easy'
-                ? level_rank = 1
-                : (userInfoModel!.data![0].levels == 'Normal'
-                    ? level_rank = 2
-                    : (userInfoModel!.data![0].levels == 'Hard'
-                        ? level_rank = 3
-                        : (userInfoModel!.data![0].levels == 'ထ'
-                            ? level_rank = 4
-                            : level_rank = 0)))));
-
-        print("Level : ${userInfoModel!.data![0].levels}");
-        print('Rank level : $level_rank');
-
-        setState(() {
-          isuserinfoLoading = false;
-          selectedCard = level_rank!;
-        }); // CommonWidget().showToaster(msg: data["success"].toString());
-        // hideLoader(context);
-        return userInfoModel;
-      } else {
-        setState(() {
-          isuserinfoLoading = false;
-        });
-
-        // hideLoader(context);
-        CommonWidget().showToaster(msg: 'Error');
-        return null;
-      }
-    } else if (response.statusCode == 422) {
-      // CommonWidget().showToaster(msg: msg.toString());
-    } else if (response.statusCode == 401) {
-      // CommonService().unAuthorizedUser();
-    } else {
-      // CommonWidget().showToaster(msg: msg.toString());
-    }
-  }
 }

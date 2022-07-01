@@ -215,7 +215,7 @@ class _BreathingScreenState extends State<BreathingScreen>
             _animationController_shadow2!.stop();
             Future.delayed(Duration(seconds: 4), () {
               _animationController_shadow2!.repeat(reverse: true);
-              vibration();
+              // vibration();
               setState(() {
                 // print(_status);
                 shadow_animation_pause = false;
@@ -226,7 +226,7 @@ class _BreathingScreenState extends State<BreathingScreen>
           });
           Future.delayed(Duration(seconds: 4), () {
             _animationController!.reverse();
-            vibration();
+            // vibration();
             setState(() {
               _status = 'Exhale';
               // print(_status);
@@ -776,7 +776,7 @@ class _BreathingScreenState extends State<BreathingScreen>
       startStop = true;
       Vibration.cancel();
       animation_started = false;
-      _animationController!.dispose();
+      _animationController!.stop();
       _animationController_shadow1!.stop();
       watch.stop();
       percent = 0.0;

@@ -5,11 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:vibration/vibration.dart';
 
 import '../utils/Asset_utils.dart';
 import '../utils/TexrUtils.dart';
 import '../utils/TextStyle_utils.dart';
+import '../utils/UrlConstrant.dart';
 import '../utils/colorUtils.dart';
+import '../utils/common_widgets.dart';
 
 class PeeScreen extends StatefulWidget {
   const PeeScreen({Key? key}) : super(key: key);
@@ -39,18 +42,68 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
   bool startStop = true;
   bool started = true;
 
-  String elapsedTime = '00:00';
+  String elapsedTime = '00';
+  String? levels;
+  int counter = 0;
+  int sets = 0;
 
-  updateTime(Timer timer) {
+
+  updateTime_normal(Timer timer) {
     if (watch.isRunning) {
       if (mounted) {
         setState(() {
           print("startstop Inside=$startStop");
           elapsedTime = transformMilliSeconds(watch.elapsedMilliseconds);
-          percent += 1;
-          if (percent >= 100) {
-            percent = 0.0;
+          // percent += 1;
+          // if (percent >= 100) {
+          //   percent = 0.0;
+          // }
+          if (elapsedTime == '08') {
+            stopWatch_finish();
+            // _animationController_shadow1!.reverse();
+            setState(() {
+              elapsedTime = '00';
+              percent = 0.0;
+              watch.reset();
+              // CommonWidget().showToaster(msg: '${7 - counter} Times left');
+              counter++;
+              print(counter);
+              // paused_time.clear();
+            });
+            Future.delayed(Duration(seconds: 2), () {
+              // if (counter == 10) {
+              //   stopWatch_finish();
+              //   setState(() {
+              //     elapsedTime = '00';
+              //     // watch.stop();
+              //     counter = 0;
+              //   });
+                // sets++;
+                // print('Sets-------$sets');
+                // if (sets == 3) {
+                //   stopWatch_finish();
+                //   setState(() {
+                //     elapsedTime = '00';
+                //     percent = 0.0;
+                //     // watch.stop();
+                //     counter = 0;
+                //   });
+                //   CommonWidget().showToaster(msg: "Method Complete");
+                //   Future.delayed(Duration(seconds: 5), () {
+                //     CommonWidget().showErrorToaster(
+                //         msg:
+                //         "After one month it will automatically switch to Hard");
+                //   });
+                // }
+              // } else {
+                _animationController!.reverse();
+                _animationController_button!.reverse();
+                startWatch();
+              // }
+            });
           }
+
+
         });
       }
     }
@@ -85,6 +138,7 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
       animation_started = true;
       print(animation_started);
     });
+    vibration();
     _animationController =
         AnimationController(vsync: this, duration: Duration(seconds: 1));
     _animationController!.repeat(reverse: true);
@@ -144,6 +198,17 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
   dispose() {
     _animationController!.dispose(); // you need this
     super.dispose();
+  }
+
+  @override
+  void initState() {
+    get_saved_data();
+    super.initState();
+  }
+  get_saved_data() async {
+    levels = await PreferenceManager().getPref(URLConstants.levels);
+    print("Levels $levels");
+    setState(() {});
   }
 
   @override
@@ -331,7 +396,7 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
                       } else {
                         await stopWatch_finish();
                         setState(() {
-                          elapsedTime = '00:00';
+                          elapsedTime = '00';
                           percent = 0.0;
                           back_wallpaper = true;
                           button_height = 120;
@@ -418,7 +483,48 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
                         ),
                         borderRadius: BorderRadius.circular(20)),
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        Container(
+                          margin: EdgeInsets.only(top: 8, left: 27),
+                          child: Text(
+                            'Pee Info',
+                            style: FontStyleUtility.h16(
+                                fontColor: HexColor('#F2F2F2'), family: 'PR'),
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(top: 8, left: 27),
+                          child: Text(
+                            'Level : $levels',
+                            style: FontStyleUtility.h16(
+                                fontColor: HexColor('#F2F2F2'), family: 'PR'),
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(top: 0, left: 27, right: 27),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                child: Text(
+                                  (levels == 'Easy'
+                                      ? "The device will vibrate for 3 seconds and stop for 4 seconds, \ncontinuing the same process until user presses the finish button."
+                                      : (levels == 'Normal'
+                                      ? "The device will vibrate for 4 seconds and stop for 3 seconds, \ncontinuing the same process until user presses the finish button."
+                                      : "kegel info")),
+                                  textAlign: TextAlign.justify,
+                                  style: FontStyleUtility.h16(
+                                      fontColor: ColorUtils.primary_grey,
+                                      family: 'PR'),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 17,
+                              ),
+                            ],
+                          ),
+                        ),
                         Container(
                           margin: EdgeInsets.only(
                               right: 15, left: 15, top: 15, bottom: 20),
@@ -652,11 +758,13 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
   }
 
   startWatch() {
+    start_animation();
+
     setState(() {
       startStop = false;
       started = false;
       watch.start();
-      timer = Timer.periodic(Duration(milliseconds: 100), updateTime);
+      timer = Timer.periodic(Duration(milliseconds: 100), updateTime_normal);
     });
   }
 
@@ -686,6 +794,50 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
       gravity: ToastGravity.BOTTOM,
     );
   }
+  bool _canVibrate = true;
+  Future<void> _init() async {
+    bool? canVibrate = await Vibration.hasVibrator();
+    setState(() {
+      _canVibrate = canVibrate!;
+      _canVibrate
+          ? debugPrint('This device can vibrate')
+          : debugPrint('This device cannot vibrate');
+    });
+  }
+  vibration() async {
+    if (_canVibrate) {
+      // Vibration.vibrate(
+      //     // pattern: [100, 100,100, 100,100, 100,100, 100,],
+      //     duration: 4000,
+      //     intensities: [1, 255]);
+      // print(
+      //     "Vibration.hasCustomVibrationsSupport() ${Vibration.hasCustomVibrationsSupport()}");
+      if (await Vibration.hasCustomVibrationsSupport() == true) {
+        print("has support");
+        Vibration.vibrate(
+          // pattern: [100, 100,100, 100,100, 100,100, 100,],
+            duration: (levels == 'Easy'
+                ? 4000
+                : levels == 'Normal'
+                ? 5000
+                : 5000),
+            amplitude: 50
+          // intensities: [1, 255]
+        );
+      } else {
+        print("haddddd support");
+        Vibration.vibrate();
+        await Future.delayed(Duration(milliseconds: 500));
+        Vibration.vibrate();
+      }
+      // Vibrate.defaultVibrationDuration;
+      // Vibrate.defaultVibrationDuration;
+      // Vibrate.vibrateWithPauses(pauses);
+    } else {
+      CommonWidget().showErrorToaster(msg: 'Device Cannot vibrate');
+    }
+  }
+
 
   setTime() {
     var timeSoFar = watch.elapsedMilliseconds;
@@ -714,6 +866,6 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
     String minutesStr = (minutes % 60).toString().padLeft(2, '0');
     String secondsStr = (seconds % 60).toString().padLeft(2, '0');
 
-    return "$minutesStr:$secondsStr";
+    return secondsStr;
   }
 }

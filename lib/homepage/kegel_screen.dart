@@ -1,17 +1,27 @@
 import 'dart:async';
+import 'dart:ui';
 
 import 'package:avatar_glow/avatar_glow.dart';
+import 'package:dotted_border/dotted_border.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:intl/intl.dart';
 import 'package:klench_/Dashboard/dashboard_screen.dart';
+import 'package:klench_/homepage/theme_data.dart';
 import 'package:klench_/utils/TexrUtils.dart';
 import 'package:vibration/vibration.dart';
 
+import '../main.dart';
 import '../utils/Asset_utils.dart';
 import '../utils/TextStyle_utils.dart';
 import '../utils/UrlConstrant.dart';
 import '../utils/colorUtils.dart';
 import '../utils/common_widgets.dart';
+import 'TESTALARMPAGE.dart';
+import 'alarm_helper.dart';
+import 'alarm_info.dart';
 
 class KegelScreen extends StatefulWidget {
   const KegelScreen({Key? key}) : super(key: key);
@@ -28,7 +38,8 @@ class _KegelScreenState extends State<KegelScreen>
   bool started = true;
 
   String elapsedTime = '00';
-
+  TextEditingController Alarm_title = new TextEditingController();
+  List Alarm_title_list = [];
   // updateTime(Timer timer) {
   //   if (watch.isRunning) {
   //     if (mounted) {
@@ -106,7 +117,7 @@ class _KegelScreenState extends State<KegelScreen>
               print(counter);
               // paused_time.clear();
             });
-            Future.delayed(Duration(seconds: 2), () {
+            Future.delayed(const Duration(seconds: 2), () {
               if (counter == 8) {
                 stopWatch_finish();
                 setState(() {
@@ -125,7 +136,7 @@ class _KegelScreenState extends State<KegelScreen>
                     counter = 0;
                   });
                   CommonWidget().showToaster(msg: "Method Complete");
-                  Future.delayed(Duration(seconds: 5), () {
+                  Future.delayed(const Duration(seconds: 5), () {
                     CommonWidget().showErrorToaster(
                         msg:
                             "After one month it will automatically switch to Normal");
@@ -167,7 +178,7 @@ class _KegelScreenState extends State<KegelScreen>
               print(counter);
               // paused_time.clear();
             });
-            Future.delayed(Duration(seconds: 2), () {
+            Future.delayed(const Duration(seconds: 2), () {
               if (counter == 10) {
                 stopWatch_finish();
                 setState(() {
@@ -186,7 +197,7 @@ class _KegelScreenState extends State<KegelScreen>
                     counter = 0;
                   });
                   CommonWidget().showToaster(msg: "Method Complete");
-                  Future.delayed(Duration(seconds: 5), () {
+                  Future.delayed(const Duration(seconds: 5), () {
                     CommonWidget().showErrorToaster(
                         msg:
                             "After one month it will automatically switch to Hard");
@@ -204,6 +215,30 @@ class _KegelScreenState extends State<KegelScreen>
     }
   }
 
+  void showDatePicker()
+  {  showCupertinoModalPopup(
+      context: context,
+      builder: (BuildContext builder) {
+        return Container(
+          height: MediaQuery.of(context).copyWith().size.height*0.25,
+          color: Colors.white,
+          child: CupertinoDatePicker(
+            mode: CupertinoDatePickerMode.time,
+            onDateTimeChanged: (value) {
+              if (value != null && value != selectedDate)
+                setState(() {
+                  selectedDate = value;
+                });
+            },
+            initialDateTime: DateTime.now(),
+            minimumYear: 2019,
+            maximumYear: 2021,
+          ),
+        );
+      }
+  );
+  }
+
   int counter = 0;
   int sets = 0;
 
@@ -212,11 +247,11 @@ class _KegelScreenState extends State<KegelScreen>
   bool back_wallpaper = false;
 
   Timer? countdownTimer;
-  Duration myDuration = Duration(seconds: 3);
+  Duration myDuration = const Duration(seconds: 3);
 
   void startTimer() {
     countdownTimer =
-        Timer.periodic(Duration(seconds: 1), (_) => setCountDown());
+        Timer.periodic(const Duration(seconds: 1), (_) => setCountDown());
   }
 
   void setCountDown() {
@@ -263,7 +298,7 @@ class _KegelScreenState extends State<KegelScreen>
     });
     vibration();
     _animationController =
-        AnimationController(vsync: this, duration: Duration(seconds: 1));
+        AnimationController(vsync: this, duration: const Duration(seconds: 1));
     _animationController!.repeat(reverse: true);
     _animation = Tween(begin: 0.0, end: 25.0).animate(_animationController!)
       ..addStatusListener((status) {
@@ -284,7 +319,7 @@ class _KegelScreenState extends State<KegelScreen>
     //       });aa
 
     _animationController_button =
-        AnimationController(vsync: this, duration: Duration(seconds: 5));
+        AnimationController(vsync: this, duration: const Duration(seconds: 5));
     _animationController_button!.forward();
     _animation_button =
         Tween(begin: 200.0, end: 120.0).animate(_animationController_button!)
@@ -347,8 +382,25 @@ class _KegelScreenState extends State<KegelScreen>
 
   @override
   void initState() {
+    _alarmTime = DateTime.now();
+    _alarmHelper.initializeDatabase().then((value) {
+      print('------database intialized');
+      loadAlarms();
+    });
     get_saved_data();
+
     super.initState();
+  }
+
+  DateTime? _alarmTime;
+  String? _alarmTimeString;
+  AlarmHelper _alarmHelper = AlarmHelper();
+  Future<List<AlarmInfo>>? _alarms;
+  List<AlarmInfo>? _currentAlarms;
+
+  void loadAlarms() {
+    _alarms = _alarmHelper.getAlarms();
+    if (mounted) setState(() {});
   }
 
   get_saved_data() async {
@@ -356,6 +408,8 @@ class _KegelScreenState extends State<KegelScreen>
     print("Levels $levels");
     setState(() {});
   }
+
+  DateTime selectedDate = DateTime.now();
 
   @override
   Widget build(BuildContext context) {
@@ -377,7 +431,7 @@ class _KegelScreenState extends State<KegelScreen>
             // ),
             decoration:
                 // (back_wallpaper ?
-                BoxDecoration(
+                const BoxDecoration(
           // gradient: LinearGradient(
           //   begin: Alignment.topCenter,
           //   end: Alignment.bottomCenter,
@@ -390,7 +444,7 @@ class _KegelScreenState extends State<KegelScreen>
           //
           //   ],
           // ),
-          image: DecorationImage(
+          image: const DecorationImage(
             fit: BoxFit.cover,
             image: AssetImage(
               AssetUtils.k_screen_back,
@@ -407,17 +461,16 @@ class _KegelScreenState extends State<KegelScreen>
             leading: GestureDetector(
               onTap: () {
                 Navigator.pop(context);
-
               },
               child: Container(
                   width: 41,
-                  margin: EdgeInsets.all(8),
+                  margin: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(100),
                       gradient: LinearGradient(
-                          begin: Alignment(-1.0, -4.0),
-                          end: Alignment(1.0, 4.0),
+                          begin: const Alignment(-1.0, -4.0),
+                          end: const Alignment(1.0, 4.0),
                           colors: [HexColor('#020204'), HexColor('#36393E')])),
                   child: Padding(
                     padding: const EdgeInsets.all(10.0),
@@ -436,7 +489,7 @@ class _KegelScreenState extends State<KegelScreen>
             centerTitle: true,
             actions: [
               Container(
-                  margin: EdgeInsets.symmetric(horizontal: 10),
+                  margin: const EdgeInsets.symmetric(horizontal: 10),
                   alignment: Alignment.center,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
@@ -449,7 +502,7 @@ class _KegelScreenState extends State<KegelScreen>
                         height: 22,
                         width: 22,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 7,
                       ),
                       Image.asset(
@@ -459,7 +512,7 @@ class _KegelScreenState extends State<KegelScreen>
                             (sets >= 2 ? ColorUtils.primary_gold : Colors.grey),
                         width: 22,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 7,
                       ),
                       Image.asset(
@@ -493,53 +546,23 @@ class _KegelScreenState extends State<KegelScreen>
               //     ))
             ],
           ),
-          body: SingleChildScrollView(
-            child: Container(
-              margin: EdgeInsets.only(top: 15, left: 8, right: 8),
+          body: Container(
+            margin: const EdgeInsets.only(top: 15, left: 8, right: 8),
+            child: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  // Container(
-                  //     margin: EdgeInsets.all(0),
-                  //     alignment: Alignment.topCenter,
-                  //     child: Row(
-                  //       mainAxisAlignment: MainAxisAlignment.end,
-                  //       children: [
-                  //         Image.asset(
-                  //           AssetUtils.star_icon,
-                  //           height: 22,
-                  //           width: 22,
-                  //         ),
-                  //         SizedBox(
-                  //           width: 7,
-                  //         ),
-                  //         Image.asset(
-                  //           AssetUtils.star_icon,
-                  //           height: 22,
-                  //           width: 22,
-                  //         ),
-                  //         SizedBox(
-                  //           width: 7,
-                  //         ),
-                  //         Image.asset(
-                  //           AssetUtils.star_icon,
-                  //           height: 22,
-                  //           width: 22,
-                  //         ),
-                  //       ],
-                  //     )),
-                  SizedBox(
+                  const SizedBox(
                     height: 15,
                   ),
                   Container(
-
                       // color: Colors.white,
                       child: AvatarGlow(
                     endRadius: 100.0,
                     showTwoGlows: true,
                     animate: false,
                     // (startStop ? false : true),
-                    duration: Duration(milliseconds: 900),
+                    duration: const Duration(milliseconds: 900),
                     repeat: true,
                     child: GestureDetector(
                       onTap: () {
@@ -555,7 +578,7 @@ class _KegelScreenState extends State<KegelScreen>
                             : button_height),
                         decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            image: DecorationImage(
+                            image: const DecorationImage(
                                 alignment: Alignment.center,
                                 image: AssetImage(AssetUtils.home_button)),
                             boxShadow: [
@@ -606,14 +629,14 @@ class _KegelScreenState extends State<KegelScreen>
                       ),
                     ),
                   )),
-                  SizedBox(
+                  const SizedBox(
                     height: 28,
                   ),
                   GestureDetector(
                     onTap: () async {
                       if (started) {
                         startTimer();
-                        Future.delayed(Duration(seconds: 3), () {
+                        Future.delayed(const Duration(seconds: 3), () {
                           // start_animation();
                           // start_button_animation();
                           startWatch();
@@ -637,7 +660,7 @@ class _KegelScreenState extends State<KegelScreen>
                     },
                     child: Container(
                       height: 65,
-                      margin: EdgeInsets.symmetric(horizontal: 15),
+                      margin: const EdgeInsets.symmetric(horizontal: 15),
                       // height: 45,
                       // width:(width ?? 300) ,
                       decoration: BoxDecoration(
@@ -655,7 +678,7 @@ class _KegelScreenState extends State<KegelScreen>
                           borderRadius: BorderRadius.circular(15)),
                       child: Container(
                           alignment: Alignment.center,
-                          margin: EdgeInsets.symmetric(
+                          margin: const EdgeInsets.symmetric(
                             vertical: 12,
                           ),
                           child: Text(
@@ -665,7 +688,7 @@ class _KegelScreenState extends State<KegelScreen>
                           )),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 12,
                   ),
                   Text(
@@ -676,7 +699,7 @@ class _KegelScreenState extends State<KegelScreen>
                               : ('$counter/4'))),
                       style: FontStyleUtility.h25(
                           fontColor: ColorUtils.primary_gold, family: 'PM')),
-                  SizedBox(
+                  const SizedBox(
                     height: 27,
                   ),
                   Container(
@@ -694,7 +717,7 @@ class _KegelScreenState extends State<KegelScreen>
                         boxShadow: [
                           BoxShadow(
                               color: HexColor('#04060F'),
-                              offset: Offset(10, 10),
+                              offset: const Offset(10, 10),
                               blurRadius: 20)
                         ],
                         borderRadius: BorderRadius.circular(20)),
@@ -703,7 +726,7 @@ class _KegelScreenState extends State<KegelScreen>
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Container(
-                          margin: EdgeInsets.only(top: 8, left: 27),
+                          margin: const EdgeInsets.only(top: 8, left: 27),
                           child: Text(
                             'Kegel Info',
                             style: FontStyleUtility.h16(
@@ -711,18 +734,18 @@ class _KegelScreenState extends State<KegelScreen>
                           ),
                         ),
                         Container(
-                          margin: EdgeInsets.only(top: 8, left: 27),
+                          margin: const EdgeInsets.only(top: 8, left: 27),
                           child: Text(
                             'Level : $levels',
                             style: FontStyleUtility.h16(
                                 fontColor: HexColor('#F2F2F2'), family: 'PR'),
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 12,
                         ),
                         Container(
-                          margin: EdgeInsets.only(top: 0, left: 27, right: 27),
+                          margin: const EdgeInsets.only(top: 0, left: 27, right: 27),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -739,7 +762,7 @@ class _KegelScreenState extends State<KegelScreen>
                                       family: 'PR'),
                                 ),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 17,
                               ),
                             ],
@@ -748,6 +771,640 @@ class _KegelScreenState extends State<KegelScreen>
                       ],
                     ),
                   ),
+
+                  // ElevatedButton(
+                  //   onPressed: () {
+                  //     Navigator.push(context,
+                  //         MaterialPageRoute(builder: (context) => AlarmPage()));
+                  //   },
+                  //   child: Text('alarm page'),
+                  // ),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                      // color: Colors.black.withOpacity(0.65),
+                        gradient: LinearGradient(
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
+                          // stops: [0.1, 0.5, 0.7, 0.9],
+                          colors: [
+                            HexColor("#36393E").withOpacity(1),
+                            HexColor("#020204").withOpacity(1),
+                          ],
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                              color: HexColor('#04060F'),
+                              offset: const Offset(10, 10),
+                              blurRadius: 20)
+                        ],
+                        borderRadius: BorderRadius.circular(20)),
+                    child: FutureBuilder<List<AlarmInfo>>(
+                      future: _alarms,
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          _currentAlarms = snapshot.data;
+                          return Container(
+                            child: ListView(
+                              shrinkWrap: true,
+                              padding: EdgeInsets.zero,
+                              children: snapshot.data!.map<Widget>((alarm) {
+                                var alarmTime = DateFormat('hh:mm aa')
+                                    .format(alarm.alarmDateTime!);
+                                var gradientColor = GradientTemplate
+                                    .gradientTemplate[alarm.gradientColorIndex!]
+                                    .colors;
+                                return Container(
+                                  margin: const EdgeInsets.only(bottom: 0),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 16, vertical: 0),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                        // color: Colors.black.withOpacity(0.65),
+                                        // gradient: LinearGradient(
+                                        //   begin: Alignment.centerLeft,
+                                        //   end: Alignment.centerRight,
+                                        //   // stops: [0.1, 0.5, 0.7, 0.9],
+                                        //   colors: [
+                                        //     HexColor("#020204").withOpacity(1),
+                                        //     HexColor("#36393E").withOpacity(1),
+                                        //   ],
+                                        // ),
+                                        // boxShadow: [
+                                        //   BoxShadow(
+                                        //       color: HexColor('#04060F'),
+                                        //       offset: Offset(-10, 10),
+                                        //       blurRadius: 20)
+                                        // ],
+                                      border: Border(
+                                        bottom: BorderSide( //                   <--- left side
+                                          color: HexColor('#1d1d1d'),
+                                          width: 1.5,
+                                        ),
+                                      ),),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: <Widget>[
+                                          ListTile(
+                                            title: Text(
+                                              alarmTime,
+                                              style: FontStyleUtility.h16(
+                                                  fontColor: Colors.white,
+                                                  family: 'PR'),
+                                            ),
+                                            subtitle: Text(alarm.title!,
+                                                style: FontStyleUtility.h14(
+                                                    fontColor:
+                                                        HexColor('#8A8A8A'),
+                                                    family: 'PR')),
+                                            trailing: IconButton(
+                                                icon: const Icon(Icons.delete),
+                                                color: ColorUtils.primary_gold,
+                                                onPressed: () {
+                                                  deleteAlarm(alarm.id!);
+                                                }),
+                                            // Container(
+                                            //   width: 20,
+                                            //   child: Transform.scale(
+                                            //     scale: 0.5,
+                                            //     child: CupertinoSwitch(
+                                            //       onChanged: (bool value) {},
+                                            //       value: true,
+                                            //       trackColor: HexColor('#717171'),
+                                            //       thumbColor: Colors.black87,
+                                            //       activeColor:
+                                            //           ColorUtils.primary_gold,
+                                            //     ),
+                                            //   ),
+                                            // ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              }).followedBy([
+                                if (_currentAlarms!.length < 5)
+                                  Container(
+                                    child: FlatButton(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 32, vertical: 10),
+                                        onPressed: () {
+                                          _alarmTimeString = DateFormat('HH:mm')
+                                              .format(selectedDate);
+                                          showModalBottomSheet(
+                                            useRootNavigator: true,
+                                            context: context,
+                                            clipBehavior: Clip.antiAlias,
+                                            shape: const RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.vertical(
+                                                top: Radius.circular(24),
+                                              ),
+                                            ),
+                                            builder: (context) {
+                                              return StatefulBuilder(
+                                                builder:
+                                                    (context, setModalState) {
+                                                  return Container(
+                                                    decoration: BoxDecoration(
+                                                        // color: Colors.black.withOpacity(0.65),
+                                                        gradient: LinearGradient(
+                                                          begin: Alignment
+                                                              .centerLeft,
+                                                          end: Alignment
+                                                              .centerRight,
+                                                          // stops: [0.1, 0.5, 0.7, 0.9],
+                                                          colors: [
+                                                            HexColor("#020204")
+                                                                .withOpacity(1),
+                                                            HexColor("#36393E")
+                                                                .withOpacity(1),
+                                                          ],
+                                                        ),
+                                                        boxShadow: [
+                                                          BoxShadow(
+                                                              color: HexColor(
+                                                                  '#04060F'),
+                                                              offset:
+                                                                  const Offset(-10, 10),
+                                                              blurRadius: 20)
+                                                        ],
+                                                        borderRadius:
+                                                            const BorderRadius.only(
+                                                                topLeft: Radius
+                                                                    .circular(20),
+                                                                topRight: Radius
+                                                                    .circular(
+                                                                        20))),
+                                                    padding:
+                                                        const EdgeInsets.all(32),
+                                                    child: SingleChildScrollView(
+                                                      child: Column(
+                                                        children: [
+                                                          FlatButton(
+                                                            onPressed: () async {
+                                                              var selectedTime =
+                                                                  await showTimePicker(
+                                                                context: context,
+                                                                // initialEntryMode: DatePickerEntryMode.calendarOnly,<- this
+                                                                initialEntryMode:
+                                                                    TimePickerEntryMode
+                                                                        .dial,
+                                                                initialTime:
+                                                                    TimeOfDay
+                                                                        .now(),
+                                                                builder: (context,
+                                                                    child) {
+                                                                  return Theme(
+                                                                    data: Theme.of(
+                                                                            context)
+                                                                        .copyWith(
+                                                                      colorScheme:
+                                                                          ColorScheme
+                                                                              .dark(
+                                                                        primary:
+                                                                            Colors
+                                                                                .black,
+                                                                        onPrimary:
+                                                                            Colors
+                                                                                .white,
+                                                                        surface:
+                                                                            ColorUtils
+                                                                                .primary_gold,
+                                                                        // onPrimary: Colors.black, // <-- SEE HERE
+                                                                        onSurface:
+                                                                            Colors
+                                                                                .black,
+                                                                      ),
+                                                                      dialogBackgroundColor:
+                                                                          ColorUtils
+                                                                              .primary_gold,
+                                                                      textButtonTheme:
+                                                                          TextButtonThemeData(
+                                                                        style: TextButton
+                                                                            .styleFrom(
+                                                                          primary:
+                                                                              Colors.black, // button text color
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                    child: child!,
+                                                                  );
+                                                                },
+                                                              );
+                                                              if (selectedTime !=
+                                                                  null) {
+                                                                final now =
+                                                                    DateTime
+                                                                        .now();
+                                                                var selectedDateTime =
+                                                                    DateTime(
+                                                                        now.year,
+                                                                        now.month,
+                                                                        now.day,
+                                                                        selectedTime
+                                                                            .hour,
+                                                                        selectedTime
+                                                                            .minute);
+                                                                _alarmTime =
+                                                                    selectedDateTime;
+                                                                setModalState(() {
+                                                                  _alarmTimeString =
+                                                                      DateFormat(
+                                                                              'HH:mm')
+                                                                          .format(
+                                                                              selectedDateTime);
+                                                                });
+                                                              }
+                                                            },
+                                                            child: Text(
+                                                                _alarmTimeString!,
+                                                                style: FontStyleUtility.h35(
+                                                                    fontColor:
+                                                                        ColorUtils
+                                                                            .primary_gold,
+                                                                    family:
+                                                                        'PM')),
+                                                          ),
+                                                          ListTile(
+                                                            title: Text(
+                                                              'Repeat',
+                                                              style: FontStyleUtility.h14(
+                                                                  fontColor:
+                                                                      ColorUtils
+                                                                          .primary_gold,
+                                                                  family: 'PR'),
+                                                            ),
+                                                            trailing: const Icon(
+                                                              Icons
+                                                                  .arrow_forward_ios,
+                                                              size: 15,
+                                                              color: Colors.white,
+                                                            ),
+                                                          ),
+                                                          ListTile(
+                                                            title: Text('Sound',
+                                                                style: FontStyleUtility.h14(
+                                                                    fontColor:
+                                                                        ColorUtils
+                                                                            .primary_gold,
+                                                                    family:
+                                                                        'PR')),
+                                                            trailing: const Icon(
+                                                                Icons
+                                                                    .arrow_forward_ios,
+                                                                size: 15,
+                                                                color:
+                                                                    Colors.white),
+                                                          ),
+                                                          ListTile(
+                                                            onTap: (){
+                                                              showDialog(
+                                                                context: context,
+                                                                builder:
+                                                                    (BuildContext context) {
+                                                                  double width =
+                                                                      MediaQuery.of(context)
+                                                                          .size
+                                                                          .width;
+                                                                  double height =
+                                                                      MediaQuery.of(context)
+                                                                          .size
+                                                                          .height;
+                                                                  return BackdropFilter(
+                                                                    filter:
+                                                                    ImageFilter.blur(
+                                                                        sigmaX: 10,
+                                                                        sigmaY: 10),
+                                                                    child: AlertDialog(
+                                                                        backgroundColor:
+                                                                        Colors
+                                                                            .transparent,
+                                                                        contentPadding:
+                                                                        EdgeInsets.zero,
+                                                                        elevation: 0.0,
+                                                                        // title: Center(child: Text("Evaluation our APP")),
+                                                                        content: Column(
+                                                                          mainAxisAlignment:
+                                                                          MainAxisAlignment
+                                                                              .center,
+                                                                          children: [
+                                                                            Stack(
+                                                                              children: [
+                                                                                Padding(
+                                                                                  padding:
+                                                                                  const EdgeInsets.all(
+                                                                                      8.0),
+                                                                                  child:
+                                                                                  Container(
+                                                                                    decoration:
+                                                                                    BoxDecoration(
+                                                                                      // color: Colors.black.withOpacity(0.65),
+                                                                                        gradient:
+                                                                                        LinearGradient(
+                                                                                          begin: Alignment.centerLeft,
+                                                                                          end: Alignment.centerRight,
+                                                                                          // stops: [0.1, 0.5, 0.7, 0.9],
+                                                                                          colors: [
+                                                                                            HexColor("#020204").withOpacity(1),
+                                                                                            HexColor("#36393E").withOpacity(1),
+                                                                                          ],
+                                                                                        ),
+                                                                                        boxShadow: [
+                                                                                          BoxShadow(color: HexColor('#04060F'), offset: Offset(10, 10), blurRadius: 10)
+                                                                                        ],
+                                                                                        borderRadius: BorderRadius.circular(15)),
+                                                                                    child: Align(
+                                                                                        alignment: Alignment.center,
+                                                                                        child: Padding(
+                                                                                          padding: const EdgeInsets.all(8.0),
+                                                                                          child: Column(
+                                                                                            children: [
+                                                                                              SizedBox(
+                                                                                                height: 0,
+                                                                                              ),
+
+                                                                                              Column(
+                                                                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                                                                children: [
+                                                                                                  Container(
+                                                                                                    margin: EdgeInsets.only(left: 18),
+                                                                                                    child: Text('Title', style: FontStyleUtility.h14(fontColor: ColorUtils.primary_grey, family: 'Pr')),
+                                                                                                  ),
+                                                                                                  SizedBox(
+                                                                                                    height: 11,
+                                                                                                  ),
+                                                                                                  Container(
+                                                                                                    margin: EdgeInsets.symmetric(horizontal: 10),
+                                                                                                    // width: 300,
+                                                                                                    decoration:
+                                                                                                    BoxDecoration(
+                                                                                                      // color: Colors.black.withOpacity(0.65),
+                                                                                                        gradient:
+                                                                                                        LinearGradient(
+                                                                                                          begin: Alignment.centerLeft,
+                                                                                                          end: Alignment.centerRight,
+                                                                                                          // stops: [0.1, 0.5, 0.7, 0.9],
+                                                                                                          colors: [
+                                                                                                            HexColor("#36393E").withOpacity(1),
+                                                                                                            HexColor("#020204").withOpacity(1),
+                                                                                                          ],
+                                                                                                        ),
+                                                                                                        boxShadow: [
+                                                                                                          BoxShadow(color: HexColor('#04060F'), offset: Offset(10, 10), blurRadius: 10)
+                                                                                                        ],
+                                                                                                        borderRadius: BorderRadius.circular(20)),
+
+                                                                                                    child: TextFormField(
+                                                                                                      maxLength: 150,
+                                                                                                      decoration: InputDecoration(
+                                                                                                        contentPadding: EdgeInsets.only(left: 20, top: 14, bottom: 14),
+                                                                                                        alignLabelWithHint: false,
+                                                                                                        isDense: true,
+                                                                                                        hintText: 'Add alarm title',
+                                                                                                        counterStyle: TextStyle(
+                                                                                                          height: double.minPositive,
+                                                                                                        ),
+                                                                                                        counterText: "",
+                                                                                                        filled: true,
+                                                                                                        border: InputBorder.none,
+                                                                                                        enabledBorder: const OutlineInputBorder(
+                                                                                                          borderSide: BorderSide(color: Colors.transparent, width: 1),
+                                                                                                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                                                                                                        ),
+                                                                                                        hintStyle: FontStyleUtility.h14(fontColor: HexColor('#CBCBCB'), family: 'PR'),
+                                                                                                      ),
+                                                                                                      style: FontStyleUtility.h14(fontColor: ColorUtils.primary_grey, family: 'PR'),
+                                                                                                      controller: Alarm_title,
+                                                                                                      keyboardType: TextInputType.text,
+                                                                                                    ),
+                                                                                                  ),
+                                                                                                ],
+                                                                                              ),
+                                                                                              SizedBox(
+                                                                                                height: 10,
+                                                                                              ),
+                                                                                              GestureDetector(
+                                                                                                onTap: () {
+                                                                                                  setState(() {
+                                                                                                    Alarm_title_list.add(Alarm_title.text);
+                                                                                                    Navigator.pop(context);
+                                                                                                  });
+                                                                                                },
+                                                                                                child: Container(
+                                                                                                  alignment: Alignment.topRight,
+                                                                                                  child: Text(
+                                                                                                    'Add',
+                                                                                                    style: FontStyleUtility.h12(fontColor: ColorUtils.primary_grey, family: 'PR'),
+                                                                                                  ),
+                                                                                                ),
+                                                                                              )
+                                                                                              // common_button_gold(
+                                                                                              //   onTap: () {
+                                                                                              //     Get
+                                                                                              //         .to(
+                                                                                              //         DashboardScreen());
+                                                                                              //   },
+                                                                                              //   title_text: 'Go to Dashboard',
+                                                                                              // ),
+                                                                                            ],
+                                                                                          ),
+                                                                                        )),
+                                                                                  ),
+                                                                                ),
+                                                                                GestureDetector(
+                                                                                  onTap:
+                                                                                      () {
+                                                                                    Navigator.pop(
+                                                                                        context);
+                                                                                  },
+                                                                                  child:
+                                                                                  Container(
+                                                                                    margin: EdgeInsets.only(
+                                                                                        right:
+                                                                                        10),
+                                                                                    alignment:
+                                                                                    Alignment.topRight,
+                                                                                    child:
+                                                                                    Container(
+                                                                                        decoration:
+                                                                                        BoxDecoration(
+                                                                                          // color: Colors.black.withOpacity(0.65),
+                                                                                            gradient:
+                                                                                            LinearGradient(
+                                                                                              begin: Alignment.centerLeft,
+                                                                                              end: Alignment.centerRight,
+                                                                                              // stops: [0.1, 0.5, 0.7, 0.9],
+                                                                                              colors: [
+                                                                                                HexColor("#36393E").withOpacity(1),
+                                                                                                HexColor("#020204").withOpacity(1),
+                                                                                              ],
+                                                                                            ),
+                                                                                            boxShadow: [
+                                                                                              BoxShadow(color: HexColor('#04060F'), offset: Offset(0, 3), blurRadius: 5)
+                                                                                            ],
+                                                                                            borderRadius: BorderRadius.circular(20)),
+                                                                                        child: Padding(
+                                                                                          padding: const EdgeInsets.all(4.0),
+                                                                                          child: Icon(
+                                                                                            Icons.cancel_outlined,
+                                                                                            size: 13,
+                                                                                            color: ColorUtils.primary_grey,
+                                                                                          ),
+                                                                                        )),
+                                                                                  ),
+                                                                                )
+                                                                              ],
+                                                                            ),
+                                                                          ],
+                                                                        )),
+                                                                  );
+                                                                },
+                                                              );
+                                                            },
+                                                            title: Text('Title',
+                                                                style: FontStyleUtility.h14(
+                                                                    fontColor:
+                                                                        ColorUtils
+                                                                            .primary_grey,
+                                                                    family:
+                                                                        'PR')),
+                                                            trailing: const Icon(
+                                                                Icons
+                                                                    .arrow_forward_ios,
+                                                                size: 15,
+                                                                color:
+                                                                    Colors.white),
+                                                          ),
+                                                          GestureDetector(
+                                                            onTap: () async {
+                                                              if (Alarm_title.text.isEmpty) {
+                                                                CommonWidget()
+                                                                    .showErrorToaster(msg: "Enter Alarm title");
+                                                                return;
+                                                              }else{
+                                                                await onSaveAlarm();
+                                                              }
+                                                            },
+                                                            child: Container(
+                                                              width: MediaQuery.of(
+                                                                          context)
+                                                                      .size
+                                                                      .width /
+                                                                  3,
+                                                              decoration: BoxDecoration(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              30),
+                                                                  border: Border.all(
+                                                                      color: ColorUtils
+                                                                          .primary_grey,
+                                                                      width: 1)),
+                                                              child: Padding(
+                                                                padding: const EdgeInsets
+                                                                        .symmetric(
+                                                                    vertical:
+                                                                        12.0,
+                                                                    horizontal:
+                                                                        8),
+                                                                child: Row(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .center,
+                                                                  children: [
+                                                                    const Icon(
+                                                                      Icons.alarm,
+                                                                      color: Colors
+                                                                          .white,
+                                                                      size: 25,
+                                                                    ),
+                                                                    const SizedBox(
+                                                                      width: 10,
+                                                                    ),
+                                                                    Text(
+                                                                      'Save',
+                                                                      style: FontStyleUtility.h16(
+                                                                          fontColor:
+                                                                              ColorUtils
+                                                                                  .primary_gold,
+                                                                          family:
+                                                                              'PR'),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          )
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  );
+                                                },
+                                              );
+                                            },
+                                          );
+                                          // scheduleAlarm();
+                                        },
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                              // color: Colors.black.withOpacity(0.65),
+                                              gradient: LinearGradient(
+                                                begin: Alignment.centerLeft,
+                                                end: Alignment.centerRight,
+                                                // stops: [0.1, 0.5, 0.7, 0.9],
+                                                colors: [
+                                                  HexColor("#36393E")
+                                                      .withOpacity(1),
+                                                  HexColor("#020204")
+                                                      .withOpacity(1),
+                                                ],
+                                              ),
+                                              boxShadow: [
+                                                BoxShadow(
+                                                    color: HexColor('#04060F'),
+                                                    offset: const Offset(10, 10),
+                                                    blurRadius: 20)
+                                              ],
+                                              borderRadius:
+                                                  BorderRadius.circular(20)),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Icon(
+                                              Icons.add_circle_outline,
+                                              color: ColorUtils.primary_grey,
+                                            ),
+                                          ),
+                                        )),
+                                  )
+                                else
+                                  const Center(
+                                      child: Text(
+                                    'Only 5 alarms allowed!',
+                                    style: const TextStyle(color: Colors.white),
+                                  )),
+                              ]).toList(),
+                            ),
+                          );
+                        }
+                        return const Center(
+                          child: const Text(
+                            'Loading..',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+
+                  const SizedBox(
+                    height: 50,
+                  )
                 ],
               ),
             ),
@@ -772,7 +1429,7 @@ class _KegelScreenState extends State<KegelScreen>
       started = false;
       watch.start();
       timer = Timer.periodic(
-          Duration(milliseconds: 100),
+          const Duration(milliseconds: 100),
           (levels == 'Easy ? '
               ? updateTime_Easy
               : (levels == 'Normal' ? updateTime_Normal : updateTime_Easy)));
@@ -809,7 +1466,6 @@ class _KegelScreenState extends State<KegelScreen>
   }
 
   setTime_finish() {
-
     var timeSoFar = watch.elapsedMilliseconds;
     setState(() {
       elapsedTime = transformMilliSeconds(timeSoFar);
@@ -867,7 +1523,7 @@ class _KegelScreenState extends State<KegelScreen>
       } else {
         print("haddddd support");
         Vibration.vibrate();
-        await Future.delayed(Duration(milliseconds: 500));
+        await Future.delayed(const Duration(milliseconds: 500));
         Vibration.vibrate();
       }
       // Vibrate.defaultVibrationDuration;
@@ -876,5 +1532,56 @@ class _KegelScreenState extends State<KegelScreen>
     } else {
       CommonWidget().showErrorToaster(msg: 'Device Cannot vibrate');
     }
+  }
+
+  Future<void> scheduleAlarm(
+      DateTime scheduledNotificationDateTime, AlarmInfo alarmInfo) async {
+    var androidPlatformChannelSpecifics = const AndroidNotificationDetails(
+      'alarm_notif',
+      'alarm_notif',
+      // 'Channel for Alarm notification',
+      icon: 'app_icon',
+      sound: RawResourceAndroidNotificationSound('a_long_cold_sting'),
+      largeIcon: DrawableResourceAndroidBitmap('app_icon'),
+    );
+
+    var iOSPlatformChannelSpecifics = const IOSNotificationDetails(
+        sound: 'a_long_cold_sting.wav',
+        presentAlert: true,
+        presentBadge: true,
+        threadIdentifier: 'thread_id',
+        presentSound: true);
+    var platformChannelSpecifics = NotificationDetails(
+        android: androidPlatformChannelSpecifics,
+        iOS: iOSPlatformChannelSpecifics);
+
+
+    await flutterLocalNotificationsPlugin.schedule(0, 'Klench Exercise', alarmInfo.title,
+        scheduledNotificationDateTime, platformChannelSpecifics);
+  }
+
+  Future<void> onSaveAlarm() async {
+    DateTime scheduleAlarmDateTime;
+    if (_alarmTime!.isAfter(DateTime.now()))
+      scheduleAlarmDateTime = _alarmTime!;
+    else
+      scheduleAlarmDateTime = _alarmTime!.add(const Duration(days: 1));
+
+    var alarmInfo = AlarmInfo(
+      alarmDateTime: scheduleAlarmDateTime,
+      gradientColorIndex: _currentAlarms!.length,
+      title: Alarm_title.text,
+    );
+    _alarmHelper.insertAlarm(alarmInfo);
+    await scheduleAlarm(scheduleAlarmDateTime, alarmInfo);
+    Alarm_title.clear();
+    Navigator.pop(context);
+    loadAlarms();
+  }
+
+  void deleteAlarm(int id) {
+    _alarmHelper.delete(id);
+    //unsubscribe for notification
+    loadAlarms();
   }
 }

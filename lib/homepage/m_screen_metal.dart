@@ -385,7 +385,9 @@ class _M_ScreenMetalState extends State<M_ScreenMetal>
                                   image: AssetImage(AssetUtils.home_button)),
                               boxShadow: [
                                 BoxShadow(
-                                  color:(animation_started ?  HexColor('#DD3931') : Colors.transparent),
+                                  color: (animation_started
+                                      ? HexColor('#DD3931')
+                                      : Colors.transparent),
                                   blurRadius: (animation_started
                                       ? _animation!.value
                                       : 0),
@@ -479,45 +481,43 @@ class _M_ScreenMetalState extends State<M_ScreenMetal>
                                           // padding: const EdgeInsets.all(8.0),
                                           alignment: Alignment.center,
                                           child: Align(
-                                              alignment: Alignment.center,
-                                              child: ListView.builder(
-                                                padding: EdgeInsets.symmetric(
-                                                    vertical: 10,
-                                                    horizontal: 5),
-                                                itemCount: method_list.length,
-                                                shrinkWrap: true,
-                                                itemBuilder:
-                                                    (BuildContext context,
-                                                    int index) {
-                                                  return GestureDetector(
-                                                    onTap: () {
-                                                      setState(() {
-                                                        method_selected =
-                                                        method_list[index];
-                                                        print(
-                                                            "method_selected $method_selected");
-                                                        started = true;
-                                                      });
-                                                      Navigator.pop(context);
-                                                    },
-                                                    child: Container(
-                                                      margin:
-                                                      EdgeInsets.symmetric(
-                                                          vertical: 8.5),
-                                                      alignment:
-                                                      Alignment.center,
-                                                      child: Text(
-                                                        method_list[index],
-                                                        style: FontStyleUtility.h15(
-                                                            fontColor: ColorUtils
-                                                                .primary_grey,
-                                                            family: 'PM'),
-                                                      ),
+                                            alignment: Alignment.center,
+                                            child: ListView.builder(
+                                              padding: EdgeInsets.symmetric(
+                                                  vertical: 10, horizontal: 5),
+                                              itemCount: method_list.length,
+                                              shrinkWrap: true,
+                                              itemBuilder:
+                                                  (BuildContext context,
+                                                      int index) {
+                                                return GestureDetector(
+                                                  onTap: () {
+                                                    setState(() {
+                                                      method_selected =
+                                                          method_list[index];
+                                                      print(
+                                                          "method_selected $method_selected");
+                                                      started = true;
+                                                    });
+                                                    Navigator.pop(context);
+                                                  },
+                                                  child: Container(
+                                                    margin:
+                                                        EdgeInsets.symmetric(
+                                                            vertical: 8.5),
+                                                    alignment: Alignment.center,
+                                                    child: Text(
+                                                      method_list[index],
+                                                      style: FontStyleUtility.h15(
+                                                          fontColor: ColorUtils
+                                                              .primary_grey,
+                                                          family: 'PM'),
                                                     ),
-                                                  );
-                                                },
-                                              ),
-                                              ),
+                                                  ),
+                                                );
+                                              },
+                                            ),
+                                          ),
                                         ),
                                       ),
                                       GestureDetector(
@@ -786,7 +786,7 @@ class _M_ScreenMetalState extends State<M_ScreenMetal>
                           await stopWatch_finish();
                           method_time.add(ListMethodClass(
                               method_name: method_selected,
-                              total_time: elapsedTime) );
+                              total_time: elapsedTime));
                           setState(() {
                             elapsedTime = '00:00';
                             percent = 0.0;
@@ -1470,7 +1470,6 @@ class _M_ScreenMetalState extends State<M_ScreenMetal>
                                         HexColor("#36393E").withOpacity(0.65),
                                       ],
                                     ),
-
                                     borderRadius: BorderRadius.circular(20)),
                                 child: Column(
                                   children: [
@@ -1621,7 +1620,9 @@ class _M_ScreenMetalState extends State<M_ScreenMetal>
                                               ),
                                             ),
                                           ),
-                                          SizedBox(width: 5,),
+                                          SizedBox(
+                                            width: 5,
+                                          ),
                                           Expanded(
                                             flex: 2,
                                             child: Container(
@@ -1675,7 +1676,8 @@ class _M_ScreenMetalState extends State<M_ScreenMetal>
                                     ),
                                     Container(
                                       decoration: BoxDecoration(
-                                          color: HexColor('#181A1F').withOpacity(0.65),
+                                          color: HexColor('#181A1F')
+                                              .withOpacity(0.65),
                                           borderRadius: BorderRadius.only(
                                               bottomRight: Radius.circular(20),
                                               bottomLeft: Radius.circular(20))),
@@ -1782,7 +1784,8 @@ class _M_ScreenMetalState extends State<M_ScreenMetal>
                               Container(
                                 width: 250,
                                 decoration: BoxDecoration(
-                                    color: HexColor('#181B23').withOpacity(0.65),
+                                    color:
+                                        HexColor('#181B23').withOpacity(0.65),
                                     // boxShadow: [
                                     //   BoxShadow(
                                     //       color: HexColor('#000000'),

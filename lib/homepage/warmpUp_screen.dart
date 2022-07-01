@@ -28,7 +28,7 @@ class _WarmUpScreenState extends State<WarmUpScreen>
   bool startStop = true;
   bool started = true;
 
-  String elapsedTime = '00:00';
+  String elapsedTime = '00';
   double percent = 0.0;
 
   updateTime(Timer timer) {
@@ -36,7 +36,7 @@ class _WarmUpScreenState extends State<WarmUpScreen>
       if (mounted) {
         setState(() {
           print("startstop Inside=$startStop");
-          elapsedTime = transformMilliSeconds(watch.elapsedMilliseconds);
+          elapsedTime = transformMilliSeconds(watch.elapsedMicroseconds);
           percent += 1;
           if (percent >= 100) {
             percent = 0.0;
@@ -354,7 +354,7 @@ class _WarmUpScreenState extends State<WarmUpScreen>
                       } else {
                         await stopWatch_finish();
                         setState(() {
-                          elapsedTime = '00:00';
+                          elapsedTime = '00';
                           percent = 0.0;
                           back_wallpaper = true;
                           button_height = 120;
@@ -512,7 +512,7 @@ class _WarmUpScreenState extends State<WarmUpScreen>
       startStop = false;
       started = false;
       watch.start();
-      timer = Timer.periodic(Duration(milliseconds: 100), updateTime);
+      timer = Timer.periodic(Duration(microseconds: 200), updateTime);
     });
   }
 
@@ -562,6 +562,6 @@ class _WarmUpScreenState extends State<WarmUpScreen>
     String minutesStr = (minutes % 60).toString().padLeft(2, '0');
     String secondsStr = (seconds % 60).toString().padLeft(2, '0');
 
-    return "$minutesStr:$secondsStr";
+    return secondsStr;
   }
 }
