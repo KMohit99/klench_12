@@ -43,6 +43,13 @@ dependencies:
   sqflite: ^2.0.2+1
   flutter_local_notifications: ^9.6.1
   share_plus: ^2.1.2
+
+  firebase_auth: ^3.1.4
+  firebase_core: ^1.8.0
+  flutter_facebook_auth: ^4.1.2
+
+  flutter_webview_plugin: ^0.4.0
+
 #  esys_flutter_share_plus: ^2.1.0
 
 dev_dependencies:
@@ -54,7 +61,7 @@ dev_dependencies:
 flutter_icons:
   android: true
   ios: true
-  image_path: "assets/images/app_icon.png"
+  image_path: "assets/images/klench12-App-Icon.png"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -96,6 +103,7 @@ flutter:
     - family: PR
       fonts:
         - asset: assets/fonts/Poppins-Regular.ttf
+
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

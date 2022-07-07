@@ -170,12 +170,61 @@ class _BreathingScreenState extends State<BreathingScreen>
       //     intensities: [1, 255]);
       // print(
       //     "Vibration.hasCustomVibrationsSupport() ${Vibration.hasCustomVibrationsSupport()}");
+
       if (await Vibration.hasCustomVibrationsSupport() == true) {
-        print("has support");
+        // print("has support");
         Vibration.vibrate(
           // pattern: [100, 100,100, 100,100, 100,100, 100,],
-            duration: 4000,
+            duration: 5000,
             intensities: [1, 255]);
+      } else {
+        print("haddddd support");
+        Vibration.vibrate();
+        await Future.delayed(Duration(milliseconds: 500));
+        Vibration.vibrate();
+      }
+      // Vibrate.defaultVibrationDuration;
+      // Vibrate.defaultVibrationDuration;
+      // Vibrate.vibrateWithPauses(pauses);
+    } else {
+      CommonWidget().showErrorToaster(msg: 'Device Cannot vibrate');
+    }
+  }
+  vibration_hold() async {
+    if (_canVibrate) {
+      // Vibration.vibrate(
+      //     // pattern: [100, 100,100, 100,100, 100,100, 100,],
+      //     duration: 4000,
+      //     intensities: [1, 255]);
+      // print(
+      //     "Vibration.hasCustomVibrationsSupport() ${Vibration.hasCustomVibrationsSupport()}");
+
+      if (await Vibration.hasCustomVibrationsSupport() == true) {
+        // print("has support");
+        Vibration.vibrate(pattern: [
+          900,
+          100,
+          900,
+          100,
+          900,
+          100,
+          900,
+          100,
+          // 400,
+          // 100,
+          // 400,
+          // 100,
+          // 400,
+          // 100,
+          // 400,
+          // 100,
+          // 400,
+          // 100,
+        ], intensities: [
+          5,
+          255
+        ]);
+
       } else {
         print("haddddd support");
         Vibration.vibrate();
@@ -209,6 +258,7 @@ class _BreathingScreenState extends State<BreathingScreen>
 
         print(status);
         if (status == AnimationStatus.completed) {
+          vibration_hold();
           setState(() {
             _status = 'Hold';
             shadow_animation_pause = true;
@@ -233,6 +283,7 @@ class _BreathingScreenState extends State<BreathingScreen>
             });
           });
         } else if (status == AnimationStatus.dismissed) {
+          vibration_hold();
           setState(() {
             _status = 'Hold';
             // print(_status);
@@ -292,7 +343,6 @@ class _BreathingScreenState extends State<BreathingScreen>
 
   @override
   void initState() {
-
     super.initState();
   }
 
@@ -776,7 +826,7 @@ class _BreathingScreenState extends State<BreathingScreen>
       startStop = true;
       Vibration.cancel();
       animation_started = false;
-      _animationController!.stop();
+      _animationController!.dispose();
       _animationController_shadow1!.stop();
       watch.stop();
       percent = 0.0;

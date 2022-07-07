@@ -12,6 +12,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
 
 import '../../../utils/page_loader.dart';
+import '../../SingIn/controller/SignIn_controller.dart';
 import '../Otp_verification.dart';
 import '../model/sendOtpModel.dart';
 import '../model/signUpmodel.dart';
@@ -91,6 +92,9 @@ class SignUpScreenController extends GetxController {
   //     }
   //   } else {}
   // }
+  final SignInScreenController _signInScreenController = Get.put(
+      SignInScreenController(),
+      tag: SignInScreenController().toString());
 
 
   Future<dynamic> SignUpAPi({required BuildContext context}) async {
@@ -117,6 +121,7 @@ class SignUpScreenController extends GetxController {
     request.fields['gender'] = selected_gender!;
     request.fields['password'] = passwordController.text;
     request.fields['levels'] = level.toString();
+    request.fields['type'] = 'normal';
 
     //userId,tagLine,description,address,postImage,uploadVideo,isVideo
     // request.files.add(await http.MultipartFile.fromPath(
@@ -143,8 +148,10 @@ class SignUpScreenController extends GetxController {
         //     .setPref(URLConstants.type, signUpModel!.user![0].type!);
         // await CreatorgetUserInfo_Email(UserId: signUpModel!.user![0].id!);
         await CommonWidget().showToaster(msg: signUpModel!.message!);
+        _signInScreenController.GetUserInfo(context: context);
+
        // await  SendOtpAPi(context: context);
-        await Get.to(DashboardScreen());
+       //  await Get.to(DashboardScreen());
         hideLoader(context);
       } else {
         hideLoader(context);

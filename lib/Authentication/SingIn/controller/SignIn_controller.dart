@@ -1,6 +1,9 @@
 import 'dart:convert';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:klench_/Authentication/SingIn/SigIn_screen.dart';
 
@@ -10,20 +13,20 @@ import '../../../profile_page/model/userInfoModel.dart';
 import '../../../utils/UrlConstrant.dart';
 import '../../../utils/common_widgets.dart';
 import '../../../utils/page_loader.dart';
+import '../../SignUp/controller/sign_up_controller.dart';
+import '../../SignUp/model/signUpmodel.dart';
 import '../model/SignInModel.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
 
 class SignInScreenController extends GetxController {
-
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
-
   SingInModel? singInModel;
   RxBool isLoading = false.obs;
-  Future<dynamic> SignUpAPi(
-      {required BuildContext context}) async {
+
+  Future<dynamic> SignInAPi({required BuildContext context}) async {
     debugPrint('0-0-0-0-0-0-0 username');
     isLoading(true);
     showLoader(context);
@@ -80,7 +83,6 @@ class SignInScreenController extends GetxController {
     } else {}
   }
 
-
   RxBool isuserinfoLoading = true.obs;
   UserInfoModel? userInfoModel;
   var getUSerModelList = UserInfoModel().obs;
@@ -93,12 +95,12 @@ class SignInScreenController extends GetxController {
 
   Future<dynamic> GetUserInfo({required BuildContext context}) async {
     print('Inside creator get email');
-    showLoader(context);
+    // showLoader(context);
     isuserinfoLoading(true);
     String id_user = await PreferenceManager().getPref(URLConstants.id);
     print("UserID $id_user");
     String url =
-    (URLConstants.base_url + URLConstants.getProfileApi + "?id=${id_user}");
+        (URLConstants.base_url + URLConstants.getProfileApi + "?id=${id_user}");
     // debugPrint('Get Sales Token ${tokens.toString()}');
     // try {
     // } catch (e) {
@@ -122,41 +124,41 @@ class SignInScreenController extends GetxController {
             .setPref(URLConstants.levels, userInfoModel!.data![0].levels!);
 
         _profile_page_controller.nameController.text =
-        userInfoModel!.data![0].username!;
+            userInfoModel!.data![0].username!;
         _profile_page_controller.FullnameController.text =
-        userInfoModel!.data![0].fullName!;
+            userInfoModel!.data![0].fullName!;
         _profile_page_controller.dialCodedigits =
-        userInfoModel!.data![0].countryCode!;
+            userInfoModel!.data![0].countryCode!;
         _profile_page_controller.phoneNumberController.text =
-        userInfoModel!.data![0].phone!;
+            userInfoModel!.data![0].phone!;
         _profile_page_controller.emailAddressController.text =
-        userInfoModel!.data![0].email!;
+            userInfoModel!.data![0].email!;
         _profile_page_controller.dateOfbirthController.text =
-        userInfoModel!.data![0].dob!;
+            userInfoModel!.data![0].dob!;
         _profile_page_controller.genderController.text =
-        userInfoModel!.data![0].gender!;
+            userInfoModel!.data![0].gender!;
 
         (userInfoModel!.data![0].levels == 'Very Easy'
             ? level_rank = 0
             : (userInfoModel!.data![0].levels == 'Easy'
-            ? level_rank = 1
-            : (userInfoModel!.data![0].levels == 'Normal'
-            ? level_rank = 2
-            : (userInfoModel!.data![0].levels == 'Hard'
-            ? level_rank = 3
-            : (userInfoModel!.data![0].levels == 'ထ'
-            ? level_rank = 4
-            : level_rank = 0)))));
+                ? level_rank = 1
+                : (userInfoModel!.data![0].levels == 'Normal'
+                    ? level_rank = 2
+                    : (userInfoModel!.data![0].levels == 'Hard'
+                        ? level_rank = 3
+                        : (userInfoModel!.data![0].levels == 'ထ'
+                            ? level_rank = 4
+                            : level_rank = 0)))));
 
         print("Level : ${userInfoModel!.data![0].levels}");
         print('Rank level : $level_rank');
 
-          isuserinfoLoading(false);
-          selectedCard = level_rank!;
-        hideLoader(context);
+        isuserinfoLoading(false);
+        selectedCard = level_rank!;
+        // hideLoader(context);
         return userInfoModel;
       } else {
-          isuserinfoLoading(false);
+        isuserinfoLoading(false);
 
         hideLoader(context);
         CommonWidget().showToaster(msg: 'Error');
@@ -171,10 +173,151 @@ class SignInScreenController extends GetxController {
     }
   }
 
+  UserCredential? userCredential;
 
+  SignUpModel? signUpModel;
 
-  clear_method(){
+  Future<Resource?> signInWithFacebook(
+      {required BuildContext context, required String login_type}) async {
+    // try {
+    // showLoader(context);
+    final LoginResult result = await FacebookAuth.instance
+        .login(permissions: ["public_profile", "email"]);
+
+    switch (result.status) {
+      case LoginStatus.success:
+        final AuthCredential facebookCredential =
+            FacebookAuthProvider.credential(result.accessToken!.token);
+        userCredential = await FirebaseAuth.instance
+            .signInWithCredential(facebookCredential);
+
+        await SignUpAPi(
+            context: context,
+            type: 'facebook',
+            username: userCredential!.user!.displayName!);
+
+        // Fluttertoast.showToast(
+        //   msg: "login successfully",
+        //   textColor: Colors.white,
+        //   backgroundColor: Colors.black,
+        //   toastLength: Toast.LENGTH_LONG,
+        //   gravity: ToastGravity.BOTTOM,
+        // );
+        // Get.to(Dashboard());
+
+        print(userCredential!.user!.displayName);
+        return Resource(status: Status.Success);
+      case LoginStatus.cancelled:
+        return Resource(status: Status.Cancelled);
+      case LoginStatus.failed:
+        return Resource(status: Status.Error);
+      default:
+        return null;
+    }
+
+    // on FirebaseAuthException catch (e) {
+    //   throw e;
+    // }
+  }
+
+  Future<dynamic> SignUpAPi({
+    required BuildContext context,
+    required String type,
+    required String username,
+  }) async {
+    showLoader(context);
+    var url = (URLConstants.base_url + URLConstants.signUpApi);
+    var request = http.MultipartRequest('POST', Uri.parse(url));
+    // List<int> imageBytes = imgFile!.readAsBytesSync();
+    // String baseimage = base64Encode(imageBytes);
+
+    print("username$username");
+    request.fields['image'] = '';
+    request.fields['username'] = username;
+    request.fields['fullName'] = username;
+    request.fields['countryCode'] = '';
+    request.fields['phone'] = '';
+    request.fields['email'] = '';
+    request.fields['dob'] = '';
+    request.fields['gender'] = '';
+    request.fields['password'] = '';
+    request.fields['levels'] = '';
+    request.fields['type'] = type;
+
+    //userId,tagLine,description,address,postImage,uploadVideo,isVideo
+    // request.files.add(await http.MultipartFile.fromPath(
+    //     "image", widget.ImageFile.path));
+
+    var response = await request.send();
+    var responsed = await http.Response.fromStream(response);
+    print(response.statusCode);
+    print("response - ${response.statusCode}");
+
+    if (response.statusCode == 200) {
+      final data = json.decode(responsed.body);
+      signUpModel = SignUpModel.fromJson(data);
+      print("status${signUpModel!.statusCode}");
+      print("message${signUpModel!.message}");
+      print("error${signUpModel!.error}");
+      if (signUpModel!.error == false) {
+        await PreferenceManager()
+            .setPref(URLConstants.id, signUpModel!.user![0].id!);
+
+        // await PreferenceManager()
+        //     .setPref(URLConstants.id, signUpModel!.user![0].id!);
+        // await PreferenceManager()
+        //     .setPref(URLConstants.type, signUpModel!.user![0].type!);
+        // await CreatorgetUserInfo_Email(UserId: signUpModel!.user![0].id!);
+        await CommonWidget().showToaster(msg: signUpModel!.message!);
+
+        print("signUpModel!.message");
+        await GetUserInfo(context: context);
+        await Get.to(DashboardScreen());
+        await CommonWidget().showToaster(msg: "Please Update user Profile");
+
+        // await  SendOtpAPi(context: context);
+        //  await Get.to(DashboardScreen());
+        hideLoader(context);
+      } else {
+        hideLoader(context);
+        // CommonWidget().showErrorToaster(msg: signUpModel!.message!);
+        if (signUpModel!.message! == 'User Already Exists') {
+          await PreferenceManager()
+              .setPref(URLConstants.id, signUpModel!.user![0].id!);
+
+          // await PreferenceManager()
+          //     .setPref(URLConstants.id, signUpModel!.user![0].id!);
+          // await PreferenceManager()
+          //     .setPref(URLConstants.type, signUpModel!.user![0].type!);
+          // await CreatorgetUserInfo_Email(UserId: signUpModel!.user![0].id!);
+          await CommonWidget().showToaster(msg: signUpModel!.message!);
+
+          print("signUpModel!.message");
+          await GetUserInfo(context: context);
+
+          await Get.to(DashboardScreen());
+          await CommonWidget().showToaster(msg: "Please Update user Profile");
+
+        }
+        // print('Please try again');
+        // print('Please try again');
+      }
+      hideLoader(context);
+    } else {
+      print("ERROR");
+    }
+  }
+
+  clear_method() {
     usernameController.clear();
     passwordController.clear();
   }
 }
+
+class Resource {
+  final Status status;
+
+  Resource({required this.status});
+}
+
+enum Status { Success, Error, Cancelled }

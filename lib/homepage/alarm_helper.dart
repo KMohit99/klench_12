@@ -2,6 +2,7 @@
 // import 'package:sqflite/sqflite.dart';
 // import 'package:sqflite/sqlite_api.dart';
 
+import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 
 import 'alarm_info.dart';
@@ -26,14 +27,12 @@ class AlarmHelper {
   }
 
   Future<Database> get database async {
-    if (_database == null) {
-      _database = await initializeDatabase();
-    }
+    _database ??= await initializeDatabase();
     return _database!;
   }
 
   Future<Database> initializeDatabase() async {
-    var dir = await getDatabasesPath();
+    var dir = await getApplicationDocumentsDirectory().toString();
     var path = dir + "alarm.db";
 
     var database = await openDatabase(
@@ -62,7 +61,7 @@ class AlarmHelper {
   Future<List<AlarmInfo>> getAlarms() async {
     List<AlarmInfo> _alarms = [];
 
-    var db = await this.database;
+    var db = await database;
     var result = await db.query(tableAlarm);
     result.forEach((element) {
       var alarmInfo = AlarmInfo.fromMap(element);

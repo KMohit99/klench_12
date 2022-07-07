@@ -1,6 +1,13 @@
 # This is a generated file; do not edit or check into version control.
+firebase_auth=/Users/technologies/Documents/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_auth-3.4.1/
+firebase_auth_web=/Users/technologies/Documents/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_auth_web-3.3.19/
+firebase_core=/Users/technologies/Documents/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_core-1.19.1/
+firebase_core_web=/Users/technologies/Documents/flutter/.pub-cache/hosted/pub.dartlang.org/firebase_core_web-1.6.6/
+flutter_facebook_auth=/Users/technologies/Documents/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_facebook_auth-4.3.4+2/
+flutter_facebook_auth_web=/Users/technologies/Documents/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_facebook_auth_web-3.2.0/
 flutter_local_notifications=/Users/technologies/Documents/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_local_notifications-9.6.1/
 flutter_plugin_android_lifecycle=/Users/technologies/Documents/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_plugin_android_lifecycle-2.0.6/
+flutter_webview_plugin=/Users/technologies/Documents/flutter/.pub-cache/hosted/pub.dartlang.org/flutter_webview_plugin-0.4.0/
 fluttertoast=/Users/technologies/Documents/flutter/.pub-cache/hosted/pub.dartlang.org/fluttertoast-8.0.9/
 hexcolor=/Users/technologies/Documents/flutter/.pub-cache/hosted/pub.dartlang.org/hexcolor-2.0.7/
 image_picker=/Users/technologies/Documents/flutter/.pub-cache/hosted/pub.dartlang.org/image_picker-0.8.5+3/

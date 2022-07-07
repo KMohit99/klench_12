@@ -265,7 +265,6 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
       SignInScreenController(),
       tag: SignInScreenController().toString());
 
-
   @override
   void initState() {
     init();
@@ -274,7 +273,7 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
   }
 
   init() async {
-    // await _signInScreenController.GetUserInfo(context: context);
+    await _signInScreenController.GetUserInfo(context: context);
     bool auth =
         await PreferenceManager().getbool(URLConstants.authentication_enable);
     print(auth);
@@ -288,7 +287,8 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
     return Container(
-        child: (_signInScreenController.isuserinfoLoading.value == true
+        child: Obx(() => (_signInScreenController.isuserinfoLoading.value ==
+                true
             ? Center(
                 child: Material(
                   color: Color(0x66DD4D4),
@@ -326,7 +326,8 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
                       backgroundColor: Colors.transparent,
                       automaticallyImplyLeading: false,
                       title: Text(
-                        _signInScreenController.userInfoModel!.data![0].username!,
+                        _signInScreenController
+                            .userInfoModel!.data![0].username!,
                         style: FontStyleUtility.h16(
                             fontColor: ColorUtils.primary_gold, family: 'PM'),
                       ),
@@ -381,8 +382,11 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
                                                       offset: Offset(5, 5),
                                                       blurRadius: 6)
                                                 ]),
-                                            child: (_signInScreenController.userInfoModel!
-                                                    .data![0].image!.isEmpty
+                                            child: (_signInScreenController
+                                                    .userInfoModel!
+                                                    .data![0]
+                                                    .image!
+                                                    .isEmpty
                                                 ? Image.asset(
                                                     AssetUtils.user_icon2,
                                                     height: 100,
@@ -1028,13 +1032,15 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
                                                         ),
                                                       ],
                                                       borderRadius:
-                                                          BorderRadius.circular(15)),
+                                                          BorderRadius.circular(
+                                                              15)),
                                                   child: Container(
                                                     alignment: Alignment.center,
                                                     child: Text(
                                                       difficulty[index],
                                                       style: FontStyleUtility.h15(
-                                                          fontColor: (_signInScreenController.selectedCard ==
+                                                          fontColor: (_signInScreenController
+                                                                      .selectedCard ==
                                                                   index
                                                               ? ColorUtils
                                                                   .primary_gold
@@ -1083,7 +1089,7 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
                           ],
                         ),
                       ),
-                    )))));
+                    ))))));
   }
 
   final imgPicker = ImagePicker();
@@ -1101,6 +1107,4 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
       _profile_page_controller.imgFile = File(imgCamera!.path);
     });
   }
-
-
 }

@@ -9,6 +9,7 @@ import 'package:klench_/utils/Common_container_color.dart';
 import 'package:klench_/utils/TextStyle_utils.dart';
 import 'package:klench_/utils/colorUtils.dart';
 
+import '../Authentication/ask_signUp.dart';
 import '../utils/Common_buttons.dart';
 
 class FrontScreen extends StatefulWidget {
@@ -430,7 +431,9 @@ class _FrontScreenState extends State<FrontScreen> {
                         common_button_gold(
                           title_text: '12 days free trial',
                           onTap: () {
-                            Get.to(SignUpScreen());
+                            // Get.to(SignUpScreen());
+                            Get.to(AskSignUp());
+
                           },
                         ),
                         Container(
@@ -445,7 +448,9 @@ class _FrontScreenState extends State<FrontScreen> {
                         ),
                         GestureDetector(
                           onTap: (){
-                            Get.to(SignUpScreen());
+                            // Get.to(SignUpScreen());
+                            Get.to(AskSignUp());
+
                           },
                           child: Container(
                             decoration: BoxDecoration(
@@ -496,7 +501,9 @@ class _FrontScreenState extends State<FrontScreen> {
                         ),
                         GestureDetector(
                           onTap: (){
-                            Get.to(SignUpScreen());
+                            // Get.to(SignUpScreen());
+                            Get.to(AskSignUp());
+
                           },
                           child: Container(
                             decoration: BoxDecoration(

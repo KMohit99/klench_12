@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:klench_/Authentication/SignUp/SignUp_screen.dart';
+import 'package:klench_/Authentication/ask_signUp.dart';
 import 'package:klench_/Dashboard/dashboard_screen.dart';
 import 'package:klench_/utils/Common_textfeild.dart';
 import 'package:klench_/utils/TextStyle_utils.dart';
@@ -13,6 +14,7 @@ import '../../utils/Common_buttons.dart';
 import '../../utils/Common_container_color.dart';
 import '../../utils/TexrUtils.dart';
 import '../Forgot_pass/Forgot_screen.dart';
+import '../instagram/instagram_view.dart';
 import 'controller/SignIn_controller.dart';
 
 class SignInScreen extends StatefulWidget {
@@ -23,13 +25,11 @@ class SignInScreen extends StatefulWidget {
 }
 
 class _SignInScreenState extends State<SignInScreen> {
-
   final SignInScreenController _signInScreenController = Get.put(
       SignInScreenController(),
       tag: SignInScreenController().toString());
 
   bool _obscureText = true;
-
 
   // Toggles the password show status
   void _toggle() {
@@ -43,7 +43,7 @@ class _SignInScreenState extends State<SignInScreen> {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
     return GestureDetector(
-      onTap: (){
+      onTap: () {
         FocusScope.of(context).requestFocus(FocusNode());
       },
       child: Scaffold(
@@ -82,7 +82,6 @@ class _SignInScreenState extends State<SignInScreen> {
           ),
           centerTitle: true,
         ),
-
         body: SingleChildScrollView(
           child: Container(
             color: Colors.transparent,
@@ -100,17 +99,19 @@ class _SignInScreenState extends State<SignInScreen> {
                 Container(
                   decoration: Common_decoration(),
                   child: Padding(
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 29, horizontal: 19),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 29, horizontal: 19),
                     child: Column(
                       children: [
                         Container(
                           child: CommonTextFormField_text(
                             title: 'Username',
                             labelText: 'Enter Username',
-                            controller: _signInScreenController.usernameController,
+                            controller:
+                                _signInScreenController.usernameController,
                             iconData: IconButton(
-                              visualDensity: VisualDensity(vertical: -4,horizontal: -4),
+                              visualDensity:
+                                  VisualDensity(vertical: -4, horizontal: -4),
                               icon: Image.asset(
                                 AssetUtils.signIN_user_icon,
                                 color: HexColor("#606060"),
@@ -128,15 +129,17 @@ class _SignInScreenState extends State<SignInScreen> {
                           child: CommonTextFormField_text_reversed(
                             title: 'Password',
                             labelText: 'Enter Password',
-                            controller: _signInScreenController.passwordController,
+                            controller:
+                                _signInScreenController.passwordController,
                             isObscure: _obscureText,
                             maxLines: 1,
                             iconData: IconButton(
-                              visualDensity: VisualDensity(vertical: -4,horizontal: -4),
+                              visualDensity:
+                                  VisualDensity(vertical: -4, horizontal: -4),
                               icon: Image.asset(
                                 (_obscureText
-                                  ? AssetUtils.eye_open_icon
-                                  : AssetUtils.eye_close_icon),
+                                    ? AssetUtils.eye_open_icon
+                                    : AssetUtils.eye_close_icon),
                                 color: HexColor("#606060"),
                                 height: 20,
                                 width: 20,
@@ -157,7 +160,8 @@ class _SignInScreenState extends State<SignInScreen> {
                             child: Text(
                               'Forgot Password?',
                               style: FontStyleUtility.h13(
-                                  fontColor: ColorUtils.primary_grey, family: 'PM'),
+                                  fontColor: ColorUtils.primary_grey,
+                                  family: 'PM'),
                             ),
                           ),
                         ),
@@ -166,10 +170,101 @@ class _SignInScreenState extends State<SignInScreen> {
                         ),
                         common_button_gold(
                           onTap: () {
-                            _signInScreenController.SignUpAPi(context: context);
+                            _signInScreenController.SignInAPi(context: context);
                           },
                           title_text: 'Sign In',
                         ),
+                        SizedBox(
+                          height: 0,
+                        ),
+                        // common_button_gold(
+                        //   onTap: () {
+                        //     _signInScreenController.signInWithFacebook(
+                        //         context: context, login_type: '');
+                        //   },
+                        //   title_text: 'Facebook',
+                        // ),
+                        // SizedBox(
+                        //   height: 12,
+                        // ),
+                        // common_button_gold(
+                        //   onTap: () {
+                        //     // _signInScreenController.signInWithFacebook(context: context, login_type: '');
+                        //     Get.to(InstagramView(
+                        //       context: context,
+                        //       login_type: 'Creator',
+                        //     ));
+                        //   },
+                        //   title_text: 'Instagram',
+                        // ),
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Container(
+                  child: Text(
+                    'OR',
+                    style: FontStyleUtility.h13(
+                        fontColor: ColorUtils.primary_grey,
+                        family: 'PM'),
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                      // color: Colors.black.withOpacity(0.65),
+                      gradient: LinearGradient(
+                        begin: Alignment.centerLeft,
+                        end: Alignment.centerRight,
+                        // stops: [0.1, 0.5, 0.7, 0.9],
+                        colors: [
+                          HexColor("#36393E").withOpacity(1),
+                          HexColor("#020204").withOpacity(1),
+                        ],
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: HexColor('#04060F'),
+                          offset: Offset(10, 10),
+                          blurRadius: 20,
+                        ),
+                      ],
+                      borderRadius: BorderRadius.circular(15)),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 15,horizontal: 8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            Get.to(InstagramView(
+                              context: context,
+                              login_type: 'Creator',
+                            ));
+                          },
+                          child: Image.asset(
+                            AssetUtils.instagram_icon,
+                            scale: 3,
+                          ),
+                        ),
+                        SizedBox(
+                          width: 50,
+                        ),
+                        GestureDetector(
+                          onTap: (){
+                            _signInScreenController.signInWithFacebook(
+                                context: context, login_type: '');
+                          },
+                          child: Image.asset(
+                            AssetUtils.facebook_icon,
+                            scale: 3,
+                          ),
+                        )
                       ],
                     ),
                   ),
@@ -181,7 +276,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   alignment: FractionalOffset.bottomCenter,
                   child: Container(
                     decoration: BoxDecoration(
-                      // color: Colors.black.withOpacity(0.65),
+                        // color: Colors.black.withOpacity(0.65),
                         gradient: LinearGradient(
                           begin: Alignment.centerLeft,
                           end: Alignment.centerRight,
@@ -194,7 +289,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         boxShadow: [
                           BoxShadow(
                             color: HexColor('#04060F'),
-                            offset: Offset(10,10),
+                            offset: Offset(10, 10),
                             blurRadius: 20,
                           ),
                         ],
@@ -216,7 +311,7 @@ class _SignInScreenState extends State<SignInScreen> {
                             ),
                             GestureDetector(
                               onTap: () {
-                                Get.to(SignUpScreen());
+                                Get.to(AskSignUp());
                               },
                               child: Text(
                                 "Sign Up!",

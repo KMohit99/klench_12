@@ -15,6 +15,9 @@ class AssetUtils {
   static const secure_sheild_icon = root + 'Icon awesome-shield-alt.png';
   static const notification_icon = root + 'Group 10.png';
 
+  static const instagram_icon = root + '002-instagram@3x.png';
+  static const facebook_icon = root + '001-facebook@3x.png';
+
   //bottombar
   static const profile_icon = root + 'Icon awesome-user-circle.png';
   static const home_icon = root + 'Icon feather-home.png';
