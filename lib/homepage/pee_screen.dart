@@ -62,7 +62,7 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
             stopWatch_finish();
             // _animationController_shadow1!.reverse();
             setState(() {
-              elapsedTime = '00';
+              elapsedTime = 'PUSH';
               percent = 0.0;
               watch.reset();
               // CommonWidget().showToaster(msg: '${7 - counter} Times left');
@@ -70,7 +70,7 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
               print(counter);
               // paused_time.clear();
             });
-            Future.delayed(Duration(seconds: 2), () {
+            Future.delayed(Duration(seconds: 4), () {
               // if (counter == 10) {
               //   stopWatch_finish();
               //   setState(() {
@@ -761,6 +761,9 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
     start_animation();
 
     setState(() {
+      elapsedTime = "00";
+
+
       startStop = false;
       started = false;
       watch.start();

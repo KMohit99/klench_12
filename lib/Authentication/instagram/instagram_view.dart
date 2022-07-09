@@ -187,7 +187,7 @@ class InstagramView extends StatelessWidget {
                 username: instagram.username!,
               );
 
-              await Get.to(DashboardScreen());
+              // await Get.to(DashboardScreen());
               // await Navigator.of(context).push(
               //   MaterialPageRoute(
               //     builder: (context) => HomeView(

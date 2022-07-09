@@ -2,15 +2,10 @@ import 'dart:async';
 
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:klench_/utils/TexrUtils.dart';
-import 'package:percent_indicator/circular_percent_indicator.dart';
 
-import '../Dashboard/dashboard_screen.dart';
 import '../utils/Asset_utils.dart';
-import '../utils/Common_buttons.dart';
 import '../utils/TextStyle_utils.dart';
 import '../utils/colorUtils.dart';
 
@@ -36,7 +31,7 @@ class _WarmUpScreenState extends State<WarmUpScreen>
       if (mounted) {
         setState(() {
           print("startstop Inside=$startStop");
-          elapsedTime = transformMilliSeconds(watch.elapsedMicroseconds);
+          elapsedTime = transformMilliSeconds(watch.elapsedMilliseconds);
           percent += 1;
           if (percent >= 100) {
             percent = 0.0;
@@ -512,7 +507,7 @@ class _WarmUpScreenState extends State<WarmUpScreen>
       startStop = false;
       started = false;
       watch.start();
-      timer = Timer.periodic(Duration(microseconds: 200), updateTime);
+      timer = Timer.periodic(Duration(microseconds: 100), updateTime);
     });
   }
 

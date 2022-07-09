@@ -118,6 +118,7 @@ class _KegelScreenState extends State<KegelScreen>
               // paused_time.clear();
             });
             Future.delayed(const Duration(seconds: 4), () {
+              print('indise 4 seconds');
               if (counter == 8) {
                 stopWatch_finish();
                 setState(() {
@@ -170,7 +171,7 @@ class _KegelScreenState extends State<KegelScreen>
             stopWatch_finish();
             // _animationController_shadow1!.reverse();
             setState(() {
-              elapsedTime = '00';
+              elapsedTime = 'PUSH';
               percent = 0.0;
               watch.reset();
               CommonWidget().showToaster(msg: '${7 - counter} Times left');
@@ -178,7 +179,7 @@ class _KegelScreenState extends State<KegelScreen>
               print(counter);
               // paused_time.clear();
             });
-            Future.delayed(const Duration(seconds: 2), () {
+            Future.delayed(const Duration(seconds: 4), () {
               if (counter == 10) {
                 stopWatch_finish();
                 setState(() {
@@ -1427,7 +1428,7 @@ class _KegelScreenState extends State<KegelScreen>
     setState(() {
       startStop = false;
       started = false;
-      elapsedTime = "00:00";
+      elapsedTime = "00";
       watch.start();
       timer = Timer.periodic(
           const Duration(milliseconds: 100),

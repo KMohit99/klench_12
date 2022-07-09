@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +10,7 @@ import 'package:klench_/Authentication/SingIn/SigIn_screen.dart';
 
 import '../../../Dashboard/dashboard_screen.dart';
 import '../../../profile_page/controller/profile_page_controller.dart';
+import '../../../profile_page/model/Editprofile.dart';
 import '../../../profile_page/model/userInfoModel.dart';
 import '../../../utils/UrlConstrant.dart';
 import '../../../utils/common_widgets.dart';
@@ -18,6 +20,8 @@ import '../../SignUp/model/signUpmodel.dart';
 import '../model/SignInModel.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
+
+import '../social_signup_details.dart';
 
 class SignInScreenController extends GetxController {
   final TextEditingController usernameController = TextEditingController();
@@ -191,6 +195,8 @@ class SignInScreenController extends GetxController {
         userCredential = await FirebaseAuth.instance
             .signInWithCredential(facebookCredential);
 
+
+
         await SignUpAPi(
             context: context,
             type: 'facebook',
@@ -263,6 +269,7 @@ class SignInScreenController extends GetxController {
         await PreferenceManager()
             .setPref(URLConstants.id, signUpModel!.user![0].id!);
 
+        print("signUpModel!.user![0].id! ${signUpModel!.user![0].id!}");
         // await PreferenceManager()
         //     .setPref(URLConstants.id, signUpModel!.user![0].id!);
         // await PreferenceManager()
@@ -272,7 +279,10 @@ class SignInScreenController extends GetxController {
 
         print("signUpModel!.message");
         await GetUserInfo(context: context);
-        await Get.to(DashboardScreen());
+        await Get.to(SocialSignupDetails(
+          username_: username,
+          type_: type,
+        ));
         await CommonWidget().showToaster(msg: "Please Update user Profile");
 
         // await  SendOtpAPi(context: context);
@@ -297,7 +307,6 @@ class SignInScreenController extends GetxController {
 
           await Get.to(DashboardScreen());
           await CommonWidget().showToaster(msg: "Please Update user Profile");
-
         }
         // print('Please try again');
         // print('Please try again');
@@ -307,6 +316,89 @@ class SignInScreenController extends GetxController {
       print("ERROR");
     }
   }
+
+  TextEditingController FullnameController = new TextEditingController();
+  TextEditingController nameController = new TextEditingController();
+  TextEditingController phoneNumberController = new TextEditingController();
+  TextEditingController emailAddressController = new TextEditingController();
+  TextEditingController dateOfbirthController = new TextEditingController();
+  TextEditingController genderController = new TextEditingController();
+
+  final TextEditingController usernameController_ = TextEditingController();
+  final TextEditingController passwordController_ = TextEditingController();
+  final TextEditingController confirmPasswordController =
+  TextEditingController();
+  final TextEditingController DoBController = TextEditingController();
+  final TextEditingController OtpController = TextEditingController();
+
+  String dialCodedigits = "+91";
+
+  String? date_birth;
+  String? selected_gender;
+  String? level;
+
+  EditProfile? editProfile;
+  // RxBool isLoading = false.obs;
+  File? imgFile;
+
+  Future<dynamic> Editprofile({required BuildContext context}) async {
+    String id_user = await PreferenceManager().getPref(URLConstants.id);
+
+    showLoader(context);
+    var url = (URLConstants.base_url + URLConstants.EditProfileApi);
+    var request = http.MultipartRequest('POST', Uri.parse(url));
+
+    print("idddddddd $id_user");
+    if (imgFile != null) {
+      var files = await http.MultipartFile(
+          'image',
+          File(imgFile!.path).readAsBytes().asStream(),
+          File(imgFile!.path).lengthSync(),
+          filename: imgFile!.path.split("/").last);
+      request.files.add(files);
+    }
+    request.fields['id'] = id_user;
+    request.fields['fullName'] = FullnameController.text;
+    request.fields['username'] = nameController.text;
+    request.fields['countryCode'] = dialCodedigits;
+    request.fields['phone'] = phoneNumberController.text;
+    request.fields['email'] = emailAddressController.text;
+    request.fields['dob'] = date_birth!;
+    request.fields['levels'] = level!;
+
+
+    var response = await request.send();
+    var responsed = await http.Response.fromStream(response);
+
+    if (response.statusCode == 200) {
+      final data = json.decode(responsed.body);
+      editProfile = EditProfile.fromJson(data);
+      print(editProfile);
+      print(data);
+      if (editProfile!.error == false) {
+        // await PreferenceManager()
+        //     .setPref(URLConstants.id, signUpModel!.user![0].id!);
+        // await PreferenceManager()
+        //     .setPref(URLConstants.type, signUpModel!.user![0].type!);
+        // await CreatorgetUserInfo_Email(UserId: signUpModel!.user![0].id!);
+        await CommonWidget().showToaster(msg: 'User Updated');
+        await Navigator.push(context,
+            MaterialPageRoute(builder: (context) => DashboardScreen()));
+        Get.to(DashboardScreen());
+
+        hideLoader(context);
+      } else {
+        hideLoader(context);
+        CommonWidget().showErrorToaster(msg: "Invalid Details");
+        // print('Please try again');
+        // print('Please try again');
+      }
+      hideLoader(context);
+    } else {
+      print("ERROR");
+    }
+  }
+
 
   clear_method() {
     usernameController.clear();
