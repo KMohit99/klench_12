@@ -12,6 +12,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 
 import '../../front_page/FrontpageScreen.dart';
+import '../../setting_page/terms_conditions.dart';
 import '../../utils/Asset_utils.dart';
 import '../../utils/Common_buttons.dart';
 import '../../utils/Common_container_color.dart';
@@ -358,7 +359,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           child: CommonTextFormField(
                             controller:
                                 _signUpScreenController.fullnameController,
-                            labelText: 'Enter Fullname',
+                            labelText: 'Enter Full name',
                             iconData: IconButton(
                               visualDensity:
                                   VisualDensity(horizontal: -4, vertical: -4),
@@ -923,11 +924,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         },
                       ),
                     ),
-                    Container(
-                      child: Text(
-                        'Terms & Conditions',
-                        style: FontStyleUtility.h15(
-                            fontColor: ColorUtils.primary_gold, family: 'PM'),
+                    GestureDetector(
+                      onTap: (){
+                        Get.to(TermsConditionsScreen());
+                      },
+                      child: Container(
+                        child: Text(
+                          'Terms & Conditions',
+                          style: FontStyleUtility.h15(
+                              fontColor: ColorUtils.primary_gold, family: 'PM'),
+                        ),
                       ),
                     )
                   ],

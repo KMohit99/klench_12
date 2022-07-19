@@ -396,7 +396,7 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
                                                             .imgFile ==
                                                         null
                                                     ? Image.network(
-                                                        'http://foxyserver.com/klench/images/${_signInScreenController.userInfoModel!.data![0].image}',
+                                                        'https://foxytechnologies.com/klench/images/${_signInScreenController.userInfoModel!.data![0].image}',
                                                         fit: BoxFit.fill,
                                                         height: 100,
                                                         width: 100,

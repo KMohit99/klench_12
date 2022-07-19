@@ -250,10 +250,6 @@ class SignInScreenController extends GetxController {
     request.fields['levels'] = '';
     request.fields['type'] = type;
 
-    //userId,tagLine,description,address,postImage,uploadVideo,isVideo
-    // request.files.add(await http.MultipartFile.fromPath(
-    //     "image", widget.ImageFile.path));
-
     var response = await request.send();
     var responsed = await http.Response.fromStream(response);
     print(response.statusCode);
@@ -363,7 +359,8 @@ class SignInScreenController extends GetxController {
     request.fields['countryCode'] = dialCodedigits;
     request.fields['phone'] = phoneNumberController.text;
     request.fields['email'] = emailAddressController.text;
-    request.fields['dob'] = date_birth!;
+    request.fields['dob'] = DoBController.text;
+    request.fields['gender'] = genderController.text;
     request.fields['levels'] = level!;
 
 

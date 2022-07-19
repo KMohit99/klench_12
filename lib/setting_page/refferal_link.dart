@@ -174,7 +174,7 @@ class _RefferalLinkScreenState extends State<RefferalLinkScreen> {
                             alignment: Alignment.centerLeft,
                             margin: EdgeInsets.only(top: 20, bottom: 0),
                             child: Text(
-                              'Intro Video title - 1',
+                              'Copy and share referral link',
                               style: FontStyleUtility.h14(
                                   fontColor: ColorUtils.primary_grey,
                                   family: 'PM'),
@@ -186,13 +186,14 @@ class _RefferalLinkScreenState extends State<RefferalLinkScreen> {
                           Container(
                             child: CommonTextFormField_reversed(
                               labelText: 'Email Address',
+                              maxLines: 2,
                               controller: Emailcontroller,
                               readOnly: true,
                               iconData: IconButton(
                                 visualDensity:
                                     VisualDensity(horizontal: -4, vertical: -4),
                                 icon: Image.asset(
-                                  AssetUtils.privacy_icons,
+                                  AssetUtils.copy_icons,
                                   height: 17,
                                   width: 15,
                                   color: HexColor("#606060"),
@@ -210,8 +211,8 @@ class _RefferalLinkScreenState extends State<RefferalLinkScreen> {
                               // selectTowerBottomSheet(context);
                             },
                             child: Container(
-                              height: 80,
-                              width: 80,
+                              height: 90,
+                              width: 90,
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(100),
                                   gradient: LinearGradient(
@@ -236,8 +237,8 @@ class _RefferalLinkScreenState extends State<RefferalLinkScreen> {
                                       Image.asset(
                                         AssetUtils.share_icon,
                                         color: ColorUtils.primary_gold,
-                                        height: 26,
-                                        width: 24,
+                                        height: 28,
+                                        width: 26,
                                       ),
                                       SizedBox(
                                         height: 0,

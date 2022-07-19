@@ -32,10 +32,53 @@ class _WarmUpScreenState extends State<WarmUpScreen>
         setState(() {
           print("startstop Inside=$startStop");
           elapsedTime = transformMilliSeconds(watch.elapsedMilliseconds);
-          percent += 1;
-          if (percent >= 100) {
-            percent = 0.0;
+
+          if (elapsedTime == '03') {
+            stopWatch_finish();
+            // _animationController_shadow1!.reverse();
+            setState(() {
+              elapsedTime = 'HOLD';
+              percent = 0.0;
+              watch.reset();
+              // CommonWidget().showToaster(msg: '${7 - counter} Times left');
+              // counter++;
+              // print(counter);
+              // paused_time.clear();
+            });
+
+            Future.delayed(Duration(seconds: 11), () {
+              // if (counter == 10) {
+              //   stopWatch_finish();
+              //   setState(() {
+              //     elapsedTime = '00';
+              //     // watch.stop();
+              //     counter = 0;
+              //   });
+              // sets++;
+              // print('Sets-------$sets');
+              // if (sets == 3) {
+              //   stopWatch_finish();
+              //   setState(() {
+              //     elapsedTime = '00';
+              //     percent = 0.0;
+              //     // watch.stop();
+              //     counter = 0;
+              //   });
+              //   CommonWidget().showToaster(msg: "Method Complete");
+              //   Future.delayed(Duration(seconds: 5), () {
+              //     CommonWidget().showErrorToaster(
+              //         msg:
+              //         "After one month it will automatically switch to Hard");
+              //   });
+              // }
+              // } else {
+              _animationController!.forward();
+              _animationController_button!.forward();
+              startWatch();
+              // }
+            });
           }
+
         });
       }
     }
@@ -503,6 +546,7 @@ class _WarmUpScreenState extends State<WarmUpScreen>
   }
 
   startWatch() {
+    start_animation();
     setState(() {
       startStop = false;
       started = false;
@@ -514,7 +558,9 @@ class _WarmUpScreenState extends State<WarmUpScreen>
   stopWatch() {
     setState(() {
       startStop = true;
-      started = false;
+      started = true;
+      animation_started = false;
+
       watch.stop();
       setTime();
     });
@@ -523,7 +569,7 @@ class _WarmUpScreenState extends State<WarmUpScreen>
   stopWatch_finish() {
     setState(() {
       startStop = true;
-      started = false;
+      started = true;
       animation_started = false;
       watch.stop();
       setTime_finish();

@@ -3,17 +3,13 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:klench_/Authentication/SignUp/SignUp_screen.dart';
-import 'package:klench_/Authentication/SingIn/SigIn_screen.dart';
 import 'package:klench_/Authentication/subscription_plan/payment_screen.dart';
 import 'package:klench_/Dashboard/dashboard_screen.dart';
 import 'package:klench_/utils/Asset_utils.dart';
 import 'package:klench_/utils/TextStyle_utils.dart';
 import 'package:klench_/utils/colorUtils.dart';
 
-import '../../front_page/FrontpageScreen.dart';
 import '../../utils/Common_buttons.dart';
-import '../../utils/Common_container_color.dart';
 import '../../utils/Common_textfeild.dart';
 
 class SubscriptionScreen extends StatefulWidget {

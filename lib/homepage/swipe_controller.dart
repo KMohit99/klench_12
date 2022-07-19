@@ -6,4 +6,5 @@ class Ledger_Setup_controller extends GetxController {
     pageIndex_customer = value!;
     update();
   }
+
 }

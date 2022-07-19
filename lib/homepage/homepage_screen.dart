@@ -4,19 +4,9 @@ import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:klench_/homepage/pee_screen.dart';
 import 'package:klench_/homepage/swipe_screen.dart';
-import 'package:klench_/homepage/warmpUp_screen.dart';
 
-import '../front_page/FrontpageScreen.dart';
-import '../notifications/notifications_screen.dart';
 import '../utils/Asset_utils.dart';
-import '../utils/Common_buttons.dart';
-import '../utils/TextStyle_utils.dart';
-import '../utils/colorUtils.dart';
-import 'kegel_screen.dart';
-import 'm_screen.dart';
-import 'm_screen_metal.dart';
 
 class HomepageScreen extends StatefulWidget {
   const HomepageScreen({Key? key}) : super(key: key);

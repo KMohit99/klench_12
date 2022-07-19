@@ -29,11 +29,14 @@ class BreathingScreen extends StatefulWidget {
 class _BreathingScreenState extends State<BreathingScreen>
     with TickerProviderStateMixin {
   Stopwatch watch = Stopwatch();
+  Stopwatch watch2 = Stopwatch();
   Timer? timer;
+  Timer? timer2;
   bool startStop = true;
   bool started = true;
 
   String elapsedTime = '00';
+  String elapsedTime2 = '00';
 
   updateTime(Timer timer) {
     if (watch.isRunning) {
@@ -41,7 +44,7 @@ class _BreathingScreenState extends State<BreathingScreen>
         setState(() {
           // print("startstop Inside=$startStop");
           elapsedTime = transformMilliSeconds(watch.elapsedMilliseconds);
-          // print("elapsedTime $elapsedTime");
+          print("elapsedTime $elapsedTime");
           // vibration();
           if (elapsedTime == '12') {
             stopWatch();
@@ -78,8 +81,45 @@ class _BreathingScreenState extends State<BreathingScreen>
                 }
               } else {
                 startWatch();
+                startWatch2();
               }
             });
+            // start_animation();
+          }
+
+          // percent += 1;
+          // if (percent >= 100) {
+          //   percent = 0.0;
+          // }
+
+          // final seconds = myDuration.inSeconds - reduceSecondsBy;
+          // if (seconds < 0) {
+          //   countdownTimer!.cancel();
+          //   print('timesup');
+          // } else {
+          //   myDuration = Duration(seconds: seconds);
+          // }
+        });
+      }
+    }
+  }
+  updateTime2(Timer timer) {
+    if (watch2.isRunning) {
+      if (mounted) {
+        setState(() {
+          // print("startstop Inside=$startStop");
+          elapsedTime2 = transformMilliSeconds2(watch2.elapsedMilliseconds);
+          // print("elapsedTime $elapsedTime");
+          // vibration();
+          if (elapsedTime2 == '04') {
+            stopWatch2();
+            // _animationController_shadow1!.reverse();
+            setState(() {
+              elapsedTime2 = '00';
+              watch2.reset();
+              // paused_time.clear();
+            });
+            startWatch2();
             // start_animation();
           }
 
@@ -267,9 +307,11 @@ class _BreathingScreenState extends State<BreathingScreen>
               _animationController_shadow2!.repeat(reverse: true);
               // vibration();
               setState(() {
+
                 // print(_status);
                 shadow_animation_pause = false;
               });
+
             });
             // print("$_status _status");
             // print("shadow_animation_pause $shadow_animation_pause");
@@ -277,6 +319,7 @@ class _BreathingScreenState extends State<BreathingScreen>
           Future.delayed(Duration(seconds: 4), () {
             _animationController!.reverse();
             // vibration();
+
             setState(() {
               _status = 'Exhale';
               // print(_status);
@@ -291,7 +334,6 @@ class _BreathingScreenState extends State<BreathingScreen>
           Future.delayed(Duration(seconds: 4), () {
             _animationController!.forward();
             vibration();
-
             setState(() {
               _status = 'Inhale';
               // print(_status);
@@ -559,14 +601,14 @@ class _BreathingScreenState extends State<BreathingScreen>
                                 _status,
                                 style: FontStyleUtility.h18(
                                     fontColor: Colors.black, family: 'PSB'),
-                              ),
+                                  ),
                               Container(
                                 alignment: Alignment.center,
                                 child: CircleAvatar(
                                   maxRadius: 20,
                                   backgroundColor: Colors.black,
                                   child: Text(
-                                    elapsedTime,
+                                    elapsedTime2,
                                     style: TextStyle(
                                         color: Colors.white,
                                         fontSize: 20,
@@ -809,6 +851,7 @@ class _BreathingScreenState extends State<BreathingScreen>
   }
 
   startWatch() {
+    startWatch2();
     // countdownTimer =
     //     Timer.periodic(Duration(seconds: 1), (_) => setCountDown());
     vibration();
@@ -820,18 +863,33 @@ class _BreathingScreenState extends State<BreathingScreen>
       timer = Timer.periodic(Duration(microseconds: 100), updateTime);
     });
   }
+  startWatch2() {
+    // countdownTimer =
+    //     Timer.periodic(Duration(seconds: 1), (_) => setCountDown());
+    setState(() {
+      watch2.start();
+      // startTimer();
+      timer2 = Timer.periodic(Duration(microseconds: 100), updateTime2);
+    });
+  }
 
   stopWatch() {
     setState(() {
       startStop = true;
       Vibration.cancel();
       animation_started = false;
-      _animationController!.dispose();
+      _animationController!.stop();
       _animationController_shadow1!.stop();
       watch.stop();
       percent = 0.0;
       setTime();
       print("___________$counter");
+    });
+  }
+  stopWatch2() {
+    setState(() {
+      watch2.stop();
+      setTime2();
     });
   }
 
@@ -842,8 +900,28 @@ class _BreathingScreenState extends State<BreathingScreen>
     });
     print("elapsedTime $elapsedTime");
   }
+  setTime2() {
+    var timeSoFar = watch.elapsedMilliseconds;
+    setState(() {
+      elapsedTime2 = transformMilliSeconds2(timeSoFar);
+    });
+    print("elapsedTime $elapsedTime2");
+  }
+
 
   transformMilliSeconds(int milliseconds) {
+    int hundreds = (milliseconds / 10).truncate();
+    int seconds = (hundreds / 100).truncate();
+    int minutes = (seconds / 60).truncate();
+    int hours = (minutes / 60).truncate();
+
+    String hoursStr = (hours % 60).toString().padLeft(2, '0');
+    String minutesStr = (minutes % 60).toString().padLeft(2, '0');
+    String secondsStr = (seconds % 60).toString().padLeft(2, '0');
+
+    return secondsStr;
+  }
+  transformMilliSeconds2(int milliseconds) {
     int hundreds = (milliseconds / 10).truncate();
     int seconds = (hundreds / 100).truncate();
     int minutes = (seconds / 60).truncate();

@@ -14,8 +14,10 @@ import 'package:klench_/setting_page/privacy_policy_screen.dart';
 import 'package:klench_/setting_page/qr_code/qr_code_screen.dart';
 import 'package:klench_/setting_page/refferal_link.dart';
 import 'package:klench_/setting_page/terms_conditions.dart';
+import 'package:path_provider/path_provider.dart';
 
 import '../Authentication/SignUp/controller/sign_up_controller.dart';
+import '../Authentication/subscription_plan/subscription_plan_screen.dart';
 import '../front_page/FrontpageScreen.dart';
 import '../utils/Asset_utils.dart';
 import '../utils/Common_buttons.dart';
@@ -50,6 +52,7 @@ class _SettingScreenState extends State<SettingScreen> {
     AssetUtils.intro_video_icons,
     AssetUtils.referralLink_icons,
     AssetUtils.notification_icons,
+    AssetUtils.premium_icons,
     AssetUtils.authentication_icons,
     AssetUtils.logout_icons,
   ];
@@ -66,6 +69,7 @@ class _SettingScreenState extends State<SettingScreen> {
     "Intro video",
     "Referral link",
     "Notification",
+    "Premium Membership",
     "Authentication",
     "Logout",
   ];
@@ -150,11 +154,15 @@ class _SettingScreenState extends State<SettingScreen> {
                                                                         NotificationSettings())
                                                                     : (index ==
                                                                             11
-                                                                        ? Get.to(Authentication_settings())
+                                                                        ? Get.to(
+                                                                            SubscriptionScreen())
                                                                         : (index ==
                                                                                 12
-                                                                            ? logout()
-                                                                            : null)))))))))))));
+                                                                            ? Get.to(
+                                                                                Authentication_settings())
+                                                                            : (index == 13
+                                                                                ? logout()
+                                                                                : null))))))))))))));
                         // if(index == 0){
                         //   Get.to(QrCodeScreen());
                         // }else if(index == 1){
@@ -171,12 +179,12 @@ class _SettingScreenState extends State<SettingScreen> {
                         child: ListTile(
                           contentPadding: EdgeInsets.zero,
                           visualDensity:
-                              VisualDensity(horizontal: 0, vertical: -4),
+                              VisualDensity(horizontal: -4, vertical: -4),
                           leading: SizedBox(
-                            height: 18,
-                            width: 18,
                             child: Image.asset(
                               Icon_data[index],
+                              height: 20,
+                              width: 18,
                             ),
                           ),
                           title: Text(
@@ -207,16 +215,31 @@ class _SettingScreenState extends State<SettingScreen> {
           )),
     );
   }
+
   final SignUpScreenController _signUpScreenController = Get.put(
       SignUpScreenController(),
       tag: SignUpScreenController().toString());
+
   logout() async {
     // await PreferenceManager().setPref(URLConstants.id, 'id');
     // await PreferenceManager().setPref(URLConstants.username, 'username');
     //
     // String id_user = await PreferenceManager().getPref(URLConstants.id);
-    await PreferenceManager()
-        .remove();
+
+    // final cacheDir = await getTemporaryDirectory();
+    //
+    // if (cacheDir.existsSync()) {
+    //   cacheDir.deleteSync(recursive: true);
+    // }
+    //
+    final appDir = await getApplicationSupportDirectory();
+
+    if (appDir.existsSync()) {
+      print('delete data');
+      appDir.deleteSync(recursive: true);
+    }
+
+    await PreferenceManager().remove();
     _signUpScreenController.clear();
     // print(id_user);
     await Get.to(FrontScreen());

@@ -39,6 +39,7 @@ class AssetUtils {
   static const qrcode_icons = root + 'Icon metro-qrcode.png';
   static const qrcode_big_icons = root + 'Icon metro-qrcode_big.png';
   static const privacy_icons = root+ 'Icon awesome-file-alt.png';
+  static const copy_icons = root+ 'Icon awesome-copy.png';
   static const FaQ_icons = root+ 'Icon feather-help-circle.png';
   static const aboutUs_icons = root+ 'Icon feather-file-text.png';
   static const contact_icons = root + 'Icon ionic-ios-contacts.png';
@@ -48,6 +49,7 @@ class AssetUtils {
   static const intro_video_icons = root+ 'Icon awesome-video.png';
   static const referralLink_icons = root+ 'Icon awesome-link.png';
   static const notification_icons = root + 'Icon awesome-bell.png';
+  static const premium_icons = root + 'Icon awesome-dollar-sign@3x.png';
   static const authentication_icons = root + 'Icon awesome-lock@3x.png';
   static const logout_icons = root + 'Icon open-account-logout.png';
 

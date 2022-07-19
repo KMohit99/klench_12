@@ -31,7 +31,7 @@ class _ResetPasswordState extends State<ResetPassword> {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
     return GestureDetector(
-      onTap: (){
+      onTap: () {
         FocusScope.of(context).requestFocus(FocusNode());
       },
       child: Scaffold(
@@ -89,8 +89,8 @@ class _ResetPasswordState extends State<ResetPassword> {
                       ),
                       borderRadius: BorderRadius.circular(20)),
                   child: Padding(
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 36, horizontal: 14),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 36, horizontal: 14),
                     child: Column(
                       children: [
                         Container(
@@ -161,6 +161,8 @@ class _ResetPasswordState extends State<ResetPassword> {
                                 Container(
                                   child: CommonTextFormField_text_reversed(
                                     title: 'Old password',
+                                    isObscure: true,
+                                    maxLines: 1,
                                     labelText: 'xxxxxxxxx',
                                     iconData: IconButton(
                                       visualDensity: VisualDensity(
@@ -182,6 +184,8 @@ class _ResetPasswordState extends State<ResetPassword> {
                                   child: CommonTextFormField_text_reversed(
                                     title: 'New password',
                                     labelText: 'xxxxxxxxxx',
+                                    isObscure: true,
+                                    maxLines: 1,
                                     controller: _forgotPasswordController
                                         .newPasswordController,
                                     iconData: IconButton(
@@ -204,6 +208,8 @@ class _ResetPasswordState extends State<ResetPassword> {
                                   child: CommonTextFormField_text_reversed(
                                     title: 'Confirm New password',
                                     labelText: 'xxxxxxxxxx',
+                                    isObscure: true,
+                                    maxLines: 1,
                                     controller: _forgotPasswordController
                                         .ConfirmNewPasswordController,
                                     iconData: IconButton(
@@ -229,19 +235,30 @@ class _ResetPasswordState extends State<ResetPassword> {
                                     if (_forgotPasswordController
                                             .newPasswordController.text !=
                                         _forgotPasswordController
-                                            .ConfirmNewPasswordController.text) {
+                                            .ConfirmNewPasswordController
+                                            .text) {
                                       CommonWidget().showErrorToaster(
                                           msg: "Password doesn't match");
                                       return;
-                                    }
-
-                                    await _forgotPasswordController
-                                        .ResetPasswordAPi(
-                                            context: context, id: id_user);
-                                    if (_forgotPasswordController
-                                            .passwordResetModel!.error ==
-                                        false) {
-                                      selectTowerBottomSheet(context);
+                                    } else if (_forgotPasswordController
+                                            .newPasswordController
+                                            .text
+                                            .isEmpty ||
+                                        _forgotPasswordController
+                                            .ConfirmNewPasswordController
+                                            .text
+                                            .isEmpty) {
+                                      CommonWidget().showErrorToaster(
+                                          msg: "Password Enter Password");
+                                    } else {
+                                      await _forgotPasswordController
+                                          .ResetPasswordAPi(
+                                              context: context, id: id_user);
+                                      if (_forgotPasswordController
+                                              .passwordResetModel!.error ==
+                                          false) {
+                                        selectTowerBottomSheet(context);
+                                      }
                                     }
                                   },
                                   title_text: 'Save',
@@ -329,7 +346,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                         onTap: () {
                           Get.to(FrontScreen());
                         },
-                        title_text: 'Go to Login',
+                        title_text: 'Go to Sign In',
                       ),
                     ],
                   ),

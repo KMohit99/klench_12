@@ -18,6 +18,8 @@ class SwipeScreen extends StatefulWidget {
 
 class _SwipeScreenState extends State<SwipeScreen> {
   PageController? _pageController_customer;
+  final ValueNotifier<int> buildCount = ValueNotifier<int>(0);
+
   final Ledger_Setup_controller _ledgerScreenSetup_customer_Controller =
   Get.put(Ledger_Setup_controller(),tag: Ledger_Setup_controller().toString());
 
@@ -32,7 +34,11 @@ class _SwipeScreenState extends State<SwipeScreen> {
   void initState() {
     _pageController_customer = PageController(initialPage: widget.PageNo, keepPage: false);
   }
-
+  @override
+  void dispose() {
+    _pageController_customer!.dispose();
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     return GetBuilder<Ledger_Setup_controller>(
@@ -40,13 +46,17 @@ class _SwipeScreenState extends State<SwipeScreen> {
       builder: (_) {
         return Container(
           child: PageView.builder(
+            onPageChanged: (page) {
+              print('PageChanged $page');
+              _pageController_customer!.dispose();
+            },
             itemBuilder: (context , int index){
               return Center(
                 child: widget_list[index % widget_list.length],
               );
             },
             controller: _pageController_customer,
-            physics: AlwaysScrollableScrollPhysics(),
+            physics: const AlwaysScrollableScrollPhysics(),
             // children: [
             //   KegelScreen(),
             //   WarmUpScreen(),

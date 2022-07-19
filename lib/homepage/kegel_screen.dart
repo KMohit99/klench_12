@@ -6,9 +6,11 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
 import 'package:klench_/Dashboard/dashboard_screen.dart';
+import 'package:klench_/homepage/swipe_controller.dart';
 import 'package:klench_/homepage/theme_data.dart';
 import 'package:klench_/utils/TexrUtils.dart';
 import 'package:vibration/vibration.dart';
@@ -40,6 +42,11 @@ class _KegelScreenState extends State<KegelScreen>
   String elapsedTime = '00';
   TextEditingController Alarm_title = new TextEditingController();
   List Alarm_title_list = [];
+
+  final Ledger_Setup_controller _ledgerScreenSetup_customer_Controller =
+  Get.put(Ledger_Setup_controller(),tag: Ledger_Setup_controller().toString());
+
+
   // updateTime(Timer timer) {
   //   if (watch.isRunning) {
   //     if (mounted) {
@@ -174,7 +181,7 @@ class _KegelScreenState extends State<KegelScreen>
               elapsedTime = 'PUSH';
               percent = 0.0;
               watch.reset();
-              CommonWidget().showToaster(msg: '${7 - counter} Times left');
+              CommonWidget().showToaster(msg: '${9 - counter} Times left');
               counter++;
               print(counter);
               // paused_time.clear();

@@ -759,11 +759,8 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
 
   startWatch() {
     start_animation();
-
     setState(() {
       elapsedTime = "00";
-
-
       startStop = false;
       started = false;
       watch.start();
@@ -783,9 +780,8 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
   stopWatch_finish() {
     setState(() {
       startStop = true;
-      started = true;
+      started = false;
       animation_started = false;
-
       watch.stop();
       setTime_finish();
     });
