@@ -10,6 +10,7 @@ import 'package:klench_/notifications/notifications_screen.dart';
 import 'package:klench_/setting_page/authentication_screen.dart';
 import 'package:klench_/setting_page/help_support.dart';
 import 'package:klench_/setting_page/intro_video.dart';
+import 'package:klench_/setting_page/premium_plan_screen.dart';
 import 'package:klench_/setting_page/privacy_policy_screen.dart';
 import 'package:klench_/setting_page/qr_code/qr_code_screen.dart';
 import 'package:klench_/setting_page/refferal_link.dart';
@@ -30,7 +31,7 @@ import 'About_us_screen.dart';
 import 'FAQ.dart';
 import 'Reset_Password.dart';
 import 'contact_screen.dart';
-import 'notification_settings.dart';
+import 'notification/notification_settings.dart';
 
 class SettingScreen extends StatefulWidget {
   const SettingScreen({Key? key}) : super(key: key);
@@ -155,7 +156,7 @@ class _SettingScreenState extends State<SettingScreen> {
                                                                     : (index ==
                                                                             11
                                                                         ? Get.to(
-                                                                            SubscriptionScreen())
+                                                                            PremiumPlanScreen())
                                                                         : (index ==
                                                                                 12
                                                                             ? Get.to(

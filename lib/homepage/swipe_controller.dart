@@ -7,4 +7,6 @@ class Ledger_Setup_controller extends GetxController {
     update();
   }
 
+  bool m_running = false;
+
 }

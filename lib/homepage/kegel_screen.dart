@@ -43,8 +43,6 @@ class _KegelScreenState extends State<KegelScreen>
   TextEditingController Alarm_title = new TextEditingController();
   List Alarm_title_list = [];
 
-  final Ledger_Setup_controller _ledgerScreenSetup_customer_Controller =
-  Get.put(Ledger_Setup_controller(),tag: Ledger_Setup_controller().toString());
 
 
   // updateTime(Timer timer) {

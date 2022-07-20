@@ -8,6 +8,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
+import 'package:klench_/homepage/swipe_controller.dart';
 import 'package:klench_/utils/TexrUtils.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -23,11 +24,14 @@ class M_ScreenMetal extends StatefulWidget {
   const M_ScreenMetal({Key? key}) : super(key: key);
 
   @override
-  State<M_ScreenMetal> createState() => _M_ScreenMetalState();
+  State<M_ScreenMetal> createState() => M_ScreenMetalState();
 }
 
-class _M_ScreenMetalState extends State<M_ScreenMetal>
+class M_ScreenMetalState extends State<M_ScreenMetal>
     with TickerProviderStateMixin {
+
+
+
   Stopwatch watch = Stopwatch();
   Timer? timer;
   bool startStop = true;
@@ -43,7 +47,7 @@ class _M_ScreenMetalState extends State<M_ScreenMetal>
     if (watch.isRunning) {
       if (mounted) {
         setState(() {
-          print("startstop Inside=$startStop");
+          // print("startstop Inside=$startStop");
           elapsedTime = transformMilliSeconds(watch.elapsedMilliseconds);
           percent += 1;
           if (percent >= 100) {
@@ -135,6 +139,7 @@ class _M_ScreenMetalState extends State<M_ScreenMetal>
   @override
   dispose() {
     _animationController!.dispose(); // you need this
+    print('    stopWatch_finish()');
     super.dispose();
   }
 
@@ -2078,12 +2083,17 @@ class _M_ScreenMetalState extends State<M_ScreenMetal>
     if (startStop) {
       startWatch();
     } else {
-      stopWatch();
+      // stopWatch();
     }
   }
 
+  final Ledger_Setup_controller _swipe_setup_controller = Get.put(
+      Ledger_Setup_controller(),
+      tag: Ledger_Setup_controller().toString());
+
   startWatch() {
     setState(() {
+      _swipe_setup_controller.m_running = true;
       startStop = false;
       started = false;
       watch.start();
@@ -2091,19 +2101,21 @@ class _M_ScreenMetalState extends State<M_ScreenMetal>
     });
   }
 
-  stopWatch() {
-    setState(() {
-      startStop = true;
-      started = false;
-      watch.stop();
-      setTime();
-    });
-  }
+  // stopWatch() {
+  //   setState(() {
+  //     startStop = true;
+  //     started = false;
+  //     watch.stop();
+  //     setTime();
+  //   });
+  // }
 
   stopWatch_finish() {
     setState(() {
+      _swipe_setup_controller.m_running = false;
       startStop = true;
-      started = false;
+      started = true;
+      _animationController!.stop();
       animation_started = false;
       watch.stop();
       setTime_finish();
@@ -2128,8 +2140,8 @@ class _M_ScreenMetalState extends State<M_ScreenMetal>
       elapsedTime = transformMilliSeconds(timeSoFar);
     });
     // paused_time.add(elapsedTime);
-    print("elapsedTime $elapsedTime");
-    print("elapsedTime Listtttttt $paused_time");
+    // print("elapsedTime $elapsedTime");
+    // print("elapsedTime Listtttttt $paused_time");
   }
 
   transformMilliSeconds(int milliseconds) {

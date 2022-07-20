@@ -1,4 +1,3 @@
-
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -12,33 +11,32 @@ import 'getx_pagination/binding_utils.dart';
 import 'getx_pagination/page_route.dart';
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-FlutterLocalNotificationsPlugin();
+    FlutterLocalNotificationsPlugin();
 
-Future<void> main() async{
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp();
 
   AndroidInitializationSettings initializationSettingsAndroid =
-  const AndroidInitializationSettings('app_icon');
-  IOSInitializationSettings initializationSettingsIOS = IOSInitializationSettings(
-      requestAlertPermission: true,
-      requestBadgePermission: true,
-      requestSoundPermission: true,
-      onDidReceiveLocalNotification:
-          (int? id, String? title, String? body, String? payload) async {});
+      const AndroidInitializationSettings('app_icon');
+  IOSInitializationSettings initializationSettingsIOS =
+      IOSInitializationSettings(
+          requestAlertPermission: true,
+          requestBadgePermission: true,
+          requestSoundPermission: true,
+          onDidReceiveLocalNotification:
+              (int? id, String? title, String? body, String? payload) async {});
   InitializationSettings initializationSettings = InitializationSettings(
       android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
   await flutterLocalNotificationsPlugin.initialize(initializationSettings,
       onSelectNotification: (String? payload) async {
-        if (payload != null) {
-          debugPrint('notification payload: ' + payload);
-        }
-      });
-
+    if (payload != null) {
+      debugPrint('notification payload: ' + payload);
+    }
+  });
 
   runApp(MyApp());
-
 }
 
 class MyApp extends StatelessWidget {
@@ -49,10 +47,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final style = SystemUiOverlayStyle(
-      systemNavigationBarDividerColor: Colors.black,
-      systemNavigationBarColor: Colors.black,
-      systemNavigationBarIconBrightness: Brightness.light
-    );
+        systemNavigationBarDividerColor: Colors.black,
+        systemNavigationBarColor: Colors.black,
+        systemNavigationBarIconBrightness: Brightness.light);
     SystemChrome.setSystemUIOverlayStyle(style);
     return GetMaterialApp(
       // navigatorKey: NavigationService.navigatorKey,
@@ -84,11 +81,7 @@ class MyApp extends StatelessWidget {
           backgroundColor: Colors.white,
           elevation: 0,
         ),
-
       ),
     );
   }
-
-
-
 }
