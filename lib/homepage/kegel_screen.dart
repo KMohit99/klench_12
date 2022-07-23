@@ -254,8 +254,12 @@ class _KegelScreenState extends State<KegelScreen>
 
   Timer? countdownTimer;
   Duration myDuration = const Duration(seconds: 3);
+  bool timer_started = false;
 
   void startTimer() {
+    setState(() {
+      timer_started = true;
+    });
     countdownTimer =
         Timer.periodic(const Duration(seconds: 1), (_) => setCountDown());
   }
@@ -615,13 +619,14 @@ class _KegelScreenState extends State<KegelScreen>
                             Container(
                               alignment: Alignment.center,
                               child: Text(
+                                (timer_started ?
                                 ('$seconds' == '3'
                                     ? 'Ready'
                                     : ('$seconds' == '2'
                                         ? 'Set'
                                         : ('$seconds' == '1'
                                             ? 'Kegel'
-                                            : elapsedTime))),
+                                            : elapsedTime))): ''),
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontSize: (animation_started
