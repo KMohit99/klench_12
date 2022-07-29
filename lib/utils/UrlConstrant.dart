@@ -16,6 +16,24 @@ class URLConstants {
   static const resetPasswordApi = "reset-password.php";
   static const CheckUserApi = "check-user.php";
 
+  ///Breathing
+  static const breathing_get = "get-kegel-breathing.php";
+  static const breathing_post = "kegel-breathing.php";
+
+ ///Kegel
+  static const kegel_get = "get-kegel.php";
+  static const kegel_post = "kegel.php";
+
+  ///masturbation
+  static const masturbation_get = "get-masturbation.php";
+  static const masturbation_get_weekly_data = "weekly-mMehod.php";
+  static const masturbation_post = "masturbation.php";
+
+  ///Pee
+  static const pee_get = "get-pee.php";
+  static const pee_post = "pee.php";
+
+
   static String id = "id";
   static String levels = "level";
   static String username = "username";

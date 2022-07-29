@@ -330,7 +330,7 @@ class CommonTextFormField extends StatelessWidget {
       margin: const EdgeInsets.symmetric(horizontal: 0),
 
       child: Container(
-        height: 50,
+        // height: 50,
         // width: 300,
         decoration: BoxDecoration(
             // color: Colors.black.withOpacity(0.65),

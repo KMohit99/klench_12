@@ -30,6 +30,7 @@ class AssetUtils {
   static const user_icon2 = root + 'Ellipse 39.png';
   static const user_icon3 = root + 'Mask Group 27.png';
   static const user_icon4 = root + 'Rectangle 18.png';
+  static const user_icon45 = root + 'Avatar.jpg';
   static const user_icon5 = root + 'Mask Group 22.png';
 
   static const video_img = root + 'Mask Group 15.png';

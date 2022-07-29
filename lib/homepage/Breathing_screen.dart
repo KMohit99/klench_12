@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:klench_/homepage/controller/breathing_controller.dart';
 import 'package:klench_/utils/TexrUtils.dart';
 import 'package:klench_/utils/common_widgets.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
@@ -28,6 +29,9 @@ class BreathingScreen extends StatefulWidget {
 
 class _BreathingScreenState extends State<BreathingScreen>
     with TickerProviderStateMixin {
+  final Breathing_controller _breathing_controller =
+      Get.put(Breathing_controller(), tag: Breathing_controller().toString());
+
   Stopwatch watch = Stopwatch();
   Stopwatch watch2 = Stopwatch();
   Timer? timer;
@@ -58,7 +62,7 @@ class _BreathingScreenState extends State<BreathingScreen>
               print(counter);
               // paused_time.clear();
             });
-            Future.delayed(Duration(seconds: 2), () {
+            Future.delayed(Duration(seconds: 2), () async {
               if (counter == 10) {
                 stopWatch();
                 setState(() {
@@ -67,9 +71,13 @@ class _BreathingScreenState extends State<BreathingScreen>
                   // watch.stop();
                   counter = 0;
                 });
-                sets++;
-                print('Sets-------$sets');
-                if (sets == 3) {
+                _breathing_controller.sets++;
+                await _breathing_controller.Breathing_post_API(context);
+                if (_breathing_controller.breathingPostModel!.error == false) {
+                  await getdata();
+                }
+                print('Sets-------$_breathing_controller.sets');
+                if (_breathing_controller.sets == 3) {
                   stopWatch();
                   setState(() {
                     elapsedTime = '00';
@@ -103,6 +111,7 @@ class _BreathingScreenState extends State<BreathingScreen>
       }
     }
   }
+
   updateTime2(Timer timer) {
     if (watch2.isRunning) {
       if (mounted) {
@@ -181,7 +190,6 @@ class _BreathingScreenState extends State<BreathingScreen>
   bool shadow_animation1_completed = false;
   bool shadow_animation_pause = false;
   int counter = 0;
-  int sets = 0;
   bool _canVibrate = true;
   final Iterable<Duration> pauses = [
     const Duration(milliseconds: 1),
@@ -214,7 +222,7 @@ class _BreathingScreenState extends State<BreathingScreen>
       if (await Vibration.hasCustomVibrationsSupport() == true) {
         // print("has support");
         Vibration.vibrate(
-          // pattern: [100, 100,100, 100,100, 100,100, 100,],
+            // pattern: [100, 100,100, 100,100, 100,100, 100,],
             duration: 5000,
             intensities: [1, 255]);
       } else {
@@ -230,6 +238,7 @@ class _BreathingScreenState extends State<BreathingScreen>
       CommonWidget().showErrorToaster(msg: 'Device Cannot vibrate');
     }
   }
+
   vibration_hold() async {
     if (_canVibrate) {
       // Vibration.vibrate(
@@ -264,7 +273,6 @@ class _BreathingScreenState extends State<BreathingScreen>
           5,
           255
         ]);
-
       } else {
         print("haddddd support");
         Vibration.vibrate();
@@ -307,11 +315,9 @@ class _BreathingScreenState extends State<BreathingScreen>
               _animationController_shadow2!.repeat(reverse: true);
               // vibration();
               setState(() {
-
                 // print(_status);
                 shadow_animation_pause = false;
               });
-
             });
             // print("$_status _status");
             // print("shadow_animation_pause $shadow_animation_pause");
@@ -385,7 +391,28 @@ class _BreathingScreenState extends State<BreathingScreen>
 
   @override
   void initState() {
+    // init();
     super.initState();
+    // WidgetsBinding.instance.addPostFrameCallback((_) async {
+    //  await  _breathing_controller.Breathing_get_API(context);
+    //  if(_breathing_controller.breathingGetModel!.error == false){
+    getdata();
+    //  }
+    // });
+  }
+
+  getdata() {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await _breathing_controller.Breathing_get_API(context);
+      if (_breathing_controller.breathingGetModel!.error == false) {
+        setState(() {
+          _breathing_controller.sets = int.parse(
+              _breathing_controller.breathingGetModel!.data![0].sets!);
+        });
+      }
+    });
+
+    print("Setssss : ${_breathing_controller.sets}");
   }
 
   @override
@@ -450,8 +477,9 @@ class _BreathingScreenState extends State<BreathingScreen>
                     children: [
                       Image.asset(
                         AssetUtils.star_icon,
-                        color:
-                            (sets >= 1 ? ColorUtils.primary_gold : Colors.grey),
+                        color: (_breathing_controller.sets >= 1
+                            ? ColorUtils.primary_gold
+                            : Colors.grey),
                         height: 22,
                         width: 22,
                       ),
@@ -461,8 +489,9 @@ class _BreathingScreenState extends State<BreathingScreen>
                       Image.asset(
                         AssetUtils.star_icon,
                         height: 22,
-                        color:
-                            (sets >= 2 ? ColorUtils.primary_gold : Colors.grey),
+                        color: (_breathing_controller.sets >= 2
+                            ? ColorUtils.primary_gold
+                            : Colors.grey),
                         width: 22,
                       ),
                       SizedBox(
@@ -470,8 +499,9 @@ class _BreathingScreenState extends State<BreathingScreen>
                       ),
                       Image.asset(
                         AssetUtils.star_icon,
-                        color:
-                            (sets >= 3 ? ColorUtils.primary_gold : Colors.grey),
+                        color: (_breathing_controller.sets >= 3
+                            ? ColorUtils.primary_gold
+                            : Colors.grey),
                         height: 22,
                         width: 22,
                       ),
@@ -601,14 +631,14 @@ class _BreathingScreenState extends State<BreathingScreen>
                                 _status,
                                 style: FontStyleUtility.h18(
                                     fontColor: Colors.black, family: 'PSB'),
-                                  ),
+                              ),
                               Container(
                                 alignment: Alignment.center,
                                 child: CircleAvatar(
                                   maxRadius: 20,
                                   backgroundColor: Colors.black,
                                   child: Text(
-                                    elapsedTime2,
+                                    elapsedTime,
                                     style: TextStyle(
                                         color: Colors.white,
                                         fontSize: 20,
@@ -649,22 +679,34 @@ class _BreathingScreenState extends State<BreathingScreen>
                         children: [
                           GestureDetector(
                             onTap: () {
-                              if (startStop) {
-                                (sets <= 3
-                                    ? startWatch()
-                                    : CommonWidget().showErrorToaster(
-                                        msg:
-                                            "You have completed your today's sets, comback tommorow"));
-                              } else {
-                                stopWatch();
-                                setState(() {
-                                  elapsedTime = '00';
-                                  percent = 0.0;
-                                  watch.reset();
-                                  counter == 0;
-                                  // paused_time.clear();
-                                });
+                              if (int.parse(_breathing_controller
+                                      .breathingGetModel!.data![0].sets!) >=
+                                  3) {
+                                print(int.parse(_breathing_controller
+                                    .breathingGetModel!.data![0].sets!));
+                                CommonWidget().showErrorToaster(msg: "You completed your today's sets");
+
                               }
+                              else{
+                                  if (startStop) {
+                                    (_breathing_controller.sets <= 3
+                                        ? startWatch()
+                                        : CommonWidget().showErrorToaster(
+                                            msg:
+                                                "You have completed your today's sets, comback tommorow"));
+                                  } else {
+                                    stopWatch();
+                                    setState(() {
+                                      elapsedTime = '00';
+                                      percent = 0.0;
+                                      watch.reset();
+                                      counter == 0;
+                                      // paused_time.clear();
+                                    });
+                                  }
+
+                              }
+
                               // startOrStop();
                             },
                             child: Container(
@@ -709,41 +751,36 @@ class _BreathingScreenState extends State<BreathingScreen>
                           Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              GestureDetector(
-                                onTap: () {
-                                  // Get.to(SignUpScreen());
-                                },
-                                child: Container(
-                                  height: 50,
-                                  decoration: BoxDecoration(
-                                      // color: Colors.black.withOpacity(0.65),
-                                      gradient: LinearGradient(
-                                        begin: Alignment.centerLeft,
-                                        end: Alignment.centerRight,
-                                        // stops: [0.1, 0.5, 0.7, 0.9],
-                                        colors: [
-                                          HexColor("#020204").withOpacity(1),
-                                          HexColor("#36393E").withOpacity(1),
-                                        ],
-                                      ),
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: HexColor('#04060F'),
-                                          offset: Offset(10, 10),
-                                          blurRadius: 20,
-                                        ),
+                              Container(
+                                height: 50,
+                                decoration: BoxDecoration(
+                                    // color: Colors.black.withOpacity(0.65),
+                                    gradient: LinearGradient(
+                                      begin: Alignment.centerLeft,
+                                      end: Alignment.centerRight,
+                                      // stops: [0.1, 0.5, 0.7, 0.9],
+                                      colors: [
+                                        HexColor("#020204").withOpacity(1),
+                                        HexColor("#36393E").withOpacity(1),
                                       ],
-                                      borderRadius: BorderRadius.circular(10)),
-                                  child: Container(
-                                      alignment: Alignment.center,
-                                      margin: EdgeInsets.symmetric(),
-                                      child: Text(
-                                        'Breathing information',
-                                        style: FontStyleUtility.h15(
-                                            fontColor: HexColor('#AAAAAA'),
-                                            family: 'PM'),
-                                      )),
-                                ),
+                                    ),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: HexColor('#04060F'),
+                                        offset: Offset(10, 10),
+                                        blurRadius: 20,
+                                      ),
+                                    ],
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: Container(
+                                    alignment: Alignment.center,
+                                    margin: EdgeInsets.symmetric(),
+                                    child: Text(
+                                      'Breathing information',
+                                      style: FontStyleUtility.h15(
+                                          fontColor: HexColor('#AAAAAA'),
+                                          family: 'PM'),
+                                    )),
                               ),
                               Container(
                                 width: MediaQuery.of(context).size.width,
@@ -815,6 +852,28 @@ class _BreathingScreenState extends State<BreathingScreen>
                                         ),
                                       ),
                                       SizedBox(
+                                        height: 17,
+                                      ),
+                                      Container(
+                                        child: Text(
+                                          '5. After user completes 1 set, user will receive the color star',
+                                          style: FontStyleUtility.h15(
+                                              fontColor: HexColor('#DCDCDC'),
+                                              family: 'PR'),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 17,
+                                      ),
+                                      Container(
+                                        child: Text(
+                                          '6. Star will reset daily',
+                                          style: FontStyleUtility.h15(
+                                              fontColor: HexColor('#DCDCDC'),
+                                              family: 'PR'),
+                                        ),
+                                      ),
+                                      SizedBox(
                                         height: 20,
                                       ),
                                     ],
@@ -863,6 +922,7 @@ class _BreathingScreenState extends State<BreathingScreen>
       timer = Timer.periodic(Duration(microseconds: 100), updateTime);
     });
   }
+
   startWatch2() {
     // countdownTimer =
     //     Timer.periodic(Duration(seconds: 1), (_) => setCountDown());
@@ -886,6 +946,7 @@ class _BreathingScreenState extends State<BreathingScreen>
       print("___________$counter");
     });
   }
+
   stopWatch2() {
     setState(() {
       watch2.stop();
@@ -900,6 +961,7 @@ class _BreathingScreenState extends State<BreathingScreen>
     });
     print("elapsedTime $elapsedTime");
   }
+
   setTime2() {
     var timeSoFar = watch.elapsedMilliseconds;
     setState(() {
@@ -907,7 +969,6 @@ class _BreathingScreenState extends State<BreathingScreen>
     });
     print("elapsedTime $elapsedTime2");
   }
-
 
   transformMilliSeconds(int milliseconds) {
     int hundreds = (milliseconds / 10).truncate();
@@ -921,6 +982,7 @@ class _BreathingScreenState extends State<BreathingScreen>
 
     return secondsStr;
   }
+
   transformMilliSeconds2(int milliseconds) {
     int hundreds = (milliseconds / 10).truncate();
     int seconds = (hundreds / 100).truncate();

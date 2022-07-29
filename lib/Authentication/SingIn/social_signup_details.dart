@@ -447,8 +447,10 @@ class _SocialSignupDetailsState extends State<SocialSignupDetails> {
                                     ? Container(
                                         height: 100,
                                         width: 100,
+                                        color: Colors.white,
                                         child: Image.asset(
-                                          AssetUtils.user_icon4,
+                                          AssetUtils.user_icon45,
+                                          fit: BoxFit.fitWidth,
                                           height: 93,
                                           width: 106,
                                         ))
@@ -605,32 +607,122 @@ class _SocialSignupDetailsState extends State<SocialSignupDetails> {
                             ),
                             Expanded(
                               child: Container(
-                                child: CommonTextFormField(
-                                  controller:
-                                      _signUpScreenController.phoneNumberController,
-                                  labelText: 'Enter Mobile Number',
-                                  iconData: IconButton(
-                                    visualDensity: VisualDensity(
-                                        horizontal: -4, vertical: -4),
-                                    icon: Image.asset(
-                                      AssetUtils.mobile_icons,
-                                      height: 17,
-                                      color: HexColor("#606060"),
-                                      width: 15,
-                                    ),
-                                    onPressed: () {},
+                                child:
+                                // CommonTextFormField(
+                                //
+                                //   controller:
+                                //       _signUpScreenController.phoneNumberController,
+                                //   labelText: 'Enter Mobile Number',
+                                //   iconData: IconButton(
+                                //     visualDensity: VisualDensity(
+                                //         horizontal: -4, vertical: -4),
+                                //     icon: Image.asset(
+                                //       AssetUtils.mobile_icons,
+                                //       height: 17,
+                                //       color: HexColor("#606060"),
+                                //       width: 15,
+                                //     ),
+                                //     onPressed: () {},
+                                //   ),
+                                //   onChanged: (value) {
+                                //     value = _signUpScreenController
+                                //         .phoneNumberController.text;
+                                //     // CheckPhoneName(context);
+                                //     setState(() {});
+                                //   },
+                                //   // errorText: checkUserModel!.message,
+                                //   tap: () {
+                                //     // CheckPhoneName(context);
+                                //   },
+                                // ),
+                                Container(
+                                  height: 50,
+                                  // width: 300,
+                                  decoration: BoxDecoration(
+                                    // color: Colors.black.withOpacity(0.65),
+                                      gradient: LinearGradient(
+                                        begin: Alignment.centerLeft,
+                                        end: Alignment.centerRight,
+                                        // stops: [0.1, 0.5, 0.7, 0.9],
+                                        colors: [
+                                          HexColor("#36393E").withOpacity(1),
+                                          HexColor("#020204").withOpacity(1),
+                                        ],
+                                      ),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: HexColor('#04060F'),
+                                          offset: Offset(10, 10),
+                                          blurRadius: 20,
+                                        ),
+                                      ],
+                                      borderRadius: BorderRadius.circular(10)),
+                                  child: TextFormField(
+                                    maxLength: 12,
+                                    onChanged: (value) {
+                                      value = _signUpScreenController
+                                          .phoneNumberController.text;
+                                      // CheckPhoneName(context);
+                                      setState(() {});
+                                    },
+                                    onTap: (){
+                                      // CheckPhoneName(context);
+                                    },
+                                    decoration: InputDecoration(
+                                        contentPadding: EdgeInsets.only(left: 20, top: 14, bottom: 14),
+                                        alignLabelWithHint: false,
+                                        isDense: true,
+                                        hintText: 'Enter Mobile Number',
+                                        counterStyle: TextStyle(
+                                          height: double.minPositive,
+                                        ),
+                                        counterText: "",
+                                        filled: true,
+                                        border: InputBorder.none,
+                                        enabledBorder: const OutlineInputBorder(
+                                          borderSide: BorderSide(color: Colors.transparent, width: 1),
+                                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                                        ),
+                                        hintStyle: FontStyleUtility.h15(
+                                            fontColor: ColorUtils.primary_grey, family: 'PM'),
+                                        suffixIcon: Container(
+                                            margin: EdgeInsets.all(4),
+                                            decoration: BoxDecoration(
+                                                color: Colors.red.withOpacity(0.65),
+                                                gradient: LinearGradient(
+                                                  begin: Alignment.bottomLeft,
+                                                  end: Alignment.topRight,
+                                                  // stops: [0.1, 0.5, 0.7, 0.9],
+                                                  colors: [
+                                                    HexColor("#020204").withOpacity(1),
+                                                    HexColor("#36393E").withOpacity(1),
+                                                  ],
+                                                ),
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                    color: HexColor('#04060F'),
+                                                    offset: Offset(3, 3),
+                                                    blurRadius: 20,
+                                                  ),
+                                                ],
+                                                borderRadius: BorderRadius.circular(50)),
+                                            child:  IconButton(
+                                              visualDensity: VisualDensity(
+                                                  horizontal: -4, vertical: -4),
+                                              icon: Image.asset(
+                                                AssetUtils.mobile_icons,
+                                                height: 17,
+                                                color: HexColor("#606060"),
+                                                width: 15,
+                                              ),
+                                              onPressed: () {},
+                                            ),)),
+                                    style: FontStyleUtility.h15(
+                                        fontColor: ColorUtils.primary_gold, family: 'PM'),
+                                    controller: _signUpScreenController.phoneNumberController,
+                                    keyboardType: TextInputType.number,
                                   ),
-                                  onChanged: (value) {
-                                    value = _signUpScreenController
-                                        .phoneNumberController.text;
-                                    // CheckPhoneName(context);
-                                    setState(() {});
-                                  },
-                                  // errorText: checkUserModel!.message,
-                                  tap: () {
-                                    // CheckPhoneName(context);
-                                  },
-                                ),
+                                )
                               ),
                             ),
                           ],

@@ -1,10 +1,16 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:avatar_glow/avatar_glow.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:intl/intl.dart';
+import 'package:klench_/homepage/controller/pee_screen_controller.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:table_calendar/table_calendar.dart';
 import 'package:vibration/vibration.dart';
 
 import '../utils/Asset_utils.dart';
@@ -13,6 +19,7 @@ import '../utils/TextStyle_utils.dart';
 import '../utils/UrlConstrant.dart';
 import '../utils/colorUtils.dart';
 import '../utils/common_widgets.dart';
+import 'model/pee_get_model.dart';
 
 class PeeScreen extends StatefulWidget {
   const PeeScreen({Key? key}) : super(key: key);
@@ -22,12 +29,15 @@ class PeeScreen extends StatefulWidget {
 }
 
 class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
+  final PeeScreenController _peeScreenController =
+      Get.put(PeeScreenController(), tag: PeeScreenController().toString());
+
   List urine_test_text = [
-    "Doing ok, you're probably well hydrated",
-    "Sample text here regarding the urine",
-    "Doing ok, you're probably well hydrated",
-    "Sample text here regarding the urine",
-    "Doing ok, you're probably well hydrated",
+    "Doing ok. You’re probably well hydrated. Drink water as normal.",
+    "You’re just fine. You could stand to drink a little water now, maybe a small glass of water.",
+    "Drink about 1⁄2 bottle of water (1/4 liter) right now, or drink a whole bottle (1/2 liter) of water if you’re outside and/or sweating.",
+    "Drink about 1⁄2 bottle of water (1/4 liter) within the hour, or drink a whole bottle (1/2 liter) of water if you’re outside and/or sweating.",
+    "Drink 2 bottles of water right now (1 liter). If your urine is darker than this and/or red or brown, then dehydration may not be your problem. See a doctor.",
   ];
   List urint_test_color = [
     HexColor('#EEF1AC'),
@@ -46,7 +56,6 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
   String? levels;
   int counter = 0;
   int sets = 0;
-
 
   updateTime_normal(Timer timer) {
     if (watch.isRunning) {
@@ -70,7 +79,7 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
               print(counter);
               // paused_time.clear();
             });
-            Future.delayed(Duration(seconds: 4), () {
+            Future.delayed(const Duration(seconds: 4), () {
               // if (counter == 10) {
               //   stopWatch_finish();
               //   setState(() {
@@ -78,43 +87,43 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
               //     // watch.stop();
               //     counter = 0;
               //   });
-                // sets++;
-                // print('Sets-------$sets');
-                // if (sets == 3) {
-                //   stopWatch_finish();
-                //   setState(() {
-                //     elapsedTime = '00';
-                //     percent = 0.0;
-                //     // watch.stop();
-                //     counter = 0;
-                //   });
-                //   CommonWidget().showToaster(msg: "Method Complete");
-                //   Future.delayed(Duration(seconds: 5), () {
-                //     CommonWidget().showErrorToaster(
-                //         msg:
-                //         "After one month it will automatically switch to Hard");
-                //   });
-                // }
+              // sets++;
+              // print('Sets-------$sets');
+              // if (sets == 3) {
+              //   stopWatch_finish();
+              //   setState(() {
+              //     elapsedTime = '00';
+              //     percent = 0.0;
+              //     // watch.stop();
+              //     counter = 0;
+              //   });
+              //   CommonWidget().showToaster(msg: "Method Complete");
+              //   Future.delayed(Duration(seconds: 5), () {
+              //     CommonWidget().showErrorToaster(
+              //         msg:
+              //         "After one month it will automatically switch to Hard");
+              //   });
+              // }
               // } else {
-                _animationController!.reverse();
-                _animationController_button!.reverse();
-                startWatch();
+              _animationController!.reverse();
+              _animationController_button!.reverse();
+              startWatch();
               // }
             });
           }
-
-
         });
       }
     }
   }
 
+  String? selected_date_sets = '';
+  String? selected_date = '';
   double percent = 0.0;
 
   bool back_wallpaper = false;
 
   Timer? countdownTimer;
-  Duration myDuration = Duration(seconds: 3);
+  Duration myDuration = const Duration(seconds: 3);
 
   AnimationController? _animationController;
   Animation? _animation;
@@ -140,13 +149,13 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
     });
     vibration();
     _animationController =
-        AnimationController(vsync: this, duration: Duration(seconds: 1));
+        AnimationController(vsync: this, duration: const Duration(seconds: 1));
     _animationController!.repeat(reverse: true);
     _animation = Tween(begin: 0.0, end: 25.0).animate(_animationController!)
       ..addListener(() {});
 
     _animationController_button =
-        AnimationController(vsync: this, duration: Duration(seconds: 5));
+        AnimationController(vsync: this, duration: const Duration(seconds: 5));
     _animationController_button!.forward();
     _animation_button =
         Tween(begin: 200.0, end: 120.0).animate(_animationController_button!)
@@ -203,12 +212,25 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
   @override
   void initState() {
     get_saved_data();
+    getdata();
     super.initState();
   }
+
+  getdata() async {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      // await _masturbation_screen_controller.MasturbationData_get_API(context);
+      await _peeScreenController.Pee_get_API(context);
+    });
+  }
+
   get_saved_data() async {
     levels = await PreferenceManager().getPref(URLConstants.levels);
     print("Levels $levels");
     setState(() {});
+  }
+
+  pop() {
+    print("no data found");
   }
 
   @override
@@ -220,37 +242,37 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
           height: MediaQuery.of(context).size.height,
         ),
         Container(
-          // decoration: BoxDecoration(
+            // decoration: BoxDecoration(
+            //
+            //   image: DecorationImage(
+            //     image: AssetImage(AssetUtils.backgroundImage), // <-- BACKGROUND IMAGE
+            //     fit: BoxFit.cover,
+            //   ),
+            // ),
+            decoration:
+                // (back_wallpaper ?
+                const BoxDecoration(
+          // gradient: LinearGradient(
+          //   begin: Alignment.topCenter,
+          //   end: Alignment.bottomCenter,
+          //   // stops: [0.1, 0.5, 0.7, 0.9],
+          //   colors: [
+          //     HexColor("#000000").withOpacity(0.86),
+          //     HexColor("#000000").withOpacity(0.81),
+          //     HexColor("#000000").withOpacity(0.44),
+          //     HexColor("#000000").withOpacity(1),
           //
-          //   image: DecorationImage(
-          //     image: AssetImage(AssetUtils.backgroundImage), // <-- BACKGROUND IMAGE
-          //     fit: BoxFit.cover,
-          //   ),
+          //   ],
           // ),
-          decoration:
-          // (back_wallpaper ?
-          BoxDecoration(
-                  // gradient: LinearGradient(
-                  //   begin: Alignment.topCenter,
-                  //   end: Alignment.bottomCenter,
-                  //   // stops: [0.1, 0.5, 0.7, 0.9],
-                  //   colors: [
-                  //     HexColor("#000000").withOpacity(0.86),
-                  //     HexColor("#000000").withOpacity(0.81),
-                  //     HexColor("#000000").withOpacity(0.44),
-                  //     HexColor("#000000").withOpacity(1),
-                  //
-                  //   ],
-                  // ),
-                  image: DecorationImage(
-                    fit: BoxFit.fill,
-                    image: AssetImage(
-                      AssetUtils.p_screen_back,
-                    ),
-                  ),
-                )
-              // : BoxDecoration()),
-        ),
+          image: DecorationImage(
+            fit: BoxFit.fill,
+            image: AssetImage(
+              AssetUtils.p_screen_back,
+            ),
+          ),
+        )
+            // : BoxDecoration()),
+            ),
         Scaffold(
           backgroundColor: Colors.transparent,
           appBar: AppBar(
@@ -262,13 +284,13 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
               },
               child: Container(
                   width: 41,
-                  margin: EdgeInsets.all(8),
+                  margin: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(100),
                       gradient: LinearGradient(
-                          begin: Alignment(-1.0, -4.0),
-                          end: Alignment(1.0, 4.0),
+                          begin: const Alignment(-1.0, -4.0),
+                          end: const Alignment(1.0, 4.0),
                           colors: [HexColor('#020204'), HexColor('#36393E')])),
                   child: Padding(
                     padding: const EdgeInsets.all(10.0),
@@ -296,10 +318,10 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
           ),
           body: SingleChildScrollView(
             child: Container(
-              margin: EdgeInsets.only(top: 15, left: 8, right: 8),
+              margin: const EdgeInsets.only(top: 15, left: 8, right: 8),
               child: Column(
                 children: [
-                  SizedBox(
+                  const SizedBox(
                     height: 15,
                   ),
                   AvatarGlow(
@@ -307,7 +329,7 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
                     showTwoGlows: true,
                     animate: false,
                     // (startStop ? false : true),
-                    duration: Duration(milliseconds: 900),
+                    duration: const Duration(milliseconds: 900),
                     repeat: true,
                     child: GestureDetector(
                       onTap: () {
@@ -315,79 +337,77 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
                         // startOrStop();
                       },
                       child:
-                      // CircularPercentIndicator(
-                      //   circularStrokeCap: CircularStrokeCap.round,
-                      //   percent: percent / 100,
-                      //   animation: true,
-                      //   animateFromLastPercent: true,
-                      //   radius: 61,
-                      //   lineWidth: 0,
-                      //   progressColor: Colors.transparent,
-                      //   backgroundColor: Colors.transparent,
-                      //   center:
-                        Container(
-                          height: (animation_started
-                              ? _animation_button!.value
-                              : button_height),
-                          width: (animation_started
-                              ? _animation_button!.value
-                              : button_height),
-                          decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              image: DecorationImage(
-                                  alignment: Alignment.center,
-                                  image: AssetImage(AssetUtils.home_button)),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: (animation_started
-                                      ? HexColor('#F5C921')
-                                      : Colors.transparent),
-                                  blurRadius: (animation_started
-                                      ? _animation!.value
-                                      : 0),
-                                  spreadRadius: (animation_started
-                                      ? _animation!.value
-                                      : 0),
-                                )
-                              ]),
-                          child: Stack(
-                            children: [
-                              Container(
+                          // CircularPercentIndicator(
+                          //   circularStrokeCap: CircularStrokeCap.round,
+                          //   percent: percent / 100,
+                          //   animation: true,
+                          //   animateFromLastPercent: true,
+                          //   radius: 61,
+                          //   lineWidth: 0,
+                          //   progressColor: Colors.transparent,
+                          //   backgroundColor: Colors.transparent,
+                          //   center:
+                          Container(
+                        height: (animation_started
+                            ? _animation_button!.value
+                            : button_height),
+                        width: (animation_started
+                            ? _animation_button!.value
+                            : button_height),
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            image: const DecorationImage(
                                 alignment: Alignment.center,
-                                child: Text(
-                                  'P',
-                                  style: TextStyle(
-                                      color:
-                                          HexColor('#F5C921').withOpacity(0.2),
-                                      fontSize: (animation_started
-                                          ? _animation_textK!.value
-                                          : text_k_size),
-                                      fontWeight: FontWeight.w600),
-                                ),
+                                image:
+                                    const AssetImage(AssetUtils.home_button)),
+                            boxShadow: [
+                              BoxShadow(
+                                color: (animation_started
+                                    ? HexColor('#F5C921')
+                                    : Colors.transparent),
+                                blurRadius:
+                                    (animation_started ? _animation!.value : 0),
+                                spreadRadius:
+                                    (animation_started ? _animation!.value : 0),
+                              )
+                            ]),
+                        child: Stack(
+                          children: [
+                            Container(
+                              alignment: Alignment.center,
+                              child: Text(
+                                'P',
+                                style: TextStyle(
+                                    color: HexColor('#F5C921').withOpacity(0.2),
+                                    fontSize: (animation_started
+                                        ? _animation_textK!.value
+                                        : text_k_size),
+                                    fontWeight: FontWeight.w600),
                               ),
-                              Container(
-                                alignment: Alignment.center,
-                                child: Text(
-                                  elapsedTime,
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: (animation_started
-                                          ? _animation_textTime!.value
-                                          : text_time_size),
-                                      fontWeight: FontWeight.w900),
-                                ),
+                            ),
+                            Container(
+                              alignment: Alignment.center,
+                              child: Text(
+                                elapsedTime,
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: (animation_started
+                                        ? _animation_textTime!.value
+                                        : text_time_size),
+                                    fontWeight: FontWeight.w900),
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
+                      ),
                       // ),
                     ),
                     glowColor: Colors.white,
                   ),
-                  SizedBox(
-                    height: 28,
-                  ),
 
+                  const SizedBox(
+                    height: 25,
+                  ),
                   GestureDetector(
                     onTap: () async {
                       if (started) {
@@ -395,6 +415,10 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
                         startWatch();
                       } else {
                         await stopWatch_finish();
+
+                        _peeScreenController.sets++;
+                        await _peeScreenController.Pee_post_API(context);
+
                         setState(() {
                           elapsedTime = '00';
                           percent = 0.0;
@@ -411,7 +435,7 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
                     },
                     child: Container(
                       height: 65,
-                      margin: EdgeInsets.symmetric(horizontal: 15),
+                      margin: const EdgeInsets.symmetric(horizontal: 15),
                       // height: 45,
                       // width:(width ?? 300) ,
                       decoration: BoxDecoration(
@@ -429,7 +453,7 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
                           borderRadius: BorderRadius.circular(15)),
                       child: Container(
                           alignment: Alignment.center,
-                          margin: EdgeInsets.symmetric(
+                          margin: const EdgeInsets.symmetric(
                             vertical: 12,
                           ),
                           child: Text(
@@ -440,8 +464,219 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
                     ),
                   ),
 
-                  SizedBox(
-                    height: 25,
+                  const SizedBox(
+                    height: 28,
+                  ),
+
+                  Obx(() => _peeScreenController.isLoading.value == false
+                      ? Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 0),
+                          // height: 45,
+                          // width:(width ?? 300) ,
+                          decoration: BoxDecoration(
+                              // color: Colors.black.withOpacity(0.65),
+                              gradient: LinearGradient(
+                                begin: Alignment.centerLeft,
+                                end: Alignment.centerRight,
+                                // stops: [0.1, 0.5, 0.7, 0.9],
+                                colors: [
+                                  HexColor("#36393E").withOpacity(0.9),
+                                  HexColor("#020204").withOpacity(0.9),
+                                ],
+                              ),
+                              borderRadius: BorderRadius.circular(20)),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: TableCalendar(
+                              // initialCalendarFormat: CalendarFormat.week,
+                              calendarStyle: CalendarStyle(
+                                defaultTextStyle: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 14.0,
+                                    color: Colors.white),
+
+                                todayTextStyle: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16.0,
+                                    color: Colors.white),
+                                todayDecoration: BoxDecoration(
+                                    color: Colors.orange,
+                                    borderRadius: BorderRadius.circular(100)),
+                                // todayColor: Colors.orange,
+                                selectedTextStyle: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16.0,
+                                    color: Colors.green),
+                                weekendTextStyle: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 14.0,
+                                    color: Colors.white),
+                                isTodayHighlighted: true,
+                                selectedDecoration: BoxDecoration(
+                                  color: Colors.blue,
+                                  shape: BoxShape.rectangle,
+                                  borderRadius: BorderRadius.circular(5.0),
+                                ),
+                              ),
+
+                              headerStyle: HeaderStyle(
+                                leftChevronIcon: Icon(
+                                  Icons.arrow_back_ios,
+                                  color: ColorUtils.primary_gold,
+                                  size: 15,
+                                ),
+                                rightChevronIcon: Icon(
+                                  Icons.arrow_forward_ios,
+                                  color: ColorUtils.primary_gold,
+                                  size: 15,
+                                ),
+                                formatButtonVisible: false,
+                                titleTextStyle: const TextStyle(
+                                    // fontWeight: FontWeight.normal,
+                                    fontSize: 16.0,
+                                    fontFamily: 'PM',
+                                    color: Colors.white),
+                                // centerHeaderTitle: true,
+                                formatButtonDecoration: BoxDecoration(
+                                  color: ColorUtils.primary_gold,
+                                  borderRadius: BorderRadius.circular(20.0),
+                                ),
+                                formatButtonTextStyle:
+                                    const TextStyle(color: Colors.black),
+                                formatButtonShowsNext: false,
+                              ),
+                              daysOfWeekStyle: DaysOfWeekStyle(
+                                  weekdayStyle: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 14.0,
+                                      color: Colors.white),
+                                  weekendStyle: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 14.0,
+                                      color: Colors.white)),
+                              startingDayOfWeek: StartingDayOfWeek.monday,
+                              onDaySelected: (date, events) async {
+                                // print(date);
+                                // print(DateFormat('yyyy-MM-dd').format(date));
+                                //
+                                // Data? person = await _peeScreenController
+                                //     .peeGetModel!.data!
+                                //     .firstWhereOrNull(
+                                //   (element) =>
+                                //       element.createdDate ==
+                                //       DateFormat('yyyy-MM-dd').format(date),
+                                // );
+                                // // print("person  $person");
+                                // if (person != null) {
+                                //   print("person ${person.sets}");
+                                //   print(
+                                //       "User peed ${person.sets} on ${person.createdDate}");
+                                // } else {
+                                //   print("no data found");
+                                // }
+                              },
+                              calendarBuilders: CalendarBuilders(
+                                markerBuilder:
+                                    (BuildContext context, date, events) {
+                                  for (var i = 0;
+                                      i <
+                                          _peeScreenController
+                                              .peeGetModel!.data!.length;
+                                      i++) {
+                                    if (DateFormat('yyyy-MM-dd').format(date) ==
+                                        _peeScreenController.peeGetModel!
+                                            .data![i].createdDate) {
+                                      return GestureDetector(
+                                        onTap: () {
+                                          setState(() {
+                                            selected_date_sets =
+                                                _peeScreenController
+                                                    .peeGetModel!
+                                                    .data![i]
+                                                    .sets!;
+                                            selected_date = _peeScreenController
+                                                .peeGetModel!
+                                                .data![i]
+                                                .createdDate!;
+                                          });
+                                          print(selected_date_sets);
+                                          print(selected_date);
+                                        },
+                                        child: Container(
+                                          height:40,
+                                          width: 40,
+                                          margin: EdgeInsets.all(5),
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(100),
+                                            border: Border.all(
+                                                color: ColorUtils.primary_gold,
+                                                width: 2),
+                                          ),
+                                        ),
+                                      );
+                                    }
+                                  }
+                                  // return ListView.builder(
+                                  //     shrinkWrap: true,
+                                  //     scrollDirection: Axis.horizontal,
+                                  //     itemCount: events.length,
+                                  //     itemBuilder: (context, index) {
+                                  //       return Container(
+                                  //         margin: const EdgeInsets.only(top: 20),
+                                  //         padding: const EdgeInsets.all(1),
+                                  //         child: Container(
+                                  //           // height: 7,
+                                  //           width: 5,
+                                  //           decoration: BoxDecoration(
+                                  //               shape: BoxShape.circle,
+                                  //               color: Colors.primaries[Random()
+                                  //                   .nextInt(Colors.primaries.length)]),
+                                  //         ),
+                                  //       );
+                                  //     });
+                                },
+                              ),
+
+                              calendarFormat: CalendarFormat.month,
+                              // calendarController: _controller,
+                              firstDay: DateTime.utc(2010, 10, 16),
+                              lastDay: DateTime.utc(2030, 3, 14),
+                              focusedDay: DateTime.now(),
+                            ),
+                          ),
+                        )
+                      : SizedBox.shrink()),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  (selected_date_sets!.isEmpty
+                      ? SizedBox.shrink()
+                      : Container(
+                          decoration: BoxDecoration(
+                              // color: Colors.black.withOpacity(0.65),
+                              gradient: LinearGradient(
+                                begin: Alignment.centerLeft,
+                                end: Alignment.centerRight,
+                                // stops: [0.1, 0.5, 0.7, 0.9],
+                                colors: [
+                                  HexColor("#36393E").withOpacity(1),
+                                  HexColor("#020204").withOpacity(1),
+                                ],
+                              ),
+                              borderRadius: BorderRadius.circular(20)),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 8.0, horizontal: 15),
+                            child: Text(
+                              'User peed ${selected_date_sets} time on ${selected_date}',
+                              style: FontStyleUtility.h16(
+                                  fontColor: HexColor('#FFFFFF'), family: 'PM'),
+                            ),
+                          ),
+                        )),
+                  const SizedBox(
+                    height: 10,
                   ),
                   // Container(
                   //   padding: EdgeInsets.all(20.0),
@@ -486,7 +721,7 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Container(
-                          margin: EdgeInsets.only(top: 8, left: 27),
+                          margin: const EdgeInsets.only(top: 8, left: 27),
                           child: Text(
                             'Pee Info',
                             style: FontStyleUtility.h16(
@@ -494,7 +729,7 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
                           ),
                         ),
                         Container(
-                          margin: EdgeInsets.only(top: 8, left: 27),
+                          margin: const EdgeInsets.only(top: 8, left: 27),
                           child: Text(
                             'Level : $levels',
                             style: FontStyleUtility.h16(
@@ -502,7 +737,8 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
                           ),
                         ),
                         Container(
-                          margin: EdgeInsets.only(top: 0, left: 27, right: 27),
+                          margin: const EdgeInsets.only(
+                              top: 0, left: 27, right: 27),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -511,22 +747,22 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
                                   (levels == 'Easy'
                                       ? "The device will vibrate for 3 seconds and stop for 4 seconds, \ncontinuing the same process until user presses the finish button."
                                       : (levels == 'Normal'
-                                      ? "The device will vibrate for 4 seconds and stop for 3 seconds, \ncontinuing the same process until user presses the finish button."
-                                      : "kegel info")),
+                                          ? "The device will vibrate for 4 seconds and stop for 3 seconds, \ncontinuing the same process until user presses the finish button."
+                                          : "kegel info")),
                                   textAlign: TextAlign.justify,
                                   style: FontStyleUtility.h16(
                                       fontColor: ColorUtils.primary_grey,
                                       family: 'PR'),
                                 ),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 17,
                               ),
                             ],
                           ),
                         ),
                         Container(
-                          margin: EdgeInsets.only(
+                          margin: const EdgeInsets.only(
                               right: 15, left: 15, top: 15, bottom: 20),
                           decoration: BoxDecoration(
                               // color: Colors.black.withOpacity(0.65),
@@ -542,14 +778,15 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
                               boxShadow: [
                                 BoxShadow(
                                     color: HexColor('#04060F'),
-                                    offset: Offset(10, 10),
+                                    offset: const Offset(10, 10),
                                     blurRadius: 20)
                               ],
                               borderRadius: BorderRadius.circular(20)),
                           child: Column(
                             children: [
                               Container(
-                                margin: EdgeInsets.only(left: 24, top: 14),
+                                margin:
+                                    const EdgeInsets.only(left: 24, top: 14),
                                 alignment: Alignment.centerLeft,
                                 child: Text(
                                   'Dehydration urine color chart',
@@ -560,8 +797,9 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
                               ),
                               Container(
                                 child: ListView.builder(
-                                  padding: EdgeInsets.only(top: 25, bottom: 15),
-                                  physics: NeverScrollableScrollPhysics(),
+                                  padding: const EdgeInsets.only(
+                                      top: 25, bottom: 15),
+                                  physics: const NeverScrollableScrollPhysics(),
                                   itemCount: urint_test_color.length,
                                   shrinkWrap: true,
                                   itemBuilder:
@@ -583,12 +821,12 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
                                           boxShadow: [
                                             BoxShadow(
                                                 color: HexColor('#04060F'),
-                                                offset: Offset(10, 10),
+                                                offset: const Offset(10, 10),
                                                 blurRadius: 20)
                                           ],
                                           borderRadius:
                                               BorderRadius.circular(6)),
-                                      margin: EdgeInsets.symmetric(
+                                      margin: const EdgeInsets.symmetric(
                                           vertical: 5, horizontal: 5),
                                       child: Padding(
                                         padding: const EdgeInsets.symmetric(
@@ -604,20 +842,27 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
                                                   borderRadius:
                                                       BorderRadius.circular(6)),
                                             ),
-                                            SizedBox(
+                                            const SizedBox(
                                               width: 9,
                                             ),
                                             Container(
                                               child: Flexible(
-                                                child: Text(
-                                                  urine_test_text[index],
-                                                  maxLines: 2,
-                                                  softWrap: true,
-                                                  overflow:
-                                                      TextOverflow.visible,
-                                                  style: FontStyleUtility.h13(
-                                                      fontColor: Colors.white,
-                                                      family: 'PR'),
+                                                child: Padding(
+                                                  padding: const EdgeInsets
+                                                          .symmetric(
+                                                      horizontal: 8.0,
+                                                      vertical: 5),
+                                                  child: Text(
+                                                    urine_test_text[index],
+                                                    maxLines: 3,
+                                                    textAlign: TextAlign.left,
+                                                    softWrap: true,
+                                                    overflow:
+                                                        TextOverflow.visible,
+                                                    style: FontStyleUtility.h13(
+                                                        fontColor: Colors.white,
+                                                        family: 'PR'),
+                                                  ),
                                                 ),
                                               ),
                                             )
@@ -632,7 +877,7 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
                           ),
                         ),
                         Container(
-                          margin: EdgeInsets.only(
+                          margin: const EdgeInsets.only(
                               right: 15, left: 15, top: 15, bottom: 20),
                           decoration: BoxDecoration(
                               // color: Colors.black.withOpacity(0.65),
@@ -648,14 +893,15 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
                               boxShadow: [
                                 BoxShadow(
                                     color: HexColor('#04060F'),
-                                    offset: Offset(10, 10),
+                                    offset: const Offset(10, 10),
                                     blurRadius: 20)
                               ],
                               borderRadius: BorderRadius.circular(20)),
                           child: Column(
                             children: [
                               Container(
-                                margin: EdgeInsets.only(left: 24, top: 14),
+                                margin:
+                                    const EdgeInsets.only(left: 24, top: 14),
                                 alignment: Alignment.centerLeft,
                                 child: Text(
                                   'Results',
@@ -666,8 +912,9 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
                               ),
                               Container(
                                 child: ListView.builder(
-                                  padding: EdgeInsets.only(top: 25, bottom: 15),
-                                  physics: NeverScrollableScrollPhysics(),
+                                  padding: const EdgeInsets.only(
+                                      top: 25, bottom: 15),
+                                  physics: const NeverScrollableScrollPhysics(),
                                   itemCount: urint_test_color.length,
                                   shrinkWrap: true,
                                   itemBuilder:
@@ -689,12 +936,12 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
                                           boxShadow: [
                                             BoxShadow(
                                                 color: HexColor('#04060F'),
-                                                offset: Offset(10, 10),
+                                                offset: const Offset(10, 10),
                                                 blurRadius: 20)
                                           ],
                                           borderRadius:
                                               BorderRadius.circular(6)),
-                                      margin: EdgeInsets.symmetric(
+                                      margin: const EdgeInsets.symmetric(
                                           vertical: 5, horizontal: 5),
                                       child: Padding(
                                         padding: const EdgeInsets.symmetric(
@@ -710,20 +957,27 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
                                                   borderRadius:
                                                       BorderRadius.circular(6)),
                                             ),
-                                            SizedBox(
+                                            const SizedBox(
                                               width: 9,
                                             ),
                                             Container(
                                               child: Flexible(
-                                                child: Text(
-                                                  urine_test_text[index],
-                                                  maxLines: 2,
-                                                  softWrap: true,
-                                                  overflow:
-                                                      TextOverflow.visible,
-                                                  style: FontStyleUtility.h13(
-                                                      fontColor: Colors.white,
-                                                      family: 'PR'),
+                                                child: Padding(
+                                                  padding: const EdgeInsets
+                                                          .symmetric(
+                                                      horizontal: 8.0,
+                                                      vertical: 5),
+                                                  child: Text(
+                                                    urine_test_text[index],
+                                                    maxLines: 3,
+                                                    textAlign: TextAlign.left,
+                                                    softWrap: true,
+                                                    overflow:
+                                                        TextOverflow.visible,
+                                                    style: FontStyleUtility.h13(
+                                                        fontColor: Colors.white,
+                                                        family: 'PR'),
+                                                  ),
                                                 ),
                                               ),
                                             )
@@ -764,7 +1018,8 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
       startStop = false;
       started = false;
       watch.start();
-      timer = Timer.periodic(Duration(milliseconds: 100), updateTime_normal);
+      timer =
+          Timer.periodic(const Duration(milliseconds: 100), updateTime_normal);
     });
   }
 
@@ -780,7 +1035,7 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
   stopWatch_finish() {
     setState(() {
       startStop = true;
-      started = false;
+      started = true;
       animation_started = false;
       watch.stop();
       setTime_finish();
@@ -793,7 +1048,9 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
       gravity: ToastGravity.BOTTOM,
     );
   }
+
   bool _canVibrate = true;
+
   Future<void> _init() async {
     bool? canVibrate = await Vibration.hasVibrator();
     setState(() {
@@ -803,6 +1060,7 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
           : debugPrint('This device cannot vibrate');
     });
   }
+
   vibration() async {
     if (_canVibrate) {
       // Vibration.vibrate(
@@ -814,19 +1072,19 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
       if (await Vibration.hasCustomVibrationsSupport() == true) {
         print("has support");
         Vibration.vibrate(
-          // pattern: [100, 100,100, 100,100, 100,100, 100,],
+            // pattern: [100, 100,100, 100,100, 100,100, 100,],
             duration: (levels == 'Easy'
                 ? 4000
                 : levels == 'Normal'
-                ? 5000
-                : 5000),
+                    ? 5000
+                    : 5000),
             amplitude: 50
-          // intensities: [1, 255]
-        );
+            // intensities: [1, 255]
+            );
       } else {
         print("haddddd support");
         Vibration.vibrate();
-        await Future.delayed(Duration(milliseconds: 500));
+        await Future.delayed(const Duration(milliseconds: 500));
         Vibration.vibrate();
       }
       // Vibrate.defaultVibrationDuration;
@@ -836,7 +1094,6 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
       CommonWidget().showErrorToaster(msg: 'Device Cannot vibrate');
     }
   }
-
 
   setTime() {
     var timeSoFar = watch.elapsedMilliseconds;

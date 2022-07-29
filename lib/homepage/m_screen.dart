@@ -338,8 +338,10 @@ class _M_ScreenState extends State<M_Screen> {
                     GestureDetector(
                       onTap: () async {
                         await stopWatch();
+                        print("paused_time.length.toString()${paused_time.length.toString()}");
                         method_time.add(ListMethodClass(
                             method_name: method_selected,
+                            pauses: paused_time.length.toString(),
                             total_time: elapsedTime));
                         setState(() {
                           elapsedTime = '00:00:00';
@@ -594,7 +596,8 @@ class _M_ScreenState extends State<M_Screen> {
                                             padding:
                                             const EdgeInsets.all(4.5),
                                             child: Text(
-                                              '1',
+                                              '${method_time[index]
+                                                  .pauses}',
                                               style: FontStyleUtility.h14(
                                                   fontColor: Colors.white,
                                                   family: 'PR'),
@@ -1072,10 +1075,11 @@ class _M_ScreenState extends State<M_Screen> {
 
 class ListMethodClass {
   String? method_name;
+  String? pauses;
   String? total_time;
 
 // added '?'
-  ListMethodClass({this.method_name, this.total_time});
+  ListMethodClass({this.method_name, this.pauses, this.total_time});
 // can also add 'required' keyword
 }
 

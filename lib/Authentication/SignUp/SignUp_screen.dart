@@ -434,7 +434,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                         height: 100,
                                         width: 100,
                                         child: Image.asset(
-                                          AssetUtils.user_icon4,
+                                          AssetUtils.user_icon45,
+                                          fit: BoxFit.fitWidth,
                                           height: 93,
                                           width: 106,
                                         ))

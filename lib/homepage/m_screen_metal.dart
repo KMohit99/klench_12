@@ -8,6 +8,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
+import 'package:klench_/homepage/controller/m_screen_controller.dart';
 import 'package:klench_/homepage/swipe_controller.dart';
 import 'package:klench_/utils/TexrUtils.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
@@ -29,8 +30,9 @@ class M_ScreenMetal extends StatefulWidget {
 
 class M_ScreenMetalState extends State<M_ScreenMetal>
     with TickerProviderStateMixin {
-
-
+  final Masturbation_screen_controller _masturbation_screen_controller =
+      Get.put(Masturbation_screen_controller(),
+          tag: Masturbation_screen_controller().toString());
 
   Stopwatch watch = Stopwatch();
   Timer? timer;
@@ -113,7 +115,15 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
   void initState() {
     _tooltipBehavior = TooltipBehavior(
         enable: true, borderWidth: 5, color: Colors.transparent);
+    getdata();
     super.initState();
+  }
+
+  getdata() async {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      // await _masturbation_screen_controller.MasturbationData_get_API(context);
+      await _masturbation_screen_controller.MasturbationWeekly_Data_get_API(context);
+    });
   }
 
   bool show_details_graph = false;
@@ -456,7 +466,7 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
                                       Padding(
                                         padding: const EdgeInsets.all(8.0),
                                         child: Container(
-                                          height: 100,
+                                          height: 150,
                                           width: double.maxFinite,
                                           decoration: BoxDecoration(
                                               // color: Colors.black.withOpacity(0.65),
@@ -473,7 +483,8 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
                                               ),
                                               boxShadow: [
                                                 BoxShadow(
-                                                    color: HexColor('#04060F'),
+                                                    color:
+                                                        HexColor('#04060F'),
                                                     offset: Offset(10, 10),
                                                     blurRadius: 10)
                                               ],
@@ -484,12 +495,9 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
                                           // height: 122,
                                           // width: 133,
                                           // padding: const EdgeInsets.all(8.0),
-                                          alignment: Alignment.center,
                                           child: Align(
                                             alignment: Alignment.center,
                                             child: ListView.builder(
-                                              padding: EdgeInsets.symmetric(
-                                                  vertical: 10, horizontal: 5),
                                               itemCount: method_list.length,
                                               shrinkWrap: true,
                                               itemBuilder:
@@ -499,7 +507,8 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
                                                   onTap: () {
                                                     setState(() {
                                                       method_selected =
-                                                          method_list[index];
+                                                          method_list[
+                                                              index];
                                                       print(
                                                           "method_selected $method_selected");
                                                       started = true;
@@ -507,10 +516,11 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
                                                     Navigator.pop(context);
                                                   },
                                                   child: Container(
-                                                    margin:
-                                                        EdgeInsets.symmetric(
+                                                    margin: EdgeInsets
+                                                        .symmetric(
                                                             vertical: 8.5),
-                                                    alignment: Alignment.center,
+                                                    alignment:
+                                                        Alignment.center,
                                                     child: Text(
                                                       method_list[index],
                                                       style: FontStyleUtility.h15(
@@ -791,14 +801,20 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
                           await stopWatch_finish();
                           method_time.add(ListMethodClass(
                               method_name: method_selected,
+                              pauses: paused_time.length.toString(),
                               total_time: elapsedTime));
                           setState(() {
                             elapsedTime = '00:00';
                             percent = 0.0;
                             method_selected = '';
                             watch.reset();
-                            // paused_time.clear();
+                            paused_time.clear();
                           });
+                          print(method_time.length);
+
+                          await _masturbation_screen_controller
+                              .m_method_post_API(
+                                  context: context, method_data: method_time);
                           // print('method_time : ${method_time[0].total_time}');
                           // print('method_name : ${method_time[0].method_name}');
                         }
@@ -842,6 +858,42 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
                           )),
                     ),
                   ),
+                  // GestureDetector(
+                  //   onTap: () async {
+                  //     await _masturbation_screen_controller
+                  //         .m_method_post_API(
+                  //             context: context, method_data: method_time);
+                  //   },
+                  //   child: Container(
+                  //     height: 65,
+                  //     margin: EdgeInsets.symmetric(horizontal: 15),
+                  //     // height: 45,
+                  //     // width:(width ?? 300) ,
+                  //     decoration: BoxDecoration(
+                  //         color: ColorUtils.primary_gold,
+                  //         gradient: LinearGradient(
+                  //           begin: Alignment.centerLeft,
+                  //           end: Alignment.centerRight,
+                  //           // stops: [0.1, 0.5, 0.7, 0.9],
+                  //           colors: [
+                  //             HexColor("#ECDD8F").withOpacity(0.90),
+                  //             HexColor("#E5CC79").withOpacity(0.90),
+                  //             HexColor("#CE952F").withOpacity(0.90),
+                  //           ],
+                  //         ),
+                  //         borderRadius: BorderRadius.circular(15)),
+                  //     child: Container(
+                  //         alignment: Alignment.center,
+                  //         margin: EdgeInsets.symmetric(
+                  //           vertical: 12,
+                  //         ),
+                  //         child: Text(
+                  //           'Add',
+                  //           style: FontStyleUtility.h16(
+                  //               fontColor: Colors.black, family: 'PM'),
+                  //         )),
+                  //   ),
+                  // ),
 
                   SizedBox(
                     height: 21,
@@ -1101,7 +1153,7 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
                                                           const EdgeInsets.all(
                                                               4.5),
                                                       child: Text(
-                                                        '1',
+                                                        '${method_time[index].pauses}',
                                                         style: FontStyleUtility.h14(
                                                             fontColor: ColorUtils
                                                                 .primary_grey,
@@ -1552,9 +1604,11 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
                                               // Renders column chart
 
                                               ColumnSeries<ChartData, String>(
+                                                  // dataSource: _masturbation_screen_controller.gst_payable_list,
                                                   dataSource: chartData,
                                                   width: 0.5,
                                                   spacing: 0.6,
+
                                                   color: HexColor('#DD3931'),
                                                   xValueMapper:
                                                       (ChartData data, _) =>
@@ -1566,6 +1620,7 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
                                                   width: 0.5,
                                                   spacing: 0.6,
                                                   color: HexColor('#75C043'),
+                                                  // dataSource: _masturbation_screen_controller.gst_payable_list,
                                                   dataSource: chartData,
                                                   xValueMapper:
                                                       (ChartData data, _) =>
@@ -1576,8 +1631,9 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
                                               ColumnSeries<ChartData, String>(
                                                   width: 0.5,
                                                   spacing: 0.6,
+
                                                   color: HexColor('#1880C3'),
-                                                  dataSource: chartData,
+                                                  dataSource: _masturbation_screen_controller.gst_payable_list,
                                                   xValueMapper:
                                                       (ChartData data, _) =>
                                                           data.x,
@@ -2083,7 +2139,7 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
     if (startStop) {
       startWatch();
     } else {
-      // stopWatch();
+      stopWatch();
     }
   }
 
@@ -2101,14 +2157,14 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
     });
   }
 
-  // stopWatch() {
-  //   setState(() {
-  //     startStop = true;
-  //     started = false;
-  //     watch.stop();
-  //     setTime();
-  //   });
-  // }
+  stopWatch() {
+    setState(() {
+      startStop = true;
+      started = false;
+      watch.stop();
+      setTime();
+    });
+  }
 
   stopWatch_finish() {
     setState(() {

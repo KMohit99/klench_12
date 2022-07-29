@@ -16,6 +16,7 @@ import '../../../utils/UrlConstrant.dart';
 import '../../../utils/common_widgets.dart';
 import '../../../utils/page_loader.dart';
 import '../../SignUp/controller/sign_up_controller.dart';
+import '../../SignUp/face_scan_screen.dart';
 import '../../SignUp/model/signUpmodel.dart';
 import '../model/SignInModel.dart';
 import 'package:http/http.dart' as http;
@@ -379,8 +380,12 @@ class SignInScreenController extends GetxController {
         //     .setPref(URLConstants.type, signUpModel!.user![0].type!);
         // await CreatorgetUserInfo_Email(UserId: signUpModel!.user![0].id!);
         await CommonWidget().showToaster(msg: 'User Updated');
+        // await Navigator.push(context,
+        //     MaterialPageRoute(builder: (context) => DashboardScreen()));
         await Navigator.push(context,
-            MaterialPageRoute(builder: (context) => DashboardScreen()));
+            MaterialPageRoute(builder: (context) => FaceScanScreen()));
+        // await Get.to(FaceScanScreen());
+
         Get.to(DashboardScreen());
 
         hideLoader(context);

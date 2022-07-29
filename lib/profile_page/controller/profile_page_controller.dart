@@ -51,8 +51,8 @@ class Profile_page_controller extends GetxController {
     request.fields['countryCode'] = dialCodedigits!;
     request.fields['phone'] = phoneNumberController.text;
     request.fields['email'] = emailAddressController.text;
-    request.fields['dob'] = '';
-    request.fields['gender'] = '';
+    request.fields['dob'] = dateOfbirthController.text;
+    request.fields['gender'] = genderController.text;
 
     var response = await request.send();
     var responsed = await http.Response.fromStream(response);

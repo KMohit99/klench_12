@@ -9,6 +9,7 @@ version: 1.0.0+1
 environment:
   sdk: ">=2.16.2 <3.0.0"
 
+
 dependencies:
   flutter:
     sdk: flutter
@@ -49,6 +50,10 @@ dependencies:
   flutter_facebook_auth: ^4.1.2
 
   flutter_webview_plugin: ^0.4.0
+  dio: ^4.0.0
+  table_calendar: ^3.0.6
+
+
 
 #  esys_flutter_share_plus: ^2.1.0
 

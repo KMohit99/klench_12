@@ -10,9 +10,11 @@ import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
 import 'package:klench_/Dashboard/dashboard_screen.dart';
+import 'package:klench_/homepage/controller/kegel_excercise_controller.dart';
 import 'package:klench_/homepage/swipe_controller.dart';
 import 'package:klench_/homepage/theme_data.dart';
 import 'package:klench_/utils/TexrUtils.dart';
+import 'package:table_calendar/table_calendar.dart';
 import 'package:vibration/vibration.dart';
 
 import '../main.dart';
@@ -34,6 +36,9 @@ class KegelScreen extends StatefulWidget {
 
 class _KegelScreenState extends State<KegelScreen>
     with TickerProviderStateMixin {
+  final Kegel_controller _kegel_controller =
+      Get.put(Kegel_controller(), tag: Kegel_controller().toString());
+
   Stopwatch watch = Stopwatch();
   Timer? timer;
   bool startStop = true;
@@ -42,8 +47,6 @@ class _KegelScreenState extends State<KegelScreen>
   String elapsedTime = '00';
   TextEditingController Alarm_title = new TextEditingController();
   List Alarm_title_list = [];
-
-
 
   // updateTime(Timer timer) {
   //   if (watch.isRunning) {
@@ -131,9 +134,9 @@ class _KegelScreenState extends State<KegelScreen>
                   // watch.stop();
                   counter = 0;
                 });
-                sets++;
-                print('Sets-------$sets');
-                if (sets == 3) {
+                _kegel_controller.sets++;
+                print('Sets-------$_kegel_controller.sets');
+                if (_kegel_controller.sets == 3) {
                   stopWatch_finish();
                   setState(() {
                     elapsedTime = '00';
@@ -184,7 +187,7 @@ class _KegelScreenState extends State<KegelScreen>
               print(counter);
               // paused_time.clear();
             });
-            Future.delayed(const Duration(seconds: 4), () {
+            Future.delayed(const Duration(seconds: 4), () async {
               if (counter == 10) {
                 stopWatch_finish();
                 setState(() {
@@ -192,9 +195,13 @@ class _KegelScreenState extends State<KegelScreen>
                   // watch.stop();
                   counter = 0;
                 });
-                sets++;
-                print('Sets-------$sets');
-                if (sets == 3) {
+                _kegel_controller.sets++;
+                await _kegel_controller.Kegel_post_API(context);
+                if (_kegel_controller.kegelPostModel!.error == false) {
+                  await getdata();
+                }
+                print('Sets-------$_kegel_controller.sets');
+                if (_kegel_controller.sets == 3) {
                   stopWatch_finish();
                   setState(() {
                     elapsedTime = '00';
@@ -221,32 +228,30 @@ class _KegelScreenState extends State<KegelScreen>
     }
   }
 
-  void showDatePicker()
-  {  showCupertinoModalPopup(
-      context: context,
-      builder: (BuildContext builder) {
-        return Container(
-          height: MediaQuery.of(context).copyWith().size.height*0.25,
-          color: Colors.white,
-          child: CupertinoDatePicker(
-            mode: CupertinoDatePickerMode.time,
-            onDateTimeChanged: (value) {
-              if (value != null && value != selectedDate)
-                setState(() {
-                  selectedDate = value;
-                });
-            },
-            initialDateTime: DateTime.now(),
-            minimumYear: 2019,
-            maximumYear: 2021,
-          ),
-        );
-      }
-  );
+  void showDatePicker() {
+    showCupertinoModalPopup(
+        context: context,
+        builder: (BuildContext builder) {
+          return Container(
+            height: MediaQuery.of(context).copyWith().size.height * 0.25,
+            color: Colors.white,
+            child: CupertinoDatePicker(
+              mode: CupertinoDatePickerMode.time,
+              onDateTimeChanged: (value) {
+                if (value != null && value != selectedDate)
+                  setState(() {
+                    selectedDate = value;
+                  });
+              },
+              initialDateTime: DateTime.now(),
+              minimumYear: 2019,
+              maximumYear: 2021,
+            ),
+          );
+        });
   }
 
   int counter = 0;
-  int sets = 0;
 
   double percent = 0.0;
 
@@ -398,7 +403,7 @@ class _KegelScreenState extends State<KegelScreen>
       loadAlarms();
     });
     get_saved_data();
-
+    getdata();
     super.initState();
   }
 
@@ -416,10 +421,28 @@ class _KegelScreenState extends State<KegelScreen>
   get_saved_data() async {
     levels = await PreferenceManager().getPref(URLConstants.levels);
     print("Levels $levels");
+    print("Dateformat ${DateFormat('yyyy-MM-dd').format(DateTime.now())}");
     setState(() {});
   }
 
+  getdata() {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await _kegel_controller.Kegel_get_API(context);
+      if (_kegel_controller.kegelGetModel!.error == false) {
+        setState(() {
+          _kegel_controller.sets =
+              int.parse(_kegel_controller.kegelGetModel!.data![0].sets!);
+        });
+      }
+    });
+
+    print("Setssss : ${_kegel_controller.sets}");
+  }
+
   DateTime selectedDate = DateTime.now();
+
+  String? selected_date_sets = '';
+  String? selected_date = '';
 
   @override
   Widget build(BuildContext context) {
@@ -507,8 +530,9 @@ class _KegelScreenState extends State<KegelScreen>
                     children: [
                       Image.asset(
                         AssetUtils.star_icon,
-                        color:
-                            (sets >= 1 ? ColorUtils.primary_gold : Colors.grey),
+                        color: (_kegel_controller.sets >= 1
+                            ? ColorUtils.primary_gold
+                            : Colors.grey),
                         height: 22,
                         width: 22,
                       ),
@@ -518,8 +542,9 @@ class _KegelScreenState extends State<KegelScreen>
                       Image.asset(
                         AssetUtils.star_icon,
                         height: 22,
-                        color:
-                            (sets >= 2 ? ColorUtils.primary_gold : Colors.grey),
+                        color: (_kegel_controller.sets >= 2
+                            ? ColorUtils.primary_gold
+                            : Colors.grey),
                         width: 22,
                       ),
                       const SizedBox(
@@ -527,8 +552,9 @@ class _KegelScreenState extends State<KegelScreen>
                       ),
                       Image.asset(
                         AssetUtils.star_icon,
-                        color:
-                            (sets >= 3 ? ColorUtils.primary_gold : Colors.grey),
+                        color: (_kegel_controller.sets >= 3
+                            ? ColorUtils.primary_gold
+                            : Colors.grey),
                         height: 22,
                         width: 22,
                       ),
@@ -619,14 +645,15 @@ class _KegelScreenState extends State<KegelScreen>
                             Container(
                               alignment: Alignment.center,
                               child: Text(
-                                (timer_started ?
-                                ('$seconds' == '3'
-                                    ? 'Ready'
-                                    : ('$seconds' == '2'
-                                        ? 'Set'
-                                        : ('$seconds' == '1'
-                                            ? 'Kegel'
-                                            : elapsedTime))): ''),
+                                (timer_started
+                                    ? ('$seconds' == '3'
+                                        ? 'Ready'
+                                        : ('$seconds' == '2'
+                                            ? 'Set'
+                                            : ('$seconds' == '1'
+                                                ? 'Kegel'
+                                                : elapsedTime)))
+                                    : ''),
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontSize: (animation_started
@@ -641,7 +668,7 @@ class _KegelScreenState extends State<KegelScreen>
                     ),
                   )),
                   const SizedBox(
-                    height: 28,
+                    height: 25,
                   ),
                   GestureDetector(
                     onTap: () async {
@@ -713,6 +740,232 @@ class _KegelScreenState extends State<KegelScreen>
                   const SizedBox(
                     height: 27,
                   ),
+                  Obx(() => _kegel_controller.isuserinfoLoading.value == false
+                      ? Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 0),
+                          // height: 45,
+                          // width:(width ?? 300) ,
+                          decoration: BoxDecoration(
+                              // color: Colors.black.withOpacity(0.65),
+                              gradient: LinearGradient(
+                                begin: Alignment.centerLeft,
+                                end: Alignment.centerRight,
+                                // stops: [0.1, 0.5, 0.7, 0.9],
+                                colors: [
+                                  HexColor("#36393E").withOpacity(0.9),
+                                  HexColor("#020204").withOpacity(0.9),
+                                ],
+                              ),
+                              borderRadius: BorderRadius.circular(20)),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: TableCalendar(
+                              // initialCalendarFormat: CalendarFormat.week,
+                              calendarStyle: CalendarStyle(
+                                defaultTextStyle: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 14.0,
+                                    color: Colors.white),
+                                todayTextStyle:  TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18.0,
+                                    color: ColorUtils.dark_grey),
+                                todayDecoration: BoxDecoration(
+                                    color : HexColor("#ffffff").withOpacity(1),
+                                    borderRadius: BorderRadius.circular(100)),
+                                // todayColor: Colors.orange,
+                                selectedTextStyle: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16.0,
+                                    color: Colors.green),
+                                weekendTextStyle: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 14.0,
+                                    color: Colors.white),
+                                isTodayHighlighted: true,
+                                selectedDecoration: BoxDecoration(
+                                  color: Colors.blue,
+                                  shape: BoxShape.rectangle,
+                                  borderRadius: BorderRadius.circular(5.0),
+                                ),
+                              ),
+
+                              headerStyle: HeaderStyle(
+                                leftChevronIcon: Icon(
+                                  Icons.arrow_back_ios,
+                                  color: ColorUtils.primary_gold,
+                                  size: 15,
+                                ),
+                                rightChevronIcon: Icon(
+                                  Icons.arrow_forward_ios,
+                                  color: ColorUtils.primary_gold,
+                                  size: 15,
+                                ),
+                                formatButtonVisible: false,
+                                titleTextStyle: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16.0,
+                                    color: Colors.white),
+                                // centerHeaderTitle: true,
+                                formatButtonDecoration: BoxDecoration(
+                                  color: ColorUtils.primary_gold,
+                                  borderRadius: BorderRadius.circular(20.0),
+                                ),
+                                formatButtonTextStyle:
+                                    const TextStyle(color: Colors.black),
+                                formatButtonShowsNext: false,
+                              ),
+                              daysOfWeekStyle: DaysOfWeekStyle(
+                                  weekdayStyle: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 12.0,
+                                      color: Colors.white),
+                                  weekendStyle: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 12.0,
+                                      color: Colors.white)),
+                              startingDayOfWeek: StartingDayOfWeek.monday,
+                              onDaySelected: (date, events) async {
+                                // print(date);
+                                // print(DateFormat('yyyy-MM-dd').format(date));
+                                //
+                                // Data? person = await _peeScreenController
+                                //     .peeGetModel!.data!
+                                //     .firstWhereOrNull(
+                                //   (element) =>
+                                //       element.createdDate ==
+                                //       DateFormat('yyyy-MM-dd').format(date),
+                                // );
+                                // // print("person  $person");
+                                // if (person != null) {
+                                //   print("person ${person.sets}");
+                                //   print(
+                                //       "User peed ${person.sets} on ${person.createdDate}");
+                                // } else {
+                                //   print("no data found");
+                                // }
+                              },
+                              // builders: CalendarBuilders(
+                              //   selectedDayBuilder: (context, date, events) => Container(
+                              //       margin: const EdgeInsets.all(4.0),
+                              //       alignment: Alignment.center,
+                              //       decoration: BoxDecoration(
+                              //           color: Theme.of(context).primaryColor,
+                              //           borderRadius: BorderRadius.circular(10.0)),
+                              //       child: Text(
+                              //         date.day.toString(),
+                              //         style: TextStyle(color: Colors.white),
+                              //       )),
+                              //   todayDayBuilder: (context, date, events) => Container(
+                              //       margin: const EdgeInsets.all(4.0),
+                              //       alignment: Alignment.center,
+                              //       decoration: BoxDecoration(
+                              //           color: Colors.orange,
+                              //           borderRadius: BorderRadius.circular(10.0)),
+                              //       child: Text(
+                              //         date.day.toString(),
+                              //         style: TextStyle(color: Colors.white),
+                              //       )),
+
+                              calendarBuilders: CalendarBuilders(
+                                markerBuilder:
+                                    (BuildContext context, date, events) {
+                                  for (var i = 0;
+                                      i <
+                                          _kegel_controller
+                                              .kegelGetModel!.data!.length;
+                                      i++) {
+                                    if (DateFormat('yyyy-MM-dd').format(date) ==
+                                        _kegel_controller.kegelGetModel!
+                                            .data![i].createdDate) {
+                                      return GestureDetector(
+                                        onTap: () {
+                                          setState(() {
+                                            selected_date_sets =
+                                                _kegel_controller.kegelGetModel!
+                                                    .data![i].sets!;
+                                            selected_date = _kegel_controller
+                                                .kegelGetModel!
+                                                .data![i]
+                                                .createdDate!;
+                                          });
+                                          print(selected_date_sets);
+                                          print(selected_date);
+                                        },
+                                        child: Container(
+                                          margin: EdgeInsets.all(5),
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(100),
+                                            border: Border.all(
+                                                color: ColorUtils.primary_gold,
+                                                width: 2),
+                                          ),
+                                        ),
+                                      );
+                                    }
+                                  }
+                                  // return ListView.builder(
+                                  //     shrinkWrap: true,
+                                  //     scrollDirection: Axis.horizontal,
+                                  //     itemCount: events.length,
+                                  //     itemBuilder: (context, index) {
+                                  //       return Container(
+                                  //         margin: const EdgeInsets.only(top: 20),
+                                  //         padding: const EdgeInsets.all(1),
+                                  //         child: Container(
+                                  //           // height: 7,
+                                  //           width: 5,
+                                  //           decoration: BoxDecoration(
+                                  //               shape: BoxShape.circle,
+                                  //               color: Colors.primaries[Random()
+                                  //                   .nextInt(Colors.primaries.length)]),
+                                  //         ),
+                                  //       );
+                                  //     });
+                                },
+                              ),
+
+                              calendarFormat: CalendarFormat.month,
+                              // calendarController: _controller,
+                              firstDay: DateTime.utc(2010, 10, 16),
+                              lastDay: DateTime.utc(2030, 3, 14),
+                              focusedDay: DateTime.now(),
+                            ),
+                          ),
+                        )
+                      : SizedBox.shrink()),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  (selected_date_sets!.isEmpty
+                      ? SizedBox.shrink()
+                      : Container(
+                          decoration: BoxDecoration(
+                              // color: Colors.black.withOpacity(0.65),
+                              gradient: LinearGradient(
+                                begin: Alignment.centerLeft,
+                                end: Alignment.centerRight,
+                                // stops: [0.1, 0.5, 0.7, 0.9],
+                                colors: [
+                                  HexColor("#36393E").withOpacity(1),
+                                  HexColor("#020204").withOpacity(1),
+                                ],
+                              ),
+                              borderRadius: BorderRadius.circular(20)),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 8.0, horizontal: 15),
+                            child: Text(
+                              'Exercise perormed ${selected_date_sets} times on ${selected_date}',
+                              style: FontStyleUtility.h14(
+                                  fontColor: HexColor('#FFFFFF'), family: 'PM'),
+                            ),
+                          ),
+                        )),
+                  const SizedBox(
+                    height: 10,
+                  ),
                   Container(
                     decoration: BoxDecoration(
                         // color: Colors.black.withOpacity(0.65),
@@ -756,7 +1009,8 @@ class _KegelScreenState extends State<KegelScreen>
                           height: 12,
                         ),
                         Container(
-                          margin: const EdgeInsets.only(top: 0, left: 27, right: 27),
+                          margin: const EdgeInsets.only(
+                              top: 0, left: 27, right: 27),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -795,7 +1049,7 @@ class _KegelScreenState extends State<KegelScreen>
                   ),
                   Container(
                     decoration: BoxDecoration(
-                      // color: Colors.black.withOpacity(0.65),
+                        // color: Colors.black.withOpacity(0.65),
                         gradient: LinearGradient(
                           begin: Alignment.centerLeft,
                           end: Alignment.centerRight,
@@ -833,28 +1087,30 @@ class _KegelScreenState extends State<KegelScreen>
                                       horizontal: 16, vertical: 0),
                                   child: Container(
                                     decoration: BoxDecoration(
-                                        // color: Colors.black.withOpacity(0.65),
-                                        // gradient: LinearGradient(
-                                        //   begin: Alignment.centerLeft,
-                                        //   end: Alignment.centerRight,
-                                        //   // stops: [0.1, 0.5, 0.7, 0.9],
-                                        //   colors: [
-                                        //     HexColor("#020204").withOpacity(1),
-                                        //     HexColor("#36393E").withOpacity(1),
-                                        //   ],
-                                        // ),
-                                        // boxShadow: [
-                                        //   BoxShadow(
-                                        //       color: HexColor('#04060F'),
-                                        //       offset: Offset(-10, 10),
-                                        //       blurRadius: 20)
-                                        // ],
+                                      // color: Colors.black.withOpacity(0.65),
+                                      // gradient: LinearGradient(
+                                      //   begin: Alignment.centerLeft,
+                                      //   end: Alignment.centerRight,
+                                      //   // stops: [0.1, 0.5, 0.7, 0.9],
+                                      //   colors: [
+                                      //     HexColor("#020204").withOpacity(1),
+                                      //     HexColor("#36393E").withOpacity(1),
+                                      //   ],
+                                      // ),
+                                      // boxShadow: [
+                                      //   BoxShadow(
+                                      //       color: HexColor('#04060F'),
+                                      //       offset: Offset(-10, 10),
+                                      //       blurRadius: 20)
+                                      // ],
                                       border: Border(
-                                        bottom: BorderSide( //                   <--- left side
+                                        bottom: BorderSide(
+                                          //                   <--- left side
                                           color: HexColor('#1d1d1d'),
                                           width: 1.5,
                                         ),
-                                      ),),
+                                      ),
+                                    ),
                                     child: Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: Column(
@@ -913,7 +1169,8 @@ class _KegelScreenState extends State<KegelScreen>
                                             context: context,
                                             clipBehavior: Clip.antiAlias,
                                             shape: const RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.vertical(
+                                              borderRadius:
+                                                  BorderRadius.vertical(
                                                 top: Radius.circular(24),
                                               ),
                                             ),
@@ -924,7 +1181,8 @@ class _KegelScreenState extends State<KegelScreen>
                                                   return Container(
                                                     decoration: BoxDecoration(
                                                         // color: Colors.black.withOpacity(0.65),
-                                                        gradient: LinearGradient(
+                                                        gradient:
+                                                            LinearGradient(
                                                           begin: Alignment
                                                               .centerLeft,
                                                           end: Alignment
@@ -942,26 +1200,33 @@ class _KegelScreenState extends State<KegelScreen>
                                                               color: HexColor(
                                                                   '#04060F'),
                                                               offset:
-                                                                  const Offset(-10, 10),
+                                                                  const Offset(
+                                                                      -10, 10),
                                                               blurRadius: 20)
                                                         ],
                                                         borderRadius:
-                                                            const BorderRadius.only(
+                                                            const BorderRadius
+                                                                    .only(
                                                                 topLeft: Radius
-                                                                    .circular(20),
+                                                                    .circular(
+                                                                        20),
                                                                 topRight: Radius
                                                                     .circular(
                                                                         20))),
                                                     padding:
-                                                        const EdgeInsets.all(32),
-                                                    child: SingleChildScrollView(
+                                                        const EdgeInsets.all(
+                                                            32),
+                                                    child:
+                                                        SingleChildScrollView(
                                                       child: Column(
                                                         children: [
                                                           FlatButton(
-                                                            onPressed: () async {
+                                                            onPressed:
+                                                                () async {
                                                               var selectedTime =
                                                                   await showTimePicker(
-                                                                context: context,
+                                                                context:
+                                                                    context,
                                                                 // initialEntryMode: DatePickerEntryMode.calendarOnly,<- this
                                                                 initialEntryMode:
                                                                     TimePickerEntryMode
@@ -969,8 +1234,9 @@ class _KegelScreenState extends State<KegelScreen>
                                                                 initialTime:
                                                                     TimeOfDay
                                                                         .now(),
-                                                                builder: (context,
-                                                                    child) {
+                                                                builder:
+                                                                    (context,
+                                                                        child) {
                                                                   return Theme(
                                                                     data: Theme.of(
                                                                             context)
@@ -979,18 +1245,14 @@ class _KegelScreenState extends State<KegelScreen>
                                                                           ColorScheme
                                                                               .dark(
                                                                         primary:
-                                                                            Colors
-                                                                                .black,
+                                                                            Colors.black,
                                                                         onPrimary:
-                                                                            Colors
-                                                                                .white,
+                                                                            Colors.white,
                                                                         surface:
-                                                                            ColorUtils
-                                                                                .primary_gold,
+                                                                            ColorUtils.primary_gold,
                                                                         // onPrimary: Colors.black, // <-- SEE HERE
                                                                         onSurface:
-                                                                            Colors
-                                                                                .black,
+                                                                            Colors.black,
                                                                       ),
                                                                       dialogBackgroundColor:
                                                                           ColorUtils
@@ -1004,7 +1266,8 @@ class _KegelScreenState extends State<KegelScreen>
                                                                         ),
                                                                       ),
                                                                     ),
-                                                                    child: child!,
+                                                                    child:
+                                                                        child!,
                                                                   );
                                                                 },
                                                               );
@@ -1013,18 +1276,18 @@ class _KegelScreenState extends State<KegelScreen>
                                                                 final now =
                                                                     DateTime
                                                                         .now();
-                                                                var selectedDateTime =
-                                                                    DateTime(
-                                                                        now.year,
-                                                                        now.month,
-                                                                        now.day,
-                                                                        selectedTime
-                                                                            .hour,
-                                                                        selectedTime
-                                                                            .minute);
+                                                                var selectedDateTime = DateTime(
+                                                                    now.year,
+                                                                    now.month,
+                                                                    now.day,
+                                                                    selectedTime
+                                                                        .hour,
+                                                                    selectedTime
+                                                                        .minute);
                                                                 _alarmTime =
                                                                     selectedDateTime;
-                                                                setModalState(() {
+                                                                setModalState(
+                                                                    () {
                                                                   _alarmTimeString =
                                                                       DateFormat(
                                                                               'HH:mm')
@@ -1043,76 +1306,44 @@ class _KegelScreenState extends State<KegelScreen>
                                                                         'PM')),
                                                           ),
                                                           ListTile(
-                                                            title: Text(
-                                                              'Repeat',
-                                                              style: FontStyleUtility.h14(
-                                                                  fontColor:
-                                                                      ColorUtils
-                                                                          .primary_gold,
-                                                                  family: 'PR'),
-                                                            ),
-                                                            trailing: const Icon(
-                                                              Icons
-                                                                  .arrow_forward_ios,
-                                                              size: 15,
-                                                              color: Colors.white,
-                                                            ),
-                                                          ),
-                                                          ListTile(
-                                                            title: Text('Sound',
-                                                                style: FontStyleUtility.h14(
-                                                                    fontColor:
-                                                                        ColorUtils
-                                                                            .primary_gold,
-                                                                    family:
-                                                                        'PR')),
-                                                            trailing: const Icon(
-                                                                Icons
-                                                                    .arrow_forward_ios,
-                                                                size: 15,
-                                                                color:
-                                                                    Colors.white),
-                                                          ),
-                                                          ListTile(
-                                                            onTap: (){
+                                                            onTap: () {
                                                               showDialog(
-                                                                context: context,
+                                                                context:
+                                                                context,
                                                                 builder:
-                                                                    (BuildContext context) {
+                                                                    (BuildContext
+                                                                context) {
                                                                   double width =
-                                                                      MediaQuery.of(context)
+                                                                      MediaQuery.of(
+                                                                          context)
                                                                           .size
                                                                           .width;
-                                                                  double height =
-                                                                      MediaQuery.of(context)
+                                                                  double
+                                                                  height =
+                                                                      MediaQuery.of(
+                                                                          context)
                                                                           .size
                                                                           .height;
                                                                   return BackdropFilter(
-                                                                    filter:
-                                                                    ImageFilter.blur(
-                                                                        sigmaX: 10,
-                                                                        sigmaY: 10),
+                                                                    filter: ImageFilter.blur(
+                                                                        sigmaX:
+                                                                        10,
+                                                                        sigmaY:
+                                                                        10),
                                                                     child: AlertDialog(
-                                                                        backgroundColor:
-                                                                        Colors
-                                                                            .transparent,
-                                                                        contentPadding:
-                                                                        EdgeInsets.zero,
+                                                                        backgroundColor: Colors.transparent,
+                                                                        contentPadding: EdgeInsets.zero,
                                                                         elevation: 0.0,
                                                                         // title: Center(child: Text("Evaluation our APP")),
                                                                         content: Column(
                                                                           mainAxisAlignment:
-                                                                          MainAxisAlignment
-                                                                              .center,
+                                                                          MainAxisAlignment.center,
                                                                           children: [
                                                                             Stack(
                                                                               children: [
                                                                                 Padding(
-                                                                                  padding:
-                                                                                  const EdgeInsets.all(
-                                                                                      8.0),
-                                                                                  child:
-                                                                                  Container(
+                                                                                  padding: const EdgeInsets.all(8.0),
+                                                                                  child: Container(
                                                                                     decoration:
                                                                                     BoxDecoration(
                                                                                       // color: Colors.black.withOpacity(0.65),
@@ -1153,11 +1384,9 @@ class _KegelScreenState extends State<KegelScreen>
                                                                                                   Container(
                                                                                                     margin: EdgeInsets.symmetric(horizontal: 10),
                                                                                                     // width: 300,
-                                                                                                    decoration:
-                                                                                                    BoxDecoration(
+                                                                                                    decoration: BoxDecoration(
                                                                                                       // color: Colors.black.withOpacity(0.65),
-                                                                                                        gradient:
-                                                                                                        LinearGradient(
+                                                                                                        gradient: LinearGradient(
                                                                                                           begin: Alignment.centerLeft,
                                                                                                           end: Alignment.centerRight,
                                                                                                           // stops: [0.1, 0.5, 0.7, 0.9],
@@ -1166,9 +1395,7 @@ class _KegelScreenState extends State<KegelScreen>
                                                                                                             HexColor("#020204").withOpacity(1),
                                                                                                           ],
                                                                                                         ),
-                                                                                                        boxShadow: [
-                                                                                                          BoxShadow(color: HexColor('#04060F'), offset: Offset(10, 10), blurRadius: 10)
-                                                                                                        ],
+                                                                                                        boxShadow: [BoxShadow(color: HexColor('#04060F'), offset: Offset(10, 10), blurRadius: 10)],
                                                                                                         borderRadius: BorderRadius.circular(20)),
 
                                                                                                     child: TextFormField(
@@ -1229,25 +1456,16 @@ class _KegelScreenState extends State<KegelScreen>
                                                                                   ),
                                                                                 ),
                                                                                 GestureDetector(
-                                                                                  onTap:
-                                                                                      () {
-                                                                                    Navigator.pop(
-                                                                                        context);
+                                                                                  onTap: () {
+                                                                                    Navigator.pop(context);
                                                                                   },
-                                                                                  child:
-                                                                                  Container(
-                                                                                    margin: EdgeInsets.only(
-                                                                                        right:
-                                                                                        10),
-                                                                                    alignment:
-                                                                                    Alignment.topRight,
-                                                                                    child:
-                                                                                    Container(
-                                                                                        decoration:
-                                                                                        BoxDecoration(
+                                                                                  child: Container(
+                                                                                    margin: EdgeInsets.only(right: 10),
+                                                                                    alignment: Alignment.topRight,
+                                                                                    child: Container(
+                                                                                        decoration: BoxDecoration(
                                                                                           // color: Colors.black.withOpacity(0.65),
-                                                                                            gradient:
-                                                                                            LinearGradient(
+                                                                                            gradient: LinearGradient(
                                                                                               begin: Alignment.centerLeft,
                                                                                               end: Alignment.centerRight,
                                                                                               // stops: [0.1, 0.5, 0.7, 0.9],
@@ -1256,9 +1474,7 @@ class _KegelScreenState extends State<KegelScreen>
                                                                                                 HexColor("#020204").withOpacity(1),
                                                                                               ],
                                                                                             ),
-                                                                                            boxShadow: [
-                                                                                              BoxShadow(color: HexColor('#04060F'), offset: Offset(0, 3), blurRadius: 5)
-                                                                                            ],
+                                                                                            boxShadow: [BoxShadow(color: HexColor('#04060F'), offset: Offset(0, 3), blurRadius: 5)],
                                                                                             borderRadius: BorderRadius.circular(20)),
                                                                                         child: Padding(
                                                                                           padding: const EdgeInsets.all(4.0),
@@ -1281,24 +1497,61 @@ class _KegelScreenState extends State<KegelScreen>
                                                             title: Text('Title',
                                                                 style: FontStyleUtility.h14(
                                                                     fontColor:
+                                                                    ColorUtils
+                                                                        .primary_grey,
+                                                                    family:
+                                                                    'PR')),
+                                                            trailing: const Icon(
+                                                                Icons
+                                                                    .arrow_forward_ios,
+                                                                size: 15,
+                                                                color: Colors
+                                                                    .white),
+                                                          ),
+                                                          ListTile(
+                                                            title: Text(
+                                                              'Repeat',
+                                                              style: FontStyleUtility.h14(
+                                                                  fontColor:
+                                                                      ColorUtils
+                                                                          .primary_gold,
+                                                                  family: 'PR'),
+                                                            ),
+                                                            trailing:
+                                                                const Icon(
+                                                              Icons
+                                                                  .arrow_forward_ios,
+                                                              size: 15,
+                                                              color:
+                                                                  Colors.white,
+                                                            ),
+                                                          ),
+                                                          ListTile(
+                                                            title: Text('Sound',
+                                                                style: FontStyleUtility.h14(
+                                                                    fontColor:
                                                                         ColorUtils
-                                                                            .primary_grey,
+                                                                            .primary_gold,
                                                                     family:
                                                                         'PR')),
                                                             trailing: const Icon(
                                                                 Icons
                                                                     .arrow_forward_ios,
                                                                 size: 15,
-                                                                color:
-                                                                    Colors.white),
+                                                                color: Colors
+                                                                    .white),
                                                           ),
                                                           GestureDetector(
                                                             onTap: () async {
-                                                              if (Alarm_title.text.isEmpty) {
+                                                              if (Alarm_title
+                                                                  .text
+                                                                  .isEmpty) {
                                                                 CommonWidget()
-                                                                    .showErrorToaster(msg: "Enter Alarm title");
+                                                                    .showErrorToaster(
+                                                                        msg:
+                                                                            "Enter Alarm title");
                                                                 return;
-                                                              }else{
+                                                              } else {
                                                                 await onSaveAlarm();
                                                               }
                                                             },
@@ -1316,7 +1569,8 @@ class _KegelScreenState extends State<KegelScreen>
                                                                   border: Border.all(
                                                                       color: ColorUtils
                                                                           .primary_grey,
-                                                                      width: 1)),
+                                                                      width:
+                                                                          1)),
                                                               child: Padding(
                                                                 padding: const EdgeInsets
                                                                         .symmetric(
@@ -1330,7 +1584,8 @@ class _KegelScreenState extends State<KegelScreen>
                                                                           .center,
                                                                   children: [
                                                                     const Icon(
-                                                                      Icons.alarm,
+                                                                      Icons
+                                                                          .alarm,
                                                                       color: Colors
                                                                           .white,
                                                                       size: 25,
@@ -1341,9 +1596,8 @@ class _KegelScreenState extends State<KegelScreen>
                                                                     Text(
                                                                       'Save',
                                                                       style: FontStyleUtility.h16(
-                                                                          fontColor:
-                                                                              ColorUtils
-                                                                                  .primary_gold,
+                                                                          fontColor: ColorUtils
+                                                                              .primary_gold,
                                                                           family:
                                                                               'PR'),
                                                                     ),
@@ -1379,7 +1633,8 @@ class _KegelScreenState extends State<KegelScreen>
                                               boxShadow: [
                                                 BoxShadow(
                                                     color: HexColor('#04060F'),
-                                                    offset: const Offset(10, 10),
+                                                    offset:
+                                                        const Offset(10, 10),
                                                     blurRadius: 20)
                                               ],
                                               borderRadius:
@@ -1567,9 +1822,12 @@ class _KegelScreenState extends State<KegelScreen>
         android: androidPlatformChannelSpecifics,
         iOS: iOSPlatformChannelSpecifics);
 
-
-    await flutterLocalNotificationsPlugin.schedule(0, 'Klench Exercise', alarmInfo.title,
-        scheduledNotificationDateTime, platformChannelSpecifics);
+    await flutterLocalNotificationsPlugin.schedule(
+        0,
+        'Klench Exercise',
+        alarmInfo.title,
+        scheduledNotificationDateTime,
+        platformChannelSpecifics);
   }
 
   Future<void> onSaveAlarm() async {
