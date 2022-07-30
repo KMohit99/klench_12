@@ -123,9 +123,13 @@ class _KegelScreenState extends State<KegelScreen>
               CommonWidget().showToaster(msg: '${7 - counter} Times left');
               counter++;
               print(counter);
+              four_started = true;
+
               // paused_time.clear();
             });
-            Future.delayed(const Duration(seconds: 4), () {
+            startWatch2();
+
+            Future.delayed(const Duration(seconds: 5), () {
               print('indise 4 seconds');
               if (counter == 8) {
                 stopWatch_finish();
@@ -154,6 +158,13 @@ class _KegelScreenState extends State<KegelScreen>
               } else {
                 _animationController!.reverse();
                 _animationController_button!.reverse();
+                stopWatch_finish();
+                // _animationController_shadow1!.reverse();
+                setState(() {
+                  elapsedTime = '00';
+                  four_started = false;
+                  watch.reset();
+                });
                 startWatch();
               }
             });
@@ -162,6 +173,8 @@ class _KegelScreenState extends State<KegelScreen>
       }
     }
   }
+
+  bool four_started = false;
 
   updateTime_Normal(Timer timer) {
     if (watch.isRunning) {
@@ -179,15 +192,18 @@ class _KegelScreenState extends State<KegelScreen>
             stopWatch_finish();
             // _animationController_shadow1!.reverse();
             setState(() {
-              elapsedTime = 'PUSH';
+              elapsedTime = '00';
               percent = 0.0;
               watch.reset();
               CommonWidget().showToaster(msg: '${9 - counter} Times left');
               counter++;
               print(counter);
+              four_started = true;
               // paused_time.clear();
             });
-            Future.delayed(const Duration(seconds: 4), () async {
+            startWatch2();
+
+            Future.delayed(const Duration(seconds: 5), () async {
               if (counter == 10) {
                 stopWatch_finish();
                 setState(() {
@@ -219,6 +235,13 @@ class _KegelScreenState extends State<KegelScreen>
               } else {
                 _animationController!.reverse();
                 _animationController_button!.reverse();
+                stopWatch_finish();
+                // _animationController_shadow1!.reverse();
+                setState(() {
+                  elapsedTime = '00';
+                  four_started = false;
+                  watch.reset();
+                });
                 startWatch();
               }
             });
@@ -644,23 +667,47 @@ class _KegelScreenState extends State<KegelScreen>
                             ),
                             Container(
                               alignment: Alignment.center,
-                              child: Text(
-                                (timer_started
-                                    ? ('$seconds' == '3'
-                                        ? 'Ready'
-                                        : ('$seconds' == '2'
-                                            ? 'Set'
-                                            : ('$seconds' == '1'
-                                                ? 'Kegel'
-                                                : elapsedTime)))
-                                    : ''),
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: (animation_started
-                                        ? _animation_textTime!.value
-                                        : text_time_size),
-                                    fontWeight: FontWeight.w900),
-                              ),
+                              child: (four_started
+                                  ? Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                          "PUSH",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: (animation_started
+                                                  ? _animation_textTime!.value
+                                                  : text_time_size),
+                                              fontWeight: FontWeight.w900),
+                                        ),
+                                      Text(
+                                          elapsedTime,
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: (animation_started
+                                                  ? _animation_textTime!.value
+                                                  : text_time_size),
+                                              fontWeight: FontWeight.w900),
+                                        ),
+                                    ],
+                                  )
+                                  : Text(
+                                      (timer_started
+                                          ? ('$seconds' == '3'
+                                              ? 'Ready'
+                                              : ('$seconds' == '2'
+                                                  ? 'Set'
+                                                  : ('$seconds' == '1'
+                                                      ? 'Kegel'
+                                                      : elapsedTime)))
+                                          : ''),
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: (animation_started
+                                              ? _animation_textTime!.value
+                                              : text_time_size),
+                                          fontWeight: FontWeight.w900),
+                                    )),
                             ),
                           ],
                         ),
@@ -766,12 +813,12 @@ class _KegelScreenState extends State<KegelScreen>
                                     fontWeight: FontWeight.bold,
                                     fontSize: 14.0,
                                     color: Colors.white),
-                                todayTextStyle:  TextStyle(
+                                todayTextStyle: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 18.0,
                                     color: ColorUtils.dark_grey),
                                 todayDecoration: BoxDecoration(
-                                    color : HexColor("#ffffff").withOpacity(1),
+                                    color: HexColor("#ffffff").withOpacity(1),
                                     borderRadius: BorderRadius.circular(100)),
                                 // todayColor: Colors.orange,
                                 selectedTextStyle: const TextStyle(
@@ -1309,27 +1356,27 @@ class _KegelScreenState extends State<KegelScreen>
                                                             onTap: () {
                                                               showDialog(
                                                                 context:
-                                                                context,
+                                                                    context,
                                                                 builder:
                                                                     (BuildContext
-                                                                context) {
+                                                                        context) {
                                                                   double width =
                                                                       MediaQuery.of(
-                                                                          context)
+                                                                              context)
                                                                           .size
                                                                           .width;
                                                                   double
-                                                                  height =
+                                                                      height =
                                                                       MediaQuery.of(
-                                                                          context)
+                                                                              context)
                                                                           .size
                                                                           .height;
                                                                   return BackdropFilter(
                                                                     filter: ImageFilter.blur(
                                                                         sigmaX:
-                                                                        10,
+                                                                            10,
                                                                         sigmaY:
-                                                                        10),
+                                                                            10),
                                                                     child: AlertDialog(
                                                                         backgroundColor: Colors.transparent,
                                                                         contentPadding: EdgeInsets.zero,
@@ -1337,7 +1384,7 @@ class _KegelScreenState extends State<KegelScreen>
                                                                         // title: Center(child: Text("Evaluation our APP")),
                                                                         content: Column(
                                                                           mainAxisAlignment:
-                                                                          MainAxisAlignment.center,
+                                                                              MainAxisAlignment.center,
                                                                           children: [
                                                                             Stack(
                                                                               children: [
@@ -1345,22 +1392,22 @@ class _KegelScreenState extends State<KegelScreen>
                                                                                   padding: const EdgeInsets.all(8.0),
                                                                                   child: Container(
                                                                                     decoration:
-                                                                                    BoxDecoration(
-                                                                                      // color: Colors.black.withOpacity(0.65),
-                                                                                        gradient:
-                                                                                        LinearGradient(
-                                                                                          begin: Alignment.centerLeft,
-                                                                                          end: Alignment.centerRight,
-                                                                                          // stops: [0.1, 0.5, 0.7, 0.9],
-                                                                                          colors: [
-                                                                                            HexColor("#020204").withOpacity(1),
-                                                                                            HexColor("#36393E").withOpacity(1),
-                                                                                          ],
-                                                                                        ),
-                                                                                        boxShadow: [
-                                                                                          BoxShadow(color: HexColor('#04060F'), offset: Offset(10, 10), blurRadius: 10)
-                                                                                        ],
-                                                                                        borderRadius: BorderRadius.circular(15)),
+                                                                                        BoxDecoration(
+                                                                                            // color: Colors.black.withOpacity(0.65),
+                                                                                            gradient:
+                                                                                                LinearGradient(
+                                                                                              begin: Alignment.centerLeft,
+                                                                                              end: Alignment.centerRight,
+                                                                                              // stops: [0.1, 0.5, 0.7, 0.9],
+                                                                                              colors: [
+                                                                                                HexColor("#020204").withOpacity(1),
+                                                                                                HexColor("#36393E").withOpacity(1),
+                                                                                              ],
+                                                                                            ),
+                                                                                            boxShadow: [
+                                                                                              BoxShadow(color: HexColor('#04060F'), offset: Offset(10, 10), blurRadius: 10)
+                                                                                            ],
+                                                                                            borderRadius: BorderRadius.circular(15)),
                                                                                     child: Align(
                                                                                         alignment: Alignment.center,
                                                                                         child: Padding(
@@ -1385,7 +1432,7 @@ class _KegelScreenState extends State<KegelScreen>
                                                                                                     margin: EdgeInsets.symmetric(horizontal: 10),
                                                                                                     // width: 300,
                                                                                                     decoration: BoxDecoration(
-                                                                                                      // color: Colors.black.withOpacity(0.65),
+                                                                                                        // color: Colors.black.withOpacity(0.65),
                                                                                                         gradient: LinearGradient(
                                                                                                           begin: Alignment.centerLeft,
                                                                                                           end: Alignment.centerRight,
@@ -1464,7 +1511,7 @@ class _KegelScreenState extends State<KegelScreen>
                                                                                     alignment: Alignment.topRight,
                                                                                     child: Container(
                                                                                         decoration: BoxDecoration(
-                                                                                          // color: Colors.black.withOpacity(0.65),
+                                                                                            // color: Colors.black.withOpacity(0.65),
                                                                                             gradient: LinearGradient(
                                                                                               begin: Alignment.centerLeft,
                                                                                               end: Alignment.centerRight,
@@ -1497,10 +1544,10 @@ class _KegelScreenState extends State<KegelScreen>
                                                             title: Text('Title',
                                                                 style: FontStyleUtility.h14(
                                                                     fontColor:
-                                                                    ColorUtils
-                                                                        .primary_grey,
+                                                                        ColorUtils
+                                                                            .primary_grey,
                                                                     family:
-                                                                    'PR')),
+                                                                        'PR')),
                                                             trailing: const Icon(
                                                                 Icons
                                                                     .arrow_forward_ios,
@@ -1690,6 +1737,21 @@ class _KegelScreenState extends State<KegelScreen>
 
   startWatch() {
     start_animation();
+    setState(() {
+      startStop = false;
+      started = false;
+      elapsedTime = "00";
+      watch.start();
+      timer = Timer.periodic(
+          const Duration(milliseconds: 100),
+          (levels == 'Easy ? '
+              ? updateTime_Easy
+              : (levels == 'Normal' ? updateTime_Normal : updateTime_Easy)));
+    });
+  }
+
+  startWatch2() {
+    // start_animation();
     setState(() {
       startStop = false;
       started = false;
