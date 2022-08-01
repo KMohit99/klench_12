@@ -75,7 +75,7 @@ class _FaceScanScreenState extends State<FaceScanScreen> {
             actions: [
               GestureDetector(
                 onTap: () {
-                  Get.to(WelcomeVideoScreen());
+                  Get.to(WelcomeVideoScreen(signup: true,));
                 },
                 child: Container(
                   alignment: Alignment.center,
@@ -319,7 +319,7 @@ class _FaceScanScreenState extends State<FaceScanScreen> {
     Timer(Duration(seconds: 3), () async {
       // Get.to(FrontScreen());
       hideLoader(context);
-      Get.to(WelcomeVideoScreen());
+      Get.to(WelcomeVideoScreen(signup: true,));
     });
 
     (finger_print_enabled ? print('facescan enabled') : print('disabled'));

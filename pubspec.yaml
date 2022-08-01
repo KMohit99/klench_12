@@ -21,6 +21,8 @@ dependencies:
   intl: ^0.17.0
   pinput: ^1.2.0
 #  better_player: ^0.0.70
+  video_player: ^2.2.18
+
   dotted_border: ^2.0.0+2
   google_fonts: ^2.3.3
   syncfusion_flutter_charts: ^19.4.56

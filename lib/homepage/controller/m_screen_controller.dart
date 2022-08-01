@@ -50,7 +50,7 @@ class Masturbation_screen_controller {
     // }
 
     var formData = FormData.fromMap({
-      'userId': '16',
+      'userId': id_user,
       // 'methods[]': [
       //   await MultipartFile.fromFile('./text1.txt', filename: 'text1.txt'),
       //   await MultipartFile.fromFile('./text2.txt', filename: 'text2.txt'),

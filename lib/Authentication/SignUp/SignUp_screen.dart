@@ -39,6 +39,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
   List<String> gender_list = <String>['Male', 'Female', 'Prefer not say'];
   var reg = RegExp(
       r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+  var alpha_numeric = RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{6,}$');
+
   final SignUpScreenController _signUpScreenController = Get.put(
       SignUpScreenController(),
       tag: SignUpScreenController().toString());
@@ -393,7 +395,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               onPressed: () {},
                             ),
                             onChanged: (value) {
-                              value = _signUpScreenController.usernameController.text;
+                              value = _signUpScreenController
+                                  .usernameController.text;
                               CheckUserName(context);
                               setState(() {});
                             },
@@ -405,18 +408,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                         (username_error == false
                             ? Container(
-                          margin: const EdgeInsets.symmetric(
-                              horizontal: 0, vertical: 0),
-                          alignment: Alignment.centerRight,
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 1.0, horizontal: 5),
-                            child: Text(
-                              checkUserModel!.message!,
-                              style: TextStyle(color: Colors.red,fontFamily : 'PR'),
-                            ),
-                          ),
-                        )
+                                margin: const EdgeInsets.symmetric(
+                                    horizontal: 0, vertical: 0),
+                                alignment: Alignment.centerRight,
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 1.0, horizontal: 5),
+                                  child: Text(
+                                    checkUserModel!.message!,
+                                    style: TextStyle(
+                                        color: Colors.red, fontFamily: 'PR'),
+                                  ),
+                                ),
+                              )
                             : SizedBox.shrink()),
                         SizedBox(
                           height: 15,
@@ -608,7 +612,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                     onPressed: () {},
                                   ),
                                   onChanged: (value) {
-                                    value = _signUpScreenController.phoneController.text;
+                                    value = _signUpScreenController
+                                        .phoneController.text;
                                     CheckPhoneName(context);
                                     setState(() {});
                                   },
@@ -623,18 +628,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                         (phone_error == false
                             ? Container(
-                          margin: const EdgeInsets.symmetric(
-                              horizontal: 0, vertical: 0),
-                          alignment: Alignment.centerRight,
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 1.0, horizontal: 5),
-                            child: Text(
-                              checkPhoneModel!.message!,
-                              style: TextStyle(color: Colors.red,fontFamily : 'PR'),
-                            ),
-                          ),
-                        )
+                                margin: const EdgeInsets.symmetric(
+                                    horizontal: 0, vertical: 0),
+                                alignment: Alignment.centerRight,
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 1.0, horizontal: 5),
+                                  child: Text(
+                                    checkPhoneModel!.message!,
+                                    style: TextStyle(
+                                        color: Colors.red, fontFamily: 'PR'),
+                                  ),
+                                ),
+                              )
                             : SizedBox.shrink()),
                         SizedBox(
                           height: 15,
@@ -655,7 +661,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               onPressed: () {},
                             ),
                             onChanged: (value) {
-                              value = _signUpScreenController.emailController.text;
+                              value =
+                                  _signUpScreenController.emailController.text;
                               CheckEmailName(context);
                               setState(() {});
                             },
@@ -667,18 +674,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                         (email_error == false
                             ? Container(
-                          margin: const EdgeInsets.symmetric(
-                              horizontal: 0, vertical: 0),
-                          alignment: Alignment.centerRight,
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 1.0, horizontal: 5),
-                            child: Text(
-                              checkEmailModel!.message!,
-                              style: TextStyle(color: Colors.red,fontFamily : 'PR'),
-                            ),
-                          ),
-                        )
+                                margin: const EdgeInsets.symmetric(
+                                    horizontal: 0, vertical: 0),
+                                alignment: Alignment.centerRight,
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 1.0, horizontal: 5),
+                                  child: Text(
+                                    checkEmailModel!.message!,
+                                    style: TextStyle(
+                                        color: Colors.red, fontFamily: 'PR'),
+                                  ),
+                                ),
+                              )
                             : SizedBox.shrink()),
                         SizedBox(
                           height: 15,
@@ -875,6 +883,87 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             ),
                           ),
                         ),
+                        // Container(
+                        //   height: 50,
+                        //   // width: 300,
+                        //   decoration: BoxDecoration(
+                        //     // color: Colors.black.withOpacity(0.65),
+                        //       gradient: LinearGradient(
+                        //         begin: Alignment.centerLeft,
+                        //         end: Alignment.centerRight,
+                        //         // stops: [0.1, 0.5, 0.7, 0.9],
+                        //         colors: [
+                        //           HexColor("#020204").withOpacity(1),
+                        //           HexColor("#36393E").withOpacity(1),
+                        //         ],
+                        //       ),
+                        //       boxShadow: [
+                        //         BoxShadow(
+                        //           color: HexColor('#04060F'),
+                        //           offset: Offset(10, 10),
+                        //           blurRadius: 20,
+                        //         ),
+                        //       ],
+                        //       borderRadius: BorderRadius.circular(10)),
+                        //   child: TextFormField(
+                        //     maxLength: 6,
+                        //     decoration: InputDecoration(
+                        //         contentPadding: EdgeInsets.only(left: 20, top: 14, bottom: 14),
+                        //         alignLabelWithHint: false,
+                        //         isDense: true,
+                        //         hintText: 'Password',
+                        //         counterStyle: TextStyle(
+                        //           height: double.minPositive,
+                        //         ),
+                        //         counterText: "",
+                        //         filled: true,
+                        //         border: InputBorder.none,
+                        //         enabledBorder: const OutlineInputBorder(
+                        //           borderSide: BorderSide(color: Colors.transparent, width: 1),
+                        //           borderRadius: BorderRadius.all(Radius.circular(10)),
+                        //         ),
+                        //         hintStyle: FontStyleUtility.h15(
+                        //             fontColor: ColorUtils.primary_grey, family: 'PM'),
+                        //         suffixIcon: Container(
+                        //             margin: EdgeInsets.all(4),
+                        //             decoration: BoxDecoration(
+                        //                 color: Colors.red.withOpacity(0.65),
+                        //                 gradient: LinearGradient(
+                        //                   begin: Alignment.bottomLeft,
+                        //                   end: Alignment.topRight,
+                        //                   // stops: [0.1, 0.5, 0.7, 0.9],
+                        //                   colors: [
+                        //                     HexColor("#36393E").withOpacity(1),
+                        //                     HexColor("#020204").withOpacity(1),
+                        //                   ],
+                        //                 ),
+                        //                 boxShadow: [
+                        //                   BoxShadow(
+                        //                     color: HexColor('#04060F'),
+                        //                     offset: Offset(3, 3),
+                        //                     blurRadius: 20,
+                        //                   ),
+                        //                 ],
+                        //                 borderRadius: BorderRadius.circular(50)),
+                        //             child: IconButton(
+                        //               visualDensity:
+                        //               VisualDensity(horizontal: -4, vertical: -4),
+                        //               icon: Image.asset(
+                        //                 AssetUtils.key_icons,
+                        //                 height: 17,
+                        //                 width: 15,
+                        //                 color: HexColor("#606060"),
+                        //               ),
+                        //               onPressed: () {},
+                        //             ),)),
+                        //     style: FontStyleUtility.h15(
+                        //       fontColor: ColorUtils.primary_gold,
+                        //       family: 'PM',
+                        //     ),
+                        //     controller:  _signUpScreenController.passwordController,
+                        //     // keyboardType: keyboardType ?? TextInputType.multiline,
+                        //   ),
+                        // ),
                         SizedBox(
                           height: 15,
                         ),
@@ -926,7 +1015,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ),
                     ),
                     GestureDetector(
-                      onTap: (){
+                      onTap: () {
                         Get.to(TermsConditionsScreen());
                       },
                       child: Container(
@@ -944,10 +1033,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
                 common_button_gold(
                   onTap: () async {
-
                     if (username_error == true &&
                         email_error == true &&
-                        phone_error == true){
+                        phone_error == true) {
                       if (value == false) {
                         CommonWidget().showErrorToaster(
                             msg: "Please agree Terms and Conditions");
@@ -960,11 +1048,25 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         return;
                       }
 
+                      if (_signUpScreenController.passwordController.text.length < 6) {
+                        CommonWidget()
+                            .showErrorToaster(msg: "Your password must contain minimum 6 character");
+                        return;
+                      }
+
                       if (_signUpScreenController.passwordController.text !=
                           _signUpScreenController
                               .confirmPasswordController.text) {
                         CommonWidget()
                             .showErrorToaster(msg: "Password doesn't match");
+                        return;
+                      }
+
+                      if (!alpha_numeric.hasMatch(
+                          _signUpScreenController.passwordController.text)) {
+                        CommonWidget().showErrorToaster(
+                            msg:
+                                "Your password must be alpha numeric");
                         return;
                       }
                       if (_signUpScreenController.phoneController.text.length <
@@ -978,9 +1080,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       //       .showErrorToaster(msg: "Please upload Profile image");
                       //   return;
                       // }
-                      await _signUpScreenController.SendOtpAPi(context: context);
+                      await _signUpScreenController.SendOtpAPi(
+                          context: context);
                     }
-
                   },
                   title_text: 'Next',
                 ),

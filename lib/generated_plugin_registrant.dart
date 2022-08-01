@@ -15,6 +15,7 @@ import 'package:share_plus_web/share_plus_web.dart';
 import 'package:shared_preferences_web/shared_preferences_web.dart';
 import 'package:url_launcher_web/url_launcher_web.dart';
 import 'package:vibration_web/vibration_web.dart';
+import 'package:video_player_web/video_player_web.dart';
 
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 
@@ -29,5 +30,6 @@ void registerPlugins(Registrar registrar) {
   SharedPreferencesPlugin.registerWith(registrar);
   UrlLauncherPlugin.registerWith(registrar);
   VibrationWebPlugin.registerWith(registrar);
+  VideoPlayerPlugin.registerWith(registrar);
   registrar.registerMessageHandler();
 }

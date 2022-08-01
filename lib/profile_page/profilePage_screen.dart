@@ -287,7 +287,7 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
     return Container(
-      alignment: Alignment.center,
+        alignment: Alignment.center,
         child: Obx(() => (_signInScreenController.isuserinfoLoading.value ==
                 true
             ? Column(
@@ -423,18 +423,43 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
                                                     .image!
                                                     .isEmpty
                                                 ? Image.asset(
-                                                    AssetUtils.user_icon2,
+                                                    AssetUtils.user_icon45,
+                                                    fit: BoxFit.cover,
                                                     height: 100,
                                                     width: 100,
                                                   )
                                                 : (_profile_page_controller
                                                             .imgFile ==
                                                         null
-                                                    ? Image.network(
-                                                        'https://foxytechnologies.com/klench/images/${_signInScreenController.userInfoModel!.data![0].image}',
+                                                    ?
+                                                    // Image.network(
+                                                    //             'https://foxyserver.com/klench/images/${_signInScreenController.userInfoModel!.data![0].image}',
+                                                    //             fit: BoxFit.fill,
+                                                    //             height: 100,
+                                                    //             width: 100,
+                                                    //           )
+                                                    FadeInImage(
+                                                        image: NetworkImage(
+                                                            "http://foxyserver.com/klench/images/${_signInScreenController.userInfoModel!.data![0].image}"),
                                                         fit: BoxFit.fill,
                                                         height: 100,
                                                         width: 100,
+                                                        placeholder: AssetImage(
+                                                          AssetUtils
+                                                              .user_icon45,
+                                                        ),
+                                                        imageErrorBuilder:
+                                                            (context, error,
+                                                                stackTrace) {
+                                                          print(error);
+                                                          return Image.asset(
+                                                            AssetUtils
+                                                                .user_icon45,
+                                                            fit: BoxFit.cover,
+                                                            height: 100,
+                                                            width: 100,
+                                                          );
+                                                        },
                                                       )
                                                     : Container(
                                                         height: 100,

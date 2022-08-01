@@ -45,3 +45,7 @@ url_launcher_web=/Users/technologies/Documents/flutter/.pub-cache/hosted/pub.dar
 url_launcher_windows=/Users/technologies/Documents/flutter/.pub-cache/hosted/pub.dartlang.org/url_launcher_windows-3.0.1/
 vibration=/Users/technologies/Documents/flutter/.pub-cache/hosted/pub.dartlang.org/vibration-1.7.4/
 vibration_web=/Users/technologies/Documents/flutter/.pub-cache/hosted/pub.dartlang.org/vibration_web-1.6.3/
+video_player=/Users/technologies/Documents/flutter/.pub-cache/hosted/pub.dartlang.org/video_player-2.4.5/
+video_player_android=/Users/technologies/Documents/flutter/.pub-cache/hosted/pub.dartlang.org/video_player_android-2.3.8/
+video_player_avfoundation=/Users/technologies/Documents/flutter/.pub-cache/hosted/pub.dartlang.org/video_player_avfoundation-2.3.5/
+video_player_web=/Users/technologies/Documents/flutter/.pub-cache/hosted/pub.dartlang.org/video_player_web-2.0.12/

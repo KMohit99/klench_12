@@ -280,8 +280,10 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
             automaticallyImplyLeading: false,
             leading: GestureDetector(
               onTap: () {
-                Navigator.pop(context);
-              },
+                (started
+                    ? Navigator.pop(context)
+                    : CommonWidget().showErrorToaster(msg: "Please finish the method"));
+                },
               child: Container(
                   width: 41,
                   margin: const EdgeInsets.all(8),

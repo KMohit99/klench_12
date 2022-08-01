@@ -18,6 +18,7 @@ import '../../../utils/page_loader.dart';
 import '../../SignUp/controller/sign_up_controller.dart';
 import '../../SignUp/face_scan_screen.dart';
 import '../../SignUp/model/signUpmodel.dart';
+import '../../welcom_video/welcome_video_screen.dart';
 import '../model/SignInModel.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
@@ -78,7 +79,9 @@ class SignInScreenController extends GetxController {
         await CommonWidget().showToaster(msg: 'Successfully Loggedin');
         await clear_method();
         await GetUserInfo(context: context);
-        await Get.to(DashboardScreen());
+       await Get.to(WelcomeVideoScreen(signup: false,));
+
+        // await Get.to(DashboardScreen());
 
         hideLoader(context);
       } else {

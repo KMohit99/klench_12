@@ -55,14 +55,14 @@ class PeeScreenController extends GetxController {
     if (response.statusCode == 200) {
       // isLoading(false);
       var data = jsonDecode(response.body);
-      peePostModel = PeePostModel.fromJson(data);
+      // peePostModel = PeePostModel.fromJson(data);
       print(peePostModel);
-      if (peePostModel!.error == false) {
-        CommonWidget().showToaster(msg: peePostModel!.message!);
+      if (data["error"] == false) {
+        // CommonWidget().showToaster(msg: peePostModel!.message!);
         hideLoader(context);
       } else {
         hideLoader(context);
-        CommonWidget().showErrorToaster(msg: peePostModel!.message!);
+        // CommonWidget().showErrorToaster(msg: peePostModel!.message!);
         print('Please try again');
         print('Please try again');
       }

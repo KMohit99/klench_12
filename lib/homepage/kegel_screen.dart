@@ -516,7 +516,10 @@ class _KegelScreenState extends State<KegelScreen>
             automaticallyImplyLeading: false,
             leading: GestureDetector(
               onTap: () {
-                Navigator.pop(context);
+                (started
+                    ? Navigator.pop(context)
+                    : CommonWidget()
+                    .showErrorToaster(msg: "Please finish the method"));
               },
               child: Container(
                   width: 41,
@@ -669,9 +672,10 @@ class _KegelScreenState extends State<KegelScreen>
                               alignment: Alignment.center,
                               child: (four_started
                                   ? Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text(
                                           "PUSH",
                                           style: TextStyle(
                                               color: Colors.white,
@@ -680,7 +684,7 @@ class _KegelScreenState extends State<KegelScreen>
                                                   : text_time_size),
                                               fontWeight: FontWeight.w900),
                                         ),
-                                      Text(
+                                        Text(
                                           elapsedTime,
                                           style: TextStyle(
                                               color: Colors.white,
@@ -689,8 +693,8 @@ class _KegelScreenState extends State<KegelScreen>
                                                   : text_time_size),
                                               fontWeight: FontWeight.w900),
                                         ),
-                                    ],
-                                  )
+                                      ],
+                                    )
                                   : Text(
                                       (timer_started
                                           ? ('$seconds' == '3'
@@ -1573,20 +1577,160 @@ class _KegelScreenState extends State<KegelScreen>
                                                                   Colors.white,
                                                             ),
                                                           ),
-                                                          ListTile(
-                                                            title: Text('Sound',
-                                                                style: FontStyleUtility.h14(
-                                                                    fontColor:
-                                                                        ColorUtils
-                                                                            .primary_gold,
-                                                                    family:
-                                                                        'PR')),
-                                                            trailing: const Icon(
-                                                                Icons
-                                                                    .arrow_forward_ios,
-                                                                size: 15,
-                                                                color: Colors
-                                                                    .white),
+                                                          GestureDetector(
+                                                            onTap: () {
+                                                              print('object');
+
+                                                              showDialog(
+                                                                context:
+                                                                    context,
+                                                                builder:
+                                                                    (BuildContext
+                                                                        context) {
+                                                                  double width =
+                                                                      MediaQuery.of(
+                                                                              context)
+                                                                          .size
+                                                                          .width;
+                                                                  double
+                                                                      height =
+                                                                      MediaQuery.of(
+                                                                              context)
+                                                                          .size
+                                                                          .height;
+                                                                  return AlertDialog(
+                                                                      backgroundColor:
+                                                                          Colors
+                                                                              .transparent,
+                                                                      contentPadding:
+                                                                          EdgeInsets
+                                                                              .zero,
+                                                                      elevation:
+                                                                          0.0,
+                                                                      // title: Center(child: Text("Evaluation our APP")),
+                                                                      content:
+                                                                          Column(
+                                                                        mainAxisAlignment:
+                                                                            MainAxisAlignment.center,
+                                                                        children: [
+                                                                          Stack(
+                                                                            children: [
+                                                                              Container(
+                                                                                // height: 150,
+                                                                                // height: double.maxFinite,
+                                                                                height: MediaQuery.of(context).size.height / 4,
+                                                                                width: double.maxFinite,
+                                                                                decoration:
+                                                                                    BoxDecoration(
+                                                                                        // color: Colors.black.withOpacity(0.65),
+                                                                                        gradient:
+                                                                                            LinearGradient(
+                                                                                          begin: Alignment.centerLeft,
+                                                                                          end: Alignment.centerRight,
+                                                                                          // stops: [0.1, 0.5, 0.7, 0.9],
+                                                                                          colors: [
+                                                                                            HexColor("#020204").withOpacity(1),
+                                                                                            HexColor("#36393E").withOpacity(1),
+                                                                                          ],
+                                                                                        ),
+                                                                                        boxShadow: [
+                                                                                          BoxShadow(color: HexColor('#04060F'), offset: Offset(10, 10), blurRadius: 10)
+                                                                                        ],
+                                                                                        borderRadius: BorderRadius.circular(20)),
+                                                                                margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                                                                                // height: 122,
+                                                                                // width: 133,
+                                                                                // padding: const EdgeInsets.all(8.0),
+                                                                                child: Column(
+                                                                                  mainAxisAlignment: MainAxisAlignment.center,
+                                                                                  children: [
+                                                                                    Container(
+                                                                                      // color: Colors.white,
+                                                                                      alignment: Alignment.center,
+                                                                                      child: ListView.builder(
+                                                                                        padding: EdgeInsets.only(bottom: 0),
+
+                                                                                        // physics: NeverScrollableScrollPhysics(),
+                                                                                        itemCount: list_alarm.length,
+                                                                                        shrinkWrap: true,
+                                                                                        itemBuilder: (BuildContext context, int index) {
+                                                                                          return GestureDetector(
+                                                                                            onTap: () {
+                                                                                              setState(() {
+                                                                                                Selected_sound = list_alarm[index];
+                                                                                                print("method_selected $Selected_sound");
+                                                                                              });
+                                                                                              Navigator.pop(context);
+                                                                                            },
+                                                                                            child: Container(
+                                                                                              margin: EdgeInsets.symmetric(vertical: 8.5),
+                                                                                              alignment: Alignment.center,
+                                                                                              child: Text(
+                                                                                                list_alarm[index],
+                                                                                                style: FontStyleUtility.h15(fontColor: ColorUtils.primary_grey, family: 'PM'),
+                                                                                              ),
+                                                                                            ),
+                                                                                          );
+                                                                                        },
+                                                                                      ),
+                                                                                    ),
+                                                                                  ],
+                                                                                ),
+                                                                              ),
+                                                                              GestureDetector(
+                                                                                onTap: () {
+                                                                                  Navigator.pop(context);
+                                                                                },
+                                                                                child: Container(
+                                                                                  margin: EdgeInsets.only(right: 0),
+                                                                                  alignment: Alignment.topRight,
+                                                                                  child: Container(
+                                                                                      decoration: BoxDecoration(
+                                                                                          // color: Colors.black.withOpacity(0.65),
+                                                                                          gradient: LinearGradient(
+                                                                                            begin: Alignment.centerLeft,
+                                                                                            end: Alignment.centerRight,
+                                                                                            // stops: [0.1, 0.5, 0.7, 0.9],
+                                                                                            colors: [
+                                                                                              HexColor("#36393E").withOpacity(1),
+                                                                                              HexColor("#020204").withOpacity(1),
+                                                                                            ],
+                                                                                          ),
+                                                                                          boxShadow: [BoxShadow(color: HexColor('#04060F'), offset: Offset(0, 3), blurRadius: 5)],
+                                                                                          borderRadius: BorderRadius.circular(20)),
+                                                                                      child: Padding(
+                                                                                        padding: const EdgeInsets.all(4.0),
+                                                                                        child: Icon(
+                                                                                          Icons.cancel_outlined,
+                                                                                          size: 20,
+                                                                                          color: ColorUtils.primary_grey,
+                                                                                        ),
+                                                                                      )),
+                                                                                ),
+                                                                              )
+                                                                            ],
+                                                                          ),
+                                                                        ],
+                                                                      ));
+                                                                },
+                                                              );
+                                                            },
+                                                            child: ListTile(
+                                                              title: Text(
+                                                                  'Sound',
+                                                                  style: FontStyleUtility.h14(
+                                                                      fontColor:
+                                                                          ColorUtils
+                                                                              .primary_gold,
+                                                                      family:
+                                                                          'PR')),
+                                                              trailing: const Icon(
+                                                                  Icons
+                                                                      .arrow_forward_ios,
+                                                                  size: 15,
+                                                                  color: Colors
+                                                                      .white),
+                                                            ),
                                                           ),
                                                           GestureDetector(
                                                             onTap: () async {
@@ -1863,14 +2007,23 @@ class _KegelScreenState extends State<KegelScreen>
     }
   }
 
+  List<String> list_alarm = [
+    'clock_alarm_8761',
+    'alarm_car_or_home_62554',
+    'military_alarm_6380'
+  ];
+  String Selected_sound = '';
+
   Future<void> scheduleAlarm(
       DateTime scheduledNotificationDateTime, AlarmInfo alarmInfo) async {
-    var androidPlatformChannelSpecifics = const AndroidNotificationDetails(
+    var androidPlatformChannelSpecifics = AndroidNotificationDetails(
       'alarm_notif',
       'alarm_notif',
       // 'Channel for Alarm notification',
       icon: 'app_icon',
-      sound: RawResourceAndroidNotificationSound('a_long_cold_sting'),
+      enableVibration: true,
+      playSound: true,
+      sound: RawResourceAndroidNotificationSound(Selected_sound),
       largeIcon: DrawableResourceAndroidBitmap('app_icon'),
     );
 

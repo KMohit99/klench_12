@@ -110,16 +110,16 @@ class Breathing_controller extends GetxController {
     if (response.statusCode == 200) {
       // isLoading(false);
       var data = jsonDecode(response.body);
-      breathingPostModel = BreathingPostModel.fromJson(data);
-      print(breathingPostModel);
-      if (breathingPostModel!.error == false) {
-        CommonWidget().showToaster(msg: breathingPostModel!.message!);
+      // breathingPostModel = BreathingPostModel.fromJson(data);
+      // print(breathingPostModel);
+      if (data["error"] == false) {
+        CommonWidget().showToaster(msg: data["message"]);
 
         hideLoader(context);
 
       } else {
         hideLoader(context);
-        CommonWidget().showErrorToaster(msg: breathingPostModel!.message!);
+        CommonWidget().showToaster(msg: data["message"]);
         print('Please try again');
         print('Please try again');
       }

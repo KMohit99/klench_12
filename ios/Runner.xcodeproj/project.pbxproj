@@ -82,6 +82,13 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		78ACE7FD2897EF2D008B7A49 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		9740EEB11CF90186004384FC /* Flutter */ = {
 			isa = PBXGroup;
 			children = (
@@ -96,6 +103,7 @@
 		97C146E51CF9000F007C117D = {
 			isa = PBXGroup;
 			children = (
+				78ACE7FD2897EF2D008B7A49 /* Resources */,
 				7868FCBC28769741005DD87A /* GoogleService-Info.plist */,
 				9740EEB11CF90186004384FC /* Flutter */,
 				97C146F01CF9000F007C117D /* Runner */,

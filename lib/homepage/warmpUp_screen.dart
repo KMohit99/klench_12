@@ -8,6 +8,7 @@ import 'package:klench_/utils/TexrUtils.dart';
 import '../utils/Asset_utils.dart';
 import '../utils/TextStyle_utils.dart';
 import '../utils/colorUtils.dart';
+import '../utils/common_widgets.dart';
 
 class WarmUpScreen extends StatefulWidget {
   const WarmUpScreen({Key? key}) : super(key: key);
@@ -242,8 +243,11 @@ class _WarmUpScreenState extends State<WarmUpScreen>
             automaticallyImplyLeading: false,
             leading: GestureDetector(
               onTap: () {
-                Navigator.pop(context);
-              },
+
+                (started
+                    ? Navigator.pop(context)
+                    : CommonWidget().showErrorToaster(msg: "Please finish the method"));
+                },
               child: Container(
                   width: 41,
                   margin: EdgeInsets.all(8),

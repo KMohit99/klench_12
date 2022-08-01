@@ -129,16 +129,16 @@ class Kegel_controller extends GetxController {
     if (response.statusCode == 200) {
       // isLoading(false);
       var data = jsonDecode(response.body);
-      kegelPostModel = KegelPostModel.fromJson(data);
-      print(kegelPostModel);
-      if (kegelPostModel!.error == false) {
-        CommonWidget().showToaster(msg: kegelPostModel!.message!);
+      // kegelPostModel = KegelPostModel.fromJson(data);
+      // print(kegelPostModel);
+      if (data["error"] == false) {
+        CommonWidget().showToaster(msg: data["message"]);
 
         hideLoader(context);
 
       } else {
         hideLoader(context);
-        CommonWidget().showErrorToaster(msg: kegelPostModel!.message!);
+        CommonWidget().showErrorToaster(msg: data["message"]);
         print('Please try again');
         print('Please try again');
       }

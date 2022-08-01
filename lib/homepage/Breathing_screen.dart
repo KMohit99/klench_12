@@ -679,32 +679,33 @@ class _BreathingScreenState extends State<BreathingScreen>
                         children: [
                           GestureDetector(
                             onTap: () {
-                              if (int.parse(_breathing_controller
-                                      .breathingGetModel!.data![0].sets!) >=
-                                  3) {
+                              if (_breathing_controller
+                                          .breathingGetModel!.error ==
+                                      false &&
+                                  int.parse(_breathing_controller
+                                          .breathingGetModel!.data![0].sets!) >=
+                                      3) {
                                 print(int.parse(_breathing_controller
                                     .breathingGetModel!.data![0].sets!));
-                                CommonWidget().showErrorToaster(msg: "You completed your today's sets");
-
-                              }
-                              else{
-                                  if (startStop) {
-                                    (_breathing_controller.sets <= 3
-                                        ? startWatch()
-                                        : CommonWidget().showErrorToaster(
-                                            msg:
-                                                "You have completed your today's sets, comback tommorow"));
-                                  } else {
-                                    stopWatch();
-                                    setState(() {
-                                      elapsedTime = '00';
-                                      percent = 0.0;
-                                      watch.reset();
-                                      counter == 0;
-                                      // paused_time.clear();
-                                    });
-                                  }
-
+                                CommonWidget().showErrorToaster(
+                                    msg: "You completed your today's sets");
+                              } else {
+                                if (startStop) {
+                                  (_breathing_controller.sets <= 3
+                                      ? startWatch()
+                                      : CommonWidget().showErrorToaster(
+                                          msg:
+                                              "You have completed your today's sets, comback tommorow"));
+                                } else {
+                                  stopWatch();
+                                  setState(() {
+                                    elapsedTime = '00';
+                                    percent = 0.0;
+                                    watch.reset();
+                                    counter == 0;
+                                    // paused_time.clear();
+                                  });
+                                }
                               }
 
                               // startOrStop();
