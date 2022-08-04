@@ -76,19 +76,18 @@ class PeeScreenController extends GetxController {
 
   Future<dynamic> Pee_get_API(BuildContext context) async {
 
-    print('Inside creator get email');
-    showLoader(context);
+    debugPrint('Inside creator get email');
     isLoading(true);
     String id_user = await PreferenceManager().getPref(URLConstants.id);
-    print("UserID $id_user");
     String url = "${URLConstants.base_url}${URLConstants.pee_get}?userId=$id_user";
     // debugPrint('Get Sales Token ${tokens.toString()}');
     // try {
     // } catch (e) {
     //   print('1-1-1-1 Get Purchase ${e.toString()}');
     // }
+    showLoader(context);
 
-    http.Response response = await http.get(Uri.parse(url));
+    var response = await http.get(Uri.parse(url));
 
     print('Response request: ${response.request}');
     print('Response status: ${response.statusCode}');

@@ -26,19 +26,11 @@ class Kegel_controller extends GetxController {
 
   Future<dynamic> Kegel_get_API(BuildContext context) async {
 
-    print('Inside creator get email');
-    showLoader(context);
-    isuserinfoLoading(true);
     String id_user = await PreferenceManager().getPref(URLConstants.id);
-    print("UserID $id_user");
     String url = "${URLConstants.base_url}${URLConstants.kegel_get}?userId=$id_user";
-    // debugPrint('Get Sales Token ${tokens.toString()}');
-    // try {
-    // } catch (e) {
-    //   print('1-1-1-1 Get Purchase ${e.toString()}');
-    // }
+    showLoader(context);
 
-    http.Response response = await http.get(Uri.parse(url));
+    var response = await http.get(Uri.parse(url));
 
     print('Response request: ${response.request}');
     print('Response status: ${response.statusCode}');
@@ -52,7 +44,6 @@ class Kegel_controller extends GetxController {
         hideLoader(context);
         debugPrint(
             '2-2-2-2-2-2 Inside the Get UserInfo Controller Details ${kegelGetModel!.data!.length}');
-        isuserinfoLoading(false);
         // CommonWidget().showToaster(msg: breathingGetModel!.message!);
         // CommonWidget().showToaster(msg: data["success"].toString());
         // await Get.to(Dashboard());
@@ -65,13 +56,11 @@ class Kegel_controller extends GetxController {
         return null;
       }
     } else if (response.statusCode == 422) {
-      isuserinfoLoading(true);
 
       hideLoader(context);
 
       CommonWidget().showToaster(msg: kegelGetModel!.message!);
     } else if (response.statusCode == 401) {
-      isuserinfoLoading(true);
 
       hideLoader(context);
       CommonWidget().showToaster(msg: kegelGetModel!.message!);
@@ -81,8 +70,6 @@ class Kegel_controller extends GetxController {
 
 
   }
-
-
 
   KegelPostModel? kegelPostModel;
   Future<dynamic> Kegel_post_API(BuildContext context) async {

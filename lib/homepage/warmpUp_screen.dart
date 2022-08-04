@@ -85,7 +85,7 @@ class _WarmUpScreenState extends State<WarmUpScreen>
     }
   }
 
-  bool back_wallpaper = false;
+  bool back_wallpaper = true;
 
   Timer? countdownTimer;
   Duration myDuration = Duration(seconds: 3);
@@ -189,8 +189,10 @@ class _WarmUpScreenState extends State<WarmUpScreen>
 
   @override
   dispose() {
-    _animationController!.dispose();
-    _animationController_button!.dispose();
+    if(animation_started == true) {
+      _animationController!.dispose();
+      _animationController_button!.dispose();
+    }
 // you need this
     super.dispose();
   }
@@ -213,8 +215,8 @@ class _WarmUpScreenState extends State<WarmUpScreen>
           //   ),
           // ),
           decoration:
-          // (back_wallpaper ?
-          BoxDecoration(
+          (back_wallpaper ?
+          const BoxDecoration(
                   // gradient: LinearGradient(
                   //   begin: Alignment.topCenter,
                   //   end: Alignment.bottomCenter,
@@ -234,7 +236,7 @@ class _WarmUpScreenState extends State<WarmUpScreen>
                     ),
                   ),
                 )
-              // : BoxDecoration()),
+              : BoxDecoration()),
         ),
         Scaffold(
           backgroundColor: Colors.transparent,
@@ -389,6 +391,7 @@ class _WarmUpScreenState extends State<WarmUpScreen>
                     onTap: () async {
                       if (started) {
                         startTimer();
+                        back_wallpaper = false;
                         Future.delayed(Duration(seconds: 3), () {
                           start_animation();
                           startWatch();

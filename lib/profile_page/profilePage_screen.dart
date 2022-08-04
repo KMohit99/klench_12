@@ -273,7 +273,7 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
   }
 
   init() async {
-    await _signInScreenController.GetUserInfo(context: context);
+    await _signInScreenController.GetUserInfo(context);
     bool auth =
         await PreferenceManager().getbool(URLConstants.authentication_enable);
     print(auth);

@@ -234,67 +234,60 @@ class Masturbation_screen_controller {
   var x_axis = ["M", "T", "W", "T", "F", "S", "S"];
   List<ChartData> gst_payable_list = [];
 
-  Future<dynamic> MasturbationWeekly_Data_get_API(BuildContext context) async {
-    print('Inside creator get email');
-    showLoader(context);
+  Future MasturbationWeekly_Data_get_API(BuildContext context) async {
     String id_user = await PreferenceManager().getPref(URLConstants.id);
-    print("UserID $id_user");
-    String url =
-        "${URLConstants.base_url}${URLConstants.masturbation_get_weekly_data}?userId=$id_user";
-    // debugPrint('Get Sales Token ${tokens.toString()}');
-    // try {
-    // } catch (e) {
-    //   print('1-1-1-1 Get Purchase ${e.toString()}');
-    // }
+    var url = "${URLConstants.base_url}${URLConstants.masturbation_get_weekly_data}?userId=$id_user";
 
-    http.Response response = await http.get(Uri.parse(url));
+    try {
+      showLoader(context);
+      var response = await http.get(Uri.parse(url));
 
-    print('Response request: ${response.request}');
-    print('Response status: ${response.statusCode}');
-    print('Response body: ${response.body}');
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        var data = convert.jsonDecode(response.body);
+        m_screenWeeklyDataModel = M_ScreenWeeklyDataModel.fromJson(data);
+        // getUSerModelList(userInfoModel_email);
+        if (m_screenWeeklyDataModel!.error == false) {
+          hideLoader(context);
+          debugPrint(
+              '2-2-2-2-2-2 Inside the Get UserInfo Controller Details ${m_screenWeeklyDataModel!.data!.length}');
+          // CommonWidget().showToaster(msg: breathingGetModel!.message!);
+          // CommonWidget().showToaster(msg: data["success"].toString());
+          // await Get.to(Dashboard());
+          CommonWidget().showToaster(msg: m_screenWeeklyDataModel!.message!);
 
-    if (response.statusCode == 200 || response.statusCode == 201) {
-      var data = convert.jsonDecode(response.body);
-      m_screenWeeklyDataModel = M_ScreenWeeklyDataModel.fromJson(data);
-      // getUSerModelList(userInfoModel_email);
-      if (m_screenWeeklyDataModel!.error == false) {
-        hideLoader(context);
-        debugPrint(
-            '2-2-2-2-2-2 Inside the Get UserInfo Controller Details ${m_screenWeeklyDataModel!.data!.length}');
-        // CommonWidget().showToaster(msg: breathingGetModel!.message!);
-        // CommonWidget().showToaster(msg: data["success"].toString());
-        // await Get.to(Dashboard());
-        CommonWidget().showToaster(msg: m_screenWeeklyDataModel!.message!);
+          // for (var i = 0; i < m_screenWeeklyDataModel!.data!.length; i++) {
+          //   // x_axis = data_sales[i]["month"];
+          //   var y1 = double.parse(
+          //       m_screenWeeklyDataModel!.data![0].methods![i].totalTime!);
+          //   // var y2 = data_gst_receivable[i]['value'];
+          //   // var y3 =
+          //   gst_payable_list.add(ChartData(
+          //     x_axis[i],
+          //     y1,
+          //     y1,
+          //     y1,
+          //   ));
+          // }
 
-        for (var i = 0; i < m_screenWeeklyDataModel!.data!.length; i++) {
-          // x_axis = data_sales[i]["month"];
-          var y1 = double.parse(
-              m_screenWeeklyDataModel!.data![0].methods![i].totalTime!);
-          // var y2 = data_gst_receivable[i]['value'];
-          // var y3 =
-          gst_payable_list.add(ChartData(
-            x_axis[i],
-            y1,
-            y1,
-            y1,
-          ));
+          return m_screenWeeklyDataModel;
+        } else {
+          hideLoader(context);
+
+          CommonWidget().showToaster(msg: m_screenWeeklyDataModel!.message!);
+          return null;
         }
-
-        return m_screenWeeklyDataModel;
-      } else {
+      } else if (response.statusCode == 422) {
         hideLoader(context);
-
-        CommonWidget().showToaster(msg: m_screenWeeklyDataModel!.message!);
-        return null;
+        CommonWidget().showToaster(msg: m_screenGetModel!.message!);
+      } else if (response.statusCode == 401) {
+        hideLoader(context);
+        CommonWidget().showToaster(msg: m_screenGetModel!.message!);
+      } else {
+        // CommonWidget().showToaster(msg: msg.toString());
       }
-    } else if (response.statusCode == 422) {
-      hideLoader(context);
-      CommonWidget().showToaster(msg: m_screenGetModel!.message!);
-    } else if (response.statusCode == 401) {
-      hideLoader(context);
-      CommonWidget().showToaster(msg: m_screenGetModel!.message!);
-    } else {
-      // CommonWidget().showToaster(msg: msg.toString());
+    } on Exception catch (e) {
+      print(e.toString());
+      // TODO
     }
   }
 }

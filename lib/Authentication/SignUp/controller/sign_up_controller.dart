@@ -148,7 +148,7 @@ class SignUpScreenController extends GetxController {
         //     .setPref(URLConstants.type, signUpModel!.user![0].type!);
         // await CreatorgetUserInfo_Email(UserId: signUpModel!.user![0].id!);
         await CommonWidget().showToaster(msg: signUpModel!.message!);
-        _signInScreenController.GetUserInfo(context: context);
+        _signInScreenController.GetUserInfo( context);
 
        // await  SendOtpAPi(context: context);
        //  await Get.to(DashboardScreen());

@@ -382,9 +382,11 @@ class _BreathingScreenState extends State<BreathingScreen>
 
   @override
   dispose() {
-    _animationController!.dispose();
-    _animationController_shadow1!.dispose();
-    _animationController_shadow2!.dispose();
+    if(animation_started== true){
+      _animationController!.dispose();
+      _animationController_shadow1!.dispose();
+      _animationController_shadow2!.dispose();
+    }
 
     super.dispose();
   }
@@ -392,16 +394,16 @@ class _BreathingScreenState extends State<BreathingScreen>
   @override
   void initState() {
     // init();
+    getdata();
     super.initState();
     // WidgetsBinding.instance.addPostFrameCallback((_) async {
     //  await  _breathing_controller.Breathing_get_API(context);
     //  if(_breathing_controller.breathingGetModel!.error == false){
-    getdata();
     //  }
     // });
   }
 
-  getdata() {
+  Future getdata() async {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await _breathing_controller.Breathing_get_API(context);
       if (_breathing_controller.breathingGetModel!.error == false) {
@@ -412,7 +414,6 @@ class _BreathingScreenState extends State<BreathingScreen>
       }
     });
 
-    print("Setssss : ${_breathing_controller.sets}");
   }
 
   @override

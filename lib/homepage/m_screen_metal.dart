@@ -18,9 +18,14 @@ import '../utils/Asset_utils.dart';
 import '../utils/Common_buttons.dart';
 import '../utils/Common_textfeild.dart';
 import '../utils/TextStyle_utils.dart';
+import '../utils/UrlConstrant.dart';
 import '../utils/colorUtils.dart';
 import '../utils/common_widgets.dart';
+import '../utils/page_loader.dart';
 import 'm_screen.dart';
+import 'model/m_screen_weekly_data_model.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert' as convert;
 
 class M_ScreenMetal extends StatefulWidget {
   const M_ScreenMetal({Key? key}) : super(key: key);
@@ -42,7 +47,10 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
   bool button_keep = true;
 
   String elapsedTime = '00:00';
-  List method_list = ['Sex', 'Hand' ,];
+  List method_list = [
+    'Sex',
+    'Hand',
+  ];
   String method_selected = '';
   List<ListMethodClass> method_time = [];
 
@@ -114,17 +122,19 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
 
   @override
   void initState() {
+    getdata().then((value) => print("Success"));
+
     _tooltipBehavior = TooltipBehavior(
         enable: true, borderWidth: 5, color: Colors.transparent);
-    getdata();
     super.initState();
   }
 
   getdata() async {
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      // await _masturbation_screen_controller.MasturbationData_get_API(context);
-      await _masturbation_screen_controller.MasturbationWeekly_Data_get_API(context);
-    });
+    print("insssiiiiiii");
+    // WidgetsBinding.instance.addPostFrameCallback((_) async {
+    // await _masturbation_screen_controller.MasturbationData_get_API(context);
+    await MasturbationWeekly_Data_get_API();
+    // });
   }
 
   bool show_details_graph = false;
@@ -149,7 +159,9 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
 
   @override
   dispose() {
-    _animationController!.dispose(); // you need this
+    if (animation_started == true) {
+      _animationController!.dispose();
+    } // you need this
     print('    stopWatch_finish()');
     super.dispose();
   }
@@ -203,7 +215,7 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
                 (started
                     ? Navigator.pop(context)
                     : CommonWidget()
-                    .showErrorToaster(msg: "Please finish the method"));
+                        .showErrorToaster(msg: "Please finish the method"));
                 // Navigator.pop(context);
               },
               child: Container(
@@ -262,11 +274,11 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
                   Container(
                     alignment: Alignment.centerRight,
                     height: 20,
-                    child:  ListView.builder(
+                    child: ListView.builder(
                       itemCount: paused_time.length,
                       shrinkWrap: true,
                       scrollDirection: Axis.horizontal,
-                      itemBuilder: (BuildContext context,int index){
+                      itemBuilder: (BuildContext context, int index) {
                         return Container(
                           margin: EdgeInsets.symmetric(horizontal: 2),
                           height: 20,
@@ -292,8 +304,6 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
                             ),
                           ),
                         );
-
-
                       },
                     ),
                   ),
@@ -311,7 +321,7 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
                     child: GestureDetector(
                       onTap: () {
                         print('helllllllooooooooooooooo');
-                        startOrStop();
+                        // startOrStop();
                       },
                       child: CircularPercentIndicator(
                         circularStrokeCap: CircularStrokeCap.round,
@@ -379,7 +389,6 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
                   GestureDetector(
                     onTap: () {
                       print('object');
-
                       showDialog(
                         context: context,
                         builder: (BuildContext context) {
@@ -398,10 +407,12 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
                                       Container(
                                         // height: 150,
                                         // height: double.maxFinite,
-                                        height: MediaQuery.of(context).size.height/4,
+                                        height:
+                                            MediaQuery.of(context).size.height /
+                                                4,
                                         width: double.maxFinite,
                                         decoration: BoxDecoration(
-                                          // color: Colors.black.withOpacity(0.65),
+                                            // color: Colors.black.withOpacity(0.65),
                                             gradient: LinearGradient(
                                               begin: Alignment.centerLeft,
                                               end: Alignment.centerRight,
@@ -415,40 +426,41 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
                                             ),
                                             boxShadow: [
                                               BoxShadow(
-                                                  color:
-                                                  HexColor('#04060F'),
+                                                  color: HexColor('#04060F'),
                                                   offset: Offset(10, 10),
                                                   blurRadius: 10)
                                             ],
                                             borderRadius:
-                                            BorderRadius.circular(20)),
+                                                BorderRadius.circular(20)),
                                         margin: EdgeInsets.symmetric(
                                             horizontal: 10, vertical: 10),
                                         // height: 122,
                                         // width: 133,
                                         // padding: const EdgeInsets.all(8.0),
                                         child: Column(
-                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
                                           children: [
                                             Expanded(
                                               child: Container(
                                                 // color: Colors.white,
                                                 alignment: Alignment.center,
                                                 child: ListView.builder(
-                                                  padding: EdgeInsets.only(bottom: 0),
+                                                  padding: EdgeInsets.only(
+                                                      bottom: 0),
 
                                                   // physics: NeverScrollableScrollPhysics(),
                                                   itemCount: method_list.length,
                                                   shrinkWrap: true,
                                                   itemBuilder:
                                                       (BuildContext context,
-                                                      int index) {
+                                                          int index) {
                                                     return GestureDetector(
                                                       onTap: () {
                                                         setState(() {
                                                           method_selected =
-                                                          method_list[
-                                                          index];
+                                                              method_list[
+                                                                  index];
                                                           print(
                                                               "method_selected $method_selected");
                                                           started = true;
@@ -458,9 +470,9 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
                                                       child: Container(
                                                         margin: EdgeInsets
                                                             .symmetric(
-                                                            vertical: 8.5),
+                                                                vertical: 8.5),
                                                         alignment:
-                                                        Alignment.center,
+                                                            Alignment.center,
                                                         child: Text(
                                                           method_list[index],
                                                           style: FontStyleUtility.h15(
@@ -475,7 +487,8 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
                                               ),
                                             ),
                                             Container(
-                                              margin: EdgeInsets.only(bottom: 20,top: 10),
+                                              margin: EdgeInsets.only(
+                                                  bottom: 20, top: 10),
                                               child: GestureDetector(
                                                 onTap: () {
                                                   Navigator.pop(context);
@@ -493,47 +506,47 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
                                                               .height;
                                                       return BackdropFilter(
                                                         filter:
-                                                        ImageFilter.blur(
-                                                            sigmaX: 10,
-                                                            sigmaY: 10),
+                                                            ImageFilter.blur(
+                                                                sigmaX: 10,
+                                                                sigmaY: 10),
                                                         child: AlertDialog(
                                                             backgroundColor:
-                                                            Colors
-                                                                .transparent,
+                                                                Colors
+                                                                    .transparent,
                                                             contentPadding:
-                                                            EdgeInsets.zero,
+                                                                EdgeInsets.zero,
                                                             elevation: 0.0,
                                                             // title: Center(child: Text("Evaluation our APP")),
                                                             content: Column(
                                                               mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .center,
+                                                                  MainAxisAlignment
+                                                                      .center,
                                                               children: [
                                                                 Stack(
                                                                   children: [
                                                                     Padding(
                                                                       padding:
-                                                                      const EdgeInsets.all(
-                                                                          8.0),
+                                                                          const EdgeInsets.all(
+                                                                              8.0),
                                                                       child:
-                                                                      Container(
+                                                                          Container(
                                                                         decoration:
-                                                                        BoxDecoration(
-                                                                          // color: Colors.black.withOpacity(0.65),
-                                                                            gradient:
-                                                                            LinearGradient(
-                                                                              begin: Alignment.centerLeft,
-                                                                              end: Alignment.centerRight,
-                                                                              // stops: [0.1, 0.5, 0.7, 0.9],
-                                                                              colors: [
-                                                                                HexColor("#020204").withOpacity(1),
-                                                                                HexColor("#36393E").withOpacity(1),
-                                                                              ],
-                                                                            ),
-                                                                            boxShadow: [
-                                                                              BoxShadow(color: HexColor('#04060F'), offset: Offset(10, 10), blurRadius: 10)
-                                                                            ],
-                                                                            borderRadius: BorderRadius.circular(15)),
+                                                                            BoxDecoration(
+                                                                                // color: Colors.black.withOpacity(0.65),
+                                                                                gradient:
+                                                                                    LinearGradient(
+                                                                                  begin: Alignment.centerLeft,
+                                                                                  end: Alignment.centerRight,
+                                                                                  // stops: [0.1, 0.5, 0.7, 0.9],
+                                                                                  colors: [
+                                                                                    HexColor("#020204").withOpacity(1),
+                                                                                    HexColor("#36393E").withOpacity(1),
+                                                                                  ],
+                                                                                ),
+                                                                                boxShadow: [
+                                                                                  BoxShadow(color: HexColor('#04060F'), offset: Offset(10, 10), blurRadius: 10)
+                                                                                ],
+                                                                                borderRadius: BorderRadius.circular(15)),
                                                                         child: Align(
                                                                             alignment: Alignment.center,
                                                                             child: Padding(
@@ -558,22 +571,22 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
                                                                                         margin: EdgeInsets.symmetric(horizontal: 10),
                                                                                         // width: 300,
                                                                                         decoration:
-                                                                                        BoxDecoration(
-                                                                                          // color: Colors.black.withOpacity(0.65),
-                                                                                            gradient:
-                                                                                            LinearGradient(
-                                                                                              begin: Alignment.centerLeft,
-                                                                                              end: Alignment.centerRight,
-                                                                                              // stops: [0.1, 0.5, 0.7, 0.9],
-                                                                                              colors: [
-                                                                                                HexColor("#36393E").withOpacity(1),
-                                                                                                HexColor("#020204").withOpacity(1),
-                                                                                              ],
-                                                                                            ),
-                                                                                            boxShadow: [
-                                                                                              BoxShadow(color: HexColor('#04060F'), offset: Offset(10, 10), blurRadius: 10)
-                                                                                            ],
-                                                                                            borderRadius: BorderRadius.circular(20)),
+                                                                                            BoxDecoration(
+                                                                                                // color: Colors.black.withOpacity(0.65),
+                                                                                                gradient:
+                                                                                                    LinearGradient(
+                                                                                                  begin: Alignment.centerLeft,
+                                                                                                  end: Alignment.centerRight,
+                                                                                                  // stops: [0.1, 0.5, 0.7, 0.9],
+                                                                                                  colors: [
+                                                                                                    HexColor("#36393E").withOpacity(1),
+                                                                                                    HexColor("#020204").withOpacity(1),
+                                                                                                  ],
+                                                                                                ),
+                                                                                                boxShadow: [
+                                                                                                  BoxShadow(color: HexColor('#04060F'), offset: Offset(10, 10), blurRadius: 10)
+                                                                                                ],
+                                                                                                borderRadius: BorderRadius.circular(20)),
 
                                                                                         child: TextFormField(
                                                                                           maxLength: 150,
@@ -640,39 +653,39 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
                                                                             context);
                                                                       },
                                                                       child:
-                                                                      Container(
+                                                                          Container(
                                                                         margin: EdgeInsets.only(
                                                                             right:
-                                                                            10),
+                                                                                10),
                                                                         alignment:
-                                                                        Alignment.topRight,
+                                                                            Alignment.topRight,
                                                                         child:
-                                                                        Container(
-                                                                            decoration:
-                                                                            BoxDecoration(
-                                                                              // color: Colors.black.withOpacity(0.65),
-                                                                                gradient:
-                                                                                LinearGradient(
-                                                                                  begin: Alignment.centerLeft,
-                                                                                  end: Alignment.centerRight,
-                                                                                  // stops: [0.1, 0.5, 0.7, 0.9],
-                                                                                  colors: [
-                                                                                    HexColor("#36393E").withOpacity(1),
-                                                                                    HexColor("#020204").withOpacity(1),
-                                                                                  ],
-                                                                                ),
-                                                                                boxShadow: [
-                                                                                  BoxShadow(color: HexColor('#04060F'), offset: Offset(0, 3), blurRadius: 5)
-                                                                                ],
-                                                                                borderRadius: BorderRadius.circular(20)),
-                                                                            child: Padding(
-                                                                              padding: const EdgeInsets.all(4.0),
-                                                                              child: Icon(
-                                                                                Icons.cancel_outlined,
-                                                                                size: 13,
-                                                                                color: ColorUtils.primary_grey,
-                                                                              ),
-                                                                            )),
+                                                                            Container(
+                                                                                decoration:
+                                                                                    BoxDecoration(
+                                                                                        // color: Colors.black.withOpacity(0.65),
+                                                                                        gradient:
+                                                                                            LinearGradient(
+                                                                                          begin: Alignment.centerLeft,
+                                                                                          end: Alignment.centerRight,
+                                                                                          // stops: [0.1, 0.5, 0.7, 0.9],
+                                                                                          colors: [
+                                                                                            HexColor("#36393E").withOpacity(1),
+                                                                                            HexColor("#020204").withOpacity(1),
+                                                                                          ],
+                                                                                        ),
+                                                                                        boxShadow: [
+                                                                                          BoxShadow(color: HexColor('#04060F'), offset: Offset(0, 3), blurRadius: 5)
+                                                                                        ],
+                                                                                        borderRadius: BorderRadius.circular(20)),
+                                                                                child: Padding(
+                                                                                  padding: const EdgeInsets.all(4.0),
+                                                                                  child: Icon(
+                                                                                    Icons.cancel_outlined,
+                                                                                    size: 13,
+                                                                                    color: ColorUtils.primary_grey,
+                                                                                  ),
+                                                                                )),
                                                                       ),
                                                                     )
                                                                   ],
@@ -687,22 +700,22 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
                                                   alignment: Alignment.center,
                                                   decoration: BoxDecoration(
                                                       border: Border(
-                                                        right: BorderSide(
-                                                            color: Colors.black,
-                                                            width: 1),
-                                                      )),
+                                                    right: BorderSide(
+                                                        color: Colors.black,
+                                                        width: 1),
+                                                  )),
                                                   child: Padding(
                                                     padding: const EdgeInsets
-                                                        .symmetric(
+                                                            .symmetric(
                                                         vertical: 4.5),
                                                     child: Container(
                                                       decoration: BoxDecoration(
                                                           borderRadius:
-                                                          BorderRadius
-                                                              .circular(
-                                                              500),
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      500),
                                                           gradient:
-                                                          LinearGradient(
+                                                              LinearGradient(
                                                             begin: Alignment
                                                                 .centerLeft,
                                                             end: Alignment
@@ -710,13 +723,13 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
                                                             // stops: [0.1, 0.5, 0.7, 0.9],
                                                             colors: [
                                                               HexColor(
-                                                                  "#020204")
+                                                                      "#020204")
                                                                   .withOpacity(
-                                                                  1),
+                                                                      1),
                                                               HexColor(
-                                                                  "#36393E")
+                                                                      "#36393E")
                                                                   .withOpacity(
-                                                                  1),
+                                                                      1),
                                                             ],
                                                           ),
                                                           boxShadow: [
@@ -729,9 +742,9 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
                                                           ]),
                                                       child: Padding(
                                                         padding:
-                                                        const EdgeInsets
-                                                            .symmetric(
-                                                            horizontal: 6),
+                                                            const EdgeInsets
+                                                                    .symmetric(
+                                                                horizontal: 6),
                                                         child: Image.asset(
                                                           AssetUtils.plus_big,
                                                           height: 23,
@@ -745,7 +758,6 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
                                                 ),
                                               ),
                                             ),
-
                                           ],
                                         ),
                                       ),
@@ -758,7 +770,7 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
                                           alignment: Alignment.topRight,
                                           child: Container(
                                               decoration: BoxDecoration(
-                                                // color: Colors.black.withOpacity(0.65),
+                                                  // color: Colors.black.withOpacity(0.65),
                                                   gradient: LinearGradient(
                                                     begin: Alignment.centerLeft,
                                                     end: Alignment.centerRight,
@@ -773,21 +785,21 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
                                                   boxShadow: [
                                                     BoxShadow(
                                                         color:
-                                                        HexColor('#04060F'),
+                                                            HexColor('#04060F'),
                                                         offset: Offset(0, 3),
                                                         blurRadius: 5)
                                                   ],
                                                   borderRadius:
-                                                  BorderRadius.circular(
-                                                      20)),
+                                                      BorderRadius.circular(
+                                                          20)),
                                               child: Padding(
                                                 padding:
-                                                const EdgeInsets.all(4.0),
+                                                    const EdgeInsets.all(4.0),
                                                 child: Icon(
                                                   Icons.cancel_outlined,
                                                   size: 20,
                                                   color:
-                                                  ColorUtils.primary_grey,
+                                                      ColorUtils.primary_grey,
                                                 ),
                                               )),
                                         ),
@@ -936,7 +948,7 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
                   //       ? method_selected
                   //       : "Select Method"),
                   // ),
-                  SizedBox(
+                  const SizedBox(
                     height: 28,
                   ),
                   // Container(
@@ -1005,73 +1017,202 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
                   //   height: 20,
                   // ),
 
-                  GestureDetector(
-                    onTap: () async {
-                      if (method_selected.isNotEmpty) {
-                        if (started) {
-                          start_animation();
-                          startWatch();
-                        } else {
-                          await stopWatch_finish();
-                          method_time.add(ListMethodClass(
-                              method_name: method_selected,
-                              pauses: paused_time.length.toString(),
-                              total_time: elapsedTime));
-                          setState(() {
-                            elapsedTime = '00:00';
-                            percent = 0.0;
-                            method_selected = '';
-                            watch.reset();
-                            paused_time.clear();
-                          });
-                          print(method_time.length);
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      GestureDetector(
+                        onTap: () async {
+                          if (started == false) {
+                            await stopWatch_finish();
+                            method_time.add(ListMethodClass(
+                                method_name: method_selected,
+                                pauses: paused_time.length.toString(),
+                                total_time: elapsedTime));
+                            setState(() {
+                              elapsedTime = '00:00';
+                              percent = 0.0;
+                              method_selected = '';
+                              watch.reset();
+                              paused_time.clear();
+                            });
+                            print(method_time.length);
 
-                          await _masturbation_screen_controller
-                              .m_method_post_API(
-                                  context: context, method_data: method_time);
-                          // print('method_time : ${method_time[0].total_time}');
-                          // print('method_name : ${method_time[0].method_name}');
-                        }
-                      } else {
-                        await Fluttertoast.showToast(
-                          msg: "Please select method first",
-                          textColor: Colors.white,
-                          backgroundColor: Colors.red,
-                          toastLength: Toast.LENGTH_LONG,
-                          gravity: ToastGravity.BOTTOM,
-                        );
-                      }
-                    },
-                    child: Container(
-                      height: 65,
-                      margin: EdgeInsets.symmetric(horizontal: 15),
-                      // height: 45,
-                      // width:(width ?? 300) ,
-                      decoration: BoxDecoration(
-                          color: ColorUtils.primary_gold,
-                          gradient: LinearGradient(
-                            begin: Alignment.centerLeft,
-                            end: Alignment.centerRight,
-                            // stops: [0.1, 0.5, 0.7, 0.9],
-                            colors: [
-                              HexColor("#ECDD8F").withOpacity(0.90),
-                              HexColor("#E5CC79").withOpacity(0.90),
-                              HexColor("#CE952F").withOpacity(0.90),
-                            ],
-                          ),
-                          borderRadius: BorderRadius.circular(15)),
-                      child: Container(
-                          alignment: Alignment.center,
-                          margin: EdgeInsets.symmetric(
-                            vertical: 12,
-                          ),
-                          child: Text(
-                            (started ? 'Start' : 'Finish'),
-                            style: FontStyleUtility.h16(
-                                fontColor: Colors.black, family: 'PM'),
-                          )),
-                    ),
+                            await _masturbation_screen_controller
+                                .m_method_post_API(
+                                    context: context, method_data: method_time);
+                            // print('method_time : ${method_time[0].total_time}');
+                            // print('method_name : ${method_time[0].method_name}');
+                          }
+                        },
+                        child: Container(
+                          height: 100,
+                          width: 100,
+                          // width: MediaQuery.of(context).size.width / 3,
+                          margin: EdgeInsets.symmetric(horizontal: 15),
+                          // height: 45,
+                          // width:(width ?? 300) ,
+                          decoration: (started
+                              ? BoxDecoration(
+                                  border: Border.all(color: ColorUtils.primary_gold,width: 1),
+                                  borderRadius: BorderRadius.circular(100))
+                              : BoxDecoration(
+                                  gradient: LinearGradient(
+                                    begin: Alignment.centerLeft,
+                                    end: Alignment.centerRight,
+                                    // stops: [0.1, 0.5, 0.7, 0.9],
+                                    colors: [
+                                      HexColor("#ECDD8F").withOpacity(0.90),
+                                      HexColor("#E5CC79").withOpacity(0.90),
+                                      HexColor("#CE952F").withOpacity(0.90),
+                                    ],
+                                  ),
+                                  borderRadius: BorderRadius.circular(15))),
+                          child: Container(
+                              alignment: Alignment.center,
+                              margin: EdgeInsets.symmetric(
+                                vertical: 12,
+                              ),
+                              child: Text(
+                                ('Finish'),
+                                style: FontStyleUtility.h16(
+                                    fontColor:(started ? Colors.white : Colors.black), family: 'PM'),
+                              )),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          if (method_selected.isNotEmpty) {
+                            // if (started) {
+                            //   // start_animation();
+                            //   startWatch();
+                            // } else {
+                            //   setState(() {
+                            //     startStop = true;
+                            //     started = false;
+                            //     watch.stop();
+                            //     setTime();
+                            //   });
+                            // }
+                            if (startStop) {
+                              startWatch();
+                              start_animation();
+                            } else {
+                              stopWatch();
+                            }
+                          } else {
+                            Fluttertoast.showToast(
+                              msg: "Please select method first",
+                              textColor: Colors.white,
+                              backgroundColor: Colors.red,
+                              toastLength: Toast.LENGTH_LONG,
+                              gravity: ToastGravity.BOTTOM,
+                            );
+                          }
+                        },
+                        child: Container(
+                          height: 100,
+                          width: 100,
+                          // width: MediaQuery.of(context).size.width / 3,
+                          margin: EdgeInsets.symmetric(horizontal: 15),
+                          // height: 45,
+                          // width:(width ?? 300) ,
+                          decoration: BoxDecoration(
+                              color: ColorUtils.primary_gold,
+                              gradient: LinearGradient(
+                                begin: Alignment.centerLeft,
+                                end: Alignment.centerRight,
+                                // stops: [0.1, 0.5, 0.7, 0.9],
+                                colors: [
+                                  HexColor("#ECDD8F").withOpacity(0.90),
+                                  HexColor("#E5CC79").withOpacity(0.90),
+                                  HexColor("#CE952F").withOpacity(0.90),
+                                ],
+                              ),
+                              borderRadius: BorderRadius.circular(100)),
+                          child: Container(
+                              alignment: Alignment.center,
+                              margin: const EdgeInsets.symmetric(
+                                vertical: 12,
+                              ),
+                              child: Text(
+                                (startStop ? 'Start' : 'Pause'),
+                                style: FontStyleUtility.h16(
+                                    fontColor: Colors.black, family: 'PM'),
+                              )),
+                        ),
+                      ),
+                    ],
                   ),
+                  const SizedBox(
+                    height: 28,
+                  ),
+                  // GestureDetector(
+                  //   onTap: () async {
+                  //     if (method_selected.isNotEmpty) {
+                  //       if (started) {
+                  //         start_animation();
+                  //         startWatch();
+                  //       } else {
+                  //         await stopWatch_finish();
+                  //         method_time.add(ListMethodClass(
+                  //             method_name: method_selected,
+                  //             pauses: paused_time.length.toString(),
+                  //             total_time: elapsedTime));
+                  //         setState(() {
+                  //           elapsedTime = '00:00';
+                  //           percent = 0.0;
+                  //           method_selected = '';
+                  //           watch.reset();
+                  //           paused_time.clear();
+                  //         });
+                  //         print(method_time.length);
+                  //
+                  //         await _masturbation_screen_controller
+                  //             .m_method_post_API(
+                  //                 context: context, method_data: method_time);
+                  //         // print('method_time : ${method_time[0].total_time}');
+                  //         // print('method_name : ${method_time[0].method_name}');
+                  //       }
+                  //     } else {
+                  //       await Fluttertoast.showToast(
+                  //         msg: "Please select method first",
+                  //         textColor: Colors.white,
+                  //         backgroundColor: Colors.red,
+                  //         toastLength: Toast.LENGTH_LONG,
+                  //         gravity: ToastGravity.BOTTOM,
+                  //       );
+                  //     }
+                  //   },
+                  //   child: Container(
+                  //     height: 65,
+                  //     margin: EdgeInsets.symmetric(horizontal: 15),
+                  //     // height: 45,
+                  //     // width:(width ?? 300) ,
+                  //     decoration: BoxDecoration(
+                  //         color: ColorUtils.primary_gold,
+                  //         gradient: LinearGradient(
+                  //           begin: Alignment.centerLeft,
+                  //           end: Alignment.centerRight,
+                  //           // stops: [0.1, 0.5, 0.7, 0.9],
+                  //           colors: [
+                  //             HexColor("#ECDD8F").withOpacity(0.90),
+                  //             HexColor("#E5CC79").withOpacity(0.90),
+                  //             HexColor("#CE952F").withOpacity(0.90),
+                  //           ],
+                  //         ),
+                  //         borderRadius: BorderRadius.circular(15)),
+                  //     child: Container(
+                  //         alignment: Alignment.center,
+                  //         margin: EdgeInsets.symmetric(
+                  //           vertical: 12,
+                  //         ),
+                  //         child: Text(
+                  //           (started ? 'Start' : 'Finish'),
+                  //           style: FontStyleUtility.h16(
+                  //               fontColor: Colors.black, family: 'PM'),
+                  //         )),
+                  //   ),
+                  // ),
                   // GestureDetector(
                   //   onTap: () async {
                   //     await _masturbation_screen_controller
@@ -1108,7 +1249,6 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
                   //         )),
                   //   ),
                   // ),
-
                   SizedBox(
                     height: 21,
                   ),
@@ -1822,7 +1962,6 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
                                                   dataSource: chartData,
                                                   width: 0.5,
                                                   spacing: 0.6,
-
                                                   color: HexColor('#DD3931'),
                                                   xValueMapper:
                                                       (ChartData data, _) =>
@@ -1845,9 +1984,10 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
                                               ColumnSeries<ChartData, String>(
                                                   width: 0.5,
                                                   spacing: 0.6,
-
                                                   color: HexColor('#1880C3'),
-                                                  dataSource: _masturbation_screen_controller.gst_payable_list,
+                                                  dataSource:
+                                                      _masturbation_screen_controller
+                                                          .gst_payable_list,
                                                   xValueMapper:
                                                       (ChartData data, _) =>
                                                           data.x,
@@ -2347,6 +2487,81 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
     );
   }
 
+  // M_ScreenWeeklyDataModel? m_screenWeeklyDataModel;
+
+  // var getUSerModelList = M_ScreenGetModel().obs;
+  var x_axis = ["M", "T", "W", "T", "F", "S", "S"];
+  List<ChartData> gst_payable_list = [];
+
+  // Future<dynamic> MasturbationWeekly_Data_get_API(BuildContext context) async {
+  //   print('Inside creator get email');
+  //   showLoader(context);
+  //   String id_user = await PreferenceManager().getPref(URLConstants.id);
+  //   print("UserID $id_user");
+  //   String url =
+  //       "${URLConstants.base_url}${URLConstants.masturbation_get_weekly_data}?userId=$id_user";
+  //   // debugPrint('Get Sales Token ${tokens.toString()}');
+  //   // try {
+  //   // } catch (e) {
+  //   //   print('1-1-1-1 Get Purchase ${e.toString()}');
+  //   // }
+  //
+  //   try {
+  //     http.Response response = await http.get(Uri.parse(url));
+  //
+  //     print('Response request: ${response.request}');
+  //     print('Response status: ${response.statusCode}');
+  //     print('Response body: ${response.body}');
+  //
+  //     if (response.statusCode == 200 || response.statusCode == 201) {
+  //       var data = convert.jsonDecode(response.body);
+  //       m_screenWeeklyDataModel = M_ScreenWeeklyDataModel.fromJson(data);
+  //       // getUSerModelList(userInfoModel_email);
+  //       if (m_screenWeeklyDataModel!.error == false) {
+  //         hideLoader(context);
+  //         debugPrint(
+  //             '2-2-2-2-2-2 Inside the Get UserInfo Controller Details ${m_screenWeeklyDataModel!.data!.length}');
+  //         // CommonWidget().showToaster(msg: breathingGetModel!.message!);
+  //         // CommonWidget().showToaster(msg: data["success"].toString());
+  //         // await Get.to(Dashboard());
+  //         CommonWidget().showToaster(msg: m_screenWeeklyDataModel!.message!);
+  //
+  //         // for (var i = 0; i < m_screenWeeklyDataModel!.data!.length; i++) {
+  //         //   // x_axis = data_sales[i]["month"];
+  //         //   var y1 = double.parse(
+  //         //       m_screenWeeklyDataModel!.data![0].methods![i].totalTime!);
+  //         //   // var y2 = data_gst_receivable[i]['value'];
+  //         //   // var y3 =
+  //         //   gst_payable_list.add(ChartData(
+  //         //     x_axis[i],
+  //         //     y1,
+  //         //     y1,
+  //         //     y1,
+  //         //   ));
+  //         // }
+  //
+  //         return m_screenWeeklyDataModel;
+  //       } else {
+  //         hideLoader(context);
+  //
+  //         CommonWidget().showToaster(msg: m_screenWeeklyDataModel!.message!);
+  //         return null;
+  //       }
+  //     } else if (response.statusCode == 422) {
+  //       hideLoader(context);
+  //       CommonWidget().showToaster(msg: m_screenWeeklyDataModel!.message!);
+  //     } else if (response.statusCode == 401) {
+  //       hideLoader(context);
+  //       CommonWidget().showToaster(msg: m_screenWeeklyDataModel!.message!);
+  //     } else {
+  //       // CommonWidget().showToaster(msg: msg.toString());
+  //     }
+  //   } on Exception catch (e) {
+  //     print(e.toString());
+  //     // TODO
+  //   }
+  // }
+
   String selected_time = 'days';
 
   startOrStop() {
@@ -2399,7 +2614,6 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
     setState(() {
       elapsedTime = transformMilliSeconds(timeSoFar);
       paused_time.add(elapsedTime);
-
     });
     print("elapsedTime $elapsedTime");
     print("elapsedTime Listtttttt $paused_time");
@@ -2426,5 +2640,65 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
     String secondsStr = (seconds % 60).toString().padLeft(2, '0');
 
     return "$minutesStr:$secondsStr";
+  }
+
+  M_ScreenWeeklyDataModel? m_screenWeeklyDataModel;
+
+  Future MasturbationWeekly_Data_get_API() async {
+    String id_user = await PreferenceManager().getPref(URLConstants.id);
+    var url =
+        "${URLConstants.base_url}${URLConstants.masturbation_get_weekly_data}?userId=$id_user";
+
+    try {
+      showLoader(context);
+      var response = await http.get(Uri.parse(url));
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        var data = convert.jsonDecode(response.body);
+        m_screenWeeklyDataModel = M_ScreenWeeklyDataModel.fromJson(data);
+        // getUSerModelList(userInfoModel_email);
+        if (m_screenWeeklyDataModel!.error == false) {
+          hideLoader(context);
+          debugPrint(
+              '2-2-2-2-2-2 Inside the Get UserInfo Controller Details ${m_screenWeeklyDataModel!.data!.length}');
+          // CommonWidget().showToaster(msg: breathingGetModel!.message!);
+          // CommonWidget().showToaster(msg: data["success"].toString());
+          // await Get.to(Dashboard());
+          CommonWidget().showToaster(msg: m_screenWeeklyDataModel!.message!);
+
+          // for (var i = 0; i < m_screenWeeklyDataModel!.data!.length; i++) {
+          //   // x_axis = data_sales[i]["month"];
+          //   var y1 = double.parse(
+          //       m_screenWeeklyDataModel!.data![0].methods![i].totalTime!);
+          //   // var y2 = data_gst_receivable[i]['value'];
+          //   // var y3 =
+          //   gst_payable_list.add(ChartData(
+          //     x_axis[i],
+          //     y1,
+          //     y1,
+          //     y1,
+          //   ));
+          // }
+
+          return m_screenWeeklyDataModel;
+        } else {
+          hideLoader(context);
+
+          CommonWidget().showToaster(msg: m_screenWeeklyDataModel!.message!);
+          return null;
+        }
+      } else if (response.statusCode == 422) {
+        hideLoader(context);
+        CommonWidget().showToaster(msg: m_screenWeeklyDataModel!.message!);
+      } else if (response.statusCode == 401) {
+        hideLoader(context);
+        CommonWidget().showToaster(msg: m_screenWeeklyDataModel!.message!);
+      } else {
+        // CommonWidget().showToaster(msg: msg.toString());
+      }
+    } on Exception catch (e) {
+      print(e.toString());
+      // TODO
+    }
   }
 }

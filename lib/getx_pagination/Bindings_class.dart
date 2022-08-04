@@ -6,6 +6,7 @@ import 'package:get/get_instance/src/extension_instance.dart';
 import '../homepage/swipe_controller.dart';
 
 
+
 class Splash_Bindnig implements Bindings {
   @override
   void dependencies() {

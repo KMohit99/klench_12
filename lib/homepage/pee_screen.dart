@@ -120,7 +120,7 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
   String? selected_date = '';
   double percent = 0.0;
 
-  bool back_wallpaper = false;
+  bool back_wallpaper = true;
 
   Timer? countdownTimer;
   Duration myDuration = const Duration(seconds: 3);
@@ -205,22 +205,27 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
 
   @override
   dispose() {
-    _animationController!.dispose(); // you need this
+    if(animation_started == true) {
+      _animationController!.dispose();
+    } // you need this
     super.dispose();
   }
 
   @override
   void initState() {
-    get_saved_data();
+    // get_saved_data();
     getdata();
     super.initState();
   }
 
   getdata() async {
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
       // await _masturbation_screen_controller.MasturbationData_get_API(context);
-      await _peeScreenController.Pee_get_API(context);
-    });
+      levels = await PreferenceManager().getPref(URLConstants.levels);
+      print('Inside');
+      setState(() {});
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        await _peeScreenController.Pee_get_API(context);
+      });
   }
 
   get_saved_data() async {
@@ -250,7 +255,7 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
             //   ),
             // ),
             decoration:
-                // (back_wallpaper ?
+                (back_wallpaper ?
                 const BoxDecoration(
           // gradient: LinearGradient(
           //   begin: Alignment.topCenter,
@@ -271,7 +276,7 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
             ),
           ),
         )
-            // : BoxDecoration()),
+            : BoxDecoration()),
             ),
         Scaffold(
           backgroundColor: Colors.transparent,
@@ -413,6 +418,8 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
                   GestureDetector(
                     onTap: () async {
                       if (started) {
+                        back_wallpaper = false;
+
                         start_animation();
                         startWatch();
                       } else {

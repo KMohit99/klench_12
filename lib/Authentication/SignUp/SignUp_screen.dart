@@ -5,6 +5,7 @@ import 'dart:ui';
 import 'package:age_calculator/age_calculator.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
@@ -39,7 +40,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
   List<String> gender_list = <String>['Male', 'Female', 'Prefer not say'];
   var reg = RegExp(
       r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
-  var alpha_numeric = RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{6,}$');
+  var alpha_numeric =
+      RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{6,}$');
 
   final SignUpScreenController _signUpScreenController = Get.put(
       SignUpScreenController(),
@@ -49,51 +51,203 @@ class _SignUpScreenState extends State<SignUpScreen> {
   DateDuration? duration;
 
   selectDoB(BuildContext context) async {
-    final DateTime? selected = await showDatePicker(
+    DateTime? selected;
+    // await showDatePicker(
+    //   context: context,
+    //   initialDate: selectedDate,
+    //   firstDate: DateTime(1930),
+    //   lastDate: DateTime(2025),
+    //   builder: (context, child) {
+    //     return Theme(
+    //       data: Theme.of(context).copyWith(
+    //         colorScheme: ColorScheme.dark(
+    //           primary: Colors.black,
+    //           onPrimary: Colors.white,
+    //           surface: ColorUtils.primary_grey,
+    //           // onPrimary: Colors.black, // <-- SEE HERE
+    //           onSurface: Colors.black,
+    //         ),
+    //         dialogBackgroundColor: ColorUtils.primary_gold,
+    //         textButtonTheme: TextButtonThemeData(
+    //           style: TextButton.styleFrom(
+    //             primary: Colors.black, // button text color
+    //           ),
+    //         ),
+    //       ),
+    //       child: child!,
+    //     );
+    //   },
+    // );
+    // return Container(
+    //   height: 200,
+    //   decoration: BoxDecoration(
+    //       borderRadius: BorderRadius.circular(15),
+    //       gradient: LinearGradient(
+    //         begin: Alignment.topCenter,
+    //         end: Alignment.bottomCenter,
+    //         colors: [
+    //           HexColor("#000000").withOpacity(1),
+    //           HexColor("#04060F").withOpacity(1),
+    //           HexColor("#000000").withOpacity(1),
+    //
+    //         ],
+    //       ),
+    //       boxShadow: [
+    //         BoxShadow(
+    //             color: HexColor('#04060F'),
+    //             offset: Offset(3, 3),
+    //             blurRadius: 10)
+    //       ]),
+    //   child: Stack(
+    //     children: [
+    //       CupertinoTheme(
+    //         data: CupertinoThemeData(
+    //           brightness: Brightness.dark,
+    //         ),
+    //         child: CupertinoDatePicker(
+    //           mode: CupertinoDatePickerMode.time,
+    //           onDateTimeChanged: (DateTime value) {
+    //             selected= value;
+    //             print("${value.hour}:${value.minute}");
+    //
+    //             duration = AgeCalculator.age(selected!);
+    //             print('Your age is $duration');
+
+    //             setState(() {
+    //               (duration!.years <= 50
+    //                   ? _signUpScreenController.level = 'Normal'
+    //                   : _signUpScreenController.level = 'Easy');
+    //             });
+    //
+    //             print(_signUpScreenController.level);
+    //
+    //             if (selected != selectedDate) {
+    //               setState(() {
+    //                 _signUpScreenController.date_birth =
+    //                     DateFormat('MM-dd-yyyy').format(selected!).toString();
+    //                 _signUpScreenController.DoBController.text =
+    //                     _signUpScreenController.date_birth.toString();
+    //               });
+    //             }
+    //           },
+    //         ),
+    //       ),
+    //     ],
+    //   ),
+    // );
+    showModalBottomSheet(
+      useRootNavigator: true,
       context: context,
-      initialDate: selectedDate,
-      firstDate: DateTime(1930),
-      lastDate: DateTime(2025),
-      builder: (context, child) {
-        return Theme(
-          data: Theme.of(context).copyWith(
-            colorScheme: ColorScheme.dark(
-              primary: Colors.black,
-              onPrimary: Colors.white,
-              surface: ColorUtils.primary_grey,
-              // onPrimary: Colors.black, // <-- SEE HERE
-              onSurface: Colors.black,
-            ),
-            dialogBackgroundColor: ColorUtils.primary_gold,
-            textButtonTheme: TextButtonThemeData(
-              style: TextButton.styleFrom(
-                primary: Colors.black, // button text color
+      clipBehavior: Clip.antiAlias,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(24),
+        ),
+      ),
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (context, setModalState) {
+            return Container(
+              decoration: BoxDecoration(
+                  // color: Colors.black.withOpacity(0.65),
+                  gradient: LinearGradient(
+                    begin: Alignment.centerLeft,
+                    end: Alignment.centerRight,
+                    // stops: [0.1, 0.5, 0.7, 0.9],
+                    colors: [
+                      HexColor("#020204").withOpacity(1),
+                      HexColor("#36393E").withOpacity(1),
+                    ],
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                        color: HexColor('#04060F'),
+                        offset: const Offset(-10, 10),
+                        blurRadius: 20)
+                  ],
+                  borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(20),
+                      topRight: Radius.circular(20))),
+              padding: const EdgeInsets.all(32),
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Container(
+                      height: 150,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                          gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [
+                              HexColor("#000000").withOpacity(1),
+                              HexColor("#04060F").withOpacity(1),
+                              HexColor("#000000").withOpacity(1),
+                            ],
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                                color: HexColor('#04060F'),
+                                offset: Offset(3, 3),
+                                blurRadius: 10)
+                          ]),
+                      child: Stack(
+                        children: [
+                          CupertinoTheme(
+                            data: CupertinoThemeData(
+                              brightness: Brightness.dark,
+                            ),
+                            child: CupertinoDatePicker(
+                              // use24hFormat: true,
+                              mode: CupertinoDatePickerMode.date,
+                              onDateTimeChanged: (DateTime value) {
+                                selected = value;
+                                print("${value.hour}:${value.minute}");
+
+                                if (selected != null) {
+                                  final now = DateTime.now();
+                                  var selectedDateTime = DateTime(
+                                      now.year,
+                                      now.month,
+                                      now.day,
+                                      selected!.hour,
+                                      selected!.minute);
+                                  duration = AgeCalculator.age(selected!);
+                                  print('Your age is $duration');
+
+                                  setModalState(() {
+                                    (duration!.years <= 50
+                                        ? _signUpScreenController.level = 'Normal'
+                                        : _signUpScreenController.level = 'Easy');
+                                  });
+
+                                  print(_signUpScreenController.level);
+
+                                  if (selected != selectedDate) {
+                                    setModalState(() {
+                                      _signUpScreenController.date_birth =
+                                          DateFormat('MM-dd-yyyy').format(selected!).toString();
+                                      _signUpScreenController.DoBController.text =
+                                          _signUpScreenController.date_birth.toString();
+                                    });
+                                  }
+
+                                }
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+
+                  ],
+                ),
               ),
-            ),
-          ),
-          child: child!,
+            );
+          },
         );
       },
     );
-    duration = AgeCalculator.age(selected!);
-    print('Your age is $duration');
-
-    setState(() {
-      (duration!.years <= 50
-          ? _signUpScreenController.level = 'Normal'
-          : _signUpScreenController.level = 'Easy');
-    });
-
-    print(_signUpScreenController.level);
-
-    if (selected != selectedDate) {
-      setState(() {
-        _signUpScreenController.date_birth =
-            DateFormat('MM-dd-yyyy').format(selected).toString();
-        _signUpScreenController.DoBController.text =
-            _signUpScreenController.date_birth.toString();
-      });
-    }
   }
 
   int? selectedRadio;
@@ -1048,9 +1202,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         return;
                       }
 
-                      if (_signUpScreenController.passwordController.text.length < 6) {
-                        CommonWidget()
-                            .showErrorToaster(msg: "Your password must contain minimum 6 character");
+                      if (_signUpScreenController
+                              .passwordController.text.length <
+                          6) {
+                        CommonWidget().showErrorToaster(
+                            msg:
+                                "Your password must contain minimum 6 character");
                         return;
                       }
 
@@ -1065,8 +1222,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       if (!alpha_numeric.hasMatch(
                           _signUpScreenController.passwordController.text)) {
                         CommonWidget().showErrorToaster(
-                            msg:
-                                "Your password must be alpha numeric");
+                            msg: "Your password must be alpha numeric");
                         return;
                       }
                       if (_signUpScreenController.phoneController.text.length <

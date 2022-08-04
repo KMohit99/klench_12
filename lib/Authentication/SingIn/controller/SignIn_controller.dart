@@ -78,11 +78,8 @@ class SignInScreenController extends GetxController {
         // await CreatorgetUserInfo_Email(UserId: signUpModel!.user![0].id!);
         await CommonWidget().showToaster(msg: 'Successfully Loggedin');
         await clear_method();
-        await GetUserInfo(context: context);
-       await Get.to(WelcomeVideoScreen(signup: false,));
-
-        // await Get.to(DashboardScreen());
-
+       // await Get.to(WelcomeVideoScreen(signup: false,));
+        await GetUserInfo( context);
         hideLoader(context);
       } else {
         hideLoader(context);
@@ -101,21 +98,13 @@ class SignInScreenController extends GetxController {
       Profile_page_controller(),
       tag: Profile_page_controller().toString());
 
-  Future<dynamic> GetUserInfo({required BuildContext context}) async {
-    print('Inside creator get email');
+  Future<dynamic> GetUserInfo( BuildContext context) async {
     // showLoader(context);
     isuserinfoLoading(true);
     String id_user = await PreferenceManager().getPref(URLConstants.id);
-    print("UserID $id_user");
     String url =
         (URLConstants.base_url + URLConstants.getProfileApi + "?id=${id_user}");
-    // debugPrint('Get Sales Token ${tokens.toString()}');
-    // try {
-    // } catch (e) {
-    //   print('1-1-1-1 Get Purchase ${e.toString()}');
-    // }
-
-    http.Response response = await http.get(Uri.parse(url));
+    var response = await http.get(Uri.parse(url));
 
     print('Response request: ${response.request}');
     print('Response status: ${response.statusCode}');
@@ -164,6 +153,8 @@ class SignInScreenController extends GetxController {
         isuserinfoLoading(false);
         selectedCard = level_rank!;
         // hideLoader(context);
+        await Get.to(DashboardScreen());
+
         return userInfoModel;
       } else {
         isuserinfoLoading(false);
@@ -173,11 +164,17 @@ class SignInScreenController extends GetxController {
         return null;
       }
     } else if (response.statusCode == 422) {
-      // CommonWidget().showToaster(msg: msg.toString());
+      isuserinfoLoading(false);
+
+      CommonWidget().showToaster(msg: userInfoModel!.message!);
     } else if (response.statusCode == 401) {
-      // CommonService().unAuthorizedUser();
+      isuserinfoLoading(false);
+      CommonWidget().showToaster(msg: userInfoModel!.message!);
+
     } else {
-      // CommonWidget().showToaster(msg: msg.toString());
+      isuserinfoLoading(false);
+      CommonWidget().showToaster(msg: userInfoModel!.message!);
+
     }
   }
 
@@ -278,7 +275,7 @@ class SignInScreenController extends GetxController {
         await CommonWidget().showToaster(msg: signUpModel!.message!);
 
         print("signUpModel!.message");
-        await GetUserInfo(context: context);
+        await GetUserInfo( context);
         await Get.to(SocialSignupDetails(
           username_: username,
           type_: type,
@@ -303,7 +300,7 @@ class SignInScreenController extends GetxController {
           await CommonWidget().showToaster(msg: signUpModel!.message!);
 
           print("signUpModel!.message");
-          await GetUserInfo(context: context);
+          await GetUserInfo(context);
 
           await Get.to(DashboardScreen());
           await CommonWidget().showToaster(msg: "Please Update user Profile");

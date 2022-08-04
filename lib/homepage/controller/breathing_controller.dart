@@ -23,7 +23,6 @@ class Breathing_controller extends GetxController {
   Future<dynamic> Breathing_get_API(BuildContext context) async {
 
     print('Inside creator get email');
-    showLoader(context);
     isuserinfoLoading(true);
     String id_user = await PreferenceManager().getPref(URLConstants.id);
     print("UserID $id_user");
@@ -33,9 +32,8 @@ class Breathing_controller extends GetxController {
     // } catch (e) {
     //   print('1-1-1-1 Get Purchase ${e.toString()}');
     // }
-
-    http.Response response = await http.get(Uri.parse(url));
-
+    showLoader(context);
+    var response = await http.get(Uri.parse(url));
     print('Response request: ${response.request}');
     print('Response status: ${response.statusCode}');
     print('Response body: ${response.body}');

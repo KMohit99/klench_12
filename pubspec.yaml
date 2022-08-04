@@ -50,10 +50,10 @@ dependencies:
   firebase_auth: ^3.1.4
   firebase_core: ^1.8.0
   flutter_facebook_auth: ^4.1.2
-
   flutter_webview_plugin: ^0.4.0
   dio: ^4.0.0
   table_calendar: ^3.0.6
+  loop_page_view: ^1.2.0
 
 
 

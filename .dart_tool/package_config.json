@@ -380,6 +380,12 @@
       "languageVersion": "2.14"
     },
     {
+      "name": "loop_page_view",
+      "rootUri": "file:///Users/technologies/Documents/flutter/.pub-cache/hosted/pub.dartlang.org/loop_page_view-1.2.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "matcher",
       "rootUri": "file:///Users/technologies/Documents/flutter/.pub-cache/hosted/pub.dartlang.org/matcher-0.12.11",
       "packageUri": "lib/",
@@ -836,7 +842,7 @@
       "languageVersion": "2.16"
     }
   ],
-  "generated": "2022-08-01T09:58:25.293182Z",
+  "generated": "2022-08-04T11:26:26.848344Z",
   "generator": "pub",
   "generatorVersion": "2.17.5"
 }

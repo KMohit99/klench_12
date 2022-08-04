@@ -278,7 +278,7 @@ class _KegelScreenState extends State<KegelScreen>
 
   double percent = 0.0;
 
-  bool back_wallpaper = false;
+  bool back_wallpaper = true;
 
   Timer? countdownTimer;
   Duration myDuration = const Duration(seconds: 3);
@@ -310,7 +310,7 @@ class _KegelScreenState extends State<KegelScreen>
 
   AnimationController? _animationController;
   Animation? _animation;
-  AnimationController? _animationController_vibrate;
+  // AnimationController? _animationController_vibrate;
   Animation? _animation_vibrate;
 
   AnimationController? _animationController_button;
@@ -328,6 +328,8 @@ class _KegelScreenState extends State<KegelScreen>
   double text_time_size = 40;
 
   bool shadow_animation1_completed = false;
+
+  bool get wantKeepAlive => true;
 
   start_animation() {
     setState(() {
@@ -409,9 +411,10 @@ class _KegelScreenState extends State<KegelScreen>
 
   @override
   dispose() {
-    _animationController!.dispose(); // you need this
-    _animationController_button!.dispose();
-    _animationController_vibrate!.dispose();
+    if (animation_started == true) {
+      _animationController!.dispose(); // you need this
+      _animationController_button!.dispose();
+    }
     Vibration.cancel();
     // _animationController_textTime!.dispose();
     // _animationController_textK!.dispose();// you need this
@@ -420,14 +423,24 @@ class _KegelScreenState extends State<KegelScreen>
 
   @override
   void initState() {
-    _alarmTime = DateTime.now();
-    _alarmHelper.initializeDatabase().then((value) {
-      print('------database intialized');
-      loadAlarms();
-    });
-    get_saved_data();
-    getdata();
+    // getdata();
+    //
+    init();
+    // _alarmTime = DateTime.now();
+    // _alarmHelper.initializeDatabase().then((value) {
+    //   print('------database intialized');
+    //   loadAlarms();
+    // });
+    // get_saved_data();
     super.initState();
+  }
+  init() async {
+    await getdata();
+    _alarmTime = DateTime.now();
+    _alarmHelper.initializeDatabase().then((value) async {
+      print('------database intialized');
+      await loadAlarms();
+    });
   }
 
   DateTime? _alarmTime;
@@ -436,28 +449,28 @@ class _KegelScreenState extends State<KegelScreen>
   Future<List<AlarmInfo>>? _alarms;
   List<AlarmInfo>? _currentAlarms;
 
-  void loadAlarms() {
+  Future loadAlarms() async {
     _alarms = _alarmHelper.getAlarms();
     if (mounted) setState(() {});
   }
 
+
   get_saved_data() async {
-    levels = await PreferenceManager().getPref(URLConstants.levels);
-    print("Levels $levels");
-    print("Dateformat ${DateFormat('yyyy-MM-dd').format(DateTime.now())}");
-    setState(() {});
+    // print("Levels $levels");
+    // print("Dateformat ${DateFormat('yyyy-MM-dd').format(DateTime.now())}");
+    // setState(() {});
   }
 
-  getdata() {
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await _kegel_controller.Kegel_get_API(context);
+  Future getdata() async {
+    levels = await PreferenceManager().getPref(URLConstants.levels);
+    setState(() {});
+    await _kegel_controller.Kegel_get_API(context);
       if (_kegel_controller.kegelGetModel!.error == false) {
         setState(() {
           _kegel_controller.sets =
               int.parse(_kegel_controller.kegelGetModel!.data![0].sets!);
         });
       }
-    });
 
     print("Setssss : ${_kegel_controller.sets}");
   }
@@ -466,6 +479,7 @@ class _KegelScreenState extends State<KegelScreen>
 
   String? selected_date_sets = '';
   String? selected_date = '';
+  var selected_time;
 
   @override
   Widget build(BuildContext context) {
@@ -478,37 +492,36 @@ class _KegelScreenState extends State<KegelScreen>
           height: MediaQuery.of(context).size.height,
         ),
         Container(
-            // decoration: BoxDecoration(
-            //
-            //   image: DecorationImage(
-            //     image: AssetImage(AssetUtils.backgroundImage), // <-- BACKGROUND IMAGE
-            //     fit: BoxFit.cover,
-            //   ),
-            // ),
-            decoration:
-                // (back_wallpaper ?
-                const BoxDecoration(
-          // gradient: LinearGradient(
-          //   begin: Alignment.topCenter,
-          //   end: Alignment.bottomCenter,
-          //   // stops: [0.1, 0.5, 0.7, 0.9],
-          //   colors: [
-          //     HexColor("#000000").withOpacity(0.86),
-          //     HexColor("#000000").withOpacity(0.81),
-          //     HexColor("#000000").withOpacity(0.44),
-          //     HexColor("#000000").withOpacity(1),
+          // decoration: BoxDecoration(
           //
-          //   ],
+          //   image: DecorationImage(
+          //     image: AssetImage(AssetUtils.backgroundImage), // <-- BACKGROUND IMAGE
+          //     fit: BoxFit.cover,
+          //   ),
           // ),
-          image: const DecorationImage(
-            fit: BoxFit.cover,
-            image: AssetImage(
-              AssetUtils.k_screen_back,
-            ),
-          ),
-        )
-            // : BoxDecoration()),
-            ),
+          decoration: (back_wallpaper
+              ? const BoxDecoration(
+                  // gradient: LinearGradient(
+                  //   begin: Alignment.topCenter,`
+                  //   end: Alignment.bottomCenter,
+                  //   // stops: [0.1, 0.5, 0.7, 0.9],
+                  //   colors: [
+                  //     HexColor("#000000").withOpacity(0.86),
+                  //     HexColor("#000000").withOpacity(0.81),
+                  //     HexColor("#000000").withOpacity(0.44),
+                  //     HexColor("#000000").withOpacity(1),
+                  //
+                  //   ],
+                  // ),
+                  image: const DecorationImage(
+                    fit: BoxFit.cover,
+                    image: AssetImage(
+                      AssetUtils.k_screen_back,
+                    ),
+                  ),
+                )
+              : BoxDecoration()),
+        ),
         Scaffold(
           backgroundColor: Colors.transparent,
           appBar: AppBar(
@@ -519,7 +532,7 @@ class _KegelScreenState extends State<KegelScreen>
                 (started
                     ? Navigator.pop(context)
                     : CommonWidget()
-                    .showErrorToaster(msg: "Please finish the method"));
+                        .showErrorToaster(msg: "Please finish the method"));
               },
               child: Container(
                   width: 41,
@@ -725,6 +738,8 @@ class _KegelScreenState extends State<KegelScreen>
                     onTap: () async {
                       if (started) {
                         startTimer();
+                        back_wallpaper = false;
+
                         Future.delayed(const Duration(seconds: 3), () {
                           // start_animation();
                           // start_button_animation();
@@ -1017,6 +1032,2285 @@ class _KegelScreenState extends State<KegelScreen>
                   const SizedBox(
                     height: 10,
                   ),
+
+                  Container(
+                    decoration: BoxDecoration(
+                        // color: Colors.black.withOpacity(0.65),
+                        gradient: LinearGradient(
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
+                          // stops: [0.1, 0.5, 0.7, 0.9],
+                          colors: [
+                            HexColor("#36393E").withOpacity(1),
+                            HexColor("#020204").withOpacity(1),
+                          ],
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                              color: HexColor('#04060F'),
+                              offset: const Offset(10, 10),
+                              blurRadius: 20)
+                        ],
+                        borderRadius: BorderRadius.circular(20)),
+                    child: Column(
+                      children: [
+                        // if (_currentAlarms!.length < 5)
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 0),
+                          child: ListTile(
+                            leading: Container(
+                              margin: EdgeInsets.only(left: 0),
+                              child: Text(
+                                "Add Alarm",
+                                style: FontStyleUtility.h16(
+                                    fontColor: ColorUtils.primary_gold,
+                                    family: 'PM'),
+                              ),
+                            ),
+                            trailing: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 16, vertical: 10),
+                              child: GestureDetector(
+                                  onTap: () {
+                                    _alarmTimeString = DateFormat('HH:mm')
+                                        .format(selectedDate);
+                                    showModalBottomSheet(
+                                      useRootNavigator: true,
+                                      context: context,
+                                      clipBehavior: Clip.antiAlias,
+                                      shape: const RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.vertical(
+                                          top: Radius.circular(24),
+                                        ),
+                                      ),
+                                      builder: (context) {
+                                        return StatefulBuilder(
+                                          builder: (context, setModalState) {
+                                            return Container(
+                                              decoration: BoxDecoration(
+                                                  // color: Colors.black.withOpacity(0.65),
+                                                  gradient: LinearGradient(
+                                                    begin: Alignment.centerLeft,
+                                                    end: Alignment.centerRight,
+                                                    // stops: [0.1, 0.5, 0.7, 0.9],
+                                                    colors: [
+                                                      HexColor("#020204")
+                                                          .withOpacity(1),
+                                                      HexColor("#36393E")
+                                                          .withOpacity(1),
+                                                    ],
+                                                  ),
+                                                  boxShadow: [
+                                                    BoxShadow(
+                                                        color:
+                                                            HexColor('#04060F'),
+                                                        offset: const Offset(
+                                                            -10, 10),
+                                                        blurRadius: 20)
+                                                  ],
+                                                  borderRadius:
+                                                      const BorderRadius.only(
+                                                          topLeft:
+                                                              Radius.circular(
+                                                                  20),
+                                                          topRight:
+                                                              Radius.circular(
+                                                                  20))),
+                                              padding: const EdgeInsets.all(32),
+                                              child: SingleChildScrollView(
+                                                child: Column(
+                                                  children: [
+                                                    // FlatButton(
+                                                    //   onPressed:
+                                                    //       () async {
+                                                    //     // var selectedTime = await showTimePicker(
+                                                    //     //   context: context,
+                                                    //     //   // initialEntryMode: DatePickerEntryMode.calendarOnly,<- this
+                                                    //     //   initialEntryMode: TimePickerEntryMode.dial,
+                                                    //     //   initialTime: TimeOfDay.now(),
+                                                    //     //   builder: (context, child) {
+                                                    //     //     return Theme(
+                                                    //     //       data: Theme.of(
+                                                    //     //               context)
+                                                    //     //           .copyWith(
+                                                    //     //         colorScheme:
+                                                    //     //             ColorScheme
+                                                    //     //                 .dark(
+                                                    //     //           primary:
+                                                    //     //               Colors.black,
+                                                    //     //           onPrimary:
+                                                    //     //               Colors.white,
+                                                    //     //           surface:
+                                                    //     //               ColorUtils.primary_gold,
+                                                    //     //           // onPrimary: Colors.black, // <-- SEE HERE
+                                                    //     //           onSurface:
+                                                    //     //               Colors.black,
+                                                    //     //         ),
+                                                    //     //         dialogBackgroundColor:
+                                                    //     //             ColorUtils
+                                                    //     //                 .primary_gold,
+                                                    //     //         textButtonTheme:
+                                                    //     //             TextButtonThemeData(
+                                                    //     //           style: TextButton
+                                                    //     //               .styleFrom(
+                                                    //     //             primary:
+                                                    //     //                 Colors.black, // button text color
+                                                    //     //           ),
+                                                    //     //         ),
+                                                    //     //       ),
+                                                    //     //       child:
+                                                    //     //           child!,
+                                                    //     //     );
+                                                    //     //   },
+                                                    //     // );
+                                                    //     // if (selectedTime !=
+                                                    //     //     null) {
+                                                    //     //   final now =
+                                                    //     //       DateTime
+                                                    //     //           .now();
+                                                    //     //   var selectedDateTime = DateTime(
+                                                    //     //       now.year,
+                                                    //     //       now.month,
+                                                    //     //       now.day,
+                                                    //     //       selectedTime
+                                                    //     //           .hour,
+                                                    //     //       selectedTime
+                                                    //     //           .minute);
+                                                    //     //   _alarmTime =
+                                                    //     //       selectedDateTime;
+                                                    //     //   setModalState(
+                                                    //     //       () {
+                                                    //     //     _alarmTimeString =
+                                                    //     //         DateFormat(
+                                                    //     //                 'HH:mm')
+                                                    //     //             .format(
+                                                    //     //                 selectedDateTime);
+                                                    //     //   });
+                                                    //     // }
+                                                    //   },
+                                                    //   child: Text(
+                                                    //       _alarmTimeString!,
+                                                    //       style: FontStyleUtility.h35(
+                                                    //           fontColor:
+                                                    //               ColorUtils
+                                                    //                   .primary_gold,
+                                                    //           family:
+                                                    //               'PM')),
+                                                    // ),
+                                                    Container(
+                                                      height: 150,
+                                                      decoration: BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(15),
+                                                          gradient:
+                                                              LinearGradient(
+                                                            begin: Alignment
+                                                                .topCenter,
+                                                            end: Alignment
+                                                                .bottomCenter,
+                                                            colors: [
+                                                              HexColor(
+                                                                      "#000000")
+                                                                  .withOpacity(
+                                                                      1),
+                                                              HexColor(
+                                                                      "#04060F")
+                                                                  .withOpacity(
+                                                                      1),
+                                                              HexColor(
+                                                                      "#000000")
+                                                                  .withOpacity(
+                                                                      1),
+                                                            ],
+                                                          ),
+                                                          boxShadow: [
+                                                            BoxShadow(
+                                                                color: HexColor(
+                                                                    '#04060F'),
+                                                                offset: Offset(
+                                                                    3, 3),
+                                                                blurRadius: 10)
+                                                          ]),
+                                                      child: Stack(
+                                                        children: [
+                                                          CupertinoTheme(
+                                                            data:
+                                                                CupertinoThemeData(
+                                                              brightness:
+                                                                  Brightness
+                                                                      .dark,
+                                                            ),
+                                                            child:
+                                                                CupertinoDatePicker(
+                                                              // use24hFormat: true,
+                                                              mode:
+                                                                  CupertinoDatePickerMode
+                                                                      .time,
+                                                              onDateTimeChanged:
+                                                                  (DateTime
+                                                                      value) {
+                                                                selected_time =
+                                                                    value;
+                                                                print(
+                                                                    "${value.hour}:${value.minute}");
+
+                                                                if (selected_time !=
+                                                                    null) {
+                                                                  final now =
+                                                                      DateTime
+                                                                          .now();
+                                                                  var selectedDateTime = DateTime(
+                                                                      now.year,
+                                                                      now.month,
+                                                                      now.day,
+                                                                      selected_time
+                                                                          .hour,
+                                                                      selected_time
+                                                                          .minute);
+                                                                  _alarmTime =
+                                                                      selectedDateTime;
+                                                                  setModalState(
+                                                                      () {
+                                                                    _alarmTimeString = DateFormat(
+                                                                            'HH:mm')
+                                                                        .format(
+                                                                            selectedDateTime);
+                                                                  });
+                                                                }
+                                                              },
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+
+                                                    ListTile(
+                                                      onTap: () {
+                                                        showDialog(
+                                                          context: context,
+                                                          builder: (BuildContext
+                                                              context) {
+                                                            double width =
+                                                                MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .width;
+                                                            double height =
+                                                                MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .height;
+                                                            return BackdropFilter(
+                                                              filter: ImageFilter
+                                                                  .blur(
+                                                                      sigmaX:
+                                                                          10,
+                                                                      sigmaY:
+                                                                          10),
+                                                              child:
+                                                                  AlertDialog(
+                                                                      backgroundColor:
+                                                                          Colors
+                                                                              .transparent,
+                                                                      contentPadding:
+                                                                          EdgeInsets
+                                                                              .zero,
+                                                                      elevation:
+                                                                          0.0,
+                                                                      // title: Center(child: Text("Evaluation our APP")),
+                                                                      content:
+                                                                          Column(
+                                                                        mainAxisAlignment:
+                                                                            MainAxisAlignment.center,
+                                                                        children: [
+                                                                          Stack(
+                                                                            children: [
+                                                                              Padding(
+                                                                                padding: const EdgeInsets.all(8.0),
+                                                                                child: Container(
+                                                                                  decoration:
+                                                                                      BoxDecoration(
+                                                                                          // color: Colors.black.withOpacity(0.65),
+                                                                                          gradient:
+                                                                                              LinearGradient(
+                                                                                            begin: Alignment.centerLeft,
+                                                                                            end: Alignment.centerRight,
+                                                                                            // stops: [0.1, 0.5, 0.7, 0.9],
+                                                                                            colors: [
+                                                                                              HexColor("#020204").withOpacity(1),
+                                                                                              HexColor("#36393E").withOpacity(1),
+                                                                                            ],
+                                                                                          ),
+                                                                                          boxShadow: [
+                                                                                            BoxShadow(color: HexColor('#04060F'), offset: Offset(10, 10), blurRadius: 10)
+                                                                                          ],
+                                                                                          borderRadius: BorderRadius.circular(15)),
+                                                                                  child: Align(
+                                                                                      alignment: Alignment.center,
+                                                                                      child: Padding(
+                                                                                        padding: const EdgeInsets.all(8.0),
+                                                                                        child: Column(
+                                                                                          children: [
+                                                                                            SizedBox(
+                                                                                              height: 0,
+                                                                                            ),
+
+                                                                                            Column(
+                                                                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                                                                              children: [
+                                                                                                Container(
+                                                                                                  margin: EdgeInsets.only(left: 18),
+                                                                                                  child: Text('Title', style: FontStyleUtility.h14(fontColor: ColorUtils.primary_grey, family: 'Pr')),
+                                                                                                ),
+                                                                                                SizedBox(
+                                                                                                  height: 11,
+                                                                                                ),
+                                                                                                Container(
+                                                                                                  margin: EdgeInsets.symmetric(horizontal: 10),
+                                                                                                  // width: 300,
+                                                                                                  decoration: BoxDecoration(
+                                                                                                      // color: Colors.black.withOpacity(0.65),
+                                                                                                      gradient: LinearGradient(
+                                                                                                        begin: Alignment.centerLeft,
+                                                                                                        end: Alignment.centerRight,
+                                                                                                        // stops: [0.1, 0.5, 0.7, 0.9],
+                                                                                                        colors: [
+                                                                                                          HexColor("#36393E").withOpacity(1),
+                                                                                                          HexColor("#020204").withOpacity(1),
+                                                                                                        ],
+                                                                                                      ),
+                                                                                                      boxShadow: [BoxShadow(color: HexColor('#04060F'), offset: Offset(10, 10), blurRadius: 10)],
+                                                                                                      borderRadius: BorderRadius.circular(20)),
+
+                                                                                                  child: TextFormField(
+                                                                                                    maxLength: 150,
+                                                                                                    decoration: InputDecoration(
+                                                                                                      contentPadding: EdgeInsets.only(left: 20, top: 14, bottom: 14),
+                                                                                                      alignLabelWithHint: false,
+                                                                                                      isDense: true,
+                                                                                                      hintText: 'Add alarm title',
+                                                                                                      counterStyle: TextStyle(
+                                                                                                        height: double.minPositive,
+                                                                                                      ),
+                                                                                                      counterText: "",
+                                                                                                      filled: true,
+                                                                                                      border: InputBorder.none,
+                                                                                                      enabledBorder: const OutlineInputBorder(
+                                                                                                        borderSide: BorderSide(color: Colors.transparent, width: 1),
+                                                                                                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                                                                                                      ),
+                                                                                                      hintStyle: FontStyleUtility.h14(fontColor: HexColor('#CBCBCB'), family: 'PR'),
+                                                                                                    ),
+                                                                                                    style: FontStyleUtility.h14(fontColor: ColorUtils.primary_grey, family: 'PR'),
+                                                                                                    controller: Alarm_title,
+                                                                                                    keyboardType: TextInputType.text,
+                                                                                                  ),
+                                                                                                ),
+                                                                                              ],
+                                                                                            ),
+                                                                                            SizedBox(
+                                                                                              height: 10,
+                                                                                            ),
+                                                                                            GestureDetector(
+                                                                                              onTap: () {
+                                                                                                setState(() {
+                                                                                                  Alarm_title_list.add(Alarm_title.text);
+                                                                                                  Navigator.pop(context);
+                                                                                                });
+                                                                                              },
+                                                                                              child: Container(
+                                                                                                alignment: Alignment.topRight,
+                                                                                                child: Text(
+                                                                                                  'Add',
+                                                                                                  style: FontStyleUtility.h12(fontColor: ColorUtils.primary_grey, family: 'PR'),
+                                                                                                ),
+                                                                                              ),
+                                                                                            )
+                                                                                            // common_button_gold(
+                                                                                            //   onTap: () {
+                                                                                            //     Get
+                                                                                            //         .to(
+                                                                                            //         DashboardScreen());
+                                                                                            //   },
+                                                                                            //   title_text: 'Go to Dashboard',
+                                                                                            // ),
+                                                                                          ],
+                                                                                        ),
+                                                                                      )),
+                                                                                ),
+                                                                              ),
+                                                                              GestureDetector(
+                                                                                onTap: () {
+                                                                                  Navigator.pop(context);
+                                                                                },
+                                                                                child: Container(
+                                                                                  margin: EdgeInsets.only(right: 10),
+                                                                                  alignment: Alignment.topRight,
+                                                                                  child: Container(
+                                                                                      decoration: BoxDecoration(
+                                                                                          // color: Colors.black.withOpacity(0.65),
+                                                                                          gradient: LinearGradient(
+                                                                                            begin: Alignment.centerLeft,
+                                                                                            end: Alignment.centerRight,
+                                                                                            // stops: [0.1, 0.5, 0.7, 0.9],
+                                                                                            colors: [
+                                                                                              HexColor("#36393E").withOpacity(1),
+                                                                                              HexColor("#020204").withOpacity(1),
+                                                                                            ],
+                                                                                          ),
+                                                                                          boxShadow: [BoxShadow(color: HexColor('#04060F'), offset: Offset(0, 3), blurRadius: 5)],
+                                                                                          borderRadius: BorderRadius.circular(20)),
+                                                                                      child: Padding(
+                                                                                        padding: const EdgeInsets.all(4.0),
+                                                                                        child: Icon(
+                                                                                          Icons.cancel_outlined,
+                                                                                          size: 13,
+                                                                                          color: ColorUtils.primary_grey,
+                                                                                        ),
+                                                                                      )),
+                                                                                ),
+                                                                              )
+                                                                            ],
+                                                                          ),
+                                                                        ],
+                                                                      )),
+                                                            );
+                                                          },
+                                                        );
+                                                      },
+                                                      title: Text('Title',
+                                                          style: FontStyleUtility.h14(
+                                                              fontColor: ColorUtils
+                                                                  .primary_grey,
+                                                              family: 'PR')),
+                                                      trailing: const Icon(
+                                                          Icons
+                                                              .arrow_forward_ios,
+                                                          size: 15,
+                                                          color: Colors.white),
+                                                    ),
+                                                    ListTile(
+                                                      title: Text(
+                                                        'Repeat',
+                                                        style: FontStyleUtility.h14(
+                                                            fontColor: ColorUtils
+                                                                .primary_gold,
+                                                            family: 'PR'),
+                                                      ),
+                                                      trailing: const Icon(
+                                                        Icons.arrow_forward_ios,
+                                                        size: 15,
+                                                        color: Colors.white,
+                                                      ),
+                                                    ),
+                                                    GestureDetector(
+                                                      onTap: () {
+                                                        print('object');
+
+                                                        showDialog(
+                                                          context: context,
+                                                          builder: (BuildContext
+                                                              context) {
+                                                            double width =
+                                                                MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .width;
+                                                            double height =
+                                                                MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .height;
+                                                            return AlertDialog(
+                                                                backgroundColor:
+                                                                    Colors
+                                                                        .transparent,
+                                                                contentPadding:
+                                                                    EdgeInsets
+                                                                        .zero,
+                                                                elevation: 0.0,
+                                                                // title: Center(child: Text("Evaluation our APP")),
+                                                                content: Column(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .center,
+                                                                  children: [
+                                                                    Stack(
+                                                                      children: [
+                                                                        Container(
+                                                                          // height: 150,
+                                                                          // height: double.maxFinite,
+                                                                          height:
+                                                                              MediaQuery.of(context).size.height / 4,
+                                                                          width:
+                                                                              double.maxFinite,
+                                                                          decoration:
+                                                                              BoxDecoration(
+                                                                                  // color: Colors.black.withOpacity(0.65),
+                                                                                  gradient:
+                                                                                      LinearGradient(
+                                                                                    begin: Alignment.centerLeft,
+                                                                                    end: Alignment.centerRight,
+                                                                                    // stops: [0.1, 0.5, 0.7, 0.9],
+                                                                                    colors: [
+                                                                                      HexColor("#020204").withOpacity(1),
+                                                                                      HexColor("#36393E").withOpacity(1),
+                                                                                    ],
+                                                                                  ),
+                                                                                  boxShadow: [
+                                                                                    BoxShadow(color: HexColor('#04060F'), offset: Offset(10, 10), blurRadius: 10)
+                                                                                  ],
+                                                                                  borderRadius: BorderRadius.circular(20)),
+                                                                          margin: EdgeInsets.symmetric(
+                                                                              horizontal: 10,
+                                                                              vertical: 10),
+                                                                          // height: 122,
+                                                                          // width: 133,
+                                                                          // padding: const EdgeInsets.all(8.0),
+                                                                          child:
+                                                                              Column(
+                                                                            mainAxisAlignment:
+                                                                                MainAxisAlignment.center,
+                                                                            children: [
+                                                                              Container(
+                                                                                // color: Colors.white,
+                                                                                alignment: Alignment.center,
+                                                                                child: ListView.builder(
+                                                                                  padding: EdgeInsets.only(bottom: 0),
+
+                                                                                  // physics: NeverScrollableScrollPhysics(),
+                                                                                  itemCount: list_alarm.length,
+                                                                                  shrinkWrap: true,
+                                                                                  itemBuilder: (BuildContext context, int index) {
+                                                                                    return GestureDetector(
+                                                                                      onTap: () {
+                                                                                        setState(() {
+                                                                                          Selected_sound = list_alarm[index];
+                                                                                          print("method_selected $Selected_sound");
+                                                                                        });
+                                                                                        Navigator.pop(context);
+                                                                                      },
+                                                                                      child: Container(
+                                                                                        margin: EdgeInsets.symmetric(vertical: 8.5),
+                                                                                        alignment: Alignment.center,
+                                                                                        child: Text(
+                                                                                          list_alarm[index],
+                                                                                          style: FontStyleUtility.h15(fontColor: ColorUtils.primary_grey, family: 'PM'),
+                                                                                        ),
+                                                                                      ),
+                                                                                    );
+                                                                                  },
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                        ),
+                                                                        GestureDetector(
+                                                                          onTap:
+                                                                              () {
+                                                                            Navigator.pop(context);
+                                                                          },
+                                                                          child:
+                                                                              Container(
+                                                                            margin:
+                                                                                EdgeInsets.only(right: 0),
+                                                                            alignment:
+                                                                                Alignment.topRight,
+                                                                            child: Container(
+                                                                                decoration: BoxDecoration(
+                                                                                    // color: Colors.black.withOpacity(0.65),
+                                                                                    gradient: LinearGradient(
+                                                                                      begin: Alignment.centerLeft,
+                                                                                      end: Alignment.centerRight,
+                                                                                      // stops: [0.1, 0.5, 0.7, 0.9],
+                                                                                      colors: [
+                                                                                        HexColor("#36393E").withOpacity(1),
+                                                                                        HexColor("#020204").withOpacity(1),
+                                                                                      ],
+                                                                                    ),
+                                                                                    boxShadow: [BoxShadow(color: HexColor('#04060F'), offset: Offset(0, 3), blurRadius: 5)],
+                                                                                    borderRadius: BorderRadius.circular(20)),
+                                                                                child: Padding(
+                                                                                  padding: const EdgeInsets.all(4.0),
+                                                                                  child: Icon(
+                                                                                    Icons.cancel_outlined,
+                                                                                    size: 20,
+                                                                                    color: ColorUtils.primary_grey,
+                                                                                  ),
+                                                                                )),
+                                                                          ),
+                                                                        )
+                                                                      ],
+                                                                    ),
+                                                                  ],
+                                                                ));
+                                                          },
+                                                        );
+                                                      },
+                                                      child: ListTile(
+                                                        title: Text('Sound',
+                                                            style: FontStyleUtility.h14(
+                                                                fontColor:
+                                                                    ColorUtils
+                                                                        .primary_gold,
+                                                                family: 'PR')),
+                                                        trailing: const Icon(
+                                                            Icons
+                                                                .arrow_forward_ios,
+                                                            size: 15,
+                                                            color:
+                                                                Colors.white),
+                                                      ),
+                                                    ),
+                                                    GestureDetector(
+                                                      onTap: () async {
+                                                        if (Alarm_title
+                                                            .text.isEmpty) {
+                                                          CommonWidget()
+                                                              .showErrorToaster(
+                                                                  msg:
+                                                                      "Enter Alarm title");
+                                                          return;
+                                                        } else {
+                                                          await onSaveAlarm();
+                                                        }
+                                                      },
+                                                      child: Container(
+                                                        width: MediaQuery.of(
+                                                                    context)
+                                                                .size
+                                                                .width /
+                                                            3,
+                                                        decoration: BoxDecoration(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        30),
+                                                            border: Border.all(
+                                                                color: ColorUtils
+                                                                    .primary_grey,
+                                                                width: 1)),
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .symmetric(
+                                                                  vertical:
+                                                                      12.0,
+                                                                  horizontal:
+                                                                      8),
+                                                          child: Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .center,
+                                                            children: [
+                                                              const Icon(
+                                                                Icons.alarm,
+                                                                color: Colors
+                                                                    .white,
+                                                                size: 25,
+                                                              ),
+                                                              const SizedBox(
+                                                                width: 10,
+                                                              ),
+                                                              Text(
+                                                                'Save',
+                                                                style: FontStyleUtility.h16(
+                                                                    fontColor:
+                                                                        ColorUtils
+                                                                            .primary_gold,
+                                                                    family:
+                                                                        'PR'),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                        );
+                                      },
+                                    );
+                                    // scheduleAlarm();
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                        // color: Colors.black.withOpacity(0.65),
+                                        gradient: LinearGradient(
+                                          begin: Alignment.centerLeft,
+                                          end: Alignment.centerRight,
+                                          // stops: [0.1, 0.5, 0.7, 0.9],
+                                          colors: [
+                                            HexColor("#36393E").withOpacity(1),
+                                            HexColor("#020204").withOpacity(1),
+                                          ],
+                                        ),
+                                        boxShadow: [
+                                          BoxShadow(
+                                              color: HexColor('#04060F'),
+                                              offset: const Offset(10, 10),
+                                              blurRadius: 20)
+                                        ],
+                                        borderRadius:
+                                            BorderRadius.circular(20)),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(0.0),
+                                      child: Icon(
+                                        Icons.add_circle_outline,
+                                        color: ColorUtils.primary_grey,
+                                      ),
+                                    ),
+                                  )),
+                            ),
+                          ),
+                        ),
+                        // Container(
+                        //   padding: const EdgeInsets.symmetric(
+                        //       horizontal: 16, vertical: 0),
+                        //   child: Row(
+                        //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        //     children: [
+                        //       Container(
+                        //         margin: EdgeInsets.only(left: 16),
+                        //         child: Text(
+                        //           "Add Alarm",
+                        //           style: FontStyleUtility.h16(
+                        //               fontColor: ColorUtils.primary_gold,
+                        //               family: 'PM'),
+                        //         ),
+                        //       ),
+                        //       FlatButton(
+                        //           padding: const EdgeInsets.symmetric(
+                        //               horizontal: 32, vertical: 10),
+                        //           onPressed: () {
+                        //             _alarmTimeString = DateFormat('HH:mm')
+                        //                 .format(selectedDate);
+                        //             showModalBottomSheet(
+                        //               useRootNavigator: true,
+                        //               context: context,
+                        //               clipBehavior: Clip.antiAlias,
+                        //               shape: const RoundedRectangleBorder(
+                        //                 borderRadius: BorderRadius.vertical(
+                        //                   top: Radius.circular(24),
+                        //                 ),
+                        //               ),
+                        //               builder: (context) {
+                        //                 return StatefulBuilder(
+                        //                   builder: (context, setModalState) {
+                        //                     return Container(
+                        //                       decoration: BoxDecoration(
+                        //                           // color: Colors.black.withOpacity(0.65),
+                        //                           gradient: LinearGradient(
+                        //                             begin:
+                        //                                 Alignment.centerLeft,
+                        //                             end:
+                        //                                 Alignment.centerRight,
+                        //                             // stops: [0.1, 0.5, 0.7, 0.9],
+                        //                             colors: [
+                        //                               HexColor("#020204")
+                        //                                   .withOpacity(1),
+                        //                               HexColor("#36393E")
+                        //                                   .withOpacity(1),
+                        //                             ],
+                        //                           ),
+                        //                           boxShadow: [
+                        //                             BoxShadow(
+                        //                                 color: HexColor(
+                        //                                     '#04060F'),
+                        //                                 offset: const Offset(
+                        //                                     -10, 10),
+                        //                                 blurRadius: 20)
+                        //                           ],
+                        //                           borderRadius:
+                        //                               const BorderRadius.only(
+                        //                                   topLeft:
+                        //                                       Radius.circular(
+                        //                                           20),
+                        //                                   topRight:
+                        //                                       Radius.circular(
+                        //                                           20))),
+                        //                       padding:
+                        //                           const EdgeInsets.all(32),
+                        //                       child: SingleChildScrollView(
+                        //                         child: Column(
+                        //                           children: [
+                        //                             // FlatButton(
+                        //                             //   onPressed:
+                        //                             //       () async {
+                        //                             //     // var selectedTime = await showTimePicker(
+                        //                             //     //   context: context,
+                        //                             //     //   // initialEntryMode: DatePickerEntryMode.calendarOnly,<- this
+                        //                             //     //   initialEntryMode: TimePickerEntryMode.dial,
+                        //                             //     //   initialTime: TimeOfDay.now(),
+                        //                             //     //   builder: (context, child) {
+                        //                             //     //     return Theme(
+                        //                             //     //       data: Theme.of(
+                        //                             //     //               context)
+                        //                             //     //           .copyWith(
+                        //                             //     //         colorScheme:
+                        //                             //     //             ColorScheme
+                        //                             //     //                 .dark(
+                        //                             //     //           primary:
+                        //                             //     //               Colors.black,
+                        //                             //     //           onPrimary:
+                        //                             //     //               Colors.white,
+                        //                             //     //           surface:
+                        //                             //     //               ColorUtils.primary_gold,
+                        //                             //     //           // onPrimary: Colors.black, // <-- SEE HERE
+                        //                             //     //           onSurface:
+                        //                             //     //               Colors.black,
+                        //                             //     //         ),
+                        //                             //     //         dialogBackgroundColor:
+                        //                             //     //             ColorUtils
+                        //                             //     //                 .primary_gold,
+                        //                             //     //         textButtonTheme:
+                        //                             //     //             TextButtonThemeData(
+                        //                             //     //           style: TextButton
+                        //                             //     //               .styleFrom(
+                        //                             //     //             primary:
+                        //                             //     //                 Colors.black, // button text color
+                        //                             //     //           ),
+                        //                             //     //         ),
+                        //                             //     //       ),
+                        //                             //     //       child:
+                        //                             //     //           child!,
+                        //                             //     //     );
+                        //                             //     //   },
+                        //                             //     // );
+                        //                             //     // if (selectedTime !=
+                        //                             //     //     null) {
+                        //                             //     //   final now =
+                        //                             //     //       DateTime
+                        //                             //     //           .now();
+                        //                             //     //   var selectedDateTime = DateTime(
+                        //                             //     //       now.year,
+                        //                             //     //       now.month,
+                        //                             //     //       now.day,
+                        //                             //     //       selectedTime
+                        //                             //     //           .hour,
+                        //                             //     //       selectedTime
+                        //                             //     //           .minute);
+                        //                             //     //   _alarmTime =
+                        //                             //     //       selectedDateTime;
+                        //                             //     //   setModalState(
+                        //                             //     //       () {
+                        //                             //     //     _alarmTimeString =
+                        //                             //     //         DateFormat(
+                        //                             //     //                 'HH:mm')
+                        //                             //     //             .format(
+                        //                             //     //                 selectedDateTime);
+                        //                             //     //   });
+                        //                             //     // }
+                        //                             //   },
+                        //                             //   child: Text(
+                        //                             //       _alarmTimeString!,
+                        //                             //       style: FontStyleUtility.h35(
+                        //                             //           fontColor:
+                        //                             //               ColorUtils
+                        //                             //                   .primary_gold,
+                        //                             //           family:
+                        //                             //               'PM')),
+                        //                             // ),
+                        //                             Container(
+                        //                               height: 150,
+                        //                               decoration:
+                        //                                   BoxDecoration(
+                        //                                       borderRadius:
+                        //                                           BorderRadius
+                        //                                               .circular(
+                        //                                                   15),
+                        //                                       gradient: LinearGradient(
+                        //                                         begin: Alignment
+                        //                                             .topCenter,
+                        //                                         end: Alignment
+                        //                                             .bottomCenter,
+                        //                                         colors: [
+                        //                                           HexColor(
+                        //                                                   "#000000")
+                        //                                               .withOpacity(
+                        //                                                   1),
+                        //                                           HexColor(
+                        //                                                   "#04060F")
+                        //                                               .withOpacity(
+                        //                                                   1),
+                        //                                           HexColor(
+                        //                                                   "#000000")
+                        //                                               .withOpacity(
+                        //                                                   1),
+                        //                                         ],
+                        //                                       ),
+                        //                                       boxShadow: [
+                        //                                     BoxShadow(
+                        //                                         color: HexColor(
+                        //                                             '#04060F'),
+                        //                                         offset:
+                        //                                             Offset(
+                        //                                                 3, 3),
+                        //                                         blurRadius:
+                        //                                             10)
+                        //                                   ]),
+                        //                               child: Stack(
+                        //                                 children: [
+                        //                                   CupertinoTheme(
+                        //                                     data:
+                        //                                         CupertinoThemeData(
+                        //                                       brightness:
+                        //                                           Brightness
+                        //                                               .dark,
+                        //                                     ),
+                        //                                     child:
+                        //                                         CupertinoDatePicker(
+                        //                                       // use24hFormat: true,
+                        //                                       mode:
+                        //                                           CupertinoDatePickerMode
+                        //                                               .time,
+                        //                                       onDateTimeChanged:
+                        //                                           (DateTime
+                        //                                               value) {
+                        //                                         selected_time =
+                        //                                             value;
+                        //                                         print(
+                        //                                             "${value.hour}:${value.minute}");
+                        //
+                        //                                         if (selected_time !=
+                        //                                             null) {
+                        //                                           final now =
+                        //                                               DateTime
+                        //                                                   .now();
+                        //                                           var selectedDateTime = DateTime(
+                        //                                               now
+                        //                                                   .year,
+                        //                                               now
+                        //                                                   .month,
+                        //                                               now.day,
+                        //                                               selected_time
+                        //                                                   .hour,
+                        //                                               selected_time
+                        //                                                   .minute);
+                        //                                           _alarmTime =
+                        //                                               selectedDateTime;
+                        //                                           setModalState(
+                        //                                               () {
+                        //                                             _alarmTimeString = DateFormat(
+                        //                                                     'HH:mm')
+                        //                                                 .format(
+                        //                                                     selectedDateTime);
+                        //                                           });
+                        //                                         }
+                        //                                       },
+                        //                                     ),
+                        //                                   ),
+                        //                                 ],
+                        //                               ),
+                        //                             ),
+                        //
+                        //                             ListTile(
+                        //                               onTap: () {
+                        //                                 showDialog(
+                        //                                   context: context,
+                        //                                   builder:
+                        //                                       (BuildContext
+                        //                                           context) {
+                        //                                     double width =
+                        //                                         MediaQuery.of(
+                        //                                                 context)
+                        //                                             .size
+                        //                                             .width;
+                        //                                     double height =
+                        //                                         MediaQuery.of(
+                        //                                                 context)
+                        //                                             .size
+                        //                                             .height;
+                        //                                     return BackdropFilter(
+                        //                                       filter: ImageFilter
+                        //                                           .blur(
+                        //                                               sigmaX:
+                        //                                                   10,
+                        //                                               sigmaY:
+                        //                                                   10),
+                        //                                       child:
+                        //                                           AlertDialog(
+                        //                                               backgroundColor:
+                        //                                                   Colors
+                        //                                                       .transparent,
+                        //                                               contentPadding:
+                        //                                                   EdgeInsets
+                        //                                                       .zero,
+                        //                                               elevation:
+                        //                                                   0.0,
+                        //                                               // title: Center(child: Text("Evaluation our APP")),
+                        //                                               content:
+                        //                                                   Column(
+                        //                                                 mainAxisAlignment:
+                        //                                                     MainAxisAlignment.center,
+                        //                                                 children: [
+                        //                                                   Stack(
+                        //                                                     children: [
+                        //                                                       Padding(
+                        //                                                         padding: const EdgeInsets.all(8.0),
+                        //                                                         child: Container(
+                        //                                                           decoration:
+                        //                                                               BoxDecoration(
+                        //                                                                   // color: Colors.black.withOpacity(0.65),
+                        //                                                                   gradient:
+                        //                                                                       LinearGradient(
+                        //                                                                     begin: Alignment.centerLeft,
+                        //                                                                     end: Alignment.centerRight,
+                        //                                                                     // stops: [0.1, 0.5, 0.7, 0.9],
+                        //                                                                     colors: [
+                        //                                                                       HexColor("#020204").withOpacity(1),
+                        //                                                                       HexColor("#36393E").withOpacity(1),
+                        //                                                                     ],
+                        //                                                                   ),
+                        //                                                                   boxShadow: [
+                        //                                                                     BoxShadow(color: HexColor('#04060F'), offset: Offset(10, 10), blurRadius: 10)
+                        //                                                                   ],
+                        //                                                                   borderRadius: BorderRadius.circular(15)),
+                        //                                                           child: Align(
+                        //                                                               alignment: Alignment.center,
+                        //                                                               child: Padding(
+                        //                                                                 padding: const EdgeInsets.all(8.0),
+                        //                                                                 child: Column(
+                        //                                                                   children: [
+                        //                                                                     SizedBox(
+                        //                                                                       height: 0,
+                        //                                                                     ),
+                        //
+                        //                                                                     Column(
+                        //                                                                       crossAxisAlignment: CrossAxisAlignment.start,
+                        //                                                                       children: [
+                        //                                                                         Container(
+                        //                                                                           margin: EdgeInsets.only(left: 18),
+                        //                                                                           child: Text('Title', style: FontStyleUtility.h14(fontColor: ColorUtils.primary_grey, family: 'Pr')),
+                        //                                                                         ),
+                        //                                                                         SizedBox(
+                        //                                                                           height: 11,
+                        //                                                                         ),
+                        //                                                                         Container(
+                        //                                                                           margin: EdgeInsets.symmetric(horizontal: 10),
+                        //                                                                           // width: 300,
+                        //                                                                           decoration: BoxDecoration(
+                        //                                                                               // color: Colors.black.withOpacity(0.65),
+                        //                                                                               gradient: LinearGradient(
+                        //                                                                                 begin: Alignment.centerLeft,
+                        //                                                                                 end: Alignment.centerRight,
+                        //                                                                                 // stops: [0.1, 0.5, 0.7, 0.9],
+                        //                                                                                 colors: [
+                        //                                                                                   HexColor("#36393E").withOpacity(1),
+                        //                                                                                   HexColor("#020204").withOpacity(1),
+                        //                                                                                 ],
+                        //                                                                               ),
+                        //                                                                               boxShadow: [BoxShadow(color: HexColor('#04060F'), offset: Offset(10, 10), blurRadius: 10)],
+                        //                                                                               borderRadius: BorderRadius.circular(20)),
+                        //
+                        //                                                                           child: TextFormField(
+                        //                                                                             maxLength: 150,
+                        //                                                                             decoration: InputDecoration(
+                        //                                                                               contentPadding: EdgeInsets.only(left: 20, top: 14, bottom: 14),
+                        //                                                                               alignLabelWithHint: false,
+                        //                                                                               isDense: true,
+                        //                                                                               hintText: 'Add alarm title',
+                        //                                                                               counterStyle: TextStyle(
+                        //                                                                                 height: double.minPositive,
+                        //                                                                               ),
+                        //                                                                               counterText: "",
+                        //                                                                               filled: true,
+                        //                                                                               border: InputBorder.none,
+                        //                                                                               enabledBorder: const OutlineInputBorder(
+                        //                                                                                 borderSide: BorderSide(color: Colors.transparent, width: 1),
+                        //                                                                                 borderRadius: BorderRadius.all(Radius.circular(10)),
+                        //                                                                               ),
+                        //                                                                               hintStyle: FontStyleUtility.h14(fontColor: HexColor('#CBCBCB'), family: 'PR'),
+                        //                                                                             ),
+                        //                                                                             style: FontStyleUtility.h14(fontColor: ColorUtils.primary_grey, family: 'PR'),
+                        //                                                                             controller: Alarm_title,
+                        //                                                                             keyboardType: TextInputType.text,
+                        //                                                                           ),
+                        //                                                                         ),
+                        //                                                                       ],
+                        //                                                                     ),
+                        //                                                                     SizedBox(
+                        //                                                                       height: 10,
+                        //                                                                     ),
+                        //                                                                     GestureDetector(
+                        //                                                                       onTap: () {
+                        //                                                                         setState(() {
+                        //                                                                           Alarm_title_list.add(Alarm_title.text);
+                        //                                                                           Navigator.pop(context);
+                        //                                                                         });
+                        //                                                                       },
+                        //                                                                       child: Container(
+                        //                                                                         alignment: Alignment.topRight,
+                        //                                                                         child: Text(
+                        //                                                                           'Add',
+                        //                                                                           style: FontStyleUtility.h12(fontColor: ColorUtils.primary_grey, family: 'PR'),
+                        //                                                                         ),
+                        //                                                                       ),
+                        //                                                                     )
+                        //                                                                     // common_button_gold(
+                        //                                                                     //   onTap: () {
+                        //                                                                     //     Get
+                        //                                                                     //         .to(
+                        //                                                                     //         DashboardScreen());
+                        //                                                                     //   },
+                        //                                                                     //   title_text: 'Go to Dashboard',
+                        //                                                                     // ),
+                        //                                                                   ],
+                        //                                                                 ),
+                        //                                                               )),
+                        //                                                         ),
+                        //                                                       ),
+                        //                                                       GestureDetector(
+                        //                                                         onTap: () {
+                        //                                                           Navigator.pop(context);
+                        //                                                         },
+                        //                                                         child: Container(
+                        //                                                           margin: EdgeInsets.only(right: 10),
+                        //                                                           alignment: Alignment.topRight,
+                        //                                                           child: Container(
+                        //                                                               decoration: BoxDecoration(
+                        //                                                                   // color: Colors.black.withOpacity(0.65),
+                        //                                                                   gradient: LinearGradient(
+                        //                                                                     begin: Alignment.centerLeft,
+                        //                                                                     end: Alignment.centerRight,
+                        //                                                                     // stops: [0.1, 0.5, 0.7, 0.9],
+                        //                                                                     colors: [
+                        //                                                                       HexColor("#36393E").withOpacity(1),
+                        //                                                                       HexColor("#020204").withOpacity(1),
+                        //                                                                     ],
+                        //                                                                   ),
+                        //                                                                   boxShadow: [BoxShadow(color: HexColor('#04060F'), offset: Offset(0, 3), blurRadius: 5)],
+                        //                                                                   borderRadius: BorderRadius.circular(20)),
+                        //                                                               child: Padding(
+                        //                                                                 padding: const EdgeInsets.all(4.0),
+                        //                                                                 child: Icon(
+                        //                                                                   Icons.cancel_outlined,
+                        //                                                                   size: 13,
+                        //                                                                   color: ColorUtils.primary_grey,
+                        //                                                                 ),
+                        //                                                               )),
+                        //                                                         ),
+                        //                                                       )
+                        //                                                     ],
+                        //                                                   ),
+                        //                                                 ],
+                        //                                               )),
+                        //                                     );
+                        //                                   },
+                        //                                 );
+                        //                               },
+                        //                               title: Text('Title',
+                        //                                   style: FontStyleUtility.h14(
+                        //                                       fontColor:
+                        //                                           ColorUtils
+                        //                                               .primary_grey,
+                        //                                       family: 'PR')),
+                        //                               trailing: const Icon(
+                        //                                   Icons
+                        //                                       .arrow_forward_ios,
+                        //                                   size: 15,
+                        //                                   color:
+                        //                                       Colors.white),
+                        //                             ),
+                        //                             ListTile(
+                        //                               title: Text(
+                        //                                 'Repeat',
+                        //                                 style: FontStyleUtility.h14(
+                        //                                     fontColor: ColorUtils
+                        //                                         .primary_gold,
+                        //                                     family: 'PR'),
+                        //                               ),
+                        //                               trailing: const Icon(
+                        //                                 Icons
+                        //                                     .arrow_forward_ios,
+                        //                                 size: 15,
+                        //                                 color: Colors.white,
+                        //                               ),
+                        //                             ),
+                        //                             GestureDetector(
+                        //                               onTap: () {
+                        //                                 print('object');
+                        //
+                        //                                 showDialog(
+                        //                                   context: context,
+                        //                                   builder:
+                        //                                       (BuildContext
+                        //                                           context) {
+                        //                                     double width =
+                        //                                         MediaQuery.of(
+                        //                                                 context)
+                        //                                             .size
+                        //                                             .width;
+                        //                                     double height =
+                        //                                         MediaQuery.of(
+                        //                                                 context)
+                        //                                             .size
+                        //                                             .height;
+                        //                                     return AlertDialog(
+                        //                                         backgroundColor:
+                        //                                             Colors
+                        //                                                 .transparent,
+                        //                                         contentPadding:
+                        //                                             EdgeInsets
+                        //                                                 .zero,
+                        //                                         elevation:
+                        //                                             0.0,
+                        //                                         // title: Center(child: Text("Evaluation our APP")),
+                        //                                         content:
+                        //                                             Column(
+                        //                                           mainAxisAlignment:
+                        //                                               MainAxisAlignment
+                        //                                                   .center,
+                        //                                           children: [
+                        //                                             Stack(
+                        //                                               children: [
+                        //                                                 Container(
+                        //                                                   // height: 150,
+                        //                                                   // height: double.maxFinite,
+                        //                                                   height:
+                        //                                                       MediaQuery.of(context).size.height / 4,
+                        //                                                   width:
+                        //                                                       double.maxFinite,
+                        //                                                   decoration:
+                        //                                                       BoxDecoration(
+                        //                                                           // color: Colors.black.withOpacity(0.65),
+                        //                                                           gradient:
+                        //                                                               LinearGradient(
+                        //                                                             begin: Alignment.centerLeft,
+                        //                                                             end: Alignment.centerRight,
+                        //                                                             // stops: [0.1, 0.5, 0.7, 0.9],
+                        //                                                             colors: [
+                        //                                                               HexColor("#020204").withOpacity(1),
+                        //                                                               HexColor("#36393E").withOpacity(1),
+                        //                                                             ],
+                        //                                                           ),
+                        //                                                           boxShadow: [
+                        //                                                             BoxShadow(color: HexColor('#04060F'), offset: Offset(10, 10), blurRadius: 10)
+                        //                                                           ],
+                        //                                                           borderRadius: BorderRadius.circular(20)),
+                        //                                                   margin:
+                        //                                                       EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                        //                                                   // height: 122,
+                        //                                                   // width: 133,
+                        //                                                   // padding: const EdgeInsets.all(8.0),
+                        //                                                   child:
+                        //                                                       Column(
+                        //                                                     mainAxisAlignment: MainAxisAlignment.center,
+                        //                                                     children: [
+                        //                                                       Container(
+                        //                                                         // color: Colors.white,
+                        //                                                         alignment: Alignment.center,
+                        //                                                         child: ListView.builder(
+                        //                                                           padding: EdgeInsets.only(bottom: 0),
+                        //
+                        //                                                           // physics: NeverScrollableScrollPhysics(),
+                        //                                                           itemCount: list_alarm.length,
+                        //                                                           shrinkWrap: true,
+                        //                                                           itemBuilder: (BuildContext context, int index) {
+                        //                                                             return GestureDetector(
+                        //                                                               onTap: () {
+                        //                                                                 setState(() {
+                        //                                                                   Selected_sound = list_alarm[index];
+                        //                                                                   print("method_selected $Selected_sound");
+                        //                                                                 });
+                        //                                                                 Navigator.pop(context);
+                        //                                                               },
+                        //                                                               child: Container(
+                        //                                                                 margin: EdgeInsets.symmetric(vertical: 8.5),
+                        //                                                                 alignment: Alignment.center,
+                        //                                                                 child: Text(
+                        //                                                                   list_alarm[index],
+                        //                                                                   style: FontStyleUtility.h15(fontColor: ColorUtils.primary_grey, family: 'PM'),
+                        //                                                                 ),
+                        //                                                               ),
+                        //                                                             );
+                        //                                                           },
+                        //                                                         ),
+                        //                                                       ),
+                        //                                                     ],
+                        //                                                   ),
+                        //                                                 ),
+                        //                                                 GestureDetector(
+                        //                                                   onTap:
+                        //                                                       () {
+                        //                                                     Navigator.pop(context);
+                        //                                                   },
+                        //                                                   child:
+                        //                                                       Container(
+                        //                                                     margin: EdgeInsets.only(right: 0),
+                        //                                                     alignment: Alignment.topRight,
+                        //                                                     child: Container(
+                        //                                                         decoration: BoxDecoration(
+                        //                                                             // color: Colors.black.withOpacity(0.65),
+                        //                                                             gradient: LinearGradient(
+                        //                                                               begin: Alignment.centerLeft,
+                        //                                                               end: Alignment.centerRight,
+                        //                                                               // stops: [0.1, 0.5, 0.7, 0.9],
+                        //                                                               colors: [
+                        //                                                                 HexColor("#36393E").withOpacity(1),
+                        //                                                                 HexColor("#020204").withOpacity(1),
+                        //                                                               ],
+                        //                                                             ),
+                        //                                                             boxShadow: [BoxShadow(color: HexColor('#04060F'), offset: Offset(0, 3), blurRadius: 5)],
+                        //                                                             borderRadius: BorderRadius.circular(20)),
+                        //                                                         child: Padding(
+                        //                                                           padding: const EdgeInsets.all(4.0),
+                        //                                                           child: Icon(
+                        //                                                             Icons.cancel_outlined,
+                        //                                                             size: 20,
+                        //                                                             color: ColorUtils.primary_grey,
+                        //                                                           ),
+                        //                                                         )),
+                        //                                                   ),
+                        //                                                 )
+                        //                                               ],
+                        //                                             ),
+                        //                                           ],
+                        //                                         ));
+                        //                                   },
+                        //                                 );
+                        //                               },
+                        //                               child: ListTile(
+                        //                                 title: Text('Sound',
+                        //                                     style: FontStyleUtility.h14(
+                        //                                         fontColor:
+                        //                                             ColorUtils
+                        //                                                 .primary_gold,
+                        //                                         family:
+                        //                                             'PR')),
+                        //                                 trailing: const Icon(
+                        //                                     Icons
+                        //                                         .arrow_forward_ios,
+                        //                                     size: 15,
+                        //                                     color:
+                        //                                         Colors.white),
+                        //                               ),
+                        //                             ),
+                        //                             GestureDetector(
+                        //                               onTap: () async {
+                        //                                 if (Alarm_title
+                        //                                     .text.isEmpty) {
+                        //                                   CommonWidget()
+                        //                                       .showErrorToaster(
+                        //                                           msg:
+                        //                                               "Enter Alarm title");
+                        //                                   return;
+                        //                                 } else {
+                        //                                   await onSaveAlarm();
+                        //                                 }
+                        //                               },
+                        //                               child: Container(
+                        //                                 width: MediaQuery.of(
+                        //                                             context)
+                        //                                         .size
+                        //                                         .width /
+                        //                                     3,
+                        //                                 decoration: BoxDecoration(
+                        //                                     borderRadius:
+                        //                                         BorderRadius
+                        //                                             .circular(
+                        //                                                 30),
+                        //                                     border: Border.all(
+                        //                                         color: ColorUtils
+                        //                                             .primary_grey,
+                        //                                         width: 1)),
+                        //                                 child: Padding(
+                        //                                   padding:
+                        //                                       const EdgeInsets
+                        //                                               .symmetric(
+                        //                                           vertical:
+                        //                                               12.0,
+                        //                                           horizontal:
+                        //                                               8),
+                        //                                   child: Row(
+                        //                                     mainAxisAlignment:
+                        //                                         MainAxisAlignment
+                        //                                             .center,
+                        //                                     children: [
+                        //                                       const Icon(
+                        //                                         Icons.alarm,
+                        //                                         color: Colors
+                        //                                             .white,
+                        //                                         size: 25,
+                        //                                       ),
+                        //                                       const SizedBox(
+                        //                                         width: 10,
+                        //                                       ),
+                        //                                       Text(
+                        //                                         'Save',
+                        //                                         style: FontStyleUtility.h16(
+                        //                                             fontColor:
+                        //                                                 ColorUtils
+                        //                                                     .primary_gold,
+                        //                                             family:
+                        //                                                 'PR'),
+                        //                                       ),
+                        //                                     ],
+                        //                                   ),
+                        //                                 ),
+                        //                               ),
+                        //                             )
+                        //                           ],
+                        //                         ),
+                        //                       ),
+                        //                     );
+                        //                   },
+                        //                 );
+                        //               },
+                        //             );
+                        //             // scheduleAlarm();
+                        //           },
+                        //           child: Container(
+                        //             decoration: BoxDecoration(
+                        //                 // color: Colors.black.withOpacity(0.65),
+                        //                 gradient: LinearGradient(
+                        //                   begin: Alignment.centerLeft,
+                        //                   end: Alignment.centerRight,
+                        //                   // stops: [0.1, 0.5, 0.7, 0.9],
+                        //                   colors: [
+                        //                     HexColor("#36393E")
+                        //                         .withOpacity(1),
+                        //                     HexColor("#020204")
+                        //                         .withOpacity(1),
+                        //                   ],
+                        //                 ),
+                        //                 boxShadow: [
+                        //                   BoxShadow(
+                        //                       color: HexColor('#04060F'),
+                        //                       offset: const Offset(10, 10),
+                        //                       blurRadius: 20)
+                        //                 ],
+                        //                 borderRadius:
+                        //                     BorderRadius.circular(20)),
+                        //             child: Padding(
+                        //               padding: const EdgeInsets.all(8.0),
+                        //               child: Icon(
+                        //                 Icons.add_circle_outline,
+                        //                 color: ColorUtils.primary_grey,
+                        //               ),
+                        //             ),
+                        //           )),
+                        //     ],
+                        //   ),
+                        // )
+                        // else
+                        //   const Center(
+                        //       child: Text(
+                        //     'Only 5 alarms allowed!',
+                        //     style: const TextStyle(color: Colors.white),
+                        //   )),
+                        FutureBuilder<List<AlarmInfo>>(
+                          future: _alarms,
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              _currentAlarms = snapshot.data;
+                              return Container(
+                                child: ListView(
+                                  shrinkWrap: true,
+                                  padding: EdgeInsets.zero,
+                                  children: snapshot.data!.map<Widget>((alarm) {
+                                    var alarmTime = DateFormat('hh:mm aa')
+                                        .format(alarm.alarmDateTime!);
+                                    var gradientColor = GradientTemplate
+                                        .gradientTemplate[
+                                            alarm.gradientColorIndex!]
+                                        .colors;
+                                    return Container(
+                                      margin: const EdgeInsets.only(bottom: 0),
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 16, vertical: 0),
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          // color: Colors.black.withOpacity(0.65),
+                                          // gradient: LinearGradient(
+                                          //   begin: Alignment.centerLeft,
+                                          //   end: Alignment.centerRight,
+                                          //   // stops: [0.1, 0.5, 0.7, 0.9],
+                                          //   colors: [
+                                          //     HexColor("#020204").withOpacity(1),
+                                          //     HexColor("#36393E").withOpacity(1),
+                                          //   ],
+                                          // ),
+                                          // boxShadow: [
+                                          //   BoxShadow(
+                                          //       color: HexColor('#04060F'),
+                                          //       offset: Offset(-10, 10),
+                                          //       blurRadius: 20)
+                                          // ],
+                                          border: Border(
+                                            bottom: BorderSide(
+                                              //                   <--- left side
+                                              color: HexColor('#1d1d1d'),
+                                              width: 1.5,
+                                            ),
+                                          ),
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 8.0),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: <Widget>[
+                                              ListTile(
+                                                title: Text(
+                                                  alarmTime,
+                                                  style: FontStyleUtility.h16(
+                                                      fontColor: Colors.white,
+                                                      family: 'PR'),
+                                                ),
+                                                subtitle: Text(alarm.title!,
+                                                    style: FontStyleUtility.h14(
+                                                        fontColor:
+                                                            HexColor('#8A8A8A'),
+                                                        family: 'PR')),
+                                                trailing: IconButton(
+                                                    icon: const Icon(
+                                                        Icons.delete),
+                                                    color:
+                                                        ColorUtils.primary_gold,
+                                                    onPressed: () {
+                                                      deleteAlarm(alarm.id!);
+                                                    }),
+                                                // Container(
+                                                //   width: 20,
+                                                //   child: Transform.scale(
+                                                //     scale: 0.5,
+                                                //     child: CupertinoSwitch(
+                                                //       onChanged: (bool value) {},
+                                                //       value: true,
+                                                //       trackColor: HexColor('#717171'),
+                                                //       thumbColor: Colors.black87,
+                                                //       activeColor:
+                                                //           ColorUtils.primary_gold,
+                                                //     ),
+                                                //   ),
+                                                // ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  }).followedBy([
+                                    // if (_currentAlarms!.length < 5)
+                                    //   Container(
+                                    //     child: FlatButton(
+                                    //         padding: const EdgeInsets.symmetric(
+                                    //             horizontal: 32, vertical: 10),
+                                    //         onPressed: () {
+                                    //           _alarmTimeString = DateFormat('HH:mm')
+                                    //               .format(selectedDate);
+                                    //           showModalBottomSheet(
+                                    //             useRootNavigator: true,
+                                    //             context: context,
+                                    //             clipBehavior: Clip.antiAlias,
+                                    //             shape: const RoundedRectangleBorder(
+                                    //               borderRadius:
+                                    //               BorderRadius.vertical(
+                                    //                 top: Radius.circular(24),
+                                    //               ),
+                                    //             ),
+                                    //             builder: (context) {
+                                    //               return StatefulBuilder(
+                                    //                 builder:
+                                    //                     (context, setModalState) {
+                                    //                   return Container(
+                                    //                     decoration: BoxDecoration(
+                                    //                       // color: Colors.black.withOpacity(0.65),
+                                    //                         gradient:
+                                    //                         LinearGradient(
+                                    //                           begin: Alignment
+                                    //                               .centerLeft,
+                                    //                           end: Alignment
+                                    //                               .centerRight,
+                                    //                           // stops: [0.1, 0.5, 0.7, 0.9],
+                                    //                           colors: [
+                                    //                             HexColor("#020204")
+                                    //                                 .withOpacity(1),
+                                    //                             HexColor("#36393E")
+                                    //                                 .withOpacity(1),
+                                    //                           ],
+                                    //                         ),
+                                    //                         boxShadow: [
+                                    //                           BoxShadow(
+                                    //                               color: HexColor(
+                                    //                                   '#04060F'),
+                                    //                               offset:
+                                    //                               const Offset(
+                                    //                                   -10, 10),
+                                    //                               blurRadius: 20)
+                                    //                         ],
+                                    //                         borderRadius:
+                                    //                         const BorderRadius
+                                    //                             .only(
+                                    //                             topLeft: Radius
+                                    //                                 .circular(
+                                    //                                 20),
+                                    //                             topRight: Radius
+                                    //                                 .circular(
+                                    //                                 20))),
+                                    //                     padding:
+                                    //                     const EdgeInsets.all(
+                                    //                         32),
+                                    //                     child:
+                                    //                     SingleChildScrollView(
+                                    //                       child: Column(
+                                    //                         children: [
+                                    //                           // FlatButton(
+                                    //                           //   onPressed:
+                                    //                           //       () async {
+                                    //                           //     // var selectedTime = await showTimePicker(
+                                    //                           //     //   context: context,
+                                    //                           //     //   // initialEntryMode: DatePickerEntryMode.calendarOnly,<- this
+                                    //                           //     //   initialEntryMode: TimePickerEntryMode.dial,
+                                    //                           //     //   initialTime: TimeOfDay.now(),
+                                    //                           //     //   builder: (context, child) {
+                                    //                           //     //     return Theme(
+                                    //                           //     //       data: Theme.of(
+                                    //                           //     //               context)
+                                    //                           //     //           .copyWith(
+                                    //                           //     //         colorScheme:
+                                    //                           //     //             ColorScheme
+                                    //                           //     //                 .dark(
+                                    //                           //     //           primary:
+                                    //                           //     //               Colors.black,
+                                    //                           //     //           onPrimary:
+                                    //                           //     //               Colors.white,
+                                    //                           //     //           surface:
+                                    //                           //     //               ColorUtils.primary_gold,
+                                    //                           //     //           // onPrimary: Colors.black, // <-- SEE HERE
+                                    //                           //     //           onSurface:
+                                    //                           //     //               Colors.black,
+                                    //                           //     //         ),
+                                    //                           //     //         dialogBackgroundColor:
+                                    //                           //     //             ColorUtils
+                                    //                           //     //                 .primary_gold,
+                                    //                           //     //         textButtonTheme:
+                                    //                           //     //             TextButtonThemeData(
+                                    //                           //     //           style: TextButton
+                                    //                           //     //               .styleFrom(
+                                    //                           //     //             primary:
+                                    //                           //     //                 Colors.black, // button text color
+                                    //                           //     //           ),
+                                    //                           //     //         ),
+                                    //                           //     //       ),
+                                    //                           //     //       child:
+                                    //                           //     //           child!,
+                                    //                           //     //     );
+                                    //                           //     //   },
+                                    //                           //     // );
+                                    //                           //     // if (selectedTime !=
+                                    //                           //     //     null) {
+                                    //                           //     //   final now =
+                                    //                           //     //       DateTime
+                                    //                           //     //           .now();
+                                    //                           //     //   var selectedDateTime = DateTime(
+                                    //                           //     //       now.year,
+                                    //                           //     //       now.month,
+                                    //                           //     //       now.day,
+                                    //                           //     //       selectedTime
+                                    //                           //     //           .hour,
+                                    //                           //     //       selectedTime
+                                    //                           //     //           .minute);
+                                    //                           //     //   _alarmTime =
+                                    //                           //     //       selectedDateTime;
+                                    //                           //     //   setModalState(
+                                    //                           //     //       () {
+                                    //                           //     //     _alarmTimeString =
+                                    //                           //     //         DateFormat(
+                                    //                           //     //                 'HH:mm')
+                                    //                           //     //             .format(
+                                    //                           //     //                 selectedDateTime);
+                                    //                           //     //   });
+                                    //                           //     // }
+                                    //                           //   },
+                                    //                           //   child: Text(
+                                    //                           //       _alarmTimeString!,
+                                    //                           //       style: FontStyleUtility.h35(
+                                    //                           //           fontColor:
+                                    //                           //               ColorUtils
+                                    //                           //                   .primary_gold,
+                                    //                           //           family:
+                                    //                           //               'PM')),
+                                    //                           // ),
+                                    //                           Container(
+                                    //                             height: 150,
+                                    //                             decoration: BoxDecoration(
+                                    //                                 borderRadius: BorderRadius.circular(15),
+                                    //                                 gradient: LinearGradient(
+                                    //                                   begin: Alignment.topCenter,
+                                    //                                   end: Alignment.bottomCenter,
+                                    //                                   colors: [
+                                    //                                     HexColor("#000000").withOpacity(1),
+                                    //                                     HexColor("#04060F").withOpacity(1),
+                                    //                                     HexColor("#000000").withOpacity(1),
+                                    //
+                                    //                                   ],
+                                    //                                 ),
+                                    //                                 boxShadow: [
+                                    //                                   BoxShadow(
+                                    //                                       color: HexColor('#04060F'),
+                                    //                                       offset: Offset(3, 3),
+                                    //                                       blurRadius: 10)
+                                    //                                 ]),
+                                    //                             child: Stack(
+                                    //                               children: [
+                                    //                                 CupertinoTheme(
+                                    //                                   data: CupertinoThemeData(
+                                    //                                     brightness: Brightness.dark,
+                                    //                                   ),
+                                    //                                   child: CupertinoDatePicker(
+                                    //                                     // use24hFormat: true,
+                                    //                                     mode: CupertinoDatePickerMode.time,
+                                    //                                     onDateTimeChanged: (DateTime value) {
+                                    //                                       selected_time= value;
+                                    //                                       print("${value.hour}:${value.minute}");
+                                    //
+                                    //
+                                    //                                       if (selected_time !=
+                                    //                                           null) {
+                                    //                                         final now =
+                                    //                                         DateTime
+                                    //                                             .now();
+                                    //                                         var selectedDateTime = DateTime(
+                                    //                                             now.year,
+                                    //                                             now.month,
+                                    //                                             now.day,
+                                    //                                             selected_time
+                                    //                                                 .hour,
+                                    //                                             selected_time
+                                    //                                                 .minute);
+                                    //                                         _alarmTime =
+                                    //                                             selectedDateTime;
+                                    //                                         setModalState(
+                                    //                                                 () {
+                                    //                                               _alarmTimeString =
+                                    //                                                   DateFormat(
+                                    //                                                       'HH:mm')
+                                    //                                                       .format(
+                                    //                                                       selectedDateTime);
+                                    //                                             });
+                                    //                                       }
+                                    //                                     },
+                                    //                                   ),
+                                    //                                 ),
+                                    //                               ],
+                                    //                             ),
+                                    //                           ),
+                                    //
+                                    //                           ListTile(
+                                    //                             onTap: () {
+                                    //                               showDialog(
+                                    //                                 context:
+                                    //                                 context,
+                                    //                                 builder:
+                                    //                                     (BuildContext
+                                    //                                 context) {
+                                    //                                   double width =
+                                    //                                       MediaQuery.of(
+                                    //                                           context)
+                                    //                                           .size
+                                    //                                           .width;
+                                    //                                   double
+                                    //                                   height =
+                                    //                                       MediaQuery.of(
+                                    //                                           context)
+                                    //                                           .size
+                                    //                                           .height;
+                                    //                                   return BackdropFilter(
+                                    //                                     filter: ImageFilter.blur(
+                                    //                                         sigmaX:
+                                    //                                         10,
+                                    //                                         sigmaY:
+                                    //                                         10),
+                                    //                                     child: AlertDialog(
+                                    //                                         backgroundColor: Colors.transparent,
+                                    //                                         contentPadding: EdgeInsets.zero,
+                                    //                                         elevation: 0.0,
+                                    //                                         // title: Center(child: Text("Evaluation our APP")),
+                                    //                                         content: Column(
+                                    //                                           mainAxisAlignment:
+                                    //                                           MainAxisAlignment.center,
+                                    //                                           children: [
+                                    //                                             Stack(
+                                    //                                               children: [
+                                    //                                                 Padding(
+                                    //                                                   padding: const EdgeInsets.all(8.0),
+                                    //                                                   child: Container(
+                                    //                                                     decoration:
+                                    //                                                     BoxDecoration(
+                                    //                                                       // color: Colors.black.withOpacity(0.65),
+                                    //                                                         gradient:
+                                    //                                                         LinearGradient(
+                                    //                                                           begin: Alignment.centerLeft,
+                                    //                                                           end: Alignment.centerRight,
+                                    //                                                           // stops: [0.1, 0.5, 0.7, 0.9],
+                                    //                                                           colors: [
+                                    //                                                             HexColor("#020204").withOpacity(1),
+                                    //                                                             HexColor("#36393E").withOpacity(1),
+                                    //                                                           ],
+                                    //                                                         ),
+                                    //                                                         boxShadow: [
+                                    //                                                           BoxShadow(color: HexColor('#04060F'), offset: Offset(10, 10), blurRadius: 10)
+                                    //                                                         ],
+                                    //                                                         borderRadius: BorderRadius.circular(15)),
+                                    //                                                     child: Align(
+                                    //                                                         alignment: Alignment.center,
+                                    //                                                         child: Padding(
+                                    //                                                           padding: const EdgeInsets.all(8.0),
+                                    //                                                           child: Column(
+                                    //                                                             children: [
+                                    //                                                               SizedBox(
+                                    //                                                                 height: 0,
+                                    //                                                               ),
+                                    //
+                                    //                                                               Column(
+                                    //                                                                 crossAxisAlignment: CrossAxisAlignment.start,
+                                    //                                                                 children: [
+                                    //                                                                   Container(
+                                    //                                                                     margin: EdgeInsets.only(left: 18),
+                                    //                                                                     child: Text('Title', style: FontStyleUtility.h14(fontColor: ColorUtils.primary_grey, family: 'Pr')),
+                                    //                                                                   ),
+                                    //                                                                   SizedBox(
+                                    //                                                                     height: 11,
+                                    //                                                                   ),
+                                    //                                                                   Container(
+                                    //                                                                     margin: EdgeInsets.symmetric(horizontal: 10),
+                                    //                                                                     // width: 300,
+                                    //                                                                     decoration: BoxDecoration(
+                                    //                                                                       // color: Colors.black.withOpacity(0.65),
+                                    //                                                                         gradient: LinearGradient(
+                                    //                                                                           begin: Alignment.centerLeft,
+                                    //                                                                           end: Alignment.centerRight,
+                                    //                                                                           // stops: [0.1, 0.5, 0.7, 0.9],
+                                    //                                                                           colors: [
+                                    //                                                                             HexColor("#36393E").withOpacity(1),
+                                    //                                                                             HexColor("#020204").withOpacity(1),
+                                    //                                                                           ],
+                                    //                                                                         ),
+                                    //                                                                         boxShadow: [BoxShadow(color: HexColor('#04060F'), offset: Offset(10, 10), blurRadius: 10)],
+                                    //                                                                         borderRadius: BorderRadius.circular(20)),
+                                    //
+                                    //                                                                     child: TextFormField(
+                                    //                                                                       maxLength: 150,
+                                    //                                                                       decoration: InputDecoration(
+                                    //                                                                         contentPadding: EdgeInsets.only(left: 20, top: 14, bottom: 14),
+                                    //                                                                         alignLabelWithHint: false,
+                                    //                                                                         isDense: true,
+                                    //                                                                         hintText: 'Add alarm title',
+                                    //                                                                         counterStyle: TextStyle(
+                                    //                                                                           height: double.minPositive,
+                                    //                                                                         ),
+                                    //                                                                         counterText: "",
+                                    //                                                                         filled: true,
+                                    //                                                                         border: InputBorder.none,
+                                    //                                                                         enabledBorder: const OutlineInputBorder(
+                                    //                                                                           borderSide: BorderSide(color: Colors.transparent, width: 1),
+                                    //                                                                           borderRadius: BorderRadius.all(Radius.circular(10)),
+                                    //                                                                         ),
+                                    //                                                                         hintStyle: FontStyleUtility.h14(fontColor: HexColor('#CBCBCB'), family: 'PR'),
+                                    //                                                                       ),
+                                    //                                                                       style: FontStyleUtility.h14(fontColor: ColorUtils.primary_grey, family: 'PR'),
+                                    //                                                                       controller: Alarm_title,
+                                    //                                                                       keyboardType: TextInputType.text,
+                                    //                                                                     ),
+                                    //                                                                   ),
+                                    //                                                                 ],
+                                    //                                                               ),
+                                    //                                                               SizedBox(
+                                    //                                                                 height: 10,
+                                    //                                                               ),
+                                    //                                                               GestureDetector(
+                                    //                                                                 onTap: () {
+                                    //                                                                   setState(() {
+                                    //                                                                     Alarm_title_list.add(Alarm_title.text);
+                                    //                                                                     Navigator.pop(context);
+                                    //                                                                   });
+                                    //                                                                 },
+                                    //                                                                 child: Container(
+                                    //                                                                   alignment: Alignment.topRight,
+                                    //                                                                   child: Text(
+                                    //                                                                     'Add',
+                                    //                                                                     style: FontStyleUtility.h12(fontColor: ColorUtils.primary_grey, family: 'PR'),
+                                    //                                                                   ),
+                                    //                                                                 ),
+                                    //                                                               )
+                                    //                                                               // common_button_gold(
+                                    //                                                               //   onTap: () {
+                                    //                                                               //     Get
+                                    //                                                               //         .to(
+                                    //                                                               //         DashboardScreen());
+                                    //                                                               //   },
+                                    //                                                               //   title_text: 'Go to Dashboard',
+                                    //                                                               // ),
+                                    //                                                             ],
+                                    //                                                           ),
+                                    //                                                         )),
+                                    //                                                   ),
+                                    //                                                 ),
+                                    //                                                 GestureDetector(
+                                    //                                                   onTap: () {
+                                    //                                                     Navigator.pop(context);
+                                    //                                                   },
+                                    //                                                   child: Container(
+                                    //                                                     margin: EdgeInsets.only(right: 10),
+                                    //                                                     alignment: Alignment.topRight,
+                                    //                                                     child: Container(
+                                    //                                                         decoration: BoxDecoration(
+                                    //                                                           // color: Colors.black.withOpacity(0.65),
+                                    //                                                             gradient: LinearGradient(
+                                    //                                                               begin: Alignment.centerLeft,
+                                    //                                                               end: Alignment.centerRight,
+                                    //                                                               // stops: [0.1, 0.5, 0.7, 0.9],
+                                    //                                                               colors: [
+                                    //                                                                 HexColor("#36393E").withOpacity(1),
+                                    //                                                                 HexColor("#020204").withOpacity(1),
+                                    //                                                               ],
+                                    //                                                             ),
+                                    //                                                             boxShadow: [BoxShadow(color: HexColor('#04060F'), offset: Offset(0, 3), blurRadius: 5)],
+                                    //                                                             borderRadius: BorderRadius.circular(20)),
+                                    //                                                         child: Padding(
+                                    //                                                           padding: const EdgeInsets.all(4.0),
+                                    //                                                           child: Icon(
+                                    //                                                             Icons.cancel_outlined,
+                                    //                                                             size: 13,
+                                    //                                                             color: ColorUtils.primary_grey,
+                                    //                                                           ),
+                                    //                                                         )),
+                                    //                                                   ),
+                                    //                                                 )
+                                    //                                               ],
+                                    //                                             ),
+                                    //                                           ],
+                                    //                                         )),
+                                    //                                   );
+                                    //                                 },
+                                    //                               );
+                                    //                             },
+                                    //                             title: Text('Title',
+                                    //                                 style: FontStyleUtility.h14(
+                                    //                                     fontColor:
+                                    //                                     ColorUtils
+                                    //                                         .primary_grey,
+                                    //                                     family:
+                                    //                                     'PR')),
+                                    //                             trailing: const Icon(
+                                    //                                 Icons
+                                    //                                     .arrow_forward_ios,
+                                    //                                 size: 15,
+                                    //                                 color: Colors
+                                    //                                     .white),
+                                    //                           ),
+                                    //                           ListTile(
+                                    //                             title: Text(
+                                    //                               'Repeat',
+                                    //                               style: FontStyleUtility.h14(
+                                    //                                   fontColor:
+                                    //                                   ColorUtils
+                                    //                                       .primary_gold,
+                                    //                                   family: 'PR'),
+                                    //                             ),
+                                    //                             trailing:
+                                    //                             const Icon(
+                                    //                               Icons
+                                    //                                   .arrow_forward_ios,
+                                    //                               size: 15,
+                                    //                               color:
+                                    //                               Colors.white,
+                                    //                             ),
+                                    //                           ),
+                                    //                           GestureDetector(
+                                    //                             onTap: () {
+                                    //                               print('object');
+                                    //
+                                    //                               showDialog(
+                                    //                                 context:
+                                    //                                 context,
+                                    //                                 builder:
+                                    //                                     (BuildContext
+                                    //                                 context) {
+                                    //                                   double width =
+                                    //                                       MediaQuery.of(
+                                    //                                           context)
+                                    //                                           .size
+                                    //                                           .width;
+                                    //                                   double
+                                    //                                   height =
+                                    //                                       MediaQuery.of(
+                                    //                                           context)
+                                    //                                           .size
+                                    //                                           .height;
+                                    //                                   return AlertDialog(
+                                    //                                       backgroundColor:
+                                    //                                       Colors
+                                    //                                           .transparent,
+                                    //                                       contentPadding:
+                                    //                                       EdgeInsets
+                                    //                                           .zero,
+                                    //                                       elevation:
+                                    //                                       0.0,
+                                    //                                       // title: Center(child: Text("Evaluation our APP")),
+                                    //                                       content:
+                                    //                                       Column(
+                                    //                                         mainAxisAlignment:
+                                    //                                         MainAxisAlignment.center,
+                                    //                                         children: [
+                                    //                                           Stack(
+                                    //                                             children: [
+                                    //                                               Container(
+                                    //                                                 // height: 150,
+                                    //                                                 // height: double.maxFinite,
+                                    //                                                 height: MediaQuery.of(context).size.height / 4,
+                                    //                                                 width: double.maxFinite,
+                                    //                                                 decoration:
+                                    //                                                 BoxDecoration(
+                                    //                                                   // color: Colors.black.withOpacity(0.65),
+                                    //                                                     gradient:
+                                    //                                                     LinearGradient(
+                                    //                                                       begin: Alignment.centerLeft,
+                                    //                                                       end: Alignment.centerRight,
+                                    //                                                       // stops: [0.1, 0.5, 0.7, 0.9],
+                                    //                                                       colors: [
+                                    //                                                         HexColor("#020204").withOpacity(1),
+                                    //                                                         HexColor("#36393E").withOpacity(1),
+                                    //                                                       ],
+                                    //                                                     ),
+                                    //                                                     boxShadow: [
+                                    //                                                       BoxShadow(color: HexColor('#04060F'), offset: Offset(10, 10), blurRadius: 10)
+                                    //                                                     ],
+                                    //                                                     borderRadius: BorderRadius.circular(20)),
+                                    //                                                 margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                                    //                                                 // height: 122,
+                                    //                                                 // width: 133,
+                                    //                                                 // padding: const EdgeInsets.all(8.0),
+                                    //                                                 child: Column(
+                                    //                                                   mainAxisAlignment: MainAxisAlignment.center,
+                                    //                                                   children: [
+                                    //                                                     Container(
+                                    //                                                       // color: Colors.white,
+                                    //                                                       alignment: Alignment.center,
+                                    //                                                       child: ListView.builder(
+                                    //                                                         padding: EdgeInsets.only(bottom: 0),
+                                    //
+                                    //                                                         // physics: NeverScrollableScrollPhysics(),
+                                    //                                                         itemCount: list_alarm.length,
+                                    //                                                         shrinkWrap: true,
+                                    //                                                         itemBuilder: (BuildContext context, int index) {
+                                    //                                                           return GestureDetector(
+                                    //                                                             onTap: () {
+                                    //                                                               setState(() {
+                                    //                                                                 Selected_sound = list_alarm[index];
+                                    //                                                                 print("method_selected $Selected_sound");
+                                    //                                                               });
+                                    //                                                               Navigator.pop(context);
+                                    //                                                             },
+                                    //                                                             child: Container(
+                                    //                                                               margin: EdgeInsets.symmetric(vertical: 8.5),
+                                    //                                                               alignment: Alignment.center,
+                                    //                                                               child: Text(
+                                    //                                                                 list_alarm[index],
+                                    //                                                                 style: FontStyleUtility.h15(fontColor: ColorUtils.primary_grey, family: 'PM'),
+                                    //                                                               ),
+                                    //                                                             ),
+                                    //                                                           );
+                                    //                                                         },
+                                    //                                                       ),
+                                    //                                                     ),
+                                    //                                                   ],
+                                    //                                                 ),
+                                    //                                               ),
+                                    //                                               GestureDetector(
+                                    //                                                 onTap: () {
+                                    //                                                   Navigator.pop(context);
+                                    //                                                 },
+                                    //                                                 child: Container(
+                                    //                                                   margin: EdgeInsets.only(right: 0),
+                                    //                                                   alignment: Alignment.topRight,
+                                    //                                                   child: Container(
+                                    //                                                       decoration: BoxDecoration(
+                                    //                                                         // color: Colors.black.withOpacity(0.65),
+                                    //                                                           gradient: LinearGradient(
+                                    //                                                             begin: Alignment.centerLeft,
+                                    //                                                             end: Alignment.centerRight,
+                                    //                                                             // stops: [0.1, 0.5, 0.7, 0.9],
+                                    //                                                             colors: [
+                                    //                                                               HexColor("#36393E").withOpacity(1),
+                                    //                                                               HexColor("#020204").withOpacity(1),
+                                    //                                                             ],
+                                    //                                                           ),
+                                    //                                                           boxShadow: [BoxShadow(color: HexColor('#04060F'), offset: Offset(0, 3), blurRadius: 5)],
+                                    //                                                           borderRadius: BorderRadius.circular(20)),
+                                    //                                                       child: Padding(
+                                    //                                                         padding: const EdgeInsets.all(4.0),
+                                    //                                                         child: Icon(
+                                    //                                                           Icons.cancel_outlined,
+                                    //                                                           size: 20,
+                                    //                                                           color: ColorUtils.primary_grey,
+                                    //                                                         ),
+                                    //                                                       )),
+                                    //                                                 ),
+                                    //                                               )
+                                    //                                             ],
+                                    //                                           ),
+                                    //                                         ],
+                                    //                                       ));
+                                    //                                 },
+                                    //                               );
+                                    //                             },
+                                    //                             child: ListTile(
+                                    //                               title: Text(
+                                    //                                   'Sound',
+                                    //                                   style: FontStyleUtility.h14(
+                                    //                                       fontColor:
+                                    //                                       ColorUtils
+                                    //                                           .primary_gold,
+                                    //                                       family:
+                                    //                                       'PR')),
+                                    //                               trailing: const Icon(
+                                    //                                   Icons
+                                    //                                       .arrow_forward_ios,
+                                    //                                   size: 15,
+                                    //                                   color: Colors
+                                    //                                       .white),
+                                    //                             ),
+                                    //                           ),
+                                    //                           GestureDetector(
+                                    //                             onTap: () async {
+                                    //                               if (Alarm_title
+                                    //                                   .text
+                                    //                                   .isEmpty) {
+                                    //                                 CommonWidget()
+                                    //                                     .showErrorToaster(
+                                    //                                     msg:
+                                    //                                     "Enter Alarm title");
+                                    //                                 return;
+                                    //                               } else {
+                                    //                                 await onSaveAlarm();
+                                    //                               }
+                                    //                             },
+                                    //                             child: Container(
+                                    //                               width: MediaQuery.of(
+                                    //                                   context)
+                                    //                                   .size
+                                    //                                   .width /
+                                    //                                   3,
+                                    //                               decoration: BoxDecoration(
+                                    //                                   borderRadius:
+                                    //                                   BorderRadius
+                                    //                                       .circular(
+                                    //                                       30),
+                                    //                                   border: Border.all(
+                                    //                                       color: ColorUtils
+                                    //                                           .primary_grey,
+                                    //                                       width:
+                                    //                                       1)),
+                                    //                               child: Padding(
+                                    //                                 padding: const EdgeInsets
+                                    //                                     .symmetric(
+                                    //                                     vertical:
+                                    //                                     12.0,
+                                    //                                     horizontal:
+                                    //                                     8),
+                                    //                                 child: Row(
+                                    //                                   mainAxisAlignment:
+                                    //                                   MainAxisAlignment
+                                    //                                       .center,
+                                    //                                   children: [
+                                    //                                     const Icon(
+                                    //                                       Icons
+                                    //                                           .alarm,
+                                    //                                       color: Colors
+                                    //                                           .white,
+                                    //                                       size: 25,
+                                    //                                     ),
+                                    //                                     const SizedBox(
+                                    //                                       width: 10,
+                                    //                                     ),
+                                    //                                     Text(
+                                    //                                       'Save',
+                                    //                                       style: FontStyleUtility.h16(
+                                    //                                           fontColor: ColorUtils
+                                    //                                               .primary_gold,
+                                    //                                           family:
+                                    //                                           'PR'),
+                                    //                                     ),
+                                    //                                   ],
+                                    //                                 ),
+                                    //                               ),
+                                    //                             ),
+                                    //                           )
+                                    //                         ],
+                                    //                       ),
+                                    //                     ),
+                                    //                   );
+                                    //                 },
+                                    //               );
+                                    //             },
+                                    //           );
+                                    //           // scheduleAlarm();
+                                    //         },
+                                    //         child: Container(
+                                    //           decoration: BoxDecoration(
+                                    //             // color: Colors.black.withOpacity(0.65),
+                                    //               gradient: LinearGradient(
+                                    //                 begin: Alignment.centerLeft,
+                                    //                 end: Alignment.centerRight,
+                                    //                 // stops: [0.1, 0.5, 0.7, 0.9],
+                                    //                 colors: [
+                                    //                   HexColor("#36393E")
+                                    //                       .withOpacity(1),
+                                    //                   HexColor("#020204")
+                                    //                       .withOpacity(1),
+                                    //                 ],
+                                    //               ),
+                                    //               boxShadow: [
+                                    //                 BoxShadow(
+                                    //                     color: HexColor('#04060F'),
+                                    //                     offset:
+                                    //                     const Offset(10, 10),
+                                    //                     blurRadius: 20)
+                                    //               ],
+                                    //               borderRadius:
+                                    //               BorderRadius.circular(20)),
+                                    //           child: Padding(
+                                    //             padding: const EdgeInsets.all(8.0),
+                                    //             child: Icon(
+                                    //               Icons.add_circle_outline,
+                                    //               color: ColorUtils.primary_grey,
+                                    //             ),
+                                    //           ),
+                                    //         )),
+                                    //   )
+                                    // else
+                                    //   const Center(
+                                    //       child: Text(
+                                    //         'Only 5 alarms allowed!',
+                                    //         style: const TextStyle(color: Colors.white),
+                                    //       )),
+                                  ]).toList(),
+                                ),
+                              );
+                            }
+                            return const Center(
+                              child: const Text(
+                                'Loading..',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 15,
+                  ),
                   Container(
                     decoration: BoxDecoration(
                         // color: Colors.black.withOpacity(0.65),
@@ -1095,769 +3389,6 @@ class _KegelScreenState extends State<KegelScreen>
                   //   },
                   //   child: Text('alarm page'),
                   // ),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                        // color: Colors.black.withOpacity(0.65),
-                        gradient: LinearGradient(
-                          begin: Alignment.centerLeft,
-                          end: Alignment.centerRight,
-                          // stops: [0.1, 0.5, 0.7, 0.9],
-                          colors: [
-                            HexColor("#36393E").withOpacity(1),
-                            HexColor("#020204").withOpacity(1),
-                          ],
-                        ),
-                        boxShadow: [
-                          BoxShadow(
-                              color: HexColor('#04060F'),
-                              offset: const Offset(10, 10),
-                              blurRadius: 20)
-                        ],
-                        borderRadius: BorderRadius.circular(20)),
-                    child: FutureBuilder<List<AlarmInfo>>(
-                      future: _alarms,
-                      builder: (context, snapshot) {
-                        if (snapshot.hasData) {
-                          _currentAlarms = snapshot.data;
-                          return Container(
-                            child: ListView(
-                              shrinkWrap: true,
-                              padding: EdgeInsets.zero,
-                              children: snapshot.data!.map<Widget>((alarm) {
-                                var alarmTime = DateFormat('hh:mm aa')
-                                    .format(alarm.alarmDateTime!);
-                                var gradientColor = GradientTemplate
-                                    .gradientTemplate[alarm.gradientColorIndex!]
-                                    .colors;
-                                return Container(
-                                  margin: const EdgeInsets.only(bottom: 0),
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 16, vertical: 0),
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      // color: Colors.black.withOpacity(0.65),
-                                      // gradient: LinearGradient(
-                                      //   begin: Alignment.centerLeft,
-                                      //   end: Alignment.centerRight,
-                                      //   // stops: [0.1, 0.5, 0.7, 0.9],
-                                      //   colors: [
-                                      //     HexColor("#020204").withOpacity(1),
-                                      //     HexColor("#36393E").withOpacity(1),
-                                      //   ],
-                                      // ),
-                                      // boxShadow: [
-                                      //   BoxShadow(
-                                      //       color: HexColor('#04060F'),
-                                      //       offset: Offset(-10, 10),
-                                      //       blurRadius: 20)
-                                      // ],
-                                      border: Border(
-                                        bottom: BorderSide(
-                                          //                   <--- left side
-                                          color: HexColor('#1d1d1d'),
-                                          width: 1.5,
-                                        ),
-                                      ),
-                                    ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: <Widget>[
-                                          ListTile(
-                                            title: Text(
-                                              alarmTime,
-                                              style: FontStyleUtility.h16(
-                                                  fontColor: Colors.white,
-                                                  family: 'PR'),
-                                            ),
-                                            subtitle: Text(alarm.title!,
-                                                style: FontStyleUtility.h14(
-                                                    fontColor:
-                                                        HexColor('#8A8A8A'),
-                                                    family: 'PR')),
-                                            trailing: IconButton(
-                                                icon: const Icon(Icons.delete),
-                                                color: ColorUtils.primary_gold,
-                                                onPressed: () {
-                                                  deleteAlarm(alarm.id!);
-                                                }),
-                                            // Container(
-                                            //   width: 20,
-                                            //   child: Transform.scale(
-                                            //     scale: 0.5,
-                                            //     child: CupertinoSwitch(
-                                            //       onChanged: (bool value) {},
-                                            //       value: true,
-                                            //       trackColor: HexColor('#717171'),
-                                            //       thumbColor: Colors.black87,
-                                            //       activeColor:
-                                            //           ColorUtils.primary_gold,
-                                            //     ),
-                                            //   ),
-                                            // ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                );
-                              }).followedBy([
-                                if (_currentAlarms!.length < 5)
-                                  Container(
-                                    child: FlatButton(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 32, vertical: 10),
-                                        onPressed: () {
-                                          _alarmTimeString = DateFormat('HH:mm')
-                                              .format(selectedDate);
-                                          showModalBottomSheet(
-                                            useRootNavigator: true,
-                                            context: context,
-                                            clipBehavior: Clip.antiAlias,
-                                            shape: const RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.vertical(
-                                                top: Radius.circular(24),
-                                              ),
-                                            ),
-                                            builder: (context) {
-                                              return StatefulBuilder(
-                                                builder:
-                                                    (context, setModalState) {
-                                                  return Container(
-                                                    decoration: BoxDecoration(
-                                                        // color: Colors.black.withOpacity(0.65),
-                                                        gradient:
-                                                            LinearGradient(
-                                                          begin: Alignment
-                                                              .centerLeft,
-                                                          end: Alignment
-                                                              .centerRight,
-                                                          // stops: [0.1, 0.5, 0.7, 0.9],
-                                                          colors: [
-                                                            HexColor("#020204")
-                                                                .withOpacity(1),
-                                                            HexColor("#36393E")
-                                                                .withOpacity(1),
-                                                          ],
-                                                        ),
-                                                        boxShadow: [
-                                                          BoxShadow(
-                                                              color: HexColor(
-                                                                  '#04060F'),
-                                                              offset:
-                                                                  const Offset(
-                                                                      -10, 10),
-                                                              blurRadius: 20)
-                                                        ],
-                                                        borderRadius:
-                                                            const BorderRadius
-                                                                    .only(
-                                                                topLeft: Radius
-                                                                    .circular(
-                                                                        20),
-                                                                topRight: Radius
-                                                                    .circular(
-                                                                        20))),
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            32),
-                                                    child:
-                                                        SingleChildScrollView(
-                                                      child: Column(
-                                                        children: [
-                                                          FlatButton(
-                                                            onPressed:
-                                                                () async {
-                                                              var selectedTime =
-                                                                  await showTimePicker(
-                                                                context:
-                                                                    context,
-                                                                // initialEntryMode: DatePickerEntryMode.calendarOnly,<- this
-                                                                initialEntryMode:
-                                                                    TimePickerEntryMode
-                                                                        .dial,
-                                                                initialTime:
-                                                                    TimeOfDay
-                                                                        .now(),
-                                                                builder:
-                                                                    (context,
-                                                                        child) {
-                                                                  return Theme(
-                                                                    data: Theme.of(
-                                                                            context)
-                                                                        .copyWith(
-                                                                      colorScheme:
-                                                                          ColorScheme
-                                                                              .dark(
-                                                                        primary:
-                                                                            Colors.black,
-                                                                        onPrimary:
-                                                                            Colors.white,
-                                                                        surface:
-                                                                            ColorUtils.primary_gold,
-                                                                        // onPrimary: Colors.black, // <-- SEE HERE
-                                                                        onSurface:
-                                                                            Colors.black,
-                                                                      ),
-                                                                      dialogBackgroundColor:
-                                                                          ColorUtils
-                                                                              .primary_gold,
-                                                                      textButtonTheme:
-                                                                          TextButtonThemeData(
-                                                                        style: TextButton
-                                                                            .styleFrom(
-                                                                          primary:
-                                                                              Colors.black, // button text color
-                                                                        ),
-                                                                      ),
-                                                                    ),
-                                                                    child:
-                                                                        child!,
-                                                                  );
-                                                                },
-                                                              );
-                                                              if (selectedTime !=
-                                                                  null) {
-                                                                final now =
-                                                                    DateTime
-                                                                        .now();
-                                                                var selectedDateTime = DateTime(
-                                                                    now.year,
-                                                                    now.month,
-                                                                    now.day,
-                                                                    selectedTime
-                                                                        .hour,
-                                                                    selectedTime
-                                                                        .minute);
-                                                                _alarmTime =
-                                                                    selectedDateTime;
-                                                                setModalState(
-                                                                    () {
-                                                                  _alarmTimeString =
-                                                                      DateFormat(
-                                                                              'HH:mm')
-                                                                          .format(
-                                                                              selectedDateTime);
-                                                                });
-                                                              }
-                                                            },
-                                                            child: Text(
-                                                                _alarmTimeString!,
-                                                                style: FontStyleUtility.h35(
-                                                                    fontColor:
-                                                                        ColorUtils
-                                                                            .primary_gold,
-                                                                    family:
-                                                                        'PM')),
-                                                          ),
-                                                          ListTile(
-                                                            onTap: () {
-                                                              showDialog(
-                                                                context:
-                                                                    context,
-                                                                builder:
-                                                                    (BuildContext
-                                                                        context) {
-                                                                  double width =
-                                                                      MediaQuery.of(
-                                                                              context)
-                                                                          .size
-                                                                          .width;
-                                                                  double
-                                                                      height =
-                                                                      MediaQuery.of(
-                                                                              context)
-                                                                          .size
-                                                                          .height;
-                                                                  return BackdropFilter(
-                                                                    filter: ImageFilter.blur(
-                                                                        sigmaX:
-                                                                            10,
-                                                                        sigmaY:
-                                                                            10),
-                                                                    child: AlertDialog(
-                                                                        backgroundColor: Colors.transparent,
-                                                                        contentPadding: EdgeInsets.zero,
-                                                                        elevation: 0.0,
-                                                                        // title: Center(child: Text("Evaluation our APP")),
-                                                                        content: Column(
-                                                                          mainAxisAlignment:
-                                                                              MainAxisAlignment.center,
-                                                                          children: [
-                                                                            Stack(
-                                                                              children: [
-                                                                                Padding(
-                                                                                  padding: const EdgeInsets.all(8.0),
-                                                                                  child: Container(
-                                                                                    decoration:
-                                                                                        BoxDecoration(
-                                                                                            // color: Colors.black.withOpacity(0.65),
-                                                                                            gradient:
-                                                                                                LinearGradient(
-                                                                                              begin: Alignment.centerLeft,
-                                                                                              end: Alignment.centerRight,
-                                                                                              // stops: [0.1, 0.5, 0.7, 0.9],
-                                                                                              colors: [
-                                                                                                HexColor("#020204").withOpacity(1),
-                                                                                                HexColor("#36393E").withOpacity(1),
-                                                                                              ],
-                                                                                            ),
-                                                                                            boxShadow: [
-                                                                                              BoxShadow(color: HexColor('#04060F'), offset: Offset(10, 10), blurRadius: 10)
-                                                                                            ],
-                                                                                            borderRadius: BorderRadius.circular(15)),
-                                                                                    child: Align(
-                                                                                        alignment: Alignment.center,
-                                                                                        child: Padding(
-                                                                                          padding: const EdgeInsets.all(8.0),
-                                                                                          child: Column(
-                                                                                            children: [
-                                                                                              SizedBox(
-                                                                                                height: 0,
-                                                                                              ),
-
-                                                                                              Column(
-                                                                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                                                                children: [
-                                                                                                  Container(
-                                                                                                    margin: EdgeInsets.only(left: 18),
-                                                                                                    child: Text('Title', style: FontStyleUtility.h14(fontColor: ColorUtils.primary_grey, family: 'Pr')),
-                                                                                                  ),
-                                                                                                  SizedBox(
-                                                                                                    height: 11,
-                                                                                                  ),
-                                                                                                  Container(
-                                                                                                    margin: EdgeInsets.symmetric(horizontal: 10),
-                                                                                                    // width: 300,
-                                                                                                    decoration: BoxDecoration(
-                                                                                                        // color: Colors.black.withOpacity(0.65),
-                                                                                                        gradient: LinearGradient(
-                                                                                                          begin: Alignment.centerLeft,
-                                                                                                          end: Alignment.centerRight,
-                                                                                                          // stops: [0.1, 0.5, 0.7, 0.9],
-                                                                                                          colors: [
-                                                                                                            HexColor("#36393E").withOpacity(1),
-                                                                                                            HexColor("#020204").withOpacity(1),
-                                                                                                          ],
-                                                                                                        ),
-                                                                                                        boxShadow: [BoxShadow(color: HexColor('#04060F'), offset: Offset(10, 10), blurRadius: 10)],
-                                                                                                        borderRadius: BorderRadius.circular(20)),
-
-                                                                                                    child: TextFormField(
-                                                                                                      maxLength: 150,
-                                                                                                      decoration: InputDecoration(
-                                                                                                        contentPadding: EdgeInsets.only(left: 20, top: 14, bottom: 14),
-                                                                                                        alignLabelWithHint: false,
-                                                                                                        isDense: true,
-                                                                                                        hintText: 'Add alarm title',
-                                                                                                        counterStyle: TextStyle(
-                                                                                                          height: double.minPositive,
-                                                                                                        ),
-                                                                                                        counterText: "",
-                                                                                                        filled: true,
-                                                                                                        border: InputBorder.none,
-                                                                                                        enabledBorder: const OutlineInputBorder(
-                                                                                                          borderSide: BorderSide(color: Colors.transparent, width: 1),
-                                                                                                          borderRadius: BorderRadius.all(Radius.circular(10)),
-                                                                                                        ),
-                                                                                                        hintStyle: FontStyleUtility.h14(fontColor: HexColor('#CBCBCB'), family: 'PR'),
-                                                                                                      ),
-                                                                                                      style: FontStyleUtility.h14(fontColor: ColorUtils.primary_grey, family: 'PR'),
-                                                                                                      controller: Alarm_title,
-                                                                                                      keyboardType: TextInputType.text,
-                                                                                                    ),
-                                                                                                  ),
-                                                                                                ],
-                                                                                              ),
-                                                                                              SizedBox(
-                                                                                                height: 10,
-                                                                                              ),
-                                                                                              GestureDetector(
-                                                                                                onTap: () {
-                                                                                                  setState(() {
-                                                                                                    Alarm_title_list.add(Alarm_title.text);
-                                                                                                    Navigator.pop(context);
-                                                                                                  });
-                                                                                                },
-                                                                                                child: Container(
-                                                                                                  alignment: Alignment.topRight,
-                                                                                                  child: Text(
-                                                                                                    'Add',
-                                                                                                    style: FontStyleUtility.h12(fontColor: ColorUtils.primary_grey, family: 'PR'),
-                                                                                                  ),
-                                                                                                ),
-                                                                                              )
-                                                                                              // common_button_gold(
-                                                                                              //   onTap: () {
-                                                                                              //     Get
-                                                                                              //         .to(
-                                                                                              //         DashboardScreen());
-                                                                                              //   },
-                                                                                              //   title_text: 'Go to Dashboard',
-                                                                                              // ),
-                                                                                            ],
-                                                                                          ),
-                                                                                        )),
-                                                                                  ),
-                                                                                ),
-                                                                                GestureDetector(
-                                                                                  onTap: () {
-                                                                                    Navigator.pop(context);
-                                                                                  },
-                                                                                  child: Container(
-                                                                                    margin: EdgeInsets.only(right: 10),
-                                                                                    alignment: Alignment.topRight,
-                                                                                    child: Container(
-                                                                                        decoration: BoxDecoration(
-                                                                                            // color: Colors.black.withOpacity(0.65),
-                                                                                            gradient: LinearGradient(
-                                                                                              begin: Alignment.centerLeft,
-                                                                                              end: Alignment.centerRight,
-                                                                                              // stops: [0.1, 0.5, 0.7, 0.9],
-                                                                                              colors: [
-                                                                                                HexColor("#36393E").withOpacity(1),
-                                                                                                HexColor("#020204").withOpacity(1),
-                                                                                              ],
-                                                                                            ),
-                                                                                            boxShadow: [BoxShadow(color: HexColor('#04060F'), offset: Offset(0, 3), blurRadius: 5)],
-                                                                                            borderRadius: BorderRadius.circular(20)),
-                                                                                        child: Padding(
-                                                                                          padding: const EdgeInsets.all(4.0),
-                                                                                          child: Icon(
-                                                                                            Icons.cancel_outlined,
-                                                                                            size: 13,
-                                                                                            color: ColorUtils.primary_grey,
-                                                                                          ),
-                                                                                        )),
-                                                                                  ),
-                                                                                )
-                                                                              ],
-                                                                            ),
-                                                                          ],
-                                                                        )),
-                                                                  );
-                                                                },
-                                                              );
-                                                            },
-                                                            title: Text('Title',
-                                                                style: FontStyleUtility.h14(
-                                                                    fontColor:
-                                                                        ColorUtils
-                                                                            .primary_grey,
-                                                                    family:
-                                                                        'PR')),
-                                                            trailing: const Icon(
-                                                                Icons
-                                                                    .arrow_forward_ios,
-                                                                size: 15,
-                                                                color: Colors
-                                                                    .white),
-                                                          ),
-                                                          ListTile(
-                                                            title: Text(
-                                                              'Repeat',
-                                                              style: FontStyleUtility.h14(
-                                                                  fontColor:
-                                                                      ColorUtils
-                                                                          .primary_gold,
-                                                                  family: 'PR'),
-                                                            ),
-                                                            trailing:
-                                                                const Icon(
-                                                              Icons
-                                                                  .arrow_forward_ios,
-                                                              size: 15,
-                                                              color:
-                                                                  Colors.white,
-                                                            ),
-                                                          ),
-                                                          GestureDetector(
-                                                            onTap: () {
-                                                              print('object');
-
-                                                              showDialog(
-                                                                context:
-                                                                    context,
-                                                                builder:
-                                                                    (BuildContext
-                                                                        context) {
-                                                                  double width =
-                                                                      MediaQuery.of(
-                                                                              context)
-                                                                          .size
-                                                                          .width;
-                                                                  double
-                                                                      height =
-                                                                      MediaQuery.of(
-                                                                              context)
-                                                                          .size
-                                                                          .height;
-                                                                  return AlertDialog(
-                                                                      backgroundColor:
-                                                                          Colors
-                                                                              .transparent,
-                                                                      contentPadding:
-                                                                          EdgeInsets
-                                                                              .zero,
-                                                                      elevation:
-                                                                          0.0,
-                                                                      // title: Center(child: Text("Evaluation our APP")),
-                                                                      content:
-                                                                          Column(
-                                                                        mainAxisAlignment:
-                                                                            MainAxisAlignment.center,
-                                                                        children: [
-                                                                          Stack(
-                                                                            children: [
-                                                                              Container(
-                                                                                // height: 150,
-                                                                                // height: double.maxFinite,
-                                                                                height: MediaQuery.of(context).size.height / 4,
-                                                                                width: double.maxFinite,
-                                                                                decoration:
-                                                                                    BoxDecoration(
-                                                                                        // color: Colors.black.withOpacity(0.65),
-                                                                                        gradient:
-                                                                                            LinearGradient(
-                                                                                          begin: Alignment.centerLeft,
-                                                                                          end: Alignment.centerRight,
-                                                                                          // stops: [0.1, 0.5, 0.7, 0.9],
-                                                                                          colors: [
-                                                                                            HexColor("#020204").withOpacity(1),
-                                                                                            HexColor("#36393E").withOpacity(1),
-                                                                                          ],
-                                                                                        ),
-                                                                                        boxShadow: [
-                                                                                          BoxShadow(color: HexColor('#04060F'), offset: Offset(10, 10), blurRadius: 10)
-                                                                                        ],
-                                                                                        borderRadius: BorderRadius.circular(20)),
-                                                                                margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                                                                                // height: 122,
-                                                                                // width: 133,
-                                                                                // padding: const EdgeInsets.all(8.0),
-                                                                                child: Column(
-                                                                                  mainAxisAlignment: MainAxisAlignment.center,
-                                                                                  children: [
-                                                                                    Container(
-                                                                                      // color: Colors.white,
-                                                                                      alignment: Alignment.center,
-                                                                                      child: ListView.builder(
-                                                                                        padding: EdgeInsets.only(bottom: 0),
-
-                                                                                        // physics: NeverScrollableScrollPhysics(),
-                                                                                        itemCount: list_alarm.length,
-                                                                                        shrinkWrap: true,
-                                                                                        itemBuilder: (BuildContext context, int index) {
-                                                                                          return GestureDetector(
-                                                                                            onTap: () {
-                                                                                              setState(() {
-                                                                                                Selected_sound = list_alarm[index];
-                                                                                                print("method_selected $Selected_sound");
-                                                                                              });
-                                                                                              Navigator.pop(context);
-                                                                                            },
-                                                                                            child: Container(
-                                                                                              margin: EdgeInsets.symmetric(vertical: 8.5),
-                                                                                              alignment: Alignment.center,
-                                                                                              child: Text(
-                                                                                                list_alarm[index],
-                                                                                                style: FontStyleUtility.h15(fontColor: ColorUtils.primary_grey, family: 'PM'),
-                                                                                              ),
-                                                                                            ),
-                                                                                          );
-                                                                                        },
-                                                                                      ),
-                                                                                    ),
-                                                                                  ],
-                                                                                ),
-                                                                              ),
-                                                                              GestureDetector(
-                                                                                onTap: () {
-                                                                                  Navigator.pop(context);
-                                                                                },
-                                                                                child: Container(
-                                                                                  margin: EdgeInsets.only(right: 0),
-                                                                                  alignment: Alignment.topRight,
-                                                                                  child: Container(
-                                                                                      decoration: BoxDecoration(
-                                                                                          // color: Colors.black.withOpacity(0.65),
-                                                                                          gradient: LinearGradient(
-                                                                                            begin: Alignment.centerLeft,
-                                                                                            end: Alignment.centerRight,
-                                                                                            // stops: [0.1, 0.5, 0.7, 0.9],
-                                                                                            colors: [
-                                                                                              HexColor("#36393E").withOpacity(1),
-                                                                                              HexColor("#020204").withOpacity(1),
-                                                                                            ],
-                                                                                          ),
-                                                                                          boxShadow: [BoxShadow(color: HexColor('#04060F'), offset: Offset(0, 3), blurRadius: 5)],
-                                                                                          borderRadius: BorderRadius.circular(20)),
-                                                                                      child: Padding(
-                                                                                        padding: const EdgeInsets.all(4.0),
-                                                                                        child: Icon(
-                                                                                          Icons.cancel_outlined,
-                                                                                          size: 20,
-                                                                                          color: ColorUtils.primary_grey,
-                                                                                        ),
-                                                                                      )),
-                                                                                ),
-                                                                              )
-                                                                            ],
-                                                                          ),
-                                                                        ],
-                                                                      ));
-                                                                },
-                                                              );
-                                                            },
-                                                            child: ListTile(
-                                                              title: Text(
-                                                                  'Sound',
-                                                                  style: FontStyleUtility.h14(
-                                                                      fontColor:
-                                                                          ColorUtils
-                                                                              .primary_gold,
-                                                                      family:
-                                                                          'PR')),
-                                                              trailing: const Icon(
-                                                                  Icons
-                                                                      .arrow_forward_ios,
-                                                                  size: 15,
-                                                                  color: Colors
-                                                                      .white),
-                                                            ),
-                                                          ),
-                                                          GestureDetector(
-                                                            onTap: () async {
-                                                              if (Alarm_title
-                                                                  .text
-                                                                  .isEmpty) {
-                                                                CommonWidget()
-                                                                    .showErrorToaster(
-                                                                        msg:
-                                                                            "Enter Alarm title");
-                                                                return;
-                                                              } else {
-                                                                await onSaveAlarm();
-                                                              }
-                                                            },
-                                                            child: Container(
-                                                              width: MediaQuery.of(
-                                                                          context)
-                                                                      .size
-                                                                      .width /
-                                                                  3,
-                                                              decoration: BoxDecoration(
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                              30),
-                                                                  border: Border.all(
-                                                                      color: ColorUtils
-                                                                          .primary_grey,
-                                                                      width:
-                                                                          1)),
-                                                              child: Padding(
-                                                                padding: const EdgeInsets
-                                                                        .symmetric(
-                                                                    vertical:
-                                                                        12.0,
-                                                                    horizontal:
-                                                                        8),
-                                                                child: Row(
-                                                                  mainAxisAlignment:
-                                                                      MainAxisAlignment
-                                                                          .center,
-                                                                  children: [
-                                                                    const Icon(
-                                                                      Icons
-                                                                          .alarm,
-                                                                      color: Colors
-                                                                          .white,
-                                                                      size: 25,
-                                                                    ),
-                                                                    const SizedBox(
-                                                                      width: 10,
-                                                                    ),
-                                                                    Text(
-                                                                      'Save',
-                                                                      style: FontStyleUtility.h16(
-                                                                          fontColor: ColorUtils
-                                                                              .primary_gold,
-                                                                          family:
-                                                                              'PR'),
-                                                                    ),
-                                                                  ],
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          )
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  );
-                                                },
-                                              );
-                                            },
-                                          );
-                                          // scheduleAlarm();
-                                        },
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                              // color: Colors.black.withOpacity(0.65),
-                                              gradient: LinearGradient(
-                                                begin: Alignment.centerLeft,
-                                                end: Alignment.centerRight,
-                                                // stops: [0.1, 0.5, 0.7, 0.9],
-                                                colors: [
-                                                  HexColor("#36393E")
-                                                      .withOpacity(1),
-                                                  HexColor("#020204")
-                                                      .withOpacity(1),
-                                                ],
-                                              ),
-                                              boxShadow: [
-                                                BoxShadow(
-                                                    color: HexColor('#04060F'),
-                                                    offset:
-                                                        const Offset(10, 10),
-                                                    blurRadius: 20)
-                                              ],
-                                              borderRadius:
-                                                  BorderRadius.circular(20)),
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Icon(
-                                              Icons.add_circle_outline,
-                                              color: ColorUtils.primary_grey,
-                                            ),
-                                          ),
-                                        )),
-                                  )
-                                else
-                                  const Center(
-                                      child: Text(
-                                    'Only 5 alarms allowed!',
-                                    style: const TextStyle(color: Colors.white),
-                                  )),
-                              ]).toList(),
-                            ),
-                          );
-                        }
-                        return const Center(
-                          child: const Text(
-                            'Loading..',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
 
                   const SizedBox(
                     height: 50,

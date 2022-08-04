@@ -169,8 +169,9 @@ class _SignInScreenState extends State<SignInScreen> {
                           height: 52,
                         ),
                         common_button_gold(
-                          onTap: () {
-                            _signInScreenController.SignInAPi(context: context);
+                          onTap: () async {
+                           await _signInScreenController.SignInAPi(context: context);
+
                           },
                           title_text: 'Sign In',
                         ),
