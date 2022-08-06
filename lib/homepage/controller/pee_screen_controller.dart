@@ -94,7 +94,9 @@ class PeeScreenController extends GetxController {
     print('Response body: ${response.body}');
 
     if (response.statusCode == 200 || response.statusCode == 201) {
-      var data = convert.jsonDecode(response.body);
+      // var data = convert.jsonDecode(response.body);
+      Map<String, dynamic> data =
+      json.decode(response.body.replaceAll('}[]', '}'));
       peeGetModel = PeeGetModel.fromJson(data);
       // getUSerModelList(userInfoModel_email);
       if (peeGetModel!.error == false) {
@@ -105,7 +107,7 @@ class PeeScreenController extends GetxController {
         // CommonWidget().showToaster(msg: breathingGetModel!.message!);
         // CommonWidget().showToaster(msg: data["success"].toString());
         // await Get.to(Dashboard());
-        CommonWidget().showToaster(msg: peeGetModel!.message!);
+        // CommonWidget().showToaster(msg: peeGetModel!.message!);
 
         return peeGetModel;
       } else {

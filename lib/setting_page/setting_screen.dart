@@ -243,6 +243,7 @@ class _SettingScreenState extends State<SettingScreen> {
     await PreferenceManager().remove();
     _signUpScreenController.clear();
     // print(id_user);
-    await Get.to(FrontScreen());
+    Navigator.push(context, MaterialPageRoute(builder: (context)=> FrontScreen()));
+    // await Get.to(FrontScreen());
   }
 }

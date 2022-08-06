@@ -243,7 +243,9 @@ class Masturbation_screen_controller {
       var response = await http.get(Uri.parse(url));
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        var data = convert.jsonDecode(response.body);
+        // var data = convert.jsonDecode(response.body);
+        Map<String, dynamic> data = json.decode(response.body.replaceAll('}[]', '}'));
+        print("Data: ${data['data']}");
         m_screenWeeklyDataModel = M_ScreenWeeklyDataModel.fromJson(data);
         // getUSerModelList(userInfoModel_email);
         if (m_screenWeeklyDataModel!.error == false) {
@@ -253,7 +255,7 @@ class Masturbation_screen_controller {
           // CommonWidget().showToaster(msg: breathingGetModel!.message!);
           // CommonWidget().showToaster(msg: data["success"].toString());
           // await Get.to(Dashboard());
-          CommonWidget().showToaster(msg: m_screenWeeklyDataModel!.message!);
+          // CommonWidget().showToaster(msg: m_screenWeeklyDataModel!.message!);
 
           // for (var i = 0; i < m_screenWeeklyDataModel!.data!.length; i++) {
           //   // x_axis = data_sales[i]["month"];

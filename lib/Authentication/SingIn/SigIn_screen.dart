@@ -170,8 +170,15 @@ class _SignInScreenState extends State<SignInScreen> {
                         ),
                         common_button_gold(
                           onTap: () async {
-                           await _signInScreenController.SignInAPi(context: context);
-
+                            await _signInScreenController.SignInAPi(
+                                context: context);
+                            if (_signInScreenController.userInfoModel!.error ==
+                                false) {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => DashboardScreen()));
+                            }
                           },
                           title_text: 'Sign In',
                         ),
@@ -209,8 +216,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   child: Text(
                     'OR',
                     style: FontStyleUtility.h13(
-                        fontColor: ColorUtils.primary_grey,
-                        family: 'PM'),
+                        fontColor: ColorUtils.primary_grey, family: 'PM'),
                   ),
                 ),
                 SizedBox(
@@ -237,7 +243,8 @@ class _SignInScreenState extends State<SignInScreen> {
                       ],
                       borderRadius: BorderRadius.circular(15)),
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 15,horizontal: 8.0),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 15, horizontal: 8.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -257,7 +264,7 @@ class _SignInScreenState extends State<SignInScreen> {
                           width: 50,
                         ),
                         GestureDetector(
-                          onTap: (){
+                          onTap: () {
                             _signInScreenController.signInWithFacebook(
                                 context: context, login_type: '');
                           },

@@ -54,9 +54,15 @@ class _SwipeScreenState extends State<SwipeScreen> {
   }
 
   void _goBack() {
-    _pageController_customer!
-        .previousPage(duration: pageTurnDuration, curve: pageTurnCurve);
+    // if (page_index == 0) {
+    //   _pageController_customer!.jumpToPage(3);
+    // } else {
+      _pageController_customer!
+          .previousPage(duration: pageTurnDuration, curve: pageTurnCurve);
+    // }
   }
+
+  int page_index = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -87,7 +93,10 @@ class _SwipeScreenState extends State<SwipeScreen> {
           },
           child: PageView.builder(
             onPageChanged: (page) {
+              page_index = page;
               print('PageChanged $page');
+              print('PageChanged $page_index');
+
               // _pageController_customer!.dispose();
               if (_ledgerScreenSetup_customer_Controller.m_running == true) {
                 // M_ScreenMetalState().stopWatch_finish();

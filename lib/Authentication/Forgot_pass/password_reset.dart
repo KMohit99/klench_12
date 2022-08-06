@@ -145,6 +145,10 @@ class _PasswordResetScreenState extends State<PasswordResetScreen> {
                             labelText: 'xxxxxxxxx',
                             controller:
                                 _forgotPasswordController.newPasswordController,
+                            onChanged: (value) {
+                              print(value);
+                              checkPassword();
+                            },
                             iconData: IconButton(
                               visualDensity:
                                   VisualDensity(horizontal: -4, vertical: -4),
@@ -158,6 +162,73 @@ class _PasswordResetScreenState extends State<PasswordResetScreen> {
                             ),
                           ),
                         ),
+                        (alpha_num == false
+                            ? Container(
+                          margin: const EdgeInsets.symmetric(
+                              horizontal: 0, vertical: 0),
+                          alignment: Alignment.centerRight,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 1.0, horizontal: 5),
+                            child: Column(
+                              crossAxisAlignment:
+                              CrossAxisAlignment.start,
+                              children: [
+                                SizedBox(
+                                  height: 2,
+                                ),
+                                Text(
+                                  '\u2022 Password must has atleast 6 characters',
+                                  style: TextStyle(
+                                      height: 1.5,
+                                      wordSpacing: 2,
+                                      color: Colors.red,
+                                      fontFamily: 'PM'),
+                                ),
+                                SizedBox(
+                                  height: 2,
+                                ),
+                                Row(
+                                  crossAxisAlignment:
+                                  CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      '\u2022 ',
+                                      style: TextStyle(
+                                          height: 1.5,
+                                          wordSpacing: 2,
+                                          color: Colors.red,
+                                          fontFamily: 'PM'),
+                                    ),
+                                    Expanded(
+                                      child: Text(
+                                        'That include at leat 1 Lowercase, 1 Uppercase, 1 number',
+                                        maxLines: 2,
+                                        style: TextStyle(
+                                            height: 1.5,
+                                            wordSpacing: 2,
+                                            color: Colors.red,
+                                            fontFamily: 'PM'),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 2,
+                                ),
+                                Text(
+                                  '\u2022 1 Special character in (!@#\$%^&*)',
+                                  style: TextStyle(
+                                      height: 1.5,
+                                      wordSpacing: 2,
+                                      color: Colors.red,
+                                      fontFamily: 'PM'),
+                                ),
+                              ],
+                            ),
+                          ),
+                        )
+                            : SizedBox.shrink()),
                         SizedBox(
                           height: 15,
                         ),
@@ -229,6 +300,29 @@ class _PasswordResetScreenState extends State<PasswordResetScreen> {
         ),
       ),
     );
+  }
+  bool alpha_num = true;
+  var alpha_numeric =
+  RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{6,}$');
+
+  checkPassword() {
+    if (!alpha_numeric
+        .hasMatch(_forgotPasswordController
+        .newPasswordController.text)) {
+      print("eorrrrr");
+      setState(() {
+        alpha_num = false;
+      });
+    } else if (_forgotPasswordController
+        .newPasswordController.text.isEmpty) {
+      setState(() {
+        alpha_num = true;
+      });
+    } else {
+      setState(() {
+        alpha_num = true;
+      });
+    }
   }
 
   selectTowerBottomSheet(BuildContext context) {

@@ -217,8 +217,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
                                   setModalState(() {
                                     (duration!.years <= 50
-                                        ? _signUpScreenController.level = 'Normal'
-                                        : _signUpScreenController.level = 'Easy');
+                                        ? _signUpScreenController.level =
+                                            'Normal'
+                                        : _signUpScreenController.level =
+                                            'Easy');
                                   });
 
                                   print(_signUpScreenController.level);
@@ -226,12 +228,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   if (selected != selectedDate) {
                                     setModalState(() {
                                       _signUpScreenController.date_birth =
-                                          DateFormat('MM-dd-yyyy').format(selected!).toString();
-                                      _signUpScreenController.DoBController.text =
-                                          _signUpScreenController.date_birth.toString();
+                                          DateFormat('MM-dd-yyyy')
+                                              .format(selected!)
+                                              .toString();
+                                      _signUpScreenController
+                                              .DoBController.text =
+                                          _signUpScreenController.date_birth
+                                              .toString();
                                     });
                                   }
-
                                 }
                               },
                             ),
@@ -239,7 +244,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ],
                       ),
                     ),
-
                   ],
                 ),
               ),
@@ -443,6 +447,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
       },
     );
   }
+
+  final formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -895,6 +901,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             ),
                           ),
                         ),
+
                         // Container(
                         //   width: screenWidth,
                         //   decoration: BoxDecoration(
@@ -1024,6 +1031,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             controller:
                                 _signUpScreenController.passwordController,
                             labelText: 'Password',
+                            onChanged: (value) {
+                              print(value);
+                              checkPassword();
+                            },
                             iconData: IconButton(
                               visualDensity:
                                   VisualDensity(horizontal: -4, vertical: -4),
@@ -1037,6 +1048,198 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             ),
                           ),
                         ),
+                        (alpha_num == false
+                            ? Container(
+                                margin: const EdgeInsets.symmetric(
+                                    horizontal: 0, vertical: 0),
+                                alignment: Alignment.centerRight,
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 1.0, horizontal: 5),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      SizedBox(
+                                        height: 2,
+                                      ),
+                                      Row(
+                                        crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            '\u2022 ',
+                                            style: TextStyle(
+                                                height: 1.5,
+                                                wordSpacing: 2,
+                                                color: Colors.red,
+                                                fontFamily: 'PM'),
+                                          ),
+                                          Expanded(
+                                            child: Text(
+                                              'Password must has atleast 6 characters',
+                                              style: TextStyle(
+                                                  height: 1.5,
+                                                  wordSpacing: 2,
+                                                  color: Colors.red,
+                                                  fontFamily: 'PM'),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: 2,
+                                      ),
+                                      Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            '\u2022 ',
+                                            style: TextStyle(
+                                                height: 1.5,
+                                                wordSpacing: 2,
+                                                color: Colors.red,
+                                                fontFamily: 'PM'),
+                                          ),
+                                          Expanded(
+                                            child: Text(
+                                              'That include at leat 1 Lowercase, 1 Uppercase, 1 number',
+                                              maxLines: 2,
+                                              style: TextStyle(
+                                                  height: 1.5,
+                                                  wordSpacing: 2,
+                                                  color: Colors.red,
+                                                  fontFamily: 'PM'),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: 2,
+                                      ),
+                                      Row(
+                                        crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            '\u2022 ',
+                                            style: TextStyle(
+                                                height: 1.5,
+                                                wordSpacing: 2,
+                                                color: Colors.red,
+                                                fontFamily: 'PM'),
+                                          ),
+                                          Expanded(
+                                            child: Text(
+                                              '1 Special character in (!@#\$%^&*)',
+                                              style: TextStyle(
+                                                  height: 1.5,
+                                                  wordSpacing: 2,
+                                                  color: Colors.red,
+                                                  fontFamily: 'PM'),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              )
+                            : SizedBox.shrink()),
+                        // Form(
+                        //   key: formKey,
+                        //   autovalidateMode: AutovalidateMode.onUserInteraction,
+                        //   child: Container(
+                        //     height: 50,
+                        //     // width: 300,
+                        //     //   decoration: BoxDecoration(
+                        //     //     // color: Colors.black.withOpacity(0.65),
+                        //     //       gradient: LinearGradient(
+                        //     //         begin: Alignment.centerLeft,
+                        //     //         end: Alignment.centerRight,
+                        //     //         // stops: [0.1, 0.5, 0.7, 0.9],
+                        //     //         colors: [
+                        //     //           HexColor("#020204").withOpacity(1),
+                        //     //           HexColor("#36393E").withOpacity(1),
+                        //     //         ],
+                        //     //       ),
+                        //     //       boxShadow: [
+                        //     //         BoxShadow(
+                        //     //           color: HexColor('#04060F'),
+                        //     //           offset: Offset(10, 10),
+                        //     //           blurRadius: 20,
+                        //     //         ),
+                        //     //       ],
+                        //     //       borderRadius: BorderRadius.circular(10)),
+                        //     child: TextFormField(
+                        //       validator: (value) => (!alpha_numeric.hasMatch(
+                        //               _signUpScreenController
+                        //                   .passwordController.text))
+                        //           ? 'Enter a valid email'
+                        //           : null,
+                        //       keyboardType: TextInputType.emailAddress,
+                        //       textAlign: TextAlign.left,
+                        //       controller:
+                        //           _signUpScreenController.passwordController,
+                        //       style: FontStyleUtility.h15(
+                        //         fontColor: ColorUtils.primary_gold,
+                        //         family: 'PM',
+                        //       ),
+                        //       decoration: InputDecoration(
+                        //           contentPadding: const EdgeInsets.only(
+                        //               left: 20, top: 14, bottom: 0),
+                        //           filled: true,
+                        //           alignLabelWithHint: false,
+                        //           isDense: true,
+                        //           border: InputBorder.none,
+                        //           enabledBorder: const OutlineInputBorder(
+                        //             borderSide: BorderSide(
+                        //                 color: Colors.transparent, width: 1),
+                        //             borderRadius:
+                        //                 BorderRadius.all(Radius.circular(10)),
+                        //           ),
+                        //           hintStyle: FontStyleUtility.h15(
+                        //               fontColor: ColorUtils.primary_grey,
+                        //               family: 'PM'),
+                        //           suffixIcon: Container(
+                        //             margin: EdgeInsets.all(4),
+                        //             decoration: BoxDecoration(
+                        //                 color: Colors.red.withOpacity(0.65),
+                        //                 gradient: LinearGradient(
+                        //                   begin: Alignment.bottomLeft,
+                        //                   end: Alignment.topRight,
+                        //                   // stops: [0.1, 0.5, 0.7, 0.9],
+                        //                   colors: [
+                        //                     HexColor("#36393E").withOpacity(1),
+                        //                     HexColor("#020204").withOpacity(1),
+                        //                   ],
+                        //                 ),
+                        //                 boxShadow: [
+                        //                   BoxShadow(
+                        //                     color: HexColor('#04060F'),
+                        //                     offset: Offset(3, 3),
+                        //                     blurRadius: 20,
+                        //                   ),
+                        //                 ],
+                        //                 borderRadius:
+                        //                     BorderRadius.circular(50)),
+                        //             child: IconButton(
+                        //               visualDensity: VisualDensity(
+                        //                   horizontal: -4, vertical: -4),
+                        //               icon: Image.asset(
+                        //                 AssetUtils.key_icons,
+                        //                 height: 17,
+                        //                 width: 15,
+                        //                 color: HexColor("#606060"),
+                        //               ),
+                        //               onPressed: () {},
+                        //             ),
+                        //           ),
+                        //           hintText: 'Password'),
+                        //     ),
+                        //   ),
+                        // ),
                         // Container(
                         //   height: 50,
                         //   // width: 300,
@@ -1202,14 +1405,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         return;
                       }
 
-                      if (_signUpScreenController
-                              .passwordController.text.length <
-                          6) {
-                        CommonWidget().showErrorToaster(
-                            msg:
-                                "Your password must contain minimum 6 character");
-                        return;
-                      }
+                      // if (_signUpScreenController
+                      //         .passwordController.text.length <
+                      //     6) {
+                      //   CommonWidget().showErrorToaster(
+                      //       msg:
+                      //           "Your password must contain minimum 6 character");
+                      //   return;
+                      // }
 
                       if (_signUpScreenController.passwordController.text !=
                           _signUpScreenController
@@ -1219,12 +1422,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         return;
                       }
 
-                      if (!alpha_numeric.hasMatch(
-                          _signUpScreenController.passwordController.text)) {
-                        CommonWidget().showErrorToaster(
-                            msg: "Your password must be alpha numeric");
-                        return;
-                      }
+                      // if (!alpha_numeric.hasMatch(
+                      //     _signUpScreenController.passwordController.text)) {
+                      //   CommonWidget().showErrorToaster(
+                      //       msg: "Your password must be alpha numeric");
+                      //   return;
+                      // }
                       if (_signUpScreenController.phoneController.text.length <
                           10) {
                         CommonWidget()
@@ -1268,6 +1471,26 @@ class _SignUpScreenState extends State<SignUpScreen> {
     setState(() {
       _signUpScreenController.imgFile = File(imgCamera!.path);
     });
+  }
+
+  bool alpha_num = true;
+
+  checkPassword() {
+    if (!alpha_numeric
+        .hasMatch(_signUpScreenController.passwordController.text)) {
+      print("eorrrrr");
+      setState(() {
+        alpha_num = false;
+      });
+    } else if (_signUpScreenController.passwordController.text.isEmpty) {
+      setState(() {
+        alpha_num = true;
+      });
+    } else {
+      setState(() {
+        alpha_num = true;
+      });
+    }
   }
 
   CheckUserModel? checkUserModel;

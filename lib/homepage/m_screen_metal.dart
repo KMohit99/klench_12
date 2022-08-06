@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'dart:ui';
 
@@ -1031,7 +1032,7 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
                             setState(() {
                               elapsedTime = '00:00';
                               percent = 0.0;
-                              method_selected = '';
+                              // method_selected = '';
                               watch.reset();
                               paused_time.clear();
                             });
@@ -1053,7 +1054,8 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
                           // width:(width ?? 300) ,
                           decoration: (started
                               ? BoxDecoration(
-                                  border: Border.all(color: ColorUtils.primary_gold,width: 1),
+                                  border: Border.all(
+                                      color: ColorUtils.primary_gold, width: 1),
                                   borderRadius: BorderRadius.circular(100))
                               : BoxDecoration(
                                   gradient: LinearGradient(
@@ -1066,7 +1068,7 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
                                       HexColor("#CE952F").withOpacity(0.90),
                                     ],
                                   ),
-                                  borderRadius: BorderRadius.circular(15))),
+                              borderRadius: BorderRadius.circular(100))),
                           child: Container(
                               alignment: Alignment.center,
                               margin: EdgeInsets.symmetric(
@@ -1075,7 +1077,9 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
                               child: Text(
                                 ('Finish'),
                                 style: FontStyleUtility.h16(
-                                    fontColor:(started ? Colors.white : Colors.black), family: 'PM'),
+                                    fontColor:
+                                        (started ? Colors.white : Colors.black),
+                                    family: 'PM'),
                               )),
                         ),
                       ),
@@ -1143,9 +1147,9 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
                       ),
                     ],
                   ),
-                  const SizedBox(
-                    height: 28,
-                  ),
+                  // const SizedBox(
+                  //   height: 28,
+                  // ),
                   // GestureDetector(
                   //   onTap: () async {
                   //     if (method_selected.isNotEmpty) {
@@ -2652,9 +2656,14 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
     try {
       showLoader(context);
       var response = await http.get(Uri.parse(url));
-
+      print(response.body);
+      print(response.request);
+      print(response.statusCode);
       if (response.statusCode == 200 || response.statusCode == 201) {
-        var data = convert.jsonDecode(response.body);
+        // var data = convert.jsonDecode(response.body);
+        Map<String, dynamic> data =
+            json.decode(response.body.replaceAll('}[]', '}'));
+        print("Data :${data}");
         m_screenWeeklyDataModel = M_ScreenWeeklyDataModel.fromJson(data);
         // getUSerModelList(userInfoModel_email);
         if (m_screenWeeklyDataModel!.error == false) {

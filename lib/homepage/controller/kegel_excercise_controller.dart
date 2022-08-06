@@ -37,7 +37,9 @@ class Kegel_controller extends GetxController {
     print('Response body: ${response.body}');
 
     if (response.statusCode == 200 || response.statusCode == 201) {
-      var data = convert.jsonDecode(response.body);
+      // var data = convert.jsonDecode(response.body);
+      Map<String, dynamic> data =
+      json.decode(response.body.replaceAll('}[]', '}'));
       kegelGetModel = KegelGetModel.fromJson(data);
       // getUSerModelList(userInfoModel_email);
       if (kegelGetModel!.error == false) {
@@ -52,7 +54,7 @@ class Kegel_controller extends GetxController {
       } else {
         hideLoader(context);
 
-        CommonWidget().showToaster(msg: kegelGetModel!.message!);
+        // CommonWidget().showToaster(msg: kegelGetModel!.message!);
         return null;
       }
     } else if (response.statusCode == 422) {

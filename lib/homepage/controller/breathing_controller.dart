@@ -39,7 +39,9 @@ class Breathing_controller extends GetxController {
     print('Response body: ${response.body}');
 
     if (response.statusCode == 200 || response.statusCode == 201) {
-      var data = convert.jsonDecode(response.body);
+      // var data = convert.jsonDecode(response.body);
+      Map<String, dynamic> data =
+      json.decode(response.body.replaceAll('}[]', '}'));
       breathingGetModel = BreathingGetModel.fromJson(data);
       // getUSerModelList(userInfoModel_email);
       if (breathingGetModel!.error == false) {

@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class URLConstants {
   static const String base_url = "http://foxyserver.com/klench/api/";
   // static const String base_url = "https://foxytechnologies.com/klench/api/";
+
   static const signUpApi = "signup.php";
   static const loginApi = "login.php";
   static const EditProfileApi = "edit-profile.php";

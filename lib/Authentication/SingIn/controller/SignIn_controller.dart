@@ -98,7 +98,7 @@ class SignInScreenController extends GetxController {
       Profile_page_controller(),
       tag: Profile_page_controller().toString());
 
-  Future<dynamic> GetUserInfo( BuildContext context) async {
+  Future<dynamic> GetUserInfo(BuildContext context) async {
     // showLoader(context);
     isuserinfoLoading(true);
     String id_user = await PreferenceManager().getPref(URLConstants.id);
@@ -111,7 +111,9 @@ class SignInScreenController extends GetxController {
     print('Response body: ${response.body}');
 
     if (response.statusCode == 200 || response.statusCode == 201) {
-      var data = convert.jsonDecode(response.body);
+      // var data = convert.jsonDecode(response.body);
+      Map<String, dynamic> data =
+      json.decode(response.body.replaceAll('}[]', '}'));
       userInfoModel = UserInfoModel.fromJson(data);
       getUSerModelList(userInfoModel);
       if (userInfoModel!.error == false) {
@@ -153,7 +155,7 @@ class SignInScreenController extends GetxController {
         isuserinfoLoading(false);
         selectedCard = level_rank!;
         // hideLoader(context);
-        await Get.to(DashboardScreen());
+        // await Get.to(DashboardScreen());
 
         return userInfoModel;
       } else {
