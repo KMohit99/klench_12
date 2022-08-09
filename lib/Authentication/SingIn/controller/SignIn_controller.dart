@@ -388,7 +388,7 @@ class SignInScreenController extends GetxController {
             MaterialPageRoute(builder: (context) => FaceScanScreen()));
         // await Get.to(FaceScanScreen());
 
-        Get.to(DashboardScreen());
+        // Get.to(DashboardScreen());
 
         hideLoader(context);
       } else {

@@ -398,9 +398,69 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Expanded(
-                                  flex: 2,
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      GestureDetector(
+                                        onTap: () {
+                                          // setState(() {
+                                          //   editable =
+                                          //   (editable ? false : true);
+                                          // });
+                                        },
+                                        child: Container(
+                                          width: 100,
+                                          decoration: BoxDecoration(
+                                              color: Colors.white,
+                                              borderRadius:
+                                              BorderRadius.circular(6),
+                                              gradient: LinearGradient(
+                                                colors: [
+                                                  HexColor('#36393E'),
+                                                  HexColor('#020204'),
+                                                ],
+                                                begin: Alignment.centerLeft,
+                                                end: Alignment.centerRight,
+                                              ),
+                                              border:
+                                                   Border.all(
+                                                  color: Colors.transparent,
+                                                  width: 0),
+                                              boxShadow: [
+                                                BoxShadow(
+                                                    color: HexColor('#04060F'),
+                                                    offset: Offset(10, 10),
+                                                    blurRadius: 20)
+                                              ]),
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 9.0, horizontal: 18),
+                                            child: Container(
+                                              margin: EdgeInsets.only(
+                                                  left: 5, right: 5),
+                                              child: Text(
+                                                  _signInScreenController
+                                                      .userInfoModel!.data![0].username!,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: FontStyleUtility.h12(
+                                                    fontColor: ColorUtils
+                                                        .primary_gold,
+                                                    family: 'PM'),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+
+                                Expanded(
+                                  flex: 1,
                                   child: Container(
-                                    alignment: Alignment.centerRight,
+                                    // color: Colors.white60,
+                                    alignment: Alignment.center,
                                     child: Stack(
                                       children: [
                                         ClipRRect(
@@ -438,29 +498,32 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
                                                     //             height: 100,
                                                     //             width: 100,
                                                     //           )
-                                                    FadeInImage(
-                                                        image: NetworkImage(
-                                                            "http://foxyserver.com/klench/images/${_signInScreenController.userInfoModel!.data![0].image}"),
-                                                        fit: BoxFit.fill,
-                                                        height: 100,
-                                                        width: 100,
-                                                        placeholder: AssetImage(
-                                                          AssetUtils
-                                                              .user_icon45,
-                                                        ),
-                                                        imageErrorBuilder:
-                                                            (context, error,
-                                                                stackTrace) {
-                                                          print(error);
-                                                          return Image.asset(
+                                                    Container(
+                                                      color: Colors.black,
+                                                      child: FadeInImage(
+                                                          image: NetworkImage(
+                                                              "http://foxyserver.com/klench/images/${_signInScreenController.userInfoModel!.data![0].image}"),
+                                                          // fit: BoxFit.contain,
+                                                          height: 100,
+                                                          width: 100,
+                                                          placeholder: AssetImage(
                                                             AssetUtils
                                                                 .user_icon45,
-                                                            fit: BoxFit.cover,
-                                                            height: 100,
-                                                            width: 100,
-                                                          );
-                                                        },
-                                                      )
+                                                          ),
+                                                          imageErrorBuilder:
+                                                              (context, error,
+                                                                  stackTrace) {
+                                                            print(error);
+                                                            return Image.asset(
+                                                              AssetUtils
+                                                                  .user_icon45,
+                                                              fit: BoxFit.cover,
+                                                              height: 100,
+                                                              width: 100,
+                                                            );
+                                                          },
+                                                        ),
+                                                    )
                                                     : Container(
                                                         height: 100,
                                                         width: 100,

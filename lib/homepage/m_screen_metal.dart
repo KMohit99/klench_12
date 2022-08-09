@@ -155,7 +155,9 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
         AnimationController(vsync: this, duration: Duration(seconds: 1));
     _animationController!.repeat(reverse: true);
     _animation = Tween(begin: 0.0, end: 15.0).animate(_animationController!)
-      ..addListener(() {});
+      ..addStatusListener((status) {
+        print(status);
+      });
   }
 
   @override
@@ -1068,7 +1070,7 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
                                       HexColor("#CE952F").withOpacity(0.90),
                                     ],
                                   ),
-                              borderRadius: BorderRadius.circular(100))),
+                                  borderRadius: BorderRadius.circular(100))),
                           child: Container(
                               alignment: Alignment.center,
                               margin: EdgeInsets.symmetric(
@@ -1121,15 +1123,15 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
                           // height: 45,
                           // width:(width ?? 300) ,
                           decoration: BoxDecoration(
-                              color: ColorUtils.primary_gold,
+                              // color: ColorUtils.primary_gold,
                               gradient: LinearGradient(
                                 begin: Alignment.centerLeft,
                                 end: Alignment.centerRight,
                                 // stops: [0.1, 0.5, 0.7, 0.9],
                                 colors: [
-                                  HexColor("#ECDD8F").withOpacity(0.90),
-                                  HexColor("#E5CC79").withOpacity(0.90),
-                                  HexColor("#CE952F").withOpacity(0.90),
+                                  HexColor("#ECDD8F").withOpacity(0.6),
+                                  HexColor("#E5CC79").withOpacity(0.60),
+                                  HexColor("#CE952F").withOpacity(0.60),
                                 ],
                               ),
                               borderRadius: BorderRadius.circular(100)),
@@ -1139,7 +1141,9 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
                                 vertical: 12,
                               ),
                               child: Text(
-                                (startStop ? 'Start' : 'Pause'),
+                                (startStop
+                                    ? (paused ? 'Resume' : 'Start')
+                                    : 'Pause'),
                                 style: FontStyleUtility.h16(
                                     fontColor: Colors.black, family: 'PM'),
                               )),
@@ -2584,16 +2588,20 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
     setState(() {
       _swipe_setup_controller.m_running = true;
       startStop = false;
+      paused = false;
       started = false;
       watch.start();
       timer = Timer.periodic(Duration(milliseconds: 100), updateTime);
     });
   }
 
+  bool paused = false;
+
   stopWatch() {
     setState(() {
       startStop = true;
       started = false;
+      paused = true;
       watch.stop();
       setTime();
     });
@@ -2604,6 +2612,7 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
       _swipe_setup_controller.m_running = false;
       startStop = true;
       started = true;
+      paused = false;
       _animationController!.stop();
       animation_started = false;
       watch.stop();

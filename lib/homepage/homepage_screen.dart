@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:klench_/homepage/swipe_screen.dart';
+import 'package:video_player/video_player.dart';
 
 import '../utils/Asset_utils.dart';
 
@@ -16,8 +17,31 @@ class HomepageScreen extends StatefulWidget {
 }
 
 class _HomepageScreenState extends State<HomepageScreen> {
+  // VideoPlayerController? _controller;
+  //
+  // bool video_skip = false;
+  //
+  // @override
+  // void initState() {
+  //   // video_code();
+  //   // better_player_code();
+  //
+  //   super.initState();
+  //   Future.delayed(Duration(seconds: 30), () {
+  //     skipper();
+  //     // Do something
+  //   });
+  //   _controller = VideoPlayerController.asset('assets/images/small.mp4')
+  //     ..initialize().then((_) {
+  //       setState(() {});
+  //       _controller!.play();
+  //     });
+  // }
+
   @override
   Widget build(BuildContext context) {
+    // Future.delayed(Duration.zero, () => pop_up(context));
+
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
     print(screenHeight);
@@ -525,4 +549,190 @@ class _HomepageScreenState extends State<HomepageScreen> {
       ],
     );
   }
+
+  Future pop_up(BuildContext context) {
+    return showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        backgroundColor: Colors.transparent,
+        contentPadding: EdgeInsets.zero,
+        elevation: 0.0,
+        content: Container(
+          margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 0),
+          height: MediaQuery.of(context).size.height / 5,
+          // width: 133,
+          // padding: const EdgeInsets.all(8.0),
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: const Alignment(-1.0, 0.0),
+                end: const Alignment(1.0, 0.0),
+                transform: const GradientRotation(0.7853982),
+                // stops: [0.1, 0.5, 0.7, 0.9],
+                colors: [
+                  HexColor("#000000"),
+                  HexColor("#000000"),
+                  HexColor("##E84F90"),
+                  HexColor("#ffffff"),
+                  // HexColor("#FFFFFF").withOpacity(0.67),
+                ],
+              ),
+              color: Colors.white,
+              border: Border.all(color: Colors.white, width: 1),
+              borderRadius: const BorderRadius.all(Radius.circular(26.0))),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    margin: const EdgeInsets.symmetric(vertical: 10),
+                    child: Row(
+                      // mainAxisAlignment:
+                      // MainAxisAlignment
+                      //     .center,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+
+                          },
+                          child: Column(
+                            children: [
+                              IconButton(
+                                icon: const Icon(
+                                  Icons.camera_alt,
+                                  size: 30,
+                                  color: Colors.white,
+                                ),
+                                onPressed: () {
+                                  // camera_upload();
+
+                                },
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              Container(
+                                margin:
+                                const EdgeInsets.symmetric(horizontal: 0),
+                                // height: 45,
+                                // width:(width ?? 300) ,
+                                decoration: BoxDecoration(
+                                    border: Border.all(
+                                        color: Colors.white, width: 1),
+                                    borderRadius: BorderRadius.circular(25)),
+                                child: Container(
+                                    alignment: Alignment.center,
+                                    margin: EdgeInsets.symmetric(
+                                        vertical: 12, horizontal: 20),
+                                    child: Text(
+                                      'Camera',
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontFamily: 'PR',
+                                          fontSize: 16),
+                                    )),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          width: 20,
+                        ),
+                        GestureDetector(
+                          onTap: () async {
+                            // File editedFile = await Navigator.of(context)
+                            //     .push(MaterialPageRoute(
+                            //         builder: (context) => StoriesEditor(
+                            //               // fontFamilyList: font_family,
+                            //               giphyKey: '',
+                            //               onDone: (String) {},
+                            //               // filePath:
+                            //               //     imgFile!.path,
+                            //             )));
+                            // if (editedFile != null) {
+                            //   print('editedFile: ${editedFile.path}');
+                            // }
+                          },
+                          child: Column(
+                            children: [
+                              IconButton(
+                                icon: const Icon(
+                                  Icons.photo_library_sharp,
+                                  size: 30,
+                                  color: Colors.white,
+                                ),
+                                onPressed: () async {
+                                  // File editedFile = await Navigator.of(context)
+                                  //     .push(MaterialPageRoute(
+                                  //         builder: (context) => StoriesEditor(
+                                  //               // fontFamilyList: font_family,
+                                  //               giphyKey: '',
+                                  //               onDone: (String) {},
+                                  //               // filePath:
+                                  //               //     imgFile!.path,
+                                  //             )));
+                                  // if (editedFile != null) {
+                                  //   print('editedFile: ${editedFile.path}');
+                                  // }
+                                },
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              Container(
+                                margin:
+                                const EdgeInsets.symmetric(horizontal: 0),
+                                // height: 45,
+                                // width:(width ?? 300) ,
+                                decoration: BoxDecoration(
+                                    border: Border.all(
+                                        color: Colors.white, width: 1),
+                                    borderRadius: BorderRadius.circular(25)),
+                                child: Container(
+                                    alignment: Alignment.center,
+                                    margin: EdgeInsets.symmetric(
+                                        vertical: 12, horizontal: 20),
+                                    child: Text(
+                                      'Gallery',
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontFamily: 'PR',
+                                          fontSize: 16),
+                                    )),
+                              ),
+                            ],
+                          ),
+                        ),
+
+                        // IconButton(
+                        //   icon: const Icon(
+                        //     Icons
+                        //         .video_call,
+                        //     size: 40,
+                        //     color: Colors
+                        //         .grey,
+                        //   ),
+                        //   onPressed:
+                        //       () {
+                        //         video_upload();
+                        //       },
+                        // ),
+                      ],
+                    ),
+                  )
+
+                  // const SizedBox(
+                  //   height: 10,
+                  // ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
 }

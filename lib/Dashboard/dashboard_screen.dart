@@ -20,7 +20,7 @@ class DashboardScreen extends StatefulWidget {
 
 class _DashboardScreenState extends State<DashboardScreen> {
   late double screenHeight, screenWidth;
-  int _page = 0;
+  int _page = 1;
 
   Future<bool> _onWillPop() async {
     return (await showDialog(
