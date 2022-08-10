@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:klench_/splash_Screen.dart';
 import 'package:local_auth/local_auth.dart';
 
+import 'Authentication/welcom_video/welcome_screen_tow.dart';
 import 'getx_pagination/Bindings_class.dart';
 import 'getx_pagination/binding_utils.dart';
 import 'getx_pagination/page_route.dart';
@@ -71,7 +72,7 @@ class MyApp extends StatelessWidget {
       //             ? subscription_Screen()
       //             : DashBoardScreen(),
 
-      home: SplashScreen(),
+      home: WelcomeVideoScreen2(signup: false),
       theme: ThemeData(
         primaryColor: Colors.yellow,
         dividerColor: Colors.transparent,

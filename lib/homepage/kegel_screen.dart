@@ -261,10 +261,11 @@ class _KegelScreenState extends State<KegelScreen>
             child: CupertinoDatePicker(
               mode: CupertinoDatePickerMode.time,
               onDateTimeChanged: (value) {
-                if (value != null && value != selectedDate)
+                if (value != null && value != selectedDate) {
                   setState(() {
                     selectedDate = value;
                   });
+                }
               },
               initialDateTime: DateTime.now(),
               minimumYear: 2019,
@@ -5824,10 +5825,11 @@ class _KegelScreenState extends State<KegelScreen>
 
   Future<void> onSaveAlarm() async {
     DateTime scheduleAlarmDateTime;
-    if (_alarmTime!.isAfter(DateTime.now()))
+    if (_alarmTime!.isAfter(DateTime.now())) {
       scheduleAlarmDateTime = _alarmTime!;
-    else
+    } else {
       scheduleAlarmDateTime = _alarmTime!.add(const Duration(days: 1));
+    }
 
     var alarmInfo = AlarmInfo(
       alarmDateTime: scheduleAlarmDateTime,
@@ -5840,6 +5842,25 @@ class _KegelScreenState extends State<KegelScreen>
     Navigator.pop(context);
     loadAlarms();
   }
+  // Future<void> click alarm() async {
+  //   DateTime scheduleAlarmDateTime;
+  //   if (_alarmTime!.isAfter(DateTime.now())) {
+  //     scheduleAlarmDateTime = _alarmTime!;
+  //   } else {
+  //     scheduleAlarmDateTime = _alarmTime!.add(const Duration(days: 1));
+  //   }
+  //
+  //   var alarmInfo = AlarmInfo(
+  //     alarmDateTime: scheduleAlarmDateTime,
+  //     gradientColorIndex: _currentAlarms!.length,
+  //     title: Alarm_title.text,
+  //   );
+  //   _alarmHelper.insertAlarm(alarmInfo);
+  //   await scheduleAlarm(scheduleAlarmDateTime, alarmInfo);
+  //   Alarm_title.clear();
+  //   Navigator.pop(context);
+  //   loadAlarms();
+  // }
 
   void deleteAlarm(int id) {
     _alarmHelper.delete(id);

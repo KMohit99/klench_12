@@ -35,7 +35,7 @@ class _WelcomeVideoScreenState extends State<WelcomeVideoScreen2> {
     // better_player_code();
 
     super.initState();
-    Future.delayed(Duration(seconds: 5), () {
+    Future.delayed(Duration(seconds: 30), () {
       skipper();
       // Do something
     });
@@ -105,13 +105,13 @@ class _WelcomeVideoScreenState extends State<WelcomeVideoScreen2> {
             child: AppBar(
               backgroundColor: Colors.transparent,
               automaticallyImplyLeading: false,
-              title: Container(
-                alignment: Alignment.center,
-                child: Container(
-                    width: 170,
-                    margin: EdgeInsets.only(bottom: 10, top: 10),
-                    child: Image.asset(AssetUtils.Logo_white_icon)),
-              ),
+              // title: Container(
+              //   alignment: Alignment.center,
+              //   child: Container(
+              //       width: 170,
+              //       margin: EdgeInsets.only(bottom: 10, top: 10),
+              //       child: Image.asset(AssetUtils.Logo_white_icon)),
+              // ),
               centerTitle: true,
               actions: [
                 // GestureDetector(
@@ -144,50 +144,51 @@ class _WelcomeVideoScreenState extends State<WelcomeVideoScreen2> {
               ],
             ),
           ),
-          body: Container(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.start,
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                Container(
-                    margin: EdgeInsets.symmetric(horizontal: 10),
-                    alignment: Alignment.topCenter,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Image.asset(
-                          AssetUtils.star_icon,
-                          height: 22,
-                          width: 22,
-                        ),
-                        SizedBox(
-                          width: 7,
-                        ),
-                        Image.asset(
-                          AssetUtils.star_icon,
-                          height: 22,
-                          width: 22,
-                        ),
-                        SizedBox(
-                          width: 7,
-                        ),
-                        Image.asset(
-                          AssetUtils.star_icon,
-                          height: 22,
-                          width: 22,
-                        ),
-                      ],
-                    )),
+          body: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              // Container(
+              //     margin: EdgeInsets.symmetric(horizontal: 10),
+              //     alignment: Alignment.topCenter,
+              //     child: Row(
+              //       mainAxisAlignment: MainAxisAlignment.end,
+              //       children: [
+              //         Image.asset(
+              //           AssetUtils.star_icon,
+              //           height: 22,
+              //           width: 22,
+              //         ),
+              //         SizedBox(
+              //           width: 7,
+              //         ),
+              //         Image.asset(
+              //           AssetUtils.star_icon,
+              //           height: 22,
+              //           width: 22,
+              //         ),
+              //         SizedBox(
+              //           width: 7,
+              //         ),
+              //         Image.asset(
+              //           AssetUtils.star_icon,
+              //           height: 22,
+              //           width: 22,
+              //         ),
+              //       ],
+              //     )),
 
-                Container(
-                    margin: EdgeInsets.symmetric(
-                        vertical: (screenHeight >= 600 && screenHeight <= 700
-                            ? 10
-                            : (screenHeight >= 700 && screenHeight <= 800
-                            ? 55
-                            : (screenHeight >= 800 ? 100 : 0))))),
-                Container(
+              Container(
+                  margin: EdgeInsets.symmetric(
+                      vertical: (screenHeight >= 600 && screenHeight <= 700
+                          ? 30
+                          : (screenHeight >= 700 && screenHeight <= 800
+                          ? 55
+                          : (screenHeight >= 800 ? 80 : 0))))),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
                   decoration: BoxDecoration(
 // color: Colors.black.withOpacity(0.65),
                       gradient: LinearGradient(
@@ -304,7 +305,6 @@ class _WelcomeVideoScreenState extends State<WelcomeVideoScreen2> {
 //     ],
 //   ),
 // ),
-
                         Container(
                           alignment: Alignment.center,
                           child: _controller!.value.isInitialized
@@ -351,9 +351,240 @@ class _WelcomeVideoScreenState extends State<WelcomeVideoScreen2> {
                     ),
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
+          // bottomNavigationBar: BottomAppBar(
+          //   color: Colors.transparent,
+          //   shape: CircularNotchedRectangle(),
+          //   child: Container(
+          //     margin: EdgeInsets.symmetric(vertical: 5,horizontal: 19),
+          //     decoration: BoxDecoration(
+          //       // color: Colors.black.withOpacity(0.65),
+          //         gradient: LinearGradient(
+          //           begin: Alignment.centerLeft,
+          //           end: Alignment.centerRight,
+          //           // stops: [0.1, 0.5, 0.7, 0.9],
+          //           colors: [
+          //             HexColor("#020204").withOpacity(1),
+          //             HexColor("#36393E").withOpacity(1),
+          //           ],
+          //         ),
+          //         boxShadow: [
+          //           BoxShadow(
+          //               color: HexColor('#04060F'),
+          //               offset: Offset(10, 10),
+          //               blurRadius: 10)
+          //         ],
+          //         borderRadius: BorderRadius.circular(20)),
+          //     // color: Colors.black,
+          //     height: 65,
+          //     child: Column(
+          //       mainAxisAlignment: MainAxisAlignment.center,
+          //       children: [
+          //         // Container(
+          //         //   margin: EdgeInsets.only(top: 0.5, right: 25, left: 25),
+          //         //   height: 1,
+          //         //   color: ColorUtils.dark_grey.withOpacity(0.5),
+          //         // ),
+          //         Row(
+          //           mainAxisSize: MainAxisSize.max,
+          //           mainAxisAlignment: MainAxisAlignment.spaceAround,
+          //           crossAxisAlignment: CrossAxisAlignment.center,
+          //           children: <Widget>[
+          //             Container(
+          //               decoration: BoxDecoration(
+          //                 // color: Colors.black.withOpacity(0.65),
+          //                   gradient: LinearGradient(
+          //                     begin: Alignment.centerLeft,
+          //                     end: Alignment.centerRight,
+          //                     // stops: [0.1, 0.5, 0.7, 0.9],
+          //                     colors: [
+          //                       HexColor("#36393E").withOpacity(1),
+          //                       HexColor("#020204").withOpacity(1),
+          //
+          //                     ],
+          //                   ),
+          //                   boxShadow: [
+          //                     BoxShadow(
+          //                         color: HexColor('#04060F'),
+          //                         offset: Offset(3, 3),
+          //                         blurRadius: 10)
+          //                   ],
+          //                   borderRadius: BorderRadius.circular(20)),
+          //               child: Padding(
+          //                 padding: const EdgeInsets.all(4.0),
+          //                 child: Column(
+          //                   children: [
+          //                     IconButton(
+          //                       iconSize: 30.0,
+          //                       visualDensity:
+          //                       VisualDensity(vertical: -4, horizontal: -4),
+          //                       padding: EdgeInsets.only(left: 0.0),
+          //                       icon: Image.asset(AssetUtils.profile_icon,
+          //                           color: ColorUtils.primary_gold,
+          //                           height: 20, width: 20),
+          //                       onPressed: () {
+          //                       },
+          //                     ),
+          //
+          //                   ],
+          //                 ),
+          //               ),
+          //             ),
+          //             Container(
+          //               decoration: BoxDecoration(
+          //                 // color: Colors.black.withOpacity(0.65),
+          //                   gradient: LinearGradient(
+          //                     begin: Alignment.centerLeft,
+          //                     end: Alignment.centerRight,
+          //                     // stops: [0.1, 0.5, 0.7, 0.9],
+          //                     colors: [
+          //                       HexColor("#36393E").withOpacity(1),
+          //                       HexColor("#020204").withOpacity(1),
+          //
+          //                     ],
+          //                   ),
+          //                   boxShadow: [
+          //                     BoxShadow(
+          //                         color: HexColor('#04060F'),
+          //                         offset: Offset(3, 3),
+          //                         blurRadius: 10)
+          //                   ],
+          //                   borderRadius: BorderRadius.circular(20)),
+          //               child: Padding(
+          //                 padding: const EdgeInsets.all(4.0),
+          //                 child: Column(
+          //                   children: [
+          //                     IconButton(
+          //                       iconSize: 30.0,
+          //                       visualDensity:
+          //                       VisualDensity(vertical: -4, horizontal: -4),
+          //                       padding: EdgeInsets.only(left: 0.0),
+          //                       icon: Image.asset(AssetUtils.home_icon,
+          //                           color:ColorUtils.primary_gold,
+          //                           height: 20, width: 20),
+          //                       onPressed: () {
+          //
+          //                       },
+          //                     ),
+          //                     // Text(
+          //                     //   'Home',
+          //                     //   style: FontStyleUtility.h10(
+          //                     //       fontColor: (_page == 1
+          //                     //           ? ColorUtils.primary_gold
+          //                     //           : ColorUtils.primary_grey),family: 'PM'),
+          //                     // )
+          //                   ],
+          //                 ),
+          //               ),
+          //             ),
+          //             Container(
+          //               decoration: BoxDecoration(
+          //                 // color: Colors.black.withOpacity(0.65),
+          //                   gradient: LinearGradient(
+          //                     begin: Alignment.centerLeft,
+          //                     end: Alignment.centerRight,
+          //                     // stops: [0.1, 0.5, 0.7, 0.9],
+          //                     colors: [
+          //                       HexColor("#36393E").withOpacity(1),
+          //                       HexColor("#020204").withOpacity(1),
+          //
+          //                     ],
+          //                   ),
+          //                   boxShadow: [
+          //                     BoxShadow(
+          //                         color: HexColor('#04060F'),
+          //                         offset: Offset(3, 3),
+          //                         blurRadius: 10)
+          //                   ],
+          //                   borderRadius: BorderRadius.circular(20)),
+          //               child: Padding(
+          //                 padding: const EdgeInsets.all(4.0),
+          //                 child: Column(
+          //                   children: [
+          //                     IconButton(
+          //                       iconSize: 30.0,
+          //                       visualDensity:
+          //                       VisualDensity(vertical: -4, horizontal: -4),
+          //                       padding: EdgeInsets.only(left: 0.0),
+          //                       icon: Image.asset(AssetUtils.breathe_icon,
+          //                           color: ColorUtils.primary_gold,
+          //                           height: 20, width: 20),
+          //                       onPressed: () {
+          //
+          //                       },
+          //                     ),
+          //                     // Text(
+          //                     //   'Breathing',
+          //                     //   style: FontStyleUtility.h10(
+          //                     //       fontColor: (_page == 2
+          //                     //           ? ColorUtils.primary_gold
+          //                     //           : ColorUtils.primary_grey) , family: 'PM'),
+          //                     // )
+          //                   ],
+          //                 ),
+          //               ),
+          //             ),
+          //             Container(
+          //               decoration: BoxDecoration(
+          //                 // color: Colors.black.withOpacity(0.65),
+          //                   gradient: LinearGradient(
+          //                     begin: Alignment.centerLeft,
+          //                     end: Alignment.centerRight,
+          //                     // stops: [0.1, 0.5, 0.7, 0.9],
+          //                     colors: [
+          //                       HexColor("#36393E").withOpacity(1),
+          //                       HexColor("#020204").withOpacity(1),
+          //
+          //                     ],
+          //                   ),
+          //                   boxShadow: [
+          //                     BoxShadow(
+          //                         color: HexColor('#04060F'),
+          //                         offset: Offset(3, 3),
+          //                         blurRadius: 10)
+          //                   ],
+          //                   borderRadius: BorderRadius.circular(20)),
+          //               child: Padding(
+          //                 padding: const EdgeInsets.all(4.0),
+          //                 child: Column(
+          //                   children: [
+          //                     IconButton(
+          //                       iconSize: 30.0,
+          //                       visualDensity:
+          //                       VisualDensity(vertical: -4, horizontal: -4),
+          //                       padding: EdgeInsets.only(left: 0.0),
+          //                       icon: Image.asset(AssetUtils.settings_icon,
+          //                           color: ColorUtils.primary_gold,
+          //                           height: 20, width: 20),
+          //                       onPressed: () {
+          //
+          //                       },
+          //                     ),
+          //                     // Text(
+          //                     //   'Settings',
+          //                     //   style: FontStyleUtility.h10(
+          //                     //       fontColor: (_page == 3
+          //                     //           ? ColorUtils.primary_gold
+          //                     //           : ColorUtils.primary_grey), family: 'PM'),
+          //                     // )
+          //                   ],
+          //                 ),
+          //               ),
+          //             ),
+          //           ],
+          //         ),
+          //         // Container(
+          //         //   margin: EdgeInsets.only(bottom: 5, right: 25, left: 25),
+          //         //   height: 1,
+          //         //   color: ColorUtils.dark_grey.withOpacity(0.5),
+          //         // ),
+          //       ],
+          //     ),
+          //   ),
+          // ),
+
         ),
       ],
     );

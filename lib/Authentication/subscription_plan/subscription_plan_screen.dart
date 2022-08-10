@@ -11,6 +11,7 @@ import 'package:klench_/utils/colorUtils.dart';
 
 import '../../utils/Common_buttons.dart';
 import '../../utils/Common_textfeild.dart';
+import '../welcom_video/welcome_screen_tow.dart';
 
 class SubscriptionScreen extends StatefulWidget {
   const SubscriptionScreen({Key? key}) : super(key: key);
@@ -422,7 +423,9 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                           common_button_gold(
                             title_text: '12 days free trial',
                             onTap: () {
-                              Get.to(DashboardScreen());
+                              Get.to(WelcomeVideoScreen2(signup: true,));
+
+                              // Get.to(DashboardScreen());
                             },
                           ),
                           Container(

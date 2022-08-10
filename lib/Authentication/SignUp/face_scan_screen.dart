@@ -16,6 +16,8 @@ import '../../utils/Common_container_color.dart';
 import '../../utils/TextStyle_utils.dart';
 import '../../utils/UrlConstrant.dart';
 import '../../utils/colorUtils.dart';
+import '../subscription_plan/subscription_plan_screen.dart';
+import '../welcom_video/welcome_screen_tow.dart';
 
 class FaceScanScreen extends StatefulWidget {
   const FaceScanScreen({Key? key}) : super(key: key);
@@ -75,7 +77,8 @@ class _FaceScanScreenState extends State<FaceScanScreen> {
             actions: [
               GestureDetector(
                 onTap: () {
-                  Get.to(WelcomeVideoScreen(signup: true,));
+                  Get.to(SubscriptionScreen());
+                  // Get.to(WelcomeVideoScreen(signup: true,));
                 },
                 child: Container(
                   alignment: Alignment.center,
@@ -319,8 +322,8 @@ class _FaceScanScreenState extends State<FaceScanScreen> {
     // Timer(Duration(seconds: 3), () async {
       // Get.to(FrontScreen());
       // hideLoader(context);
-
-      Get.to(WelcomeVideoScreen(signup: true,));
+    await Get.to(SubscriptionScreen());
+      // Get.to(WelcomeVideoScreen2(signup: true,));
     // });
 
     (finger_print_enabled ? print('facescan enabled') : print('disabled'));
