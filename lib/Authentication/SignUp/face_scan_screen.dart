@@ -315,18 +315,21 @@ class _FaceScanScreenState extends State<FaceScanScreen> {
     );
   }
 
- Future<dynamic> authentication_method(BuildContext context) async {
+  Future<dynamic> authentication_method(BuildContext context) async {
     // showLoader(context);
     await PreferenceManager().setbool(URLConstants.authentication_enable, true);
     CommonWidget().showToaster(msg: 'Authentication added');
     // Timer(Duration(seconds: 3), () async {
-      // Get.to(FrontScreen());
-      // hideLoader(context);
-    await Get.to(SubscriptionScreen());
-      // Get.to(WelcomeVideoScreen2(signup: true,));
+    // Get.to(FrontScreen());
+    // hideLoader(context);
+    String trial = await PreferenceManager().getPref(URLConstants.trial);
+
+    (trial == 'true'
+        ? await Get.to(DashboardScreen())
+        : await Get.to(SubscriptionScreen()));
+    // Get.to(WelcomeVideoScreen2(signup: true,));
     // });
 
     (finger_print_enabled ? print('facescan enabled') : print('disabled'));
-
   }
 }

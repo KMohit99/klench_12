@@ -36,6 +36,7 @@ class URLConstants {
 
 
   static String id = "id";
+  static String trial = 'false';
   static String levels = "level";
   static String username = "username";
   static String authentication_enable = 'Authentication';

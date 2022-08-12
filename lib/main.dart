@@ -72,7 +72,7 @@ class MyApp extends StatelessWidget {
       //             ? subscription_Screen()
       //             : DashBoardScreen(),
 
-      home: WelcomeVideoScreen2(signup: false),
+      home: SplashScreen(),
       theme: ThemeData(
         primaryColor: Colors.yellow,
         dividerColor: Colors.transparent,

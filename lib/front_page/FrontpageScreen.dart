@@ -11,6 +11,7 @@ import 'package:klench_/utils/colorUtils.dart';
 
 import '../Authentication/ask_signUp.dart';
 import '../utils/Common_buttons.dart';
+import '../utils/UrlConstrant.dart';
 
 class FrontScreen extends StatefulWidget {
   const FrontScreen({Key? key}) : super(key: key);
@@ -430,8 +431,11 @@ class _FrontScreenState extends State<FrontScreen> {
                       children: [
                         common_button_gold(
                           title_text: '12 days free trial',
-                          onTap: () {
+                          onTap: () async {
                             // Get.to(SignUpScreen());
+                            await PreferenceManager()
+                                .setPref(URLConstants.trial, 'true');
+
                             Get.to(AskSignUp());
 
                           },

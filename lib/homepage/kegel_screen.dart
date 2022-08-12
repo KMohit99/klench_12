@@ -117,7 +117,7 @@ class _KegelScreenState extends State<KegelScreen>
             stopWatch_finish();
             // _animationController_shadow1!.reverse();
             setState(() {
-              elapsedTime = 'PUSH';
+              elapsedTime = '00';
               percent = 0.0;
               watch.reset();
               CommonWidget().showToaster(msg: '${7 - counter} Times left');
@@ -189,8 +189,9 @@ class _KegelScreenState extends State<KegelScreen>
           print(elapsedTime);
 
           if (elapsedTime == '13') {
+            _animationController!.reverse();
+            _animationController_button!.reverse();
             stopWatch_finish();
-            // _animationController_shadow1!.reverse();
             setState(() {
               elapsedTime = '00';
               percent = 0.0;
@@ -233,8 +234,6 @@ class _KegelScreenState extends State<KegelScreen>
                   });
                 }
               } else {
-                _animationController!.reverse();
-                _animationController_button!.reverse();
                 stopWatch_finish();
                 // _animationController_shadow1!.reverse();
                 setState(() {
@@ -325,6 +324,7 @@ class _KegelScreenState extends State<KegelScreen>
   Animation? _animation_textTime;
 
   bool animation_started = false;
+  bool animation_started_middle = false;
   double button_height = 200;
   double text_k_size = 100;
   double text_time_size = 40;
@@ -342,7 +342,7 @@ class _KegelScreenState extends State<KegelScreen>
     _animationController =
         AnimationController(vsync: this, duration: const Duration(seconds: 1));
     _animationController!.repeat(reverse: true);
-    _animation = Tween(begin: 0.0, end: 25.0).animate(_animationController!)
+    _animation = Tween(begin: 0.0, end: 65.0).animate(_animationController!)
       ..addStatusListener((status) {
         print(status);
 
@@ -364,7 +364,7 @@ class _KegelScreenState extends State<KegelScreen>
         AnimationController(vsync: this, duration: const Duration(seconds: 5));
     _animationController_button!.forward();
     _animation_button =
-        Tween(begin: 200.0, end: 120.0).animate(_animationController_button!)
+        Tween(begin: 200.0, end: 150.0).animate(_animationController_button!)
           ..addStatusListener((status) {
             // print(status);
             // if (status == AnimationStatus.completed) {
@@ -409,6 +409,64 @@ class _KegelScreenState extends State<KegelScreen>
           });
   }
 
+  AnimationController? _animationController_middle;
+  Animation? _animation_middle;
+  Animation? _animation_middle2;
+  Animation? _animation_middle3;
+  Animation? _animation_middle4;
+
+  middle_animation() {
+    setState(() {
+      animation_started_middle = true;
+    });
+    _animationController_middle = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 500));
+    _animationController_middle!.forward();
+    _animation_middle =
+        Tween(begin: 15.0, end: 100.0).animate(_animationController_middle!)
+          ..addStatusListener((status) {
+            print(status);
+            // shadow_animation1_completed = true;
+          });
+    _animation_middle2 =
+        Tween(begin: 15.0, end: 120.0).animate(_animationController_middle!)
+          ..addStatusListener((status) {
+            print(status);
+            // shadow_animation1_completed = true;
+          });
+    _animation_middle3 =
+        Tween(begin: 15.0, end: 220.0).animate(_animationController_middle!)
+          ..addStatusListener((status) {
+            print(status);
+            // shadow_animation1_completed = true;
+          });
+    _animation_middle4 =
+        Tween(begin: 15.0, end: 190.0).animate(_animationController_middle!)
+          ..addStatusListener((status) {
+            print(status);
+            // shadow_animation1_completed = true;
+          });
+  }
+
+  AnimationController? _animController;
+  Animation<Offset>? _animOffset;
+  bool text_started_middle = false;
+
+  text_animation() {
+    setState(() {
+      text_started_middle = true;
+    });
+    _animController =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 500));
+    final curve =
+        CurvedAnimation(curve: Curves.decelerate, parent: _animController!);
+    _animOffset =
+        Tween<Offset>(begin: const Offset(0.0, 0.35), end: Offset.zero)
+            .animate(curve);
+
+    _animController!.forward();
+  }
+
   String? levels;
 
   @override
@@ -416,6 +474,9 @@ class _KegelScreenState extends State<KegelScreen>
     if (animation_started == true) {
       _animationController!.dispose(); // you need this
       _animationController_button!.dispose();
+    }
+    if (animation_started_middle == true) {
+      _animationController_middle!.dispose();
     }
     Vibration.cancel();
     // _animationController_textTime!.dispose();
@@ -486,6 +547,9 @@ class _KegelScreenState extends State<KegelScreen>
   @override
   Widget build(BuildContext context) {
     final seconds = myDuration.inSeconds.remainder(60);
+    final screenHeight = MediaQuery.of(context).size.height;
+    final screenWidth = MediaQuery.of(context).size.width;
+    print(screenHeight);
 
     return Stack(
       children: [
@@ -629,8 +693,30 @@ class _KegelScreenState extends State<KegelScreen>
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const SizedBox(
-                    height: 15,
+                  // SizedBox(
+                  //   height: (animation_started_middle
+                  //       ? _animation_middle!.value
+                  //       : 15),
+                  // ),
+
+                  Container(
+                    height: (screenHeight >= 600 && screenHeight <= 700
+                        ? (animation_started_middle
+                            ? _animation_middle2!.value
+                            : 15)
+                        : (screenHeight >= 700 && screenHeight <= 800
+                            ? (animation_started_middle
+                                ? _animation_middle!.value
+                                : 15)
+                            : (screenHeight >= 800 && screenHeight <= 850
+                                ? (animation_started_middle
+                                    ? _animation_middle4!.value
+                                    : 15)
+                                : (screenHeight >= 850
+                                    ? (animation_started_middle
+                                        ? _animation_middle3!.value
+                                        : 15)
+                                    : 0)))),
                   ),
                   Container(
                       // color: Colors.white,
@@ -733,28 +819,527 @@ class _KegelScreenState extends State<KegelScreen>
                       ),
                     ),
                   )),
-                  const SizedBox(
-                    height: 25,
+                  // SizedBox(
+                  //   height: (animation_started_middle
+                  //       ? _animation_middle!.value
+                  //       : 25),
+                  // ),
+
+                  Container(
+                    height: (screenHeight >= 600 && screenHeight <= 700
+                        ? (animation_started_middle
+                            ? _animation_middle2!.value
+                            : 15)
+                        : (screenHeight >= 700 && screenHeight <= 800
+                            ? (animation_started_middle
+                                ? _animation_middle!.value
+                                : 15)
+                            : (screenHeight >= 800 && screenHeight <= 850
+                                ? (animation_started_middle
+                                    ? _animation_middle4!.value
+                                    : 15)
+                                : (screenHeight >= 850
+                                    ? (animation_started_middle
+                                        ? _animation_middle3!.value
+                                        : 15)
+                                    : 0)))),
+                  ),
+                  // (timer_started
+                  //     ? Container(
+                  //         child: Text(
+                  //         ('$seconds' == '3'
+                  //             ? 'Ready'
+                  //             : ('$seconds' == '2'
+                  //                 ? 'Set'
+                  //                 : ('$seconds' == '1' ? 'Kegel' : ''))),
+                  //         style: FontStyleUtility.h22(
+                  //             fontColor: Colors.white60, family: "PR"),
+                  //       ))
+                  //     : SizedBox.shrink()),
+                  (timer_started
+                      ? Row(
+                          children: [
+                            Expanded(
+                              flex: 2,
+                              child: Container(
+                                // color: Colors.red,
+                                child: ('$seconds' == '3'
+                                    ? Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Expanded(
+                                            flex: 1,
+                                            child: Container(
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: Text(
+                                                  'Set',
+                                                  style: FontStyleUtility.h18(
+                                                      fontColor:
+                                                          Colors.transparent,
+                                                      family: "PR"),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          Expanded(
+                                            flex: 1,
+                                            child: Container(
+                                              width: 80,
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                  border: Border.all(
+                                                      color: Colors.white,
+                                                      width: 0.5)),
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: Text(
+                                                  'Ready',
+                                                  textAlign: TextAlign.center,
+                                                  style: FontStyleUtility.h22(
+                                                      fontColor: ColorUtils
+                                                          .primary_gold,
+                                                      family: "PM"),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      )
+                                    : ('$seconds' == '2'
+                                        ? Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Expanded(
+                                                flex: 1,
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.end,
+                                                  children: [
+                                                    Container(
+                                                      child: Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(8.0),
+                                                        child: Text(
+                                                          'Ready',
+                                                          style: FontStyleUtility
+                                                              .h16(
+                                                                  fontColor:
+                                                                      Colors
+                                                                          .white,
+                                                                  family: "PR"),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              Expanded(
+                                                flex: 1,
+                                                child: Container(
+                                                  width: 80,
+                                                  decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10),
+                                                      border: Border.all(
+                                                          color: Colors.white,
+                                                          width: 0.5)),
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
+                                                    child: Text(
+                                                      'Set',
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      style: FontStyleUtility.h22(
+                                                          fontColor: ColorUtils
+                                                              .primary_gold,
+                                                          family: "PM"),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          )
+                                        : ('$seconds' == '1'
+                                            ? Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  Expanded(
+                                                    flex: 1,
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment.end,
+                                                      children: [
+                                                        Container(
+                                                          child: Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(8.0),
+                                                            child: Text(
+                                                              'Set',
+                                                              style: FontStyleUtility
+                                                                  .h16(
+                                                                      fontColor:
+                                                                          Colors
+                                                                              .white,
+                                                                      family:
+                                                                          "PR"),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  Expanded(
+                                                    flex: 1,
+                                                    child: Container(
+                                                      width: 100,
+                                                      decoration: BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(10),
+                                                          border: Border.all(
+                                                              color:
+                                                                  Colors.white,
+                                                              width: 0.5)),
+                                                      child: Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(8.0),
+                                                        child: Text(
+                                                          'Kegel',
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                          style: FontStyleUtility.h22(
+                                                              fontColor: ColorUtils
+                                                                  .primary_gold,
+                                                              family: "PM"),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              )
+                                            : (four_started
+                                                ? Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.end,
+                                                    children: [
+                                                      Expanded(
+                                                        flex: 1,
+                                                        child: Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .end,
+                                                          children: [
+                                                            Container(
+                                                              child: Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                            .all(
+                                                                        4.0),
+                                                                child: Text(
+                                                                  'Set',
+                                                                  style: FontStyleUtility.h14(
+                                                                      fontColor:
+                                                                          Colors
+                                                                              .transparent,
+                                                                      family:
+                                                                          "PR"),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            Container(
+                                                              child: Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                            .all(
+                                                                        4.0),
+                                                                child: Text(
+                                                                  'Kegel',
+                                                                  style: FontStyleUtility.h16(
+                                                                      fontColor:
+                                                                          Colors
+                                                                              .white,
+                                                                      family:
+                                                                          "PR"),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      Expanded(
+                                                        flex: 1,
+                                                        child: Container(
+                                                          decoration: BoxDecoration(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          10),
+                                                              border: Border.all(
+                                                                  color: Colors
+                                                                      .white,
+                                                                  width: 0.5)),
+                                                          child: Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(8.0),
+                                                            child: Text(
+                                                              'Push',
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .center,
+                                                              style: FontStyleUtility.h22(
+                                                                  fontColor:
+                                                                      ColorUtils
+                                                                          .primary_gold,
+                                                                  family: "PM"),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  )
+                                                : Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      Expanded(
+                                                        flex: 1,
+                                                        child: Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .end,
+                                                          children: [
+                                                            Container(
+                                                              child: Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                            .all(
+                                                                        8.0),
+                                                                child: Text(
+                                                                  'Set',
+                                                                  style: FontStyleUtility.h16(
+                                                                      fontColor:
+                                                                          Colors
+                                                                              .white,
+                                                                      family:
+                                                                          "PR"),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      Expanded(
+                                                        flex: 1,
+                                                        child: Container(
+                                                          width: 100,
+                                                          decoration: BoxDecoration(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          10),
+                                                              border: Border.all(
+                                                                  color: Colors
+                                                                      .white,
+                                                                  width: 0.5)),
+                                                          child: Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(8.0),
+                                                            child: Text(
+                                                              'Kegel',
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .center,
+                                                              style: FontStyleUtility.h22(
+                                                                  fontColor:
+                                                                      ColorUtils
+                                                                          .primary_gold,
+                                                                  family: "PM"),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ))))),
+                              ),
+                            ),
+                            Expanded(
+                              flex: 1,
+                              child: Container(
+                                // color: Colors.red,
+                                child: ('$seconds' == '3'
+                                    ? Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          Container(
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: Text(
+                                                'Set',
+                                                style: FontStyleUtility.h16(
+                                                    fontColor: Colors.white,
+                                                    family: "PR"),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      )
+                                    : ('$seconds' == '2'
+                                        ? Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              Container(
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(8.0),
+                                                  child: Text(
+                                                    'Kegel',
+                                                    style: FontStyleUtility.h16(
+                                                        fontColor: Colors.white,
+                                                        family: "PR"),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          )
+                                        : ('$seconds' == '1'
+                                            ? Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                children: [
+                                                  Container(
+                                                    child: Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              8.0),
+                                                      child: Text(
+                                                        'Push',
+                                                        style: FontStyleUtility
+                                                            .h16(
+                                                                fontColor:
+                                                                    Colors
+                                                                        .white,
+                                                                family: "PR"),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              )
+                                            : (four_started
+                                                ? Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.start,
+                                                    children: [
+                                                      Container(
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(4.0),
+                                                          child: Text(
+                                                            'Ready',
+                                                            style: FontStyleUtility
+                                                                .h18(
+                                                                    fontColor:
+                                                                        Colors
+                                                                            .white,
+                                                                    family:
+                                                                        "PR"),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  )
+                                                : Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.start,
+                                                    children: [
+                                                      Container(
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(8.0),
+                                                          child: Text(
+                                                            'Push',
+                                                            style: FontStyleUtility
+                                                                .h16(
+                                                                    fontColor:
+                                                                        Colors
+                                                                            .white,
+                                                                    family:
+                                                                        "PR"),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ))))),
+                              ),
+                            )
+                          ],
+                        )
+                      : SizedBox(
+                          height: 0,
+                        )),
+                  // (text_started_middle
+                  //     ? FadeTransition(
+                  //         child: SlideTransition(
+                  //           position: _animOffset!,
+                  //           child: Container(
+                  //               child: Text(
+                  //             ('$seconds' == '3'
+                  //                 ? 'Ready'
+                  //                 : ('$seconds' == '2'
+                  //                     ? 'Set'
+                  //                     : ('$seconds' == '1' ? 'Kegel' : ''))),
+                  //             style: FontStyleUtility.h22(
+                  //                 fontColor: Colors.white60, family: "PR"),
+                  //           )),
+                  //         ),
+                  //         opacity: _animController!,
+                  //       )
+                  //     : SizedBox.shrink()),
+                  SizedBox(
+                    height: 20,
                   ),
                   GestureDetector(
                     onTap: () async {
                       if (started) {
-                        startTimer();
                         back_wallpaper = false;
 
-                        Future.delayed(const Duration(seconds: 3), () {
-                          // start_animation();
-                          // start_button_animation();
-                          startWatch();
+                        // start_animation();
+                        // start_button_animation();
+                        await middle_animation();
+                        await text_animation();
+                        Future.delayed(const Duration(seconds: 1), () async {
+                          startTimer();
                         });
+                        await startWatch();
                       } else {
                         await stopWatch_finish();
+                        await _animationController_middle!.reverse();
                         Vibration.cancel();
                         setState(() {
                           elapsedTime = '00';
                           percent = 0.0;
                           back_wallpaper = true;
-                          button_height = 120;
+                          button_height = 150;
                           text_k_size = 70;
                           text_time_size = 25;
                           watch.reset();
@@ -4006,7 +4591,8 @@ class _KegelScreenState extends State<KegelScreen>
                               flex: 1,
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(
-                                    horizontal: 16, vertical: 0),                                child: Container(
+                                    horizontal: 16, vertical: 0),
+                                child: Container(
                                   margin: EdgeInsets.only(left: 0),
                                   child: Text(
                                     "Add Alarm",
@@ -4042,8 +4628,10 @@ class _KegelScreenState extends State<KegelScreen>
                                                 decoration: BoxDecoration(
                                                     // color: Colors.black.withOpacity(0.65),
                                                     gradient: LinearGradient(
-                                                      begin: Alignment.centerLeft,
-                                                      end: Alignment.centerRight,
+                                                      begin:
+                                                          Alignment.centerLeft,
+                                                      end:
+                                                          Alignment.centerRight,
                                                       // stops: [0.1, 0.5, 0.7, 0.9],
                                                       colors: [
                                                         HexColor("#020204")
@@ -4054,8 +4642,8 @@ class _KegelScreenState extends State<KegelScreen>
                                                     ),
                                                     boxShadow: [
                                                       BoxShadow(
-                                                          color:
-                                                              HexColor('#04060F'),
+                                                          color: HexColor(
+                                                              '#04060F'),
                                                           offset: const Offset(
                                                               -10, 10),
                                                           blurRadius: 20)
@@ -4068,7 +4656,8 @@ class _KegelScreenState extends State<KegelScreen>
                                                             topRight:
                                                                 Radius.circular(
                                                                     20))),
-                                                padding: const EdgeInsets.all(32),
+                                                padding:
+                                                    const EdgeInsets.all(32),
                                                 child: SingleChildScrollView(
                                                   child: Column(
                                                     children: [
@@ -4151,38 +4740,41 @@ class _KegelScreenState extends State<KegelScreen>
                                                       // ),
                                                       Container(
                                                         height: 150,
-                                                        decoration: BoxDecoration(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(15),
-                                                            gradient:
-                                                                LinearGradient(
-                                                              begin: Alignment
-                                                                  .topCenter,
-                                                              end: Alignment
-                                                                  .bottomCenter,
-                                                              colors: [
-                                                                HexColor(
-                                                                        "#000000")
-                                                                    .withOpacity(
-                                                                        1),
-                                                                HexColor(
-                                                                        "#04060F")
-                                                                    .withOpacity(
-                                                                        1),
-                                                                HexColor(
-                                                                        "#000000")
-                                                                    .withOpacity(
-                                                                        1),
-                                                              ],
-                                                            ),
-                                                            boxShadow: [
+                                                        decoration:
+                                                            BoxDecoration(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            15),
+                                                                gradient: LinearGradient(
+                                                                  begin: Alignment
+                                                                      .topCenter,
+                                                                  end: Alignment
+                                                                      .bottomCenter,
+                                                                  colors: [
+                                                                    HexColor(
+                                                                            "#000000")
+                                                                        .withOpacity(
+                                                                            1),
+                                                                    HexColor(
+                                                                            "#04060F")
+                                                                        .withOpacity(
+                                                                            1),
+                                                                    HexColor(
+                                                                            "#000000")
+                                                                        .withOpacity(
+                                                                            1),
+                                                                  ],
+                                                                ),
+                                                                boxShadow: [
                                                               BoxShadow(
                                                                   color: HexColor(
                                                                       '#04060F'),
-                                                                  offset: Offset(
-                                                                      3, 3),
-                                                                  blurRadius: 10)
+                                                                  offset:
+                                                                      Offset(
+                                                                          3, 3),
+                                                                  blurRadius:
+                                                                      10)
                                                             ]),
                                                         child: Stack(
                                                           children: [
@@ -4213,8 +4805,10 @@ class _KegelScreenState extends State<KegelScreen>
                                                                         DateTime
                                                                             .now();
                                                                     var selectedDateTime = DateTime(
-                                                                        now.year,
-                                                                        now.month,
+                                                                        now
+                                                                            .year,
+                                                                        now
+                                                                            .month,
                                                                         now.day,
                                                                         selected_time
                                                                             .hour,
@@ -4241,8 +4835,9 @@ class _KegelScreenState extends State<KegelScreen>
                                                         onTap: () {
                                                           showDialog(
                                                             context: context,
-                                                            builder: (BuildContext
-                                                                context) {
+                                                            builder:
+                                                                (BuildContext
+                                                                    context) {
                                                               double width =
                                                                   MediaQuery.of(
                                                                           context)
@@ -4433,14 +5028,16 @@ class _KegelScreenState extends State<KegelScreen>
                                                         },
                                                         title: Text('Title',
                                                             style: FontStyleUtility.h14(
-                                                                fontColor: ColorUtils
-                                                                    .primary_grey,
+                                                                fontColor:
+                                                                    ColorUtils
+                                                                        .primary_grey,
                                                                 family: 'PR')),
                                                         trailing: const Icon(
                                                             Icons
                                                                 .arrow_forward_ios,
                                                             size: 15,
-                                                            color: Colors.white),
+                                                            color:
+                                                                Colors.white),
                                                       ),
                                                       // ListTile(
                                                       //   title: Text(
@@ -4462,8 +5059,9 @@ class _KegelScreenState extends State<KegelScreen>
 
                                                           showDialog(
                                                             context: context,
-                                                            builder: (BuildContext
-                                                                context) {
+                                                            builder:
+                                                                (BuildContext
+                                                                    context) {
                                                               double width =
                                                                   MediaQuery.of(
                                                                           context)
@@ -4481,9 +5079,11 @@ class _KegelScreenState extends State<KegelScreen>
                                                                   contentPadding:
                                                                       EdgeInsets
                                                                           .zero,
-                                                                  elevation: 0.0,
+                                                                  elevation:
+                                                                      0.0,
                                                                   // title: Center(child: Text("Evaluation our APP")),
-                                                                  content: Column(
+                                                                  content:
+                                                                      Column(
                                                                     mainAxisAlignment:
                                                                         MainAxisAlignment
                                                                             .center,
@@ -4514,16 +5114,14 @@ class _KegelScreenState extends State<KegelScreen>
                                                                                       BoxShadow(color: HexColor('#04060F'), offset: Offset(10, 10), blurRadius: 10)
                                                                                     ],
                                                                                     borderRadius: BorderRadius.circular(20)),
-                                                                            margin: EdgeInsets.symmetric(
-                                                                                horizontal: 10,
-                                                                                vertical: 10),
+                                                                            margin:
+                                                                                EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                                                                             // height: 122,
                                                                             // width: 133,
                                                                             // padding: const EdgeInsets.all(8.0),
                                                                             child:
                                                                                 Column(
-                                                                              mainAxisAlignment:
-                                                                                  MainAxisAlignment.center,
+                                                                              mainAxisAlignment: MainAxisAlignment.center,
                                                                               children: [
                                                                                 Container(
                                                                                   // color: Colors.white,
@@ -4565,10 +5163,8 @@ class _KegelScreenState extends State<KegelScreen>
                                                                             },
                                                                             child:
                                                                                 Container(
-                                                                              margin:
-                                                                                  EdgeInsets.only(right: 0),
-                                                                              alignment:
-                                                                                  Alignment.topRight,
+                                                                              margin: EdgeInsets.only(right: 0),
+                                                                              alignment: Alignment.topRight,
                                                                               child: Container(
                                                                                   decoration: BoxDecoration(
                                                                                       // color: Colors.black.withOpacity(0.65),
@@ -4606,7 +5202,8 @@ class _KegelScreenState extends State<KegelScreen>
                                                                   fontColor:
                                                                       ColorUtils
                                                                           .primary_gold,
-                                                                  family: 'PR')),
+                                                                  family:
+                                                                      'PR')),
                                                           trailing: const Icon(
                                                               Icons
                                                                   .arrow_forward_ios,
@@ -4707,8 +5304,7 @@ class _KegelScreenState extends State<KegelScreen>
                             ),
                             Expanded(
                               flex: 1,
-                              child: Container(
-                              ),
+                              child: Container(),
                             )
                           ],
                         ),
@@ -5699,8 +6295,8 @@ class _KegelScreenState extends State<KegelScreen>
   stopWatch_finish() {
     setState(() {
       startStop = true;
-      _animationController!.stop();
-      _animationController_button!.stop();
+      // _animationController!.stop();
+      // _animationController_button!.reverse();
       started = true;
       animation_started = false;
       watch.stop();
@@ -5842,6 +6438,7 @@ class _KegelScreenState extends State<KegelScreen>
     Navigator.pop(context);
     loadAlarms();
   }
+
   // Future<void> click alarm() async {
   //   DateTime scheduleAlarmDateTime;
   //   if (_alarmTime!.isAfter(DateTime.now())) {

@@ -89,8 +89,12 @@ class _WarmUpScreenState extends State<WarmUpScreen>
 
   Timer? countdownTimer;
   Duration myDuration = Duration(seconds: 3);
+  bool timer_started = false;
 
   void startTimer() {
+    setState(() {
+      timer_started = true;
+    });
     countdownTimer =
         Timer.periodic(Duration(seconds: 1), (_) => setCountDown());
   }
@@ -135,14 +139,14 @@ class _WarmUpScreenState extends State<WarmUpScreen>
     _animationController =
         AnimationController(vsync: this, duration: Duration(seconds: 1));
     _animationController!.repeat(reverse: true);
-    _animation = Tween(begin: 0.0, end: 25.0).animate(_animationController!)
+    _animation = Tween(begin: 0.0, end: 65.0).animate(_animationController!)
       ..addListener(() {});
 
     _animationController_button =
         AnimationController(vsync: this, duration: Duration(seconds: 5));
     _animationController_button!.forward();
     _animation_button =
-        Tween(begin: 200.0, end: 120.0).animate(_animationController_button!)
+        Tween(begin: 200.0, end: 150.0).animate(_animationController_button!)
           ..addStatusListener((status) {
             // print(status);
             // if (status == AnimationStatus.completed) {
@@ -187,11 +191,54 @@ class _WarmUpScreenState extends State<WarmUpScreen>
           });
   }
 
+  AnimationController? _animationController_middle;
+  Animation? _animation_middle;
+  bool animation_started_middle = false;
+  Animation? _animation_middle2;
+  Animation? _animation_middle3;
+  Animation? _animation_middle4;
+
+  middle_animation() {
+    setState(() {
+      animation_started_middle = true;
+    });
+    _animationController_middle = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 500));
+    _animationController_middle!.forward();
+    _animation_middle =
+    Tween(begin: 15.0, end: 100.0).animate(_animationController_middle!)
+      ..addStatusListener((status) {
+        print(status);
+        // shadow_animation1_completed = true;
+      });
+    _animation_middle2 =
+    Tween(begin: 15.0, end: 150.0).animate(_animationController_middle!)
+      ..addStatusListener((status) {
+        print(status);
+        // shadow_animation1_completed = true;
+      });
+    _animation_middle3 =
+    Tween(begin: 15.0, end: 250.0).animate(_animationController_middle!)
+      ..addStatusListener((status) {
+        print(status);
+        // shadow_animation1_completed = true;
+      });
+    _animation_middle4=
+    Tween(begin: 15.0, end: 223.0).animate(_animationController_middle!)
+      ..addStatusListener((status) {
+        print(status);
+        // shadow_animation1_completed = true;
+      });
+  }
+
   @override
   dispose() {
     if(animation_started == true) {
       _animationController!.dispose();
       _animationController_button!.dispose();
+    }
+    if(animation_started_middle == true){
+      _animationController_middle!.dispose();
     }
 // you need this
     super.dispose();
@@ -200,6 +247,10 @@ class _WarmUpScreenState extends State<WarmUpScreen>
   @override
   Widget build(BuildContext context) {
     final seconds = myDuration.inSeconds.remainder(60);
+    final screenHeight = MediaQuery.of(context).size.height;
+    final screenWidth = MediaQuery.of(context).size.width;
+    print(screenHeight);
+
     return Stack(
       children: [
         Container(
@@ -303,9 +354,29 @@ class _WarmUpScreenState extends State<WarmUpScreen>
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  SizedBox(
-                    height: 15,
+                  // SizedBox(
+                  //   height: (animation_started_middle ? _animation_middle!.value : 15),
+                  // ),
+                  Container(
+                    height: (screenHeight >= 600 && screenHeight <= 700
+                        ? (animation_started_middle
+                        ? _animation_middle2!.value
+                        : 15)
+                        : (screenHeight >= 700 && screenHeight <= 800
+                        ? (animation_started_middle
+                        ? _animation_middle!.value
+                        : 15)
+                        : (screenHeight >= 800 && screenHeight <= 850
+                        ? (animation_started_middle
+                        ? _animation_middle4!.value
+                        : 15)
+                        : (screenHeight >= 850
+                        ? (animation_started_middle
+                        ? _animation_middle3!.value
+                        : 15)
+                        : 0)))),
                   ),
+
                   Container(
                     child: AvatarGlow(
                       endRadius: 100.0,
@@ -384,25 +455,49 @@ class _WarmUpScreenState extends State<WarmUpScreen>
                       glowColor: Colors.white,
                     ),
                   ),
-                  SizedBox(
-                    height: 28,
+                  // SizedBox(
+                  //   height: 28,
+                  // ),
+                  Container(
+                    height: (screenHeight >= 600 && screenHeight <= 700
+                        ? (animation_started_middle
+                        ? _animation_middle2!.value
+                        : 15)
+                        : (screenHeight >= 700 && screenHeight <= 800
+                        ? (animation_started_middle
+                        ? _animation_middle!.value
+                        : 15)
+                        : (screenHeight >= 800 && screenHeight <= 850
+                        ? (animation_started_middle
+                        ? _animation_middle4!.value
+                        : 15)
+                        : (screenHeight >= 850
+                        ? (animation_started_middle
+                        ? _animation_middle3!.value
+                        : 15)
+                        : 0)))),
                   ),
+
+
                   GestureDetector(
                     onTap: () async {
                       if (started) {
                         startTimer();
                         back_wallpaper = false;
                         Future.delayed(Duration(seconds: 3), () {
-                          start_animation();
                           startWatch();
+                          middle_animation();
+
                         });
                       } else {
                         await stopWatch_finish();
+                        await _animationController_middle!.reverse();
+
                         setState(() {
                           elapsedTime = '00';
                           percent = 0.0;
                           back_wallpaper = true;
-                          button_height = 120;
+                          button_height = 150;
                           text_k_size = 70;
                           text_time_size = 25;
                           watch.reset();
