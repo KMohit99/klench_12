@@ -384,6 +384,8 @@ class SignInScreenController extends GetxController {
         await CommonWidget().showToaster(msg: 'User Updated');
         // await Navigator.push(context,
         //     MaterialPageRoute(builder: (context) => DashboardScreen()));
+        await PreferenceManager()
+            .setPref(URLConstants.socail_signup, 'true');
         await Navigator.push(context,
             MaterialPageRoute(builder: (context) => FaceScanScreen()));
         // await Get.to(FaceScanScreen());

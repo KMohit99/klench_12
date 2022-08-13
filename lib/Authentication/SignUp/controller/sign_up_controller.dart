@@ -223,6 +223,7 @@ class SignUpScreenController extends GetxController {
     DoBController.clear();
     genderController.clear();
     OtpController.clear();
+    imgFile = null;
   }
 
   Future<dynamic> ReSendOtpAPi({required BuildContext context}) async {

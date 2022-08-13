@@ -12,6 +12,7 @@ import '../../utils/Asset_utils.dart';
 import '../../utils/Common_buttons.dart';
 import '../../utils/Common_container_color.dart';
 import '../../utils/TextStyle_utils.dart';
+import '../../utils/UrlConstrant.dart';
 import '../../utils/colorUtils.dart';
 
 class WelcomeVideoScreen extends StatefulWidget {
@@ -35,6 +36,7 @@ class _WelcomeVideoScreenState extends State<WelcomeVideoScreen> {
     // better_player_code();
 
     super.initState();
+
     Future.delayed(Duration(seconds: 30), () {
       skipper();
       // Do something
@@ -52,8 +54,11 @@ class _WelcomeVideoScreenState extends State<WelcomeVideoScreen> {
     // _betterPlayerController!.dispose();
     super.dispose();
   }
+  String? trial;
 
-  skipper() {
+  skipper() async {
+     trial = await PreferenceManager().getPref(URLConstants.trial);
+
     setState(() {
       video_skip = true;
     });
@@ -285,9 +290,12 @@ class _WelcomeVideoScreenState extends State<WelcomeVideoScreen> {
                                 child: common_button_gold(
                                   onTap: () async {
                                     await _controller!.pause();
-                                    (widget.signup
-                                        ? await Get.to(SubscriptionScreen())
-                                        : await Get.to(DashboardScreen()));
+                                    // (widget.signup
+                                    //     ? await Get.to(SubscriptionScreen())
+                                    //     : await Get.to(DashboardScreen()));
+                                    (trial == 'true'
+                                        ? await Get.to(DashboardScreen())
+                                        : await Get.to(SubscriptionScreen()));
                                   },
                                   title_text: 'Skip',
                                 ),

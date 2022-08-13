@@ -54,7 +54,7 @@ dependencies:
   dio: ^4.0.0
   table_calendar: ^3.0.6
   loop_page_view: ^1.2.0
-
+#  carousel_slider: ^2.3.1
 
 
 #  esys_flutter_share_plus: ^2.1.0

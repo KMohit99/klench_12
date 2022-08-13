@@ -322,13 +322,14 @@ class _FaceScanScreenState extends State<FaceScanScreen> {
     // Timer(Duration(seconds: 3), () async {
     // Get.to(FrontScreen());
     // hideLoader(context);
-    String trial = await PreferenceManager().getPref(URLConstants.trial);
+    String socail_sign = await PreferenceManager().getPref(URLConstants.socail_signup);
 
-    (trial == 'true'
-        ? await Get.to(DashboardScreen())
-        : await Get.to(SubscriptionScreen()));
-    // Get.to(WelcomeVideoScreen2(signup: true,));
-    // });
+    (socail_sign == 'true'
+        ? Get.to(WelcomeVideoScreen2(signup: true,))
+        : Get.to(WelcomeVideoScreen(signup: true,)));
+
+
+    // });   N
 
     (finger_print_enabled ? print('facescan enabled') : print('disabled'));
   }

@@ -589,355 +589,634 @@ class _KegelScreenState extends State<KegelScreen>
               : BoxDecoration()),
         ),
         Scaffold(
-          backgroundColor: Colors.transparent,
-          appBar: AppBar(
             backgroundColor: Colors.transparent,
-            automaticallyImplyLeading: false,
-            leading: GestureDetector(
-              onTap: () {
-                (started
-                    ? Navigator.pop(context)
-                    : CommonWidget()
-                        .showErrorToaster(msg: "Please finish the method"));
-              },
-              child: Container(
-                  width: 41,
-                  margin: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(100),
-                      gradient: LinearGradient(
-                          begin: const Alignment(-1.0, -4.0),
-                          end: const Alignment(1.0, 4.0),
-                          colors: [HexColor('#020204'), HexColor('#36393E')])),
-                  child: Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Image.asset(
-                      AssetUtils.arrow_back,
-                      height: 14,
-                      width: 15,
-                    ),
-                  )),
-            ),
-            title: Text(
-              Textutils.kegel,
-              style: FontStyleUtility.h16(
-                  fontColor: ColorUtils.primary_grey, family: 'PM'),
-            ),
-            centerTitle: true,
-            actions: [
-              Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 10),
-                  alignment: Alignment.center,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        AssetUtils.star_icon,
-                        color: (_kegel_controller.sets >= 1
-                            ? ColorUtils.primary_gold
-                            : Colors.grey),
-                        height: 22,
-                        width: 22,
-                      ),
-                      const SizedBox(
-                        width: 7,
-                      ),
-                      Image.asset(
-                        AssetUtils.star_icon,
-                        height: 22,
-                        color: (_kegel_controller.sets >= 2
-                            ? ColorUtils.primary_gold
-                            : Colors.grey),
-                        width: 22,
-                      ),
-                      const SizedBox(
-                        width: 7,
-                      ),
-                      Image.asset(
-                        AssetUtils.star_icon,
-                        color: (_kegel_controller.sets >= 3
-                            ? ColorUtils.primary_gold
-                            : Colors.grey),
-                        height: 22,
-                        width: 22,
-                      ),
-                    ],
-                  )),
+            // appBar: AppBar(
+            //   backgroundColor: Colors.transparent,
+            //   automaticallyImplyLeading: false,
+            //   leading: GestureDetector(
+            //     onTap: () {
+            //       (started
+            //           ? Navigator.pop(context)
+            //           : CommonWidget()
+            //               .showErrorToaster(msg: "Please finish the method"));
+            //     },
+            //     child: Container(
+            //         width: 41,
+            //         margin: const EdgeInsets.all(8),
+            //         decoration: BoxDecoration(
+            //             color: Colors.white,
+            //             borderRadius: BorderRadius.circular(100),
+            //             gradient: LinearGradient(
+            //                 begin: const Alignment(-1.0, -4.0),
+            //                 end: const Alignment(1.0, 4.0),
+            //                 colors: [HexColor('#020204'), HexColor('#36393E')])),
+            //         child: Padding(
+            //           padding: const EdgeInsets.all(10.0),
+            //           child: Image.asset(
+            //             AssetUtils.arrow_back,
+            //             height: 14,
+            //             width: 15,
+            //           ),
+            //         )),
+            //   ),
+            //   title: Text(
+            //     Textutils.kegel,
+            //     style: FontStyleUtility.h16(
+            //         fontColor: ColorUtils.primary_grey, family: 'PM'),
+            //   ),
+            //   centerTitle: true,
+            //   actions: [
+            //     Container(
+            //         margin: const EdgeInsets.symmetric(horizontal: 10),
+            //         alignment: Alignment.center,
+            //         child: Row(
+            //           mainAxisAlignment: MainAxisAlignment.end,
+            //           crossAxisAlignment: CrossAxisAlignment.center,
+            //           children: [
+            //             Image.asset(
+            //               AssetUtils.star_icon,
+            //               color: (_kegel_controller.sets >= 1
+            //                   ? ColorUtils.primary_gold
+            //                   : Colors.grey),
+            //               height: 22,
+            //               width: 22,
+            //             ),
+            //             const SizedBox(
+            //               width: 7,
+            //             ),
+            //             Image.asset(
+            //               AssetUtils.star_icon,
+            //               height: 22,
+            //               color: (_kegel_controller.sets >= 2
+            //                   ? ColorUtils.primary_gold
+            //                   : Colors.grey),
+            //               width: 22,
+            //             ),
+            //             const SizedBox(
+            //               width: 7,
+            //             ),
+            //             Image.asset(
+            //               AssetUtils.star_icon,
+            //               color: (_kegel_controller.sets >= 3
+            //                   ? ColorUtils.primary_gold
+            //                   : Colors.grey),
+            //               height: 22,
+            //               width: 22,
+            //             ),
+            //           ],
+            //         )),
+            //
+            //     // Container(
+            //     //     width: 41,
+            //     //     margin: EdgeInsets.all(8),
+            //     //     decoration: BoxDecoration(
+            //     //         color: Colors.white,
+            //     //         borderRadius: BorderRadius.circular(100),
+            //     //         gradient: LinearGradient(
+            //     //             begin: Alignment(-1.0, -4.0),
+            //     //             end: Alignment(1.0, 4.0),
+            //     //             colors: [HexColor('#020204'), HexColor('#36393E')])),
+            //     //     child: Padding(
+            //     //       padding: const EdgeInsets.all(10.0),
+            //     //       child: Image.asset(
+            //     //         AssetUtils.notification_icon,
+            //     //         color: ColorUtils.primary_gold,
+            //     //         height: 14,
+            //     //         width: 15,
+            //     //       ),
+            //     //     ))
+            //   ],
+            // ),
+            body: NestedScrollView(
+              headerSliverBuilder:
+                  (BuildContext context, bool innerBoxIsScrolled) {
+                return <Widget>[
+                  SliverAppBar(
+                    backgroundColor: Colors.transparent,
+                    automaticallyImplyLeading: false,
+                    snap: false,
+                    pinned: false,
+                    stretch: false,
+                    floating: false,
 
-              // Container(
-              //     width: 41,
-              //     margin: EdgeInsets.all(8),
-              //     decoration: BoxDecoration(
-              //         color: Colors.white,
-              //         borderRadius: BorderRadius.circular(100),
-              //         gradient: LinearGradient(
-              //             begin: Alignment(-1.0, -4.0),
-              //             end: Alignment(1.0, 4.0),
-              //             colors: [HexColor('#020204'), HexColor('#36393E')])),
-              //     child: Padding(
-              //       padding: const EdgeInsets.all(10.0),
-              //       child: Image.asset(
-              //         AssetUtils.notification_icon,
-              //         color: ColorUtils.primary_gold,
-              //         height: 14,
-              //         width: 15,
-              //       ),
-              //     ))
-            ],
-          ),
-          body: Container(
-            margin: const EdgeInsets.only(top: 15, left: 8, right: 8),
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  // SizedBox(
-                  //   height: (animation_started_middle
-                  //       ? _animation_middle!.value
-                  //       : 15),
-                  // ),
-
-                  Container(
-                    height: (screenHeight >= 600 && screenHeight <= 700
-                        ? (animation_started_middle
-                            ? _animation_middle2!.value
-                            : 15)
-                        : (screenHeight >= 700 && screenHeight <= 800
-                            ? (animation_started_middle
-                                ? _animation_middle!.value
-                                : 15)
-                            : (screenHeight >= 800 && screenHeight <= 850
-                                ? (animation_started_middle
-                                    ? _animation_middle4!.value
-                                    : 15)
-                                : (screenHeight >= 850
-                                    ? (animation_started_middle
-                                        ? _animation_middle3!.value
-                                        : 15)
-                                    : 0)))),
-                  ),
-                  Container(
-                      // color: Colors.white,
-                      child: AvatarGlow(
-                    endRadius: 100.0,
-                    showTwoGlows: true,
-                    animate: false,
-                    // (startStop ? false : true),
-                    duration: const Duration(milliseconds: 900),
-                    repeat: true,
-                    child: GestureDetector(
+                    leading: GestureDetector(
                       onTap: () {
-                        print('helllllllooooooooooooooo');
-                        // startOrStop();
+                        (started
+                            ? Navigator.pop(context)
+                            : CommonWidget().showErrorToaster(
+                                msg: "Please finish the method"));
                       },
                       child: Container(
-                        height: (animation_started
-                            ? _animation_button!.value
-                            : button_height),
-                        width: (animation_started
-                            ? _animation_button!.value
-                            : button_height),
-                        decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            image: const DecorationImage(
-                                alignment: Alignment.center,
-                                image: AssetImage(AssetUtils.home_button)),
-                            boxShadow: [
-                              BoxShadow(
-                                color: (animation_started
-                                    ? HexColor('#E64A9B')
-                                    : Colors.transparent),
-                                blurRadius:
-                                    (animation_started ? _animation!.value : 0),
-                                spreadRadius:
-                                    (animation_started ? _animation!.value : 0),
-                              )
-                            ]),
-                        child: Stack(
-                          children: [
-                            Container(
-                              alignment: Alignment.center,
-                              child: Text(
-                                'K',
-                                style: TextStyle(
-                                    color: HexColor('#E64A9B').withOpacity(0.4),
-                                    fontSize: (animation_started
-                                        ? _animation_textK!.value
-                                        : text_k_size),
-                                    fontWeight: FontWeight.w600),
-                              ),
+                          width: 41,
+                          margin: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(100),
+                              gradient: LinearGradient(
+                                  begin: const Alignment(-1.0, -4.0),
+                                  end: const Alignment(1.0, 4.0),
+                                  colors: [
+                                    HexColor('#020204'),
+                                    HexColor('#36393E')
+                                  ])),
+                          child: Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Image.asset(
+                              AssetUtils.arrow_back,
+                              height: 14,
+                              width: 15,
                             ),
-                            Container(
-                              alignment: Alignment.center,
-                              child: (four_started
-                                  ? Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          "PUSH",
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: (animation_started
-                                                  ? _animation_textTime!.value
-                                                  : text_time_size),
-                                              fontWeight: FontWeight.w900),
-                                        ),
-                                        Text(
-                                          elapsedTime,
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: (animation_started
-                                                  ? _animation_textTime!.value
-                                                  : text_time_size),
-                                              fontWeight: FontWeight.w900),
-                                        ),
-                                      ],
-                                    )
-                                  : Text(
-                                      (timer_started
-                                          ? ('$seconds' == '3'
-                                              ? 'Ready'
-                                              : ('$seconds' == '2'
-                                                  ? 'Set'
-                                                  : ('$seconds' == '1'
-                                                      ? 'Kegel'
-                                                      : elapsedTime)))
-                                          : ''),
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: (animation_started
-                                              ? _animation_textTime!.value
-                                              : text_time_size),
-                                          fontWeight: FontWeight.w900),
-                                    )),
-                            ),
-                          ],
-                        ),
-                      ),
+                          )),
                     ),
-                  )),
-                  // SizedBox(
-                  //   height: (animation_started_middle
-                  //       ? _animation_middle!.value
-                  //       : 25),
-                  // ),
-
-                  Container(
-                    height: (screenHeight >= 600 && screenHeight <= 700
-                        ? (animation_started_middle
-                            ? _animation_middle2!.value
-                            : 15)
-                        : (screenHeight >= 700 && screenHeight <= 800
-                            ? (animation_started_middle
-                                ? _animation_middle!.value
-                                : 15)
-                            : (screenHeight >= 800 && screenHeight <= 850
-                                ? (animation_started_middle
-                                    ? _animation_middle4!.value
-                                    : 15)
-                                : (screenHeight >= 850
-                                    ? (animation_started_middle
-                                        ? _animation_middle3!.value
-                                        : 15)
-                                    : 0)))),
+                    title: Text(
+                      Textutils.kegel,
+                      style: FontStyleUtility.h16(
+                          fontColor: ColorUtils.primary_grey, family: 'PM'),
+                    ),
+                    centerTitle: true,
+                    actions: [
+                      Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 10),
+                          alignment: Alignment.center,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Image.asset(
+                                AssetUtils.star_icon,
+                                color: (_kegel_controller.sets >= 1
+                                    ? ColorUtils.primary_gold
+                                    : Colors.grey),
+                                height: 22,
+                                width: 22,
+                              ),
+                              const SizedBox(
+                                width: 7,
+                              ),
+                              Image.asset(
+                                AssetUtils.star_icon,
+                                height: 22,
+                                color: (_kegel_controller.sets >= 2
+                                    ? ColorUtils.primary_gold
+                                    : Colors.grey),
+                                width: 22,
+                              ),
+                              const SizedBox(
+                                width: 7,
+                              ),
+                              Image.asset(
+                                AssetUtils.star_icon,
+                                color: (_kegel_controller.sets >= 3
+                                    ? ColorUtils.primary_gold
+                                    : Colors.grey),
+                                height: 22,
+                                width: 22,
+                              ),
+                            ],
+                          )),
+                      // Container(
+                      //     width: 41,
+                      //     margin: EdgeInsets.all(8),
+                      //     decoration: BoxDecoration(
+                      //         color: Colors.white,
+                      //         borderRadius: BorderRadius.circular(100),
+                      //         gradient: LinearGradient(
+                      //             begin: Alignment(-1.0, -4.0),
+                      //             end: Alignment(1.0, 4.0),
+                      //             colors: [HexColor('#020204'), HexColor('#36393E')])),
+                      //     child: Padding(
+                      //       padding: const EdgeInsets.all(10.0),
+                      //       child: Image.asset(
+                      //         AssetUtils.notification_icon,
+                      //         color: ColorUtils.primary_gold,
+                      //         height: 14,
+                      //         width: 15,
+                      //       ),
+                      //     ))
+                    ],
+                    // TabBar(
+                    //   labelPadding: EdgeInsets.zero,
+                    //   indicatorColor: Colors.black,
+                    //   controller: _tabController,
+                    //   tabs: <Widget>[
+                    //     Container(
+                    //       margin: EdgeInsets.only(bottom: 0),
+                    //       height: 50,
+                    //       width: 50,
+                    //       decoration: BoxDecoration(
+                    //           color: Colors.black,
+                    //           borderRadius: BorderRadius.circular(50),
+                    //           boxShadow: [
+                    //             BoxShadow(
+                    //               color: HexColor(CommonColor.blue),
+                    //               // spreadRadius: 5,
+                    //               blurRadius: 6,
+                    //               offset:
+                    //                   Offset(0, 3), // changes position of shadow
+                    //             ),
+                    //           ],
+                    //           gradient: LinearGradient(
+                    //             begin: Alignment.topLeft,
+                    //             end: Alignment.bottomRight,
+                    //             // stops: [0.1, 0.5, 0.7, 0.9],
+                    //             colors: [
+                    //               HexColor("#000000"),
+                    //               HexColor("#C12265"),
+                    //               // HexColor("#FFFFFF").withOpacity(0.67),
+                    //             ],
+                    //           ),
+                    //           border: Border.all(
+                    //               color: HexColor(CommonColor.blue), width: 1.5)),
+                    //       child: IconButton(
+                    //         onPressed: () {
+                    //           setState(() {
+                    //             index == 0;
+                    //           });
+                    //           print(index);
+                    //         },
+                    //         icon: Image.asset(
+                    //           AssetUtils.story1,
+                    //           height: 25,
+                    //           width: 25,
+                    //           color: HexColor(CommonColor.blue),
+                    //         ),
+                    //       ),
+                    //     ),
+                    //     Container(
+                    //       margin: EdgeInsets.all(0),
+                    //       height: 50,
+                    //       width: 50,
+                    //       decoration: BoxDecoration(
+                    //           borderRadius: BorderRadius.circular(50),
+                    //           boxShadow: [
+                    //             BoxShadow(
+                    //               color: HexColor(CommonColor.green),
+                    //               // spreadRadius: 5,
+                    //               blurRadius: 6,
+                    //               offset:
+                    //                   Offset(0, 3), // changes position of shadow
+                    //             ),
+                    //           ],
+                    //           gradient: LinearGradient(
+                    //             begin: Alignment.topLeft,
+                    //             end: Alignment.bottomRight,
+                    //             // stops: [0.1, 0.5, 0.7, 0.9],
+                    //             colors: [
+                    //               HexColor("#000000"),
+                    //               HexColor("#C12265"),
+                    //               // HexColor("#FFFFFF").withOpacity(0.67),
+                    //             ],
+                    //           ),
+                    //           border: Border.all(
+                    //               color: HexColor(CommonColor.green), width: 1.5)),
+                    //       child: IconButton(
+                    //         onPressed: () {
+                    //           setState(() {
+                    //             index == 1;
+                    //           });
+                    //           print(index);
+                    //         },
+                    //         icon: Image.asset(
+                    //           AssetUtils.story2,
+                    //           height: 25,
+                    //           width: 25,
+                    //           color: HexColor(CommonColor.green),
+                    //         ),
+                    //       ),
+                    //     ),
+                    //     Container(
+                    //       margin: EdgeInsets.all(0),
+                    //       height: 50,
+                    //       width: 50,
+                    //       decoration: BoxDecoration(
+                    //           boxShadow: [
+                    //             BoxShadow(
+                    //               color: HexColor(CommonColor.tile),
+                    //               // spreadRadius: 5,
+                    //               blurRadius: 6,
+                    //               offset:
+                    //                   Offset(0, 3), // changes position of shadow
+                    //             ),
+                    //           ],
+                    //           gradient: LinearGradient(
+                    //             begin: Alignment.topLeft,
+                    //             end: Alignment.bottomRight,
+                    //             // stops: [0.1, 0.5, 0.7, 0.9],
+                    //             colors: [
+                    //               HexColor("#000000"),
+                    //               HexColor("#C12265"),
+                    //               // HexColor("#FFFFFF").withOpacity(0.67),
+                    //             ],
+                    //           ),
+                    //           borderRadius: BorderRadius.circular(50),
+                    //           border: Border.all(
+                    //               color: HexColor(CommonColor.tile), width: 1.5)),
+                    //       child: IconButton(
+                    //         onPressed: () {
+                    //           setState(() {
+                    //             index == 2;
+                    //           });
+                    //           print(index);
+                    //         },
+                    //         icon: Image.asset(
+                    //           AssetUtils.story3,
+                    //           height: 25,
+                    //           width: 25,
+                    //           color: HexColor(CommonColor.tile),
+                    //         ),
+                    //       ),
+                    //     ),
+                    //     Container(
+                    //       margin: EdgeInsets.all(0),
+                    //       height: 50,
+                    //       width: 50,
+                    //       decoration: BoxDecoration(
+                    //           boxShadow: [
+                    //             BoxShadow(
+                    //               color: HexColor(CommonColor.orange),
+                    //               // spreadRadius: 5,
+                    //               blurRadius: 6,
+                    //               offset:
+                    //                   Offset(0, 3), // changes position of shadow
+                    //             ),
+                    //           ],
+                    //           gradient: LinearGradient(
+                    //             begin: Alignment.topLeft,
+                    //             end: Alignment.bottomRight,
+                    //             // stops: [0.1, 0.5, 0.7, 0.9],
+                    //             colors: [
+                    //               HexColor("#000000"),
+                    //               HexColor("#C12265"),
+                    //               // HexColor("#FFFFFF").withOpacity(0.67),
+                    //             ],
+                    //           ),
+                    //           borderRadius: BorderRadius.circular(50),
+                    //           border: Border.all(
+                    //               color: HexColor(CommonColor.orange), width: 1.5)),
+                    //       child: IconButton(
+                    //         onPressed: () {
+                    //           setState(() {
+                    //             index == 3;
+                    //           });
+                    //           print(index);
+                    //         },
+                    //         icon: Image.asset(
+                    //           AssetUtils.story4,
+                    //           height: 25,
+                    //           width: 25,
+                    //           color: HexColor(CommonColor.orange),
+                    //         ),
+                    //       ),
+                    //     ),
+                    //     Container(
+                    //       margin: EdgeInsets.all(0),
+                    //       height: 50,
+                    //       width: 50,
+                    //       decoration: BoxDecoration(
+                    //           boxShadow: [
+                    //             BoxShadow(
+                    //               color: Colors.white,
+                    //               // spreadRadius: 5,
+                    //               blurRadius: 6,
+                    //               offset:
+                    //                   Offset(0, 3), // changes position of shadow
+                    //             ),
+                    //           ],
+                    //           gradient: LinearGradient(
+                    //             begin: Alignment.topLeft,
+                    //             end: Alignment.bottomRight,
+                    //             // stops: [0.1, 0.5, 0.7, 0.9],
+                    //             colors: [
+                    //               HexColor("#000000"),
+                    //               HexColor("#C12265"),
+                    //               // HexColor("#FFFFFF").withOpacity(0.67),
+                    //             ],
+                    //           ),
+                    //           borderRadius: BorderRadius.circular(50),
+                    //           border: Border.all(color: Colors.white, width: 1.5)),
+                    //       child: IconButton(
+                    //         onPressed: () {
+                    //           setState(() {
+                    //             index == 4;
+                    //           });
+                    //           print(index);
+                    //         },
+                    //         icon: Image.asset(
+                    //           AssetUtils.story5,
+                    //           height: 25,
+                    //           width: 25,
+                    //           color: Colors.white,
+                    //         ),
+                    //       ),
+                    //     ),
+                    //
+                    //   ],
+                    // ),
                   ),
-                  // (timer_started
-                  //     ? Container(
-                  //         child: Text(
-                  //         ('$seconds' == '3'
-                  //             ? 'Ready'
-                  //             : ('$seconds' == '2'
-                  //                 ? 'Set'
-                  //                 : ('$seconds' == '1' ? 'Kegel' : ''))),
-                  //         style: FontStyleUtility.h22(
-                  //             fontColor: Colors.white60, family: "PR"),
-                  //       ))
-                  //     : SizedBox.shrink()),
-                  (timer_started
-                      ? Row(
-                          children: [
-                            Expanded(
-                              flex: 2,
-                              child: Container(
-                                // color: Colors.red,
-                                child: ('$seconds' == '3'
-                                    ? Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Expanded(
-                                            flex: 1,
-                                            child: Container(
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Text(
-                                                  'Set',
-                                                  style: FontStyleUtility.h18(
-                                                      fontColor:
-                                                          Colors.transparent,
-                                                      family: "PR"),
-                                                ),
-                                              ),
+                ];
+              },
+              body: Container(
+                margin: const EdgeInsets.only(top: 15, left: 8, right: 8),
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      // SizedBox(
+                      //   height: (animation_started_middle
+                      //       ? _animation_middle!.value
+                      //       : 15),
+                      // ),
+
+                      Container(
+                        height: (screenHeight >= 600 && screenHeight <= 700
+                            ? (animation_started_middle
+                                ? _animation_middle2!.value
+                                : 15)
+                            : (screenHeight >= 700 && screenHeight <= 800
+                                ? (animation_started_middle
+                                    ? _animation_middle!.value
+                                    : 15)
+                                : (screenHeight >= 800 && screenHeight <= 850
+                                    ? (animation_started_middle
+                                        ? _animation_middle4!.value
+                                        : 15)
+                                    : (screenHeight >= 850
+                                        ? (animation_started_middle
+                                            ? _animation_middle3!.value
+                                            : 15)
+                                        : 0)))),
+                      ),
+                      Container(
+                          // color: Colors.white,
+                          child: AvatarGlow(
+                        endRadius: 100.0,
+                        showTwoGlows: true,
+                        animate: false,
+                        // (startStop ? false : true),
+                        duration: const Duration(milliseconds: 900),
+                        repeat: true,
+                        child: GestureDetector(
+                          onTap: () {
+                            print('helllllllooooooooooooooo');
+                            // startOrStop();
+                          },
+                          child: Container(
+                            height: (animation_started
+                                ? _animation_button!.value
+                                : button_height),
+                            width: (animation_started
+                                ? _animation_button!.value
+                                : button_height),
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                image: const DecorationImage(
+                                    alignment: Alignment.center,
+                                    image: AssetImage(AssetUtils.home_button)),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: (animation_started
+                                        ? HexColor('#E64A9B')
+                                        : Colors.transparent),
+                                    blurRadius: (animation_started
+                                        ? _animation!.value
+                                        : 0),
+                                    spreadRadius: (animation_started
+                                        ? _animation!.value
+                                        : 0),
+                                  )
+                                ]),
+                            child: Stack(
+                              children: [
+                                Container(
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    'K',
+                                    style: TextStyle(
+                                        color: HexColor('#E64A9B')
+                                            .withOpacity(0.4),
+                                        fontSize: (animation_started
+                                            ? _animation_textK!.value
+                                            : text_k_size),
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                ),
+                                Container(
+                                  alignment: Alignment.center,
+                                  child: (four_started
+                                      ? Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              "PUSH",
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: (animation_started
+                                                      ? _animation_textTime!
+                                                          .value
+                                                      : text_time_size),
+                                                  fontWeight: FontWeight.w900),
                                             ),
-                                          ),
-                                          Expanded(
-                                            flex: 1,
-                                            child: Container(
-                                              width: 80,
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                  border: Border.all(
-                                                      color: Colors.white,
-                                                      width: 0.5)),
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Text(
-                                                  'Ready',
-                                                  textAlign: TextAlign.center,
-                                                  style: FontStyleUtility.h22(
-                                                      fontColor: ColorUtils
-                                                          .primary_gold,
-                                                      family: "PM"),
-                                                ),
-                                              ),
+                                            Text(
+                                              elapsedTime,
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: (animation_started
+                                                      ? _animation_textTime!
+                                                          .value
+                                                      : text_time_size),
+                                                  fontWeight: FontWeight.w900),
                                             ),
-                                          ),
-                                        ],
-                                      )
-                                    : ('$seconds' == '2'
+                                          ],
+                                        )
+                                      : Text(
+                                          (timer_started
+                                              ? ('$seconds' == '3'
+                                                  ? 'Ready'
+                                                  : ('$seconds' == '2'
+                                                      ? 'Set'
+                                                      : ('$seconds' == '1'
+                                                          ? 'Kegel'
+                                                          : elapsedTime)))
+                                              : ''),
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: (animation_started
+                                                  ? _animation_textTime!.value
+                                                  : text_time_size),
+                                              fontWeight: FontWeight.w900),
+                                        )),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      )),
+                      // SizedBox(
+                      //   height: (animation_started_middle
+                      //       ? _animation_middle!.value
+                      //       : 25),
+                      // ),
+
+                      Container(
+                        height: (screenHeight >= 600 && screenHeight <= 700
+                            ? (animation_started_middle
+                                ? _animation_middle2!.value
+                                : 15)
+                            : (screenHeight >= 700 && screenHeight <= 800
+                                ? (animation_started_middle
+                                    ? _animation_middle!.value
+                                    : 15)
+                                : (screenHeight >= 800 && screenHeight <= 850
+                                    ? (animation_started_middle
+                                        ? _animation_middle4!.value
+                                        : 15)
+                                    : (screenHeight >= 850
+                                        ? (animation_started_middle
+                                            ? _animation_middle3!.value
+                                            : 15)
+                                        : 0)))),
+                      ),
+                      // (timer_started
+                      //     ? Container(
+                      //         child: Text(
+                      //         ('$seconds' == '3'
+                      //             ? 'Ready'
+                      //             : ('$seconds' == '2'
+                      //                 ? 'Set'
+                      //                 : ('$seconds' == '1' ? 'Kegel' : ''))),
+                      //         style: FontStyleUtility.h22(
+                      //             fontColor: Colors.white60, family: "PR"),
+                      //       ))
+                      //     : SizedBox.shrink()),
+                      (timer_started
+                          ? Row(
+                              children: [
+                                Expanded(
+                                  flex: 2,
+                                  child: Container(
+                                    // color: Colors.red,
+                                    child: ('$seconds' == '3'
                                         ? Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.center,
                                             children: [
                                               Expanded(
                                                 flex: 1,
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.end,
-                                                  children: [
-                                                    Container(
-                                                      child: Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .all(8.0),
-                                                        child: Text(
-                                                          'Ready',
-                                                          style: FontStyleUtility
-                                                              .h16(
-                                                                  fontColor:
-                                                                      Colors
-                                                                          .white,
-                                                                  family: "PR"),
-                                                        ),
-                                                      ),
+                                                child: Container(
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
+                                                    child: Text(
+                                                      'Set',
+                                                      style:
+                                                          FontStyleUtility.h18(
+                                                              fontColor: Colors
+                                                                  .transparent,
+                                                              family: "PR"),
                                                     ),
-                                                  ],
+                                                  ),
                                                 ),
                                               ),
                                               Expanded(
@@ -956,7 +1235,7 @@ class _KegelScreenState extends State<KegelScreen>
                                                         const EdgeInsets.all(
                                                             8.0),
                                                     child: Text(
-                                                      'Set',
+                                                      'Ready',
                                                       textAlign:
                                                           TextAlign.center,
                                                       style: FontStyleUtility.h22(
@@ -969,7 +1248,7 @@ class _KegelScreenState extends State<KegelScreen>
                                               ),
                                             ],
                                           )
-                                        : ('$seconds' == '1'
+                                        : ('$seconds' == '2'
                                             ? Row(
                                                 mainAxisAlignment:
                                                     MainAxisAlignment.center,
@@ -986,7 +1265,7 @@ class _KegelScreenState extends State<KegelScreen>
                                                                 const EdgeInsets
                                                                     .all(8.0),
                                                             child: Text(
-                                                              'Set',
+                                                              'Ready',
                                                               style: FontStyleUtility
                                                                   .h16(
                                                                       fontColor:
@@ -1003,7 +1282,7 @@ class _KegelScreenState extends State<KegelScreen>
                                                   Expanded(
                                                     flex: 1,
                                                     child: Container(
-                                                      width: 100,
+                                                      width: 80,
                                                       decoration: BoxDecoration(
                                                           borderRadius:
                                                               BorderRadius
@@ -1017,7 +1296,7 @@ class _KegelScreenState extends State<KegelScreen>
                                                             const EdgeInsets
                                                                 .all(8.0),
                                                         child: Text(
-                                                          'Kegel',
+                                                          'Set',
                                                           textAlign:
                                                               TextAlign.center,
                                                           style: FontStyleUtility.h22(
@@ -1030,88 +1309,8 @@ class _KegelScreenState extends State<KegelScreen>
                                                   ),
                                                 ],
                                               )
-                                            : (four_started
+                                            : ('$seconds' == '1'
                                                 ? Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.end,
-                                                    children: [
-                                                      Expanded(
-                                                        flex: 1,
-                                                        child: Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .end,
-                                                          children: [
-                                                            Container(
-                                                              child: Padding(
-                                                                padding:
-                                                                    const EdgeInsets
-                                                                            .all(
-                                                                        4.0),
-                                                                child: Text(
-                                                                  'Set',
-                                                                  style: FontStyleUtility.h14(
-                                                                      fontColor:
-                                                                          Colors
-                                                                              .transparent,
-                                                                      family:
-                                                                          "PR"),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                            Container(
-                                                              child: Padding(
-                                                                padding:
-                                                                    const EdgeInsets
-                                                                            .all(
-                                                                        4.0),
-                                                                child: Text(
-                                                                  'Kegel',
-                                                                  style: FontStyleUtility.h16(
-                                                                      fontColor:
-                                                                          Colors
-                                                                              .white,
-                                                                      family:
-                                                                          "PR"),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                      Expanded(
-                                                        flex: 1,
-                                                        child: Container(
-                                                          decoration: BoxDecoration(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          10),
-                                                              border: Border.all(
-                                                                  color: Colors
-                                                                      .white,
-                                                                  width: 0.5)),
-                                                          child: Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .all(8.0),
-                                                            child: Text(
-                                                              'Push',
-                                                              textAlign:
-                                                                  TextAlign
-                                                                      .center,
-                                                              style: FontStyleUtility.h22(
-                                                                  fontColor:
-                                                                      ColorUtils
-                                                                          .primary_gold,
-                                                                  family: "PM"),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  )
-                                                : Row(
                                                     mainAxisAlignment:
                                                         MainAxisAlignment
                                                             .center,
@@ -1175,33 +1374,164 @@ class _KegelScreenState extends State<KegelScreen>
                                                         ),
                                                       ),
                                                     ],
-                                                  ))))),
-                              ),
-                            ),
-                            Expanded(
-                              flex: 1,
-                              child: Container(
-                                // color: Colors.red,
-                                child: ('$seconds' == '3'
-                                    ? Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: [
-                                          Container(
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              child: Text(
-                                                'Set',
-                                                style: FontStyleUtility.h16(
-                                                    fontColor: Colors.white,
-                                                    family: "PR"),
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      )
-                                    : ('$seconds' == '2'
+                                                  )
+                                                : (four_started
+                                                    ? Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .end,
+                                                        children: [
+                                                          Expanded(
+                                                            flex: 1,
+                                                            child: Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .end,
+                                                              children: [
+                                                                Container(
+                                                                  child:
+                                                                      Padding(
+                                                                    padding:
+                                                                        const EdgeInsets.all(
+                                                                            4.0),
+                                                                    child: Text(
+                                                                      'Set',
+                                                                      style: FontStyleUtility.h14(
+                                                                          fontColor: Colors
+                                                                              .transparent,
+                                                                          family:
+                                                                              "PR"),
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                                Container(
+                                                                  child:
+                                                                      Padding(
+                                                                    padding:
+                                                                        const EdgeInsets.all(
+                                                                            4.0),
+                                                                    child: Text(
+                                                                      'Kegel',
+                                                                      style: FontStyleUtility.h16(
+                                                                          fontColor: Colors
+                                                                              .white,
+                                                                          family:
+                                                                              "PR"),
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                          Expanded(
+                                                            flex: 1,
+                                                            child: Container(
+                                                              decoration: BoxDecoration(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              10),
+                                                                  border: Border.all(
+                                                                      color: Colors
+                                                                          .white,
+                                                                      width:
+                                                                          0.5)),
+                                                              child: Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                            .all(
+                                                                        8.0),
+                                                                child: Text(
+                                                                  'Push',
+                                                                  textAlign:
+                                                                      TextAlign
+                                                                          .center,
+                                                                  style: FontStyleUtility.h22(
+                                                                      fontColor:
+                                                                          ColorUtils
+                                                                              .primary_gold,
+                                                                      family:
+                                                                          "PM"),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      )
+                                                    : Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          Expanded(
+                                                            flex: 1,
+                                                            child: Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .end,
+                                                              children: [
+                                                                Container(
+                                                                  child:
+                                                                      Padding(
+                                                                    padding:
+                                                                        const EdgeInsets.all(
+                                                                            8.0),
+                                                                    child: Text(
+                                                                      'Set',
+                                                                      style: FontStyleUtility.h16(
+                                                                          fontColor: Colors
+                                                                              .white,
+                                                                          family:
+                                                                              "PR"),
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                          Expanded(
+                                                            flex: 1,
+                                                            child: Container(
+                                                              width: 100,
+                                                              decoration: BoxDecoration(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              10),
+                                                                  border: Border.all(
+                                                                      color: Colors
+                                                                          .white,
+                                                                      width:
+                                                                          0.5)),
+                                                              child: Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                            .all(
+                                                                        8.0),
+                                                                child: Text(
+                                                                  'Kegel',
+                                                                  textAlign:
+                                                                      TextAlign
+                                                                          .center,
+                                                                  style: FontStyleUtility.h22(
+                                                                      fontColor:
+                                                                          ColorUtils
+                                                                              .primary_gold,
+                                                                      family:
+                                                                          "PM"),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ))))),
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 1,
+                                  child: Container(
+                                    // color: Colors.red,
+                                    child: ('$seconds' == '3'
                                         ? Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.start,
@@ -1211,7 +1541,7 @@ class _KegelScreenState extends State<KegelScreen>
                                                   padding:
                                                       const EdgeInsets.all(8.0),
                                                   child: Text(
-                                                    'Kegel',
+                                                    'Set',
                                                     style: FontStyleUtility.h16(
                                                         fontColor: Colors.white,
                                                         family: "PR"),
@@ -1220,7 +1550,7 @@ class _KegelScreenState extends State<KegelScreen>
                                               ),
                                             ],
                                           )
-                                        : ('$seconds' == '1'
+                                        : ('$seconds' == '2'
                                             ? Row(
                                                 mainAxisAlignment:
                                                     MainAxisAlignment.start,
@@ -1231,7 +1561,7 @@ class _KegelScreenState extends State<KegelScreen>
                                                           const EdgeInsets.all(
                                                               8.0),
                                                       child: Text(
-                                                        'Push',
+                                                        'Kegel',
                                                         style: FontStyleUtility
                                                             .h16(
                                                                 fontColor:
@@ -1243,31 +1573,8 @@ class _KegelScreenState extends State<KegelScreen>
                                                   ),
                                                 ],
                                               )
-                                            : (four_started
+                                            : ('$seconds' == '1'
                                                 ? Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.start,
-                                                    children: [
-                                                      Container(
-                                                        child: Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(4.0),
-                                                          child: Text(
-                                                            'Ready',
-                                                            style: FontStyleUtility
-                                                                .h18(
-                                                                    fontColor:
-                                                                        Colors
-                                                                            .white,
-                                                                    family:
-                                                                        "PR"),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  )
-                                                : Row(
                                                     mainAxisAlignment:
                                                         MainAxisAlignment.start,
                                                     children: [
@@ -1289,3574 +1596,3852 @@ class _KegelScreenState extends State<KegelScreen>
                                                         ),
                                                       ),
                                                     ],
-                                                  ))))),
-                              ),
+                                                  )
+                                                : (four_started
+                                                    ? Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          Container(
+                                                            child: Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .all(4.0),
+                                                              child: Text(
+                                                                'Ready',
+                                                                style: FontStyleUtility.h18(
+                                                                    fontColor:
+                                                                        Colors
+                                                                            .white,
+                                                                    family:
+                                                                        "PR"),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      )
+                                                    : Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          Container(
+                                                            child: Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .all(8.0),
+                                                              child: Text(
+                                                                'Push',
+                                                                style: FontStyleUtility.h16(
+                                                                    fontColor:
+                                                                        Colors
+                                                                            .white,
+                                                                    family:
+                                                                        "PR"),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ))))),
+                                  ),
+                                )
+                              ],
                             )
-                          ],
-                        )
-                      : SizedBox(
-                          height: 0,
-                        )),
-                  // (text_started_middle
-                  //     ? FadeTransition(
-                  //         child: SlideTransition(
-                  //           position: _animOffset!,
-                  //           child: Container(
-                  //               child: Text(
-                  //             ('$seconds' == '3'
-                  //                 ? 'Ready'
-                  //                 : ('$seconds' == '2'
-                  //                     ? 'Set'
-                  //                     : ('$seconds' == '1' ? 'Kegel' : ''))),
-                  //             style: FontStyleUtility.h22(
-                  //                 fontColor: Colors.white60, family: "PR"),
-                  //           )),
-                  //         ),
-                  //         opacity: _animController!,
-                  //       )
-                  //     : SizedBox.shrink()),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  GestureDetector(
-                    onTap: () async {
-                      if (started) {
-                        back_wallpaper = false;
+                          : SizedBox(
+                              height: 0,
+                            )),
 
-                        // start_animation();
-                        // start_button_animation();
-                        await middle_animation();
-                        await text_animation();
-                        Future.delayed(const Duration(seconds: 1), () async {
-                          startTimer();
-                        });
-                        await startWatch();
-                      } else {
-                        await stopWatch_finish();
-                        await _animationController_middle!.reverse();
-                        Vibration.cancel();
-                        setState(() {
-                          elapsedTime = '00';
-                          percent = 0.0;
-                          back_wallpaper = true;
-                          button_height = 150;
-                          text_k_size = 70;
-                          text_time_size = 25;
-                          watch.reset();
-                          // paused_time.clear();
-                        });
-                        // print('method_time : ${method_time[0].total_time}');
-                        // print('method_name : ${method_time[0].method_name}');
-                      }
-                    },
-                    child: Container(
-                      height: 65,
-                      margin: const EdgeInsets.symmetric(horizontal: 15),
-                      // height: 45,
-                      // width:(width ?? 300) ,
-                      decoration: BoxDecoration(
-                          color: ColorUtils.primary_gold,
-                          gradient: LinearGradient(
-                            begin: Alignment.centerLeft,
-                            end: Alignment.centerRight,
-                            // stops: [0.1, 0.5, 0.7, 0.9],
-                            colors: [
-                              HexColor("#ECDD8F").withOpacity(0.90),
-                              HexColor("#E5CC79").withOpacity(0.90),
-                              HexColor("#CE952F").withOpacity(0.90),
-                            ],
-                          ),
-                          borderRadius: BorderRadius.circular(15)),
-                      child: Container(
-                          alignment: Alignment.center,
-                          margin: const EdgeInsets.symmetric(
-                            vertical: 12,
-                          ),
-                          child: Text(
-                            (started ? 'Start' : 'Finish'),
-                            style: FontStyleUtility.h16(
-                                fontColor: Colors.black, family: 'PM'),
-                          )),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 12,
-                  ),
-                  Text(
-                      (levels == 'Easy'
-                          ? ('$counter/8')
-                          : (levels == 'Normal'
-                              ? ('$counter/10')
-                              : ('$counter/4'))),
-                      style: FontStyleUtility.h25(
-                          fontColor: ColorUtils.primary_gold, family: 'PM')),
-                  const SizedBox(
-                    height: 27,
-                  ),
-                  Obx(() => _kegel_controller.isuserinfoLoading.value == false
-                      ? Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 0),
+                      // (text_started_middle
+                      //     ? FadeTransition(
+                      //         child: SlideTransition(
+                      //           position: _animOffset!,
+                      //           child: Container(
+                      //               child: Text(
+                      //             ('$seconds' == '3'
+                      //                 ? 'Ready'
+                      //                 : ('$seconds' == '2'
+                      //                     ? 'Set'
+                      //                     : ('$seconds' == '1' ? 'Kegel' : ''))),
+                      //             style: FontStyleUtility.h22(
+                      //                 fontColor: Colors.white60, family: "PR"),
+                      //           )),
+                      //         ),
+                      //         opacity: _animController!,
+                      //       )
+                      //     : SizedBox.shrink()),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      GestureDetector(
+                        onTap: () async {
+                          if (started) {
+                            back_wallpaper = false;
+
+                            // start_animation();
+                            // start_button_animation();
+                            await middle_animation();
+                            await text_animation();
+                            Future.delayed(const Duration(seconds: 1),
+                                () async {
+                              startTimer();
+                            });
+                            Future.delayed(const Duration(seconds: 3),
+                                () async {
+                                  await startWatch();
+                            });
+                          } else {
+                            await stopWatch_finish();
+                            await _animationController_middle!.reverse();
+                            Vibration.cancel();
+                            setState(() {
+                              timer_started = false;
+                              elapsedTime = '00';
+                              percent = 0.0;
+                              back_wallpaper = true;
+                              button_height = 150;
+                              text_k_size = 70;
+                              text_time_size = 25;
+                              watch.reset();
+                              // paused_time.clear();
+                            });
+                            // print('method_time : ${method_time[0].total_time}');
+                            // print('method_name : ${method_time[0].method_name}');
+                          }
+                        },
+                        child: Container(
+                          height: 65,
+                          margin: const EdgeInsets.symmetric(horizontal: 15),
                           // height: 45,
                           // width:(width ?? 300) ,
                           decoration: BoxDecoration(
-                              // color: Colors.black.withOpacity(0.65),
+                              color: ColorUtils.primary_gold,
                               gradient: LinearGradient(
                                 begin: Alignment.centerLeft,
                                 end: Alignment.centerRight,
                                 // stops: [0.1, 0.5, 0.7, 0.9],
                                 colors: [
-                                  HexColor("#36393E").withOpacity(0.9),
-                                  HexColor("#020204").withOpacity(0.9),
+                                  HexColor("#ECDD8F").withOpacity(0.90),
+                                  HexColor("#E5CC79").withOpacity(0.90),
+                                  HexColor("#CE952F").withOpacity(0.90),
                                 ],
                               ),
-                              borderRadius: BorderRadius.circular(20)),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: TableCalendar(
-                              // initialCalendarFormat: CalendarFormat.week,
-                              calendarStyle: CalendarStyle(
-                                defaultTextStyle: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 14.0,
-                                    color: Colors.white),
-                                todayTextStyle: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 18.0,
-                                    color: ColorUtils.dark_grey),
-                                todayDecoration: BoxDecoration(
-                                    color: HexColor("#ffffff").withOpacity(1),
-                                    borderRadius: BorderRadius.circular(100)),
-                                // todayColor: Colors.orange,
-                                selectedTextStyle: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16.0,
-                                    color: Colors.green),
-                                weekendTextStyle: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 14.0,
-                                    color: Colors.white),
-                                isTodayHighlighted: true,
-                                selectedDecoration: BoxDecoration(
-                                  color: Colors.blue,
-                                  shape: BoxShape.rectangle,
-                                  borderRadius: BorderRadius.circular(5.0),
-                                ),
+                              borderRadius: BorderRadius.circular(15)),
+                          child: Container(
+                              alignment: Alignment.center,
+                              margin: const EdgeInsets.symmetric(
+                                vertical: 12,
                               ),
-
-                              headerStyle: HeaderStyle(
-                                leftChevronIcon: Icon(
-                                  Icons.arrow_back_ios,
-                                  color: ColorUtils.primary_gold,
-                                  size: 15,
-                                ),
-                                rightChevronIcon: Icon(
-                                  Icons.arrow_forward_ios,
-                                  color: ColorUtils.primary_gold,
-                                  size: 15,
-                                ),
-                                formatButtonVisible: false,
-                                titleTextStyle: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16.0,
-                                    color: Colors.white),
-                                // centerHeaderTitle: true,
-                                formatButtonDecoration: BoxDecoration(
-                                  color: ColorUtils.primary_gold,
-                                  borderRadius: BorderRadius.circular(20.0),
-                                ),
-                                formatButtonTextStyle:
-                                    const TextStyle(color: Colors.black),
-                                formatButtonShowsNext: false,
-                              ),
-                              daysOfWeekStyle: DaysOfWeekStyle(
-                                  weekdayStyle: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 12.0,
-                                      color: Colors.white),
-                                  weekendStyle: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 12.0,
-                                      color: Colors.white)),
-                              startingDayOfWeek: StartingDayOfWeek.monday,
-                              onDaySelected: (date, events) async {
-                                // print(date);
-                                // print(DateFormat('yyyy-MM-dd').format(date));
-                                //
-                                // Data? person = await _peeScreenController
-                                //     .peeGetModel!.data!
-                                //     .firstWhereOrNull(
-                                //   (element) =>
-                                //       element.createdDate ==
-                                //       DateFormat('yyyy-MM-dd').format(date),
-                                // );
-                                // // print("person  $person");
-                                // if (person != null) {
-                                //   print("person ${person.sets}");
-                                //   print(
-                                //       "User peed ${person.sets} on ${person.createdDate}");
-                                // } else {
-                                //   print("no data found");
-                                // }
-                              },
-                              // builders: CalendarBuilders(
-                              //   selectedDayBuilder: (context, date, events) => Container(
-                              //       margin: const EdgeInsets.all(4.0),
-                              //       alignment: Alignment.center,
-                              //       decoration: BoxDecoration(
-                              //           color: Theme.of(context).primaryColor,
-                              //           borderRadius: BorderRadius.circular(10.0)),
-                              //       child: Text(
-                              //         date.day.toString(),
-                              //         style: TextStyle(color: Colors.white),
-                              //       )),
-                              //   todayDayBuilder: (context, date, events) => Container(
-                              //       margin: const EdgeInsets.all(4.0),
-                              //       alignment: Alignment.center,
-                              //       decoration: BoxDecoration(
-                              //           color: Colors.orange,
-                              //           borderRadius: BorderRadius.circular(10.0)),
-                              //       child: Text(
-                              //         date.day.toString(),
-                              //         style: TextStyle(color: Colors.white),
-                              //       )),
-
-                              calendarBuilders: CalendarBuilders(
-                                markerBuilder:
-                                    (BuildContext context, date, events) {
-                                  for (var i = 0;
-                                      i <
-                                          _kegel_controller
-                                              .kegelGetModel!.data!.length;
-                                      i++) {
-                                    if (DateFormat('yyyy-MM-dd').format(date) ==
-                                        _kegel_controller.kegelGetModel!
-                                            .data![i].createdDate) {
-                                      return GestureDetector(
-                                        onTap: () {
-                                          setState(() {
-                                            selected_date_sets =
-                                                _kegel_controller.kegelGetModel!
-                                                    .data![i].sets!;
-                                            selected_date = _kegel_controller
-                                                .kegelGetModel!
-                                                .data![i]
-                                                .createdDate!;
-                                          });
-                                          print(selected_date_sets);
-                                          print(selected_date);
-                                        },
-                                        child: Container(
-                                          margin: EdgeInsets.all(5),
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(100),
-                                            border: Border.all(
-                                                color: ColorUtils.primary_gold,
-                                                width: 2),
-                                          ),
-                                        ),
-                                      );
-                                    }
-                                  }
-                                  // return ListView.builder(
-                                  //     shrinkWrap: true,
-                                  //     scrollDirection: Axis.horizontal,
-                                  //     itemCount: events.length,
-                                  //     itemBuilder: (context, index) {
-                                  //       return Container(
-                                  //         margin: const EdgeInsets.only(top: 20),
-                                  //         padding: const EdgeInsets.all(1),
-                                  //         child: Container(
-                                  //           // height: 7,
-                                  //           width: 5,
-                                  //           decoration: BoxDecoration(
-                                  //               shape: BoxShape.circle,
-                                  //               color: Colors.primaries[Random()
-                                  //                   .nextInt(Colors.primaries.length)]),
-                                  //         ),
-                                  //       );
-                                  //     });
-                                },
-                              ),
-
-                              calendarFormat: CalendarFormat.month,
-                              // calendarController: _controller,
-                              firstDay: DateTime.utc(2010, 10, 16),
-                              lastDay: DateTime.utc(2030, 3, 14),
-                              focusedDay: DateTime.now(),
-                            ),
-                          ),
-                        )
-                      : SizedBox.shrink()),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  (selected_date_sets!.isEmpty
-                      ? SizedBox.shrink()
-                      : Container(
-                          decoration: BoxDecoration(
-                              // color: Colors.black.withOpacity(0.65),
-                              gradient: LinearGradient(
-                                begin: Alignment.centerLeft,
-                                end: Alignment.centerRight,
-                                // stops: [0.1, 0.5, 0.7, 0.9],
-                                colors: [
-                                  HexColor("#36393E").withOpacity(1),
-                                  HexColor("#020204").withOpacity(1),
-                                ],
-                              ),
-                              borderRadius: BorderRadius.circular(20)),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 8.0, horizontal: 15),
-                            child: Text(
-                              'Exercise perormed ${selected_date_sets} times on ${selected_date}',
-                              style: FontStyleUtility.h14(
-                                  fontColor: HexColor('#FFFFFF'), family: 'PM'),
-                            ),
-                          ),
-                        )),
-                  const SizedBox(
-                    height: 10,
-                  ),
-
-                  // Container(
-                  //   decoration: BoxDecoration(
-                  //       // color: Colors.black.withOpacity(0.65),
-                  //       gradient: LinearGradient(
-                  //         begin: Alignment.centerLeft,
-                  //         end: Alignment.centerRight,
-                  //         // stops: [0.1, 0.5, 0.7, 0.9],
-                  //         colors: [
-                  //           HexColor("#36393E").withOpacity(1),
-                  //           HexColor("#020204").withOpacity(1),
-                  //         ],
-                  //       ),
-                  //       boxShadow: [
-                  //         BoxShadow(
-                  //             color: HexColor('#04060F'),
-                  //             offset: const Offset(10, 10),
-                  //             blurRadius: 20)
-                  //       ],
-                  //       borderRadius: BorderRadius.circular(20)),
-                  //   child: Column(
-                  //     children: [
-                  //       // if (_currentAlarms!.length < 5)
-                  //       Padding(
-                  //         padding: const EdgeInsets.symmetric(
-                  //             horizontal: 16, vertical: 0),
-                  //         child: ListTile(
-                  //           leading: Container(
-                  //             margin: EdgeInsets.only(left: 0),
-                  //             child: Text(
-                  //               "Add Alarm",
-                  //               style: FontStyleUtility.h16(
-                  //                   fontColor: ColorUtils.primary_gold,
-                  //                   family: 'PM'),
-                  //             ),
-                  //           ),
-                  //           title: GestureDetector(
-                  //               onTap: () {
-                  //                 _alarmTimeString =
-                  //                     DateFormat('HH:mm').format(selectedDate);
-                  //                 showModalBottomSheet(
-                  //                   useRootNavigator: true,
-                  //                   context: context,
-                  //                   clipBehavior: Clip.antiAlias,
-                  //                   shape: const RoundedRectangleBorder(
-                  //                     borderRadius: BorderRadius.vertical(
-                  //                       top: Radius.circular(24),
-                  //                     ),
-                  //                   ),
-                  //                   builder: (context) {
-                  //                     return StatefulBuilder(
-                  //                       builder: (context, setModalState) {
-                  //                         return Container(
-                  //                           decoration: BoxDecoration(
-                  //                               // color: Colors.black.withOpacity(0.65),
-                  //                               gradient: LinearGradient(
-                  //                                 begin: Alignment.centerLeft,
-                  //                                 end: Alignment.centerRight,
-                  //                                 // stops: [0.1, 0.5, 0.7, 0.9],
-                  //                                 colors: [
-                  //                                   HexColor("#020204")
-                  //                                       .withOpacity(1),
-                  //                                   HexColor("#36393E")
-                  //                                       .withOpacity(1),
-                  //                                 ],
-                  //                               ),
-                  //                               boxShadow: [
-                  //                                 BoxShadow(
-                  //                                     color:
-                  //                                         HexColor('#04060F'),
-                  //                                     offset:
-                  //                                         const Offset(-10, 10),
-                  //                                     blurRadius: 20)
-                  //                               ],
-                  //                               borderRadius:
-                  //                                   const BorderRadius.only(
-                  //                                       topLeft:
-                  //                                           Radius.circular(20),
-                  //                                       topRight:
-                  //                                           Radius.circular(
-                  //                                               20))),
-                  //                           padding: const EdgeInsets.all(32),
-                  //                           child: SingleChildScrollView(
-                  //                             child: Column(
-                  //                               children: [
-                  //                                 // FlatButton(
-                  //                                 //   onPressed:
-                  //                                 //       () async {
-                  //                                 //     // var selectedTime = await showTimePicker(
-                  //                                 //     //   context: context,
-                  //                                 //     //   // initialEntryMode: DatePickerEntryMode.calendarOnly,<- this
-                  //                                 //     //   initialEntryMode: TimePickerEntryMode.dial,
-                  //                                 //     //   initialTime: TimeOfDay.now(),
-                  //                                 //     //   builder: (context, child) {
-                  //                                 //     //     return Theme(
-                  //                                 //     //       data: Theme.of(
-                  //                                 //     //               context)
-                  //                                 //     //           .copyWith(
-                  //                                 //     //         colorScheme:
-                  //                                 //     //             ColorScheme
-                  //                                 //     //                 .dark(
-                  //                                 //     //           primary:
-                  //                                 //     //               Colors.black,
-                  //                                 //     //           onPrimary:
-                  //                                 //     //               Colors.white,
-                  //                                 //     //           surface:
-                  //                                 //     //               ColorUtils.primary_gold,
-                  //                                 //     //           // onPrimary: Colors.black, // <-- SEE HERE
-                  //                                 //     //           onSurface:
-                  //                                 //     //               Colors.black,
-                  //                                 //     //         ),
-                  //                                 //     //         dialogBackgroundColor:
-                  //                                 //     //             ColorUtils
-                  //                                 //     //                 .primary_gold,
-                  //                                 //     //         textButtonTheme:
-                  //                                 //     //             TextButtonThemeData(
-                  //                                 //     //           style: TextButton
-                  //                                 //     //               .styleFrom(
-                  //                                 //     //             primary:
-                  //                                 //     //                 Colors.black, // button text color
-                  //                                 //     //           ),
-                  //                                 //     //         ),
-                  //                                 //     //       ),
-                  //                                 //     //       child:
-                  //                                 //     //           child!,
-                  //                                 //     //     );
-                  //                                 //     //   },
-                  //                                 //     // );
-                  //                                 //     // if (selectedTime !=
-                  //                                 //     //     null) {
-                  //                                 //     //   final now =
-                  //                                 //     //       DateTime
-                  //                                 //     //           .now();
-                  //                                 //     //   var selectedDateTime = DateTime(
-                  //                                 //     //       now.year,
-                  //                                 //     //       now.month,
-                  //                                 //     //       now.day,
-                  //                                 //     //       selectedTime
-                  //                                 //     //           .hour,
-                  //                                 //     //       selectedTime
-                  //                                 //     //           .minute);
-                  //                                 //     //   _alarmTime =
-                  //                                 //     //       selectedDateTime;
-                  //                                 //     //   setModalState(
-                  //                                 //     //       () {
-                  //                                 //     //     _alarmTimeString =
-                  //                                 //     //         DateFormat(
-                  //                                 //     //                 'HH:mm')
-                  //                                 //     //             .format(
-                  //                                 //     //                 selectedDateTime);
-                  //                                 //     //   });
-                  //                                 //     // }
-                  //                                 //   },
-                  //                                 //   child: Text(
-                  //                                 //       _alarmTimeString!,
-                  //                                 //       style: FontStyleUtility.h35(
-                  //                                 //           fontColor:
-                  //                                 //               ColorUtils
-                  //                                 //                   .primary_gold,
-                  //                                 //           family:
-                  //                                 //               'PM')),
-                  //                                 // ),
-                  //                                 Container(
-                  //                                   height: 150,
-                  //                                   decoration: BoxDecoration(
-                  //                                       borderRadius:
-                  //                                           BorderRadius
-                  //                                               .circular(15),
-                  //                                       gradient:
-                  //                                           LinearGradient(
-                  //                                         begin: Alignment
-                  //                                             .topCenter,
-                  //                                         end: Alignment
-                  //                                             .bottomCenter,
-                  //                                         colors: [
-                  //                                           HexColor("#000000")
-                  //                                               .withOpacity(1),
-                  //                                           HexColor("#04060F")
-                  //                                               .withOpacity(1),
-                  //                                           HexColor("#000000")
-                  //                                               .withOpacity(1),
-                  //                                         ],
-                  //                                       ),
-                  //                                       boxShadow: [
-                  //                                         BoxShadow(
-                  //                                             color: HexColor(
-                  //                                                 '#04060F'),
-                  //                                             offset:
-                  //                                                 Offset(3, 3),
-                  //                                             blurRadius: 10)
-                  //                                       ]),
-                  //                                   child: Stack(
-                  //                                     children: [
-                  //                                       CupertinoTheme(
-                  //                                         data:
-                  //                                             CupertinoThemeData(
-                  //                                           brightness:
-                  //                                               Brightness.dark,
-                  //                                         ),
-                  //                                         child:
-                  //                                             CupertinoDatePicker(
-                  //                                           // use24hFormat: true,
-                  //                                           mode:
-                  //                                               CupertinoDatePickerMode
-                  //                                                   .time,
-                  //                                           onDateTimeChanged:
-                  //                                               (DateTime
-                  //                                                   value) {
-                  //                                             selected_time =
-                  //                                                 value;
-                  //                                             print(
-                  //                                                 "${value.hour}:${value.minute}");
-                  //
-                  //                                             if (selected_time !=
-                  //                                                 null) {
-                  //                                               final now =
-                  //                                                   DateTime
-                  //                                                       .now();
-                  //                                               var selectedDateTime = DateTime(
-                  //                                                   now.year,
-                  //                                                   now.month,
-                  //                                                   now.day,
-                  //                                                   selected_time
-                  //                                                       .hour,
-                  //                                                   selected_time
-                  //                                                       .minute);
-                  //                                               _alarmTime =
-                  //                                                   selectedDateTime;
-                  //                                               setModalState(
-                  //                                                   () {
-                  //                                                 _alarmTimeString =
-                  //                                                     DateFormat(
-                  //                                                             'HH:mm')
-                  //                                                         .format(
-                  //                                                             selectedDateTime);
-                  //                                               });
-                  //                                             }
-                  //                                           },
-                  //                                         ),
-                  //                                       ),
-                  //                                     ],
-                  //                                   ),
-                  //                                 ),
-                  //
-                  //                                 ListTile(
-                  //                                   onTap: () {
-                  //                                     showDialog(
-                  //                                       context: context,
-                  //                                       builder: (BuildContext
-                  //                                           context) {
-                  //                                         double width =
-                  //                                             MediaQuery.of(
-                  //                                                     context)
-                  //                                                 .size
-                  //                                                 .width;
-                  //                                         double height =
-                  //                                             MediaQuery.of(
-                  //                                                     context)
-                  //                                                 .size
-                  //                                                 .height;
-                  //                                         return BackdropFilter(
-                  //                                           filter: ImageFilter
-                  //                                               .blur(
-                  //                                                   sigmaX: 10,
-                  //                                                   sigmaY: 10),
-                  //                                           child: AlertDialog(
-                  //                                               backgroundColor:
-                  //                                                   Colors
-                  //                                                       .transparent,
-                  //                                               contentPadding:
-                  //                                                   EdgeInsets
-                  //                                                       .zero,
-                  //                                               elevation: 0.0,
-                  //                                               // title: Center(child: Text("Evaluation our APP")),
-                  //                                               content: Column(
-                  //                                                 mainAxisAlignment:
-                  //                                                     MainAxisAlignment
-                  //                                                         .center,
-                  //                                                 children: [
-                  //                                                   Stack(
-                  //                                                     children: [
-                  //                                                       Padding(
-                  //                                                         padding:
-                  //                                                             const EdgeInsets.all(8.0),
-                  //                                                         child:
-                  //                                                             Container(
-                  //                                                           decoration:
-                  //                                                               BoxDecoration(
-                  //                                                                   // color: Colors.black.withOpacity(0.65),
-                  //                                                                   gradient:
-                  //                                                                       LinearGradient(
-                  //                                                                     begin: Alignment.centerLeft,
-                  //                                                                     end: Alignment.centerRight,
-                  //                                                                     // stops: [0.1, 0.5, 0.7, 0.9],
-                  //                                                                     colors: [
-                  //                                                                       HexColor("#020204").withOpacity(1),
-                  //                                                                       HexColor("#36393E").withOpacity(1),
-                  //                                                                     ],
-                  //                                                                   ),
-                  //                                                                   boxShadow: [
-                  //                                                                     BoxShadow(color: HexColor('#04060F'), offset: Offset(10, 10), blurRadius: 10)
-                  //                                                                   ],
-                  //                                                                   borderRadius: BorderRadius.circular(15)),
-                  //                                                           child: Align(
-                  //                                                               alignment: Alignment.center,
-                  //                                                               child: Padding(
-                  //                                                                 padding: const EdgeInsets.all(8.0),
-                  //                                                                 child: Column(
-                  //                                                                   children: [
-                  //                                                                     SizedBox(
-                  //                                                                       height: 0,
-                  //                                                                     ),
-                  //
-                  //                                                                     Column(
-                  //                                                                       crossAxisAlignment: CrossAxisAlignment.start,
-                  //                                                                       children: [
-                  //                                                                         Container(
-                  //                                                                           margin: EdgeInsets.only(left: 18),
-                  //                                                                           child: Text('Title', style: FontStyleUtility.h14(fontColor: ColorUtils.primary_grey, family: 'Pr')),
-                  //                                                                         ),
-                  //                                                                         SizedBox(
-                  //                                                                           height: 11,
-                  //                                                                         ),
-                  //                                                                         Container(
-                  //                                                                           margin: EdgeInsets.symmetric(horizontal: 10),
-                  //                                                                           // width: 300,
-                  //                                                                           decoration: BoxDecoration(
-                  //                                                                               // color: Colors.black.withOpacity(0.65),
-                  //                                                                               gradient: LinearGradient(
-                  //                                                                                 begin: Alignment.centerLeft,
-                  //                                                                                 end: Alignment.centerRight,
-                  //                                                                                 // stops: [0.1, 0.5, 0.7, 0.9],
-                  //                                                                                 colors: [
-                  //                                                                                   HexColor("#36393E").withOpacity(1),
-                  //                                                                                   HexColor("#020204").withOpacity(1),
-                  //                                                                                 ],
-                  //                                                                               ),
-                  //                                                                               boxShadow: [BoxShadow(color: HexColor('#04060F'), offset: Offset(10, 10), blurRadius: 10)],
-                  //                                                                               borderRadius: BorderRadius.circular(20)),
-                  //
-                  //                                                                           child: TextFormField(
-                  //                                                                             maxLength: 150,
-                  //                                                                             decoration: InputDecoration(
-                  //                                                                               contentPadding: EdgeInsets.only(left: 20, top: 14, bottom: 14),
-                  //                                                                               alignLabelWithHint: false,
-                  //                                                                               isDense: true,
-                  //                                                                               hintText: 'Add alarm title',
-                  //                                                                               counterStyle: TextStyle(
-                  //                                                                                 height: double.minPositive,
-                  //                                                                               ),
-                  //                                                                               counterText: "",
-                  //                                                                               filled: true,
-                  //                                                                               border: InputBorder.none,
-                  //                                                                               enabledBorder: const OutlineInputBorder(
-                  //                                                                                 borderSide: BorderSide(color: Colors.transparent, width: 1),
-                  //                                                                                 borderRadius: BorderRadius.all(Radius.circular(10)),
-                  //                                                                               ),
-                  //                                                                               hintStyle: FontStyleUtility.h14(fontColor: HexColor('#CBCBCB'), family: 'PR'),
-                  //                                                                             ),
-                  //                                                                             style: FontStyleUtility.h14(fontColor: ColorUtils.primary_grey, family: 'PR'),
-                  //                                                                             controller: Alarm_title,
-                  //                                                                             keyboardType: TextInputType.text,
-                  //                                                                           ),
-                  //                                                                         ),
-                  //                                                                       ],
-                  //                                                                     ),
-                  //                                                                     SizedBox(
-                  //                                                                       height: 10,
-                  //                                                                     ),
-                  //                                                                     GestureDetector(
-                  //                                                                       onTap: () {
-                  //                                                                         setState(() {
-                  //                                                                           Alarm_title_list.add(Alarm_title.text);
-                  //                                                                           Navigator.pop(context);
-                  //                                                                         });
-                  //                                                                       },
-                  //                                                                       child: Container(
-                  //                                                                         alignment: Alignment.topRight,
-                  //                                                                         child: Text(
-                  //                                                                           'Add',
-                  //                                                                           style: FontStyleUtility.h12(fontColor: ColorUtils.primary_grey, family: 'PR'),
-                  //                                                                         ),
-                  //                                                                       ),
-                  //                                                                     )
-                  //                                                                     // common_button_gold(
-                  //                                                                     //   onTap: () {
-                  //                                                                     //     Get
-                  //                                                                     //         .to(
-                  //                                                                     //         DashboardScreen());
-                  //                                                                     //   },
-                  //                                                                     //   title_text: 'Go to Dashboard',
-                  //                                                                     // ),
-                  //                                                                   ],
-                  //                                                                 ),
-                  //                                                               )),
-                  //                                                         ),
-                  //                                                       ),
-                  //                                                       GestureDetector(
-                  //                                                         onTap:
-                  //                                                             () {
-                  //                                                           Navigator.pop(context);
-                  //                                                         },
-                  //                                                         child:
-                  //                                                             Container(
-                  //                                                           margin:
-                  //                                                               EdgeInsets.only(right: 10),
-                  //                                                           alignment:
-                  //                                                               Alignment.topRight,
-                  //                                                           child: Container(
-                  //                                                               decoration: BoxDecoration(
-                  //                                                                   // color: Colors.black.withOpacity(0.65),
-                  //                                                                   gradient: LinearGradient(
-                  //                                                                     begin: Alignment.centerLeft,
-                  //                                                                     end: Alignment.centerRight,
-                  //                                                                     // stops: [0.1, 0.5, 0.7, 0.9],
-                  //                                                                     colors: [
-                  //                                                                       HexColor("#36393E").withOpacity(1),
-                  //                                                                       HexColor("#020204").withOpacity(1),
-                  //                                                                     ],
-                  //                                                                   ),
-                  //                                                                   boxShadow: [BoxShadow(color: HexColor('#04060F'), offset: Offset(0, 3), blurRadius: 5)],
-                  //                                                                   borderRadius: BorderRadius.circular(20)),
-                  //                                                               child: Padding(
-                  //                                                                 padding: const EdgeInsets.all(4.0),
-                  //                                                                 child: Icon(
-                  //                                                                   Icons.cancel_outlined,
-                  //                                                                   size: 13,
-                  //                                                                   color: ColorUtils.primary_grey,
-                  //                                                                 ),
-                  //                                                               )),
-                  //                                                         ),
-                  //                                                       )
-                  //                                                     ],
-                  //                                                   ),
-                  //                                                 ],
-                  //                                               )),
-                  //                                         );
-                  //                                       },
-                  //                                     );
-                  //                                   },
-                  //                                   title: Text('Title',
-                  //                                       style: FontStyleUtility.h14(
-                  //                                           fontColor: ColorUtils
-                  //                                               .primary_grey,
-                  //                                           family: 'PR')),
-                  //                                   trailing: const Icon(
-                  //                                       Icons.arrow_forward_ios,
-                  //                                       size: 15,
-                  //                                       color: Colors.white),
-                  //                                 ),
-                  //                                 ListTile(
-                  //                                   title: Text(
-                  //                                     'Repeat',
-                  //                                     style: FontStyleUtility.h14(
-                  //                                         fontColor: ColorUtils
-                  //                                             .primary_gold,
-                  //                                         family: 'PR'),
-                  //                                   ),
-                  //                                   trailing: const Icon(
-                  //                                     Icons.arrow_forward_ios,
-                  //                                     size: 15,
-                  //                                     color: Colors.white,
-                  //                                   ),
-                  //                                 ),
-                  //                                 GestureDetector(
-                  //                                   onTap: () {
-                  //                                     print('object');
-                  //
-                  //                                     showDialog(
-                  //                                       context: context,
-                  //                                       builder: (BuildContext
-                  //                                           context) {
-                  //                                         double width =
-                  //                                             MediaQuery.of(
-                  //                                                     context)
-                  //                                                 .size
-                  //                                                 .width;
-                  //                                         double height =
-                  //                                             MediaQuery.of(
-                  //                                                     context)
-                  //                                                 .size
-                  //                                                 .height;
-                  //                                         return AlertDialog(
-                  //                                             backgroundColor:
-                  //                                                 Colors
-                  //                                                     .transparent,
-                  //                                             contentPadding:
-                  //                                                 EdgeInsets
-                  //                                                     .zero,
-                  //                                             elevation: 0.0,
-                  //                                             // title: Center(child: Text("Evaluation our APP")),
-                  //                                             content: Column(
-                  //                                               mainAxisAlignment:
-                  //                                                   MainAxisAlignment
-                  //                                                       .center,
-                  //                                               children: [
-                  //                                                 Stack(
-                  //                                                   children: [
-                  //                                                     Container(
-                  //                                                       // height: 150,
-                  //                                                       // height: double.maxFinite,
-                  //                                                       height:
-                  //                                                           MediaQuery.of(context).size.height /
-                  //                                                               4,
-                  //                                                       width: double
-                  //                                                           .maxFinite,
-                  //                                                       decoration:
-                  //                                                           BoxDecoration(
-                  //                                                               // color: Colors.black.withOpacity(0.65),
-                  //                                                               gradient:
-                  //                                                                   LinearGradient(
-                  //                                                                 begin: Alignment.centerLeft,
-                  //                                                                 end: Alignment.centerRight,
-                  //                                                                 // stops: [0.1, 0.5, 0.7, 0.9],
-                  //                                                                 colors: [
-                  //                                                                   HexColor("#020204").withOpacity(1),
-                  //                                                                   HexColor("#36393E").withOpacity(1),
-                  //                                                                 ],
-                  //                                                               ),
-                  //                                                               boxShadow: [
-                  //                                                                 BoxShadow(color: HexColor('#04060F'), offset: Offset(10, 10), blurRadius: 10)
-                  //                                                               ],
-                  //                                                               borderRadius: BorderRadius.circular(20)),
-                  //                                                       margin: EdgeInsets.symmetric(
-                  //                                                           horizontal:
-                  //                                                               10,
-                  //                                                           vertical:
-                  //                                                               10),
-                  //                                                       // height: 122,
-                  //                                                       // width: 133,
-                  //                                                       // padding: const EdgeInsets.all(8.0),
-                  //                                                       child:
-                  //                                                           Column(
-                  //                                                         mainAxisAlignment:
-                  //                                                             MainAxisAlignment.center,
-                  //                                                         children: [
-                  //                                                           Container(
-                  //                                                             // color: Colors.white,
-                  //                                                             alignment: Alignment.center,
-                  //                                                             child: ListView.builder(
-                  //                                                               padding: EdgeInsets.only(bottom: 0),
-                  //
-                  //                                                               // physics: NeverScrollableScrollPhysics(),
-                  //                                                               itemCount: list_alarm.length,
-                  //                                                               shrinkWrap: true,
-                  //                                                               itemBuilder: (BuildContext context, int index) {
-                  //                                                                 return GestureDetector(
-                  //                                                                   onTap: () {
-                  //                                                                     setState(() {
-                  //                                                                       Selected_sound = list_alarm[index];
-                  //                                                                       print("method_selected $Selected_sound");
-                  //                                                                     });
-                  //                                                                     Navigator.pop(context);
-                  //                                                                   },
-                  //                                                                   child: Container(
-                  //                                                                     margin: EdgeInsets.symmetric(vertical: 8.5),
-                  //                                                                     alignment: Alignment.center,
-                  //                                                                     child: Text(
-                  //                                                                       list_alarm[index],
-                  //                                                                       style: FontStyleUtility.h15(fontColor: ColorUtils.primary_grey, family: 'PM'),
-                  //                                                                     ),
-                  //                                                                   ),
-                  //                                                                 );
-                  //                                                               },
-                  //                                                             ),
-                  //                                                           ),
-                  //                                                         ],
-                  //                                                       ),
-                  //                                                     ),
-                  //                                                     GestureDetector(
-                  //                                                       onTap:
-                  //                                                           () {
-                  //                                                         Navigator.pop(
-                  //                                                             context);
-                  //                                                       },
-                  //                                                       child:
-                  //                                                           Container(
-                  //                                                         margin:
-                  //                                                             EdgeInsets.only(right: 0),
-                  //                                                         alignment:
-                  //                                                             Alignment.topRight,
-                  //                                                         child: Container(
-                  //                                                             decoration: BoxDecoration(
-                  //                                                                 // color: Colors.black.withOpacity(0.65),
-                  //                                                                 gradient: LinearGradient(
-                  //                                                                   begin: Alignment.centerLeft,
-                  //                                                                   end: Alignment.centerRight,
-                  //                                                                   // stops: [0.1, 0.5, 0.7, 0.9],
-                  //                                                                   colors: [
-                  //                                                                     HexColor("#36393E").withOpacity(1),
-                  //                                                                     HexColor("#020204").withOpacity(1),
-                  //                                                                   ],
-                  //                                                                 ),
-                  //                                                                 boxShadow: [BoxShadow(color: HexColor('#04060F'), offset: Offset(0, 3), blurRadius: 5)],
-                  //                                                                 borderRadius: BorderRadius.circular(20)),
-                  //                                                             child: Padding(
-                  //                                                               padding: const EdgeInsets.all(4.0),
-                  //                                                               child: Icon(
-                  //                                                                 Icons.cancel_outlined,
-                  //                                                                 size: 20,
-                  //                                                                 color: ColorUtils.primary_grey,
-                  //                                                               ),
-                  //                                                             )),
-                  //                                                       ),
-                  //                                                     )
-                  //                                                   ],
-                  //                                                 ),
-                  //                                               ],
-                  //                                             ));
-                  //                                       },
-                  //                                     );
-                  //                                   },
-                  //                                   child: ListTile(
-                  //                                     title: Text('Sound',
-                  //                                         style: FontStyleUtility.h14(
-                  //                                             fontColor: ColorUtils
-                  //                                                 .primary_gold,
-                  //                                             family: 'PR')),
-                  //                                     trailing: const Icon(
-                  //                                         Icons
-                  //                                             .arrow_forward_ios,
-                  //                                         size: 15,
-                  //                                         color: Colors.white),
-                  //                                   ),
-                  //                                 ),
-                  //                                 GestureDetector(
-                  //                                   onTap: () async {
-                  //                                     if (Alarm_title
-                  //                                         .text.isEmpty) {
-                  //                                       CommonWidget()
-                  //                                           .showErrorToaster(
-                  //                                               msg:
-                  //                                                   "Enter Alarm title");
-                  //                                       return;
-                  //                                     } else {
-                  //                                       await onSaveAlarm();
-                  //                                     }
-                  //                                   },
-                  //                                   child: Container(
-                  //                                     width:
-                  //                                         MediaQuery.of(context)
-                  //                                                 .size
-                  //                                                 .width /
-                  //                                             3,
-                  //                                     decoration: BoxDecoration(
-                  //                                         borderRadius:
-                  //                                             BorderRadius
-                  //                                                 .circular(30),
-                  //                                         border: Border.all(
-                  //                                             color: ColorUtils
-                  //                                                 .primary_grey,
-                  //                                             width: 1)),
-                  //                                     child: Padding(
-                  //                                       padding:
-                  //                                           const EdgeInsets
-                  //                                                   .symmetric(
-                  //                                               vertical: 12.0,
-                  //                                               horizontal: 8),
-                  //                                       child: Row(
-                  //                                         mainAxisAlignment:
-                  //                                             MainAxisAlignment
-                  //                                                 .center,
-                  //                                         children: [
-                  //                                           const Icon(
-                  //                                             Icons.alarm,
-                  //                                             color:
-                  //                                                 Colors.white,
-                  //                                             size: 25,
-                  //                                           ),
-                  //                                           const SizedBox(
-                  //                                             width: 10,
-                  //                                           ),
-                  //                                           Text(
-                  //                                             'Save',
-                  //                                             style: FontStyleUtility.h16(
-                  //                                                 fontColor:
-                  //                                                     ColorUtils
-                  //                                                         .primary_gold,
-                  //                                                 family: 'PR'),
-                  //                                           ),
-                  //                                         ],
-                  //                                       ),
-                  //                                     ),
-                  //                                   ),
-                  //                                 )
-                  //                               ],
-                  //                             ),
-                  //                           ),
-                  //                         );
-                  //                       },
-                  //                     );
-                  //                   },
-                  //                 );
-                  //                 // scheduleAlarm();
-                  //               },
-                  //               child: Container(
-                  //                 child: Padding(
-                  //                   padding: const EdgeInsets.all(0.0),
-                  //                   child: Icon(
-                  //                     Icons.add_circle_outline,
-                  //                     color: ColorUtils.primary_grey,
-                  //                   ),
-                  //                 ),
-                  //               )),
-                  //           // trailing: Padding(
-                  //           //   padding: const EdgeInsets.symmetric(
-                  //           //       horizontal: 16, vertical: 10),
-                  //           //   child: GestureDetector(
-                  //           //       onTap: () {
-                  //           //         _alarmTimeString = DateFormat('HH:mm')
-                  //           //             .format(selectedDate);
-                  //           //         showModalBottomSheet(
-                  //           //           useRootNavigator: true,
-                  //           //           context: context,
-                  //           //           clipBehavior: Clip.antiAlias,
-                  //           //           shape: const RoundedRectangleBorder(
-                  //           //             borderRadius: BorderRadius.vertical(
-                  //           //               top: Radius.circular(24),
-                  //           //             ),
-                  //           //           ),
-                  //           //           builder: (context) {
-                  //           //             return StatefulBuilder(
-                  //           //               builder: (context, setModalState) {
-                  //           //                 return Container(
-                  //           //                   decoration: BoxDecoration(
-                  //           //                       // color: Colors.black.withOpacity(0.65),
-                  //           //                       gradient: LinearGradient(
-                  //           //                         begin: Alignment.centerLeft,
-                  //           //                         end: Alignment.centerRight,
-                  //           //                         // stops: [0.1, 0.5, 0.7, 0.9],
-                  //           //                         colors: [
-                  //           //                           HexColor("#020204")
-                  //           //                               .withOpacity(1),
-                  //           //                           HexColor("#36393E")
-                  //           //                               .withOpacity(1),
-                  //           //                         ],
-                  //           //                       ),
-                  //           //                       boxShadow: [
-                  //           //                         BoxShadow(
-                  //           //                             color:
-                  //           //                                 HexColor('#04060F'),
-                  //           //                             offset: const Offset(
-                  //           //                                 -10, 10),
-                  //           //                             blurRadius: 20)
-                  //           //                       ],
-                  //           //                       borderRadius:
-                  //           //                           const BorderRadius.only(
-                  //           //                               topLeft:
-                  //           //                                   Radius.circular(
-                  //           //                                       20),
-                  //           //                               topRight:
-                  //           //                                   Radius.circular(
-                  //           //                                       20))),
-                  //           //                   padding: const EdgeInsets.all(32),
-                  //           //                   child: SingleChildScrollView(
-                  //           //                     child: Column(
-                  //           //                       children: [
-                  //           //                         // FlatButton(
-                  //           //                         //   onPressed:
-                  //           //                         //       () async {
-                  //           //                         //     // var selectedTime = await showTimePicker(
-                  //           //                         //     //   context: context,
-                  //           //                         //     //   // initialEntryMode: DatePickerEntryMode.calendarOnly,<- this
-                  //           //                         //     //   initialEntryMode: TimePickerEntryMode.dial,
-                  //           //                         //     //   initialTime: TimeOfDay.now(),
-                  //           //                         //     //   builder: (context, child) {
-                  //           //                         //     //     return Theme(
-                  //           //                         //     //       data: Theme.of(
-                  //           //                         //     //               context)
-                  //           //                         //     //           .copyWith(
-                  //           //                         //     //         colorScheme:
-                  //           //                         //     //             ColorScheme
-                  //           //                         //     //                 .dark(
-                  //           //                         //     //           primary:
-                  //           //                         //     //               Colors.black,
-                  //           //                         //     //           onPrimary:
-                  //           //                         //     //               Colors.white,
-                  //           //                         //     //           surface:
-                  //           //                         //     //               ColorUtils.primary_gold,
-                  //           //                         //     //           // onPrimary: Colors.black, // <-- SEE HERE
-                  //           //                         //     //           onSurface:
-                  //           //                         //     //               Colors.black,
-                  //           //                         //     //         ),
-                  //           //                         //     //         dialogBackgroundColor:
-                  //           //                         //     //             ColorUtils
-                  //           //                         //     //                 .primary_gold,
-                  //           //                         //     //         textButtonTheme:
-                  //           //                         //     //             TextButtonThemeData(
-                  //           //                         //     //           style: TextButton
-                  //           //                         //     //               .styleFrom(
-                  //           //                         //     //             primary:
-                  //           //                         //     //                 Colors.black, // button text color
-                  //           //                         //     //           ),
-                  //           //                         //     //         ),
-                  //           //                         //     //       ),
-                  //           //                         //     //       child:
-                  //           //                         //     //           child!,
-                  //           //                         //     //     );
-                  //           //                         //     //   },
-                  //           //                         //     // );
-                  //           //                         //     // if (selectedTime !=
-                  //           //                         //     //     null) {
-                  //           //                         //     //   final now =
-                  //           //                         //     //       DateTime
-                  //           //                         //     //           .now();
-                  //           //                         //     //   var selectedDateTime = DateTime(
-                  //           //                         //     //       now.year,
-                  //           //                         //     //       now.month,
-                  //           //                         //     //       now.day,
-                  //           //                         //     //       selectedTime
-                  //           //                         //     //           .hour,
-                  //           //                         //     //       selectedTime
-                  //           //                         //     //           .minute);
-                  //           //                         //     //   _alarmTime =
-                  //           //                         //     //       selectedDateTime;
-                  //           //                         //     //   setModalState(
-                  //           //                         //     //       () {
-                  //           //                         //     //     _alarmTimeString =
-                  //           //                         //     //         DateFormat(
-                  //           //                         //     //                 'HH:mm')
-                  //           //                         //     //             .format(
-                  //           //                         //     //                 selectedDateTime);
-                  //           //                         //     //   });
-                  //           //                         //     // }
-                  //           //                         //   },
-                  //           //                         //   child: Text(
-                  //           //                         //       _alarmTimeString!,
-                  //           //                         //       style: FontStyleUtility.h35(
-                  //           //                         //           fontColor:
-                  //           //                         //               ColorUtils
-                  //           //                         //                   .primary_gold,
-                  //           //                         //           family:
-                  //           //                         //               'PM')),
-                  //           //                         // ),
-                  //           //                         Container(
-                  //           //                           height: 150,
-                  //           //                           decoration: BoxDecoration(
-                  //           //                               borderRadius:
-                  //           //                                   BorderRadius
-                  //           //                                       .circular(15),
-                  //           //                               gradient:
-                  //           //                                   LinearGradient(
-                  //           //                                 begin: Alignment
-                  //           //                                     .topCenter,
-                  //           //                                 end: Alignment
-                  //           //                                     .bottomCenter,
-                  //           //                                 colors: [
-                  //           //                                   HexColor(
-                  //           //                                           "#000000")
-                  //           //                                       .withOpacity(
-                  //           //                                           1),
-                  //           //                                   HexColor(
-                  //           //                                           "#04060F")
-                  //           //                                       .withOpacity(
-                  //           //                                           1),
-                  //           //                                   HexColor(
-                  //           //                                           "#000000")
-                  //           //                                       .withOpacity(
-                  //           //                                           1),
-                  //           //                                 ],
-                  //           //                               ),
-                  //           //                               boxShadow: [
-                  //           //                                 BoxShadow(
-                  //           //                                     color: HexColor(
-                  //           //                                         '#04060F'),
-                  //           //                                     offset: Offset(
-                  //           //                                         3, 3),
-                  //           //                                     blurRadius: 10)
-                  //           //                               ]),
-                  //           //                           child: Stack(
-                  //           //                             children: [
-                  //           //                               CupertinoTheme(
-                  //           //                                 data:
-                  //           //                                     CupertinoThemeData(
-                  //           //                                   brightness:
-                  //           //                                       Brightness
-                  //           //                                           .dark,
-                  //           //                                 ),
-                  //           //                                 child:
-                  //           //                                     CupertinoDatePicker(
-                  //           //                                   // use24hFormat: true,
-                  //           //                                   mode:
-                  //           //                                       CupertinoDatePickerMode
-                  //           //                                           .time,
-                  //           //                                   onDateTimeChanged:
-                  //           //                                       (DateTime
-                  //           //                                           value) {
-                  //           //                                     selected_time =
-                  //           //                                         value;
-                  //           //                                     print(
-                  //           //                                         "${value.hour}:${value.minute}");
-                  //           //
-                  //           //                                     if (selected_time !=
-                  //           //                                         null) {
-                  //           //                                       final now =
-                  //           //                                           DateTime
-                  //           //                                               .now();
-                  //           //                                       var selectedDateTime = DateTime(
-                  //           //                                           now.year,
-                  //           //                                           now.month,
-                  //           //                                           now.day,
-                  //           //                                           selected_time
-                  //           //                                               .hour,
-                  //           //                                           selected_time
-                  //           //                                               .minute);
-                  //           //                                       _alarmTime =
-                  //           //                                           selectedDateTime;
-                  //           //                                       setModalState(
-                  //           //                                           () {
-                  //           //                                         _alarmTimeString = DateFormat(
-                  //           //                                                 'HH:mm')
-                  //           //                                             .format(
-                  //           //                                                 selectedDateTime);
-                  //           //                                       });
-                  //           //                                     }
-                  //           //                                   },
-                  //           //                                 ),
-                  //           //                               ),
-                  //           //                             ],
-                  //           //                           ),
-                  //           //                         ),
-                  //           //
-                  //           //                         ListTile(
-                  //           //                           onTap: () {
-                  //           //                             showDialog(
-                  //           //                               context: context,
-                  //           //                               builder: (BuildContext
-                  //           //                                   context) {
-                  //           //                                 double width =
-                  //           //                                     MediaQuery.of(
-                  //           //                                             context)
-                  //           //                                         .size
-                  //           //                                         .width;
-                  //           //                                 double height =
-                  //           //                                     MediaQuery.of(
-                  //           //                                             context)
-                  //           //                                         .size
-                  //           //                                         .height;
-                  //           //                                 return BackdropFilter(
-                  //           //                                   filter: ImageFilter
-                  //           //                                       .blur(
-                  //           //                                           sigmaX:
-                  //           //                                               10,
-                  //           //                                           sigmaY:
-                  //           //                                               10),
-                  //           //                                   child:
-                  //           //                                       AlertDialog(
-                  //           //                                           backgroundColor:
-                  //           //                                               Colors
-                  //           //                                                   .transparent,
-                  //           //                                           contentPadding:
-                  //           //                                               EdgeInsets
-                  //           //                                                   .zero,
-                  //           //                                           elevation:
-                  //           //                                               0.0,
-                  //           //                                           // title: Center(child: Text("Evaluation our APP")),
-                  //           //                                           content:
-                  //           //                                               Column(
-                  //           //                                             mainAxisAlignment:
-                  //           //                                                 MainAxisAlignment.center,
-                  //           //                                             children: [
-                  //           //                                               Stack(
-                  //           //                                                 children: [
-                  //           //                                                   Padding(
-                  //           //                                                     padding: const EdgeInsets.all(8.0),
-                  //           //                                                     child: Container(
-                  //           //                                                       decoration:
-                  //           //                                                           BoxDecoration(
-                  //           //                                                               // color: Colors.black.withOpacity(0.65),
-                  //           //                                                               gradient:
-                  //           //                                                                   LinearGradient(
-                  //           //                                                                 begin: Alignment.centerLeft,
-                  //           //                                                                 end: Alignment.centerRight,
-                  //           //                                                                 // stops: [0.1, 0.5, 0.7, 0.9],
-                  //           //                                                                 colors: [
-                  //           //                                                                   HexColor("#020204").withOpacity(1),
-                  //           //                                                                   HexColor("#36393E").withOpacity(1),
-                  //           //                                                                 ],
-                  //           //                                                               ),
-                  //           //                                                               boxShadow: [
-                  //           //                                                                 BoxShadow(color: HexColor('#04060F'), offset: Offset(10, 10), blurRadius: 10)
-                  //           //                                                               ],
-                  //           //                                                               borderRadius: BorderRadius.circular(15)),
-                  //           //                                                       child: Align(
-                  //           //                                                           alignment: Alignment.center,
-                  //           //                                                           child: Padding(
-                  //           //                                                             padding: const EdgeInsets.all(8.0),
-                  //           //                                                             child: Column(
-                  //           //                                                               children: [
-                  //           //                                                                 SizedBox(
-                  //           //                                                                   height: 0,
-                  //           //                                                                 ),
-                  //           //
-                  //           //                                                                 Column(
-                  //           //                                                                   crossAxisAlignment: CrossAxisAlignment.start,
-                  //           //                                                                   children: [
-                  //           //                                                                     Container(
-                  //           //                                                                       margin: EdgeInsets.only(left: 18),
-                  //           //                                                                       child: Text('Title', style: FontStyleUtility.h14(fontColor: ColorUtils.primary_grey, family: 'Pr')),
-                  //           //                                                                     ),
-                  //           //                                                                     SizedBox(
-                  //           //                                                                       height: 11,
-                  //           //                                                                     ),
-                  //           //                                                                     Container(
-                  //           //                                                                       margin: EdgeInsets.symmetric(horizontal: 10),
-                  //           //                                                                       // width: 300,
-                  //           //                                                                       decoration: BoxDecoration(
-                  //           //                                                                           // color: Colors.black.withOpacity(0.65),
-                  //           //                                                                           gradient: LinearGradient(
-                  //           //                                                                             begin: Alignment.centerLeft,
-                  //           //                                                                             end: Alignment.centerRight,
-                  //           //                                                                             // stops: [0.1, 0.5, 0.7, 0.9],
-                  //           //                                                                             colors: [
-                  //           //                                                                               HexColor("#36393E").withOpacity(1),
-                  //           //                                                                               HexColor("#020204").withOpacity(1),
-                  //           //                                                                             ],
-                  //           //                                                                           ),
-                  //           //                                                                           boxShadow: [BoxShadow(color: HexColor('#04060F'), offset: Offset(10, 10), blurRadius: 10)],
-                  //           //                                                                           borderRadius: BorderRadius.circular(20)),
-                  //           //
-                  //           //                                                                       child: TextFormField(
-                  //           //                                                                         maxLength: 150,
-                  //           //                                                                         decoration: InputDecoration(
-                  //           //                                                                           contentPadding: EdgeInsets.only(left: 20, top: 14, bottom: 14),
-                  //           //                                                                           alignLabelWithHint: false,
-                  //           //                                                                           isDense: true,
-                  //           //                                                                           hintText: 'Add alarm title',
-                  //           //                                                                           counterStyle: TextStyle(
-                  //           //                                                                             height: double.minPositive,
-                  //           //                                                                           ),
-                  //           //                                                                           counterText: "",
-                  //           //                                                                           filled: true,
-                  //           //                                                                           border: InputBorder.none,
-                  //           //                                                                           enabledBorder: const OutlineInputBorder(
-                  //           //                                                                             borderSide: BorderSide(color: Colors.transparent, width: 1),
-                  //           //                                                                             borderRadius: BorderRadius.all(Radius.circular(10)),
-                  //           //                                                                           ),
-                  //           //                                                                           hintStyle: FontStyleUtility.h14(fontColor: HexColor('#CBCBCB'), family: 'PR'),
-                  //           //                                                                         ),
-                  //           //                                                                         style: FontStyleUtility.h14(fontColor: ColorUtils.primary_grey, family: 'PR'),
-                  //           //                                                                         controller: Alarm_title,
-                  //           //                                                                         keyboardType: TextInputType.text,
-                  //           //                                                                       ),
-                  //           //                                                                     ),
-                  //           //                                                                   ],
-                  //           //                                                                 ),
-                  //           //                                                                 SizedBox(
-                  //           //                                                                   height: 10,
-                  //           //                                                                 ),
-                  //           //                                                                 GestureDetector(
-                  //           //                                                                   onTap: () {
-                  //           //                                                                     setState(() {
-                  //           //                                                                       Alarm_title_list.add(Alarm_title.text);
-                  //           //                                                                       Navigator.pop(context);
-                  //           //                                                                     });
-                  //           //                                                                   },
-                  //           //                                                                   child: Container(
-                  //           //                                                                     alignment: Alignment.topRight,
-                  //           //                                                                     child: Text(
-                  //           //                                                                       'Add',
-                  //           //                                                                       style: FontStyleUtility.h12(fontColor: ColorUtils.primary_grey, family: 'PR'),
-                  //           //                                                                     ),
-                  //           //                                                                   ),
-                  //           //                                                                 )
-                  //           //                                                                 // common_button_gold(
-                  //           //                                                                 //   onTap: () {
-                  //           //                                                                 //     Get
-                  //           //                                                                 //         .to(
-                  //           //                                                                 //         DashboardScreen());
-                  //           //                                                                 //   },
-                  //           //                                                                 //   title_text: 'Go to Dashboard',
-                  //           //                                                                 // ),
-                  //           //                                                               ],
-                  //           //                                                             ),
-                  //           //                                                           )),
-                  //           //                                                     ),
-                  //           //                                                   ),
-                  //           //                                                   GestureDetector(
-                  //           //                                                     onTap: () {
-                  //           //                                                       Navigator.pop(context);
-                  //           //                                                     },
-                  //           //                                                     child: Container(
-                  //           //                                                       margin: EdgeInsets.only(right: 10),
-                  //           //                                                       alignment: Alignment.topRight,
-                  //           //                                                       child: Container(
-                  //           //                                                           decoration: BoxDecoration(
-                  //           //                                                               // color: Colors.black.withOpacity(0.65),
-                  //           //                                                               gradient: LinearGradient(
-                  //           //                                                                 begin: Alignment.centerLeft,
-                  //           //                                                                 end: Alignment.centerRight,
-                  //           //                                                                 // stops: [0.1, 0.5, 0.7, 0.9],
-                  //           //                                                                 colors: [
-                  //           //                                                                   HexColor("#36393E").withOpacity(1),
-                  //           //                                                                   HexColor("#020204").withOpacity(1),
-                  //           //                                                                 ],
-                  //           //                                                               ),
-                  //           //                                                               boxShadow: [BoxShadow(color: HexColor('#04060F'), offset: Offset(0, 3), blurRadius: 5)],
-                  //           //                                                               borderRadius: BorderRadius.circular(20)),
-                  //           //                                                           child: Padding(
-                  //           //                                                             padding: const EdgeInsets.all(4.0),
-                  //           //                                                             child: Icon(
-                  //           //                                                               Icons.cancel_outlined,
-                  //           //                                                               size: 13,
-                  //           //                                                               color: ColorUtils.primary_grey,
-                  //           //                                                             ),
-                  //           //                                                           )),
-                  //           //                                                     ),
-                  //           //                                                   )
-                  //           //                                                 ],
-                  //           //                                               ),
-                  //           //                                             ],
-                  //           //                                           )),
-                  //           //                                 );
-                  //           //                               },
-                  //           //                             );
-                  //           //                           },
-                  //           //                           title: Text('Title',
-                  //           //                               style: FontStyleUtility.h14(
-                  //           //                                   fontColor: ColorUtils
-                  //           //                                       .primary_grey,
-                  //           //                                   family: 'PR')),
-                  //           //                           trailing: const Icon(
-                  //           //                               Icons
-                  //           //                                   .arrow_forward_ios,
-                  //           //                               size: 15,
-                  //           //                               color: Colors.white),
-                  //           //                         ),
-                  //           //                         ListTile(
-                  //           //                           title: Text(
-                  //           //                             'Repeat',
-                  //           //                             style: FontStyleUtility.h14(
-                  //           //                                 fontColor: ColorUtils
-                  //           //                                     .primary_gold,
-                  //           //                                 family: 'PR'),
-                  //           //                           ),
-                  //           //                           trailing: const Icon(
-                  //           //                             Icons.arrow_forward_ios,
-                  //           //                             size: 15,
-                  //           //                             color: Colors.white,
-                  //           //                           ),
-                  //           //                         ),
-                  //           //                         GestureDetector(
-                  //           //                           onTap: () {
-                  //           //                             print('object');
-                  //           //
-                  //           //                             showDialog(
-                  //           //                               context: context,
-                  //           //                               builder: (BuildContext
-                  //           //                                   context) {
-                  //           //                                 double width =
-                  //           //                                     MediaQuery.of(
-                  //           //                                             context)
-                  //           //                                         .size
-                  //           //                                         .width;
-                  //           //                                 double height =
-                  //           //                                     MediaQuery.of(
-                  //           //                                             context)
-                  //           //                                         .size
-                  //           //                                         .height;
-                  //           //                                 return AlertDialog(
-                  //           //                                     backgroundColor:
-                  //           //                                         Colors
-                  //           //                                             .transparent,
-                  //           //                                     contentPadding:
-                  //           //                                         EdgeInsets
-                  //           //                                             .zero,
-                  //           //                                     elevation: 0.0,
-                  //           //                                     // title: Center(child: Text("Evaluation our APP")),
-                  //           //                                     content: Column(
-                  //           //                                       mainAxisAlignment:
-                  //           //                                           MainAxisAlignment
-                  //           //                                               .center,
-                  //           //                                       children: [
-                  //           //                                         Stack(
-                  //           //                                           children: [
-                  //           //                                             Container(
-                  //           //                                               // height: 150,
-                  //           //                                               // height: double.maxFinite,
-                  //           //                                               height:
-                  //           //                                                   MediaQuery.of(context).size.height / 4,
-                  //           //                                               width:
-                  //           //                                                   double.maxFinite,
-                  //           //                                               decoration:
-                  //           //                                                   BoxDecoration(
-                  //           //                                                       // color: Colors.black.withOpacity(0.65),
-                  //           //                                                       gradient:
-                  //           //                                                           LinearGradient(
-                  //           //                                                         begin: Alignment.centerLeft,
-                  //           //                                                         end: Alignment.centerRight,
-                  //           //                                                         // stops: [0.1, 0.5, 0.7, 0.9],
-                  //           //                                                         colors: [
-                  //           //                                                           HexColor("#020204").withOpacity(1),
-                  //           //                                                           HexColor("#36393E").withOpacity(1),
-                  //           //                                                         ],
-                  //           //                                                       ),
-                  //           //                                                       boxShadow: [
-                  //           //                                                         BoxShadow(color: HexColor('#04060F'), offset: Offset(10, 10), blurRadius: 10)
-                  //           //                                                       ],
-                  //           //                                                       borderRadius: BorderRadius.circular(20)),
-                  //           //                                               margin: EdgeInsets.symmetric(
-                  //           //                                                   horizontal: 10,
-                  //           //                                                   vertical: 10),
-                  //           //                                               // height: 122,
-                  //           //                                               // width: 133,
-                  //           //                                               // padding: const EdgeInsets.all(8.0),
-                  //           //                                               child:
-                  //           //                                                   Column(
-                  //           //                                                 mainAxisAlignment:
-                  //           //                                                     MainAxisAlignment.center,
-                  //           //                                                 children: [
-                  //           //                                                   Container(
-                  //           //                                                     // color: Colors.white,
-                  //           //                                                     alignment: Alignment.center,
-                  //           //                                                     child: ListView.builder(
-                  //           //                                                       padding: EdgeInsets.only(bottom: 0),
-                  //           //
-                  //           //                                                       // physics: NeverScrollableScrollPhysics(),
-                  //           //                                                       itemCount: list_alarm.length,
-                  //           //                                                       shrinkWrap: true,
-                  //           //                                                       itemBuilder: (BuildContext context, int index) {
-                  //           //                                                         return GestureDetector(
-                  //           //                                                           onTap: () {
-                  //           //                                                             setState(() {
-                  //           //                                                               Selected_sound = list_alarm[index];
-                  //           //                                                               print("method_selected $Selected_sound");
-                  //           //                                                             });
-                  //           //                                                             Navigator.pop(context);
-                  //           //                                                           },
-                  //           //                                                           child: Container(
-                  //           //                                                             margin: EdgeInsets.symmetric(vertical: 8.5),
-                  //           //                                                             alignment: Alignment.center,
-                  //           //                                                             child: Text(
-                  //           //                                                               list_alarm[index],
-                  //           //                                                               style: FontStyleUtility.h15(fontColor: ColorUtils.primary_grey, family: 'PM'),
-                  //           //                                                             ),
-                  //           //                                                           ),
-                  //           //                                                         );
-                  //           //                                                       },
-                  //           //                                                     ),
-                  //           //                                                   ),
-                  //           //                                                 ],
-                  //           //                                               ),
-                  //           //                                             ),
-                  //           //                                             GestureDetector(
-                  //           //                                               onTap:
-                  //           //                                                   () {
-                  //           //                                                 Navigator.pop(context);
-                  //           //                                               },
-                  //           //                                               child:
-                  //           //                                                   Container(
-                  //           //                                                 margin:
-                  //           //                                                     EdgeInsets.only(right: 0),
-                  //           //                                                 alignment:
-                  //           //                                                     Alignment.topRight,
-                  //           //                                                 child: Container(
-                  //           //                                                     decoration: BoxDecoration(
-                  //           //                                                         // color: Colors.black.withOpacity(0.65),
-                  //           //                                                         gradient: LinearGradient(
-                  //           //                                                           begin: Alignment.centerLeft,
-                  //           //                                                           end: Alignment.centerRight,
-                  //           //                                                           // stops: [0.1, 0.5, 0.7, 0.9],
-                  //           //                                                           colors: [
-                  //           //                                                             HexColor("#36393E").withOpacity(1),
-                  //           //                                                             HexColor("#020204").withOpacity(1),
-                  //           //                                                           ],
-                  //           //                                                         ),
-                  //           //                                                         boxShadow: [BoxShadow(color: HexColor('#04060F'), offset: Offset(0, 3), blurRadius: 5)],
-                  //           //                                                         borderRadius: BorderRadius.circular(20)),
-                  //           //                                                     child: Padding(
-                  //           //                                                       padding: const EdgeInsets.all(4.0),
-                  //           //                                                       child: Icon(
-                  //           //                                                         Icons.cancel_outlined,
-                  //           //                                                         size: 20,
-                  //           //                                                         color: ColorUtils.primary_grey,
-                  //           //                                                       ),
-                  //           //                                                     )),
-                  //           //                                               ),
-                  //           //                                             )
-                  //           //                                           ],
-                  //           //                                         ),
-                  //           //                                       ],
-                  //           //                                     ));
-                  //           //                               },
-                  //           //                             );
-                  //           //                           },
-                  //           //                           child: ListTile(
-                  //           //                             title: Text('Sound',
-                  //           //                                 style: FontStyleUtility.h14(
-                  //           //                                     fontColor:
-                  //           //                                         ColorUtils
-                  //           //                                             .primary_gold,
-                  //           //                                     family: 'PR')),
-                  //           //                             trailing: const Icon(
-                  //           //                                 Icons
-                  //           //                                     .arrow_forward_ios,
-                  //           //                                 size: 15,
-                  //           //                                 color:
-                  //           //                                     Colors.white),
-                  //           //                           ),
-                  //           //                         ),
-                  //           //                         GestureDetector(
-                  //           //                           onTap: () async {
-                  //           //                             if (Alarm_title
-                  //           //                                 .text.isEmpty) {
-                  //           //                               CommonWidget()
-                  //           //                                   .showErrorToaster(
-                  //           //                                       msg:
-                  //           //                                           "Enter Alarm title");
-                  //           //                               return;
-                  //           //                             } else {
-                  //           //                               await onSaveAlarm();
-                  //           //                             }
-                  //           //                           },
-                  //           //                           child: Container(
-                  //           //                             width: MediaQuery.of(
-                  //           //                                         context)
-                  //           //                                     .size
-                  //           //                                     .width /
-                  //           //                                 3,
-                  //           //                             decoration: BoxDecoration(
-                  //           //                                 borderRadius:
-                  //           //                                     BorderRadius
-                  //           //                                         .circular(
-                  //           //                                             30),
-                  //           //                                 border: Border.all(
-                  //           //                                     color: ColorUtils
-                  //           //                                         .primary_grey,
-                  //           //                                     width: 1)),
-                  //           //                             child: Padding(
-                  //           //                               padding:
-                  //           //                                   const EdgeInsets
-                  //           //                                           .symmetric(
-                  //           //                                       vertical:
-                  //           //                                           12.0,
-                  //           //                                       horizontal:
-                  //           //                                           8),
-                  //           //                               child: Row(
-                  //           //                                 mainAxisAlignment:
-                  //           //                                     MainAxisAlignment
-                  //           //                                         .center,
-                  //           //                                 children: [
-                  //           //                                   const Icon(
-                  //           //                                     Icons.alarm,
-                  //           //                                     color: Colors
-                  //           //                                         .white,
-                  //           //                                     size: 25,
-                  //           //                                   ),
-                  //           //                                   const SizedBox(
-                  //           //                                     width: 10,
-                  //           //                                   ),
-                  //           //                                   Text(
-                  //           //                                     'Save',
-                  //           //                                     style: FontStyleUtility.h16(
-                  //           //                                         fontColor:
-                  //           //                                             ColorUtils
-                  //           //                                                 .primary_gold,
-                  //           //                                         family:
-                  //           //                                             'PR'),
-                  //           //                                   ),
-                  //           //                                 ],
-                  //           //                               ),
-                  //           //                             ),
-                  //           //                           ),
-                  //           //                         )
-                  //           //                       ],
-                  //           //                     ),
-                  //           //                   ),
-                  //           //                 );
-                  //           //               },
-                  //           //             );
-                  //           //           },
-                  //           //         );
-                  //           //         // scheduleAlarm();
-                  //           //       },
-                  //           //       child: Container(
-                  //           //         decoration: BoxDecoration(
-                  //           //             // color: Colors.black.withOpacity(0.65),
-                  //           //             gradient: LinearGradient(
-                  //           //               begin: Alignment.centerLeft,
-                  //           //               end: Alignment.centerRight,
-                  //           //               // stops: [0.1, 0.5, 0.7, 0.9],
-                  //           //               colors: [
-                  //           //                 HexColor("#36393E").withOpacity(1),
-                  //           //                 HexColor("#020204").withOpacity(1),
-                  //           //               ],
-                  //           //             ),
-                  //           //             boxShadow: [
-                  //           //               BoxShadow(
-                  //           //                   color: HexColor('#04060F'),
-                  //           //                   offset: const Offset(10, 10),
-                  //           //                   blurRadius: 20)
-                  //           //             ],
-                  //           //             borderRadius:
-                  //           //                 BorderRadius.circular(20)),
-                  //           //         child: Padding(
-                  //           //           padding: const EdgeInsets.all(0.0),
-                  //           //           child: Icon(
-                  //           //             Icons.add_circle_outline,
-                  //           //             color: ColorUtils.primary_grey,
-                  //           //           ),
-                  //           //         ),
-                  //           //       )),
-                  //           // ),
-                  //         ),
-                  //       ),
-                  //       // Container(
-                  //       //   padding: const EdgeInsets.symmetric(
-                  //       //       horizontal: 16, vertical: 0),
-                  //       //   child: Row(
-                  //       //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //       //     children: [
-                  //       //       Container(
-                  //       //         margin: EdgeInsets.only(left: 16),
-                  //       //         child: Text(
-                  //       //           "Add Alarm",
-                  //       //           style: FontStyleUtility.h16(
-                  //       //               fontColor: ColorUtils.primary_gold,
-                  //       //               family: 'PM'),
-                  //       //         ),
-                  //       //       ),
-                  //       //       FlatButton(
-                  //       //           padding: const EdgeInsets.symmetric(
-                  //       //               horizontal: 32, vertical: 10),
-                  //       //           onPressed: () {
-                  //       //             _alarmTimeString = DateFormat('HH:mm')
-                  //       //                 .format(selectedDate);
-                  //       //             showModalBottomSheet(
-                  //       //               useRootNavigator: true,
-                  //       //               context: context,
-                  //       //               clipBehavior: Clip.antiAlias,
-                  //       //               shape: const RoundedRectangleBorder(
-                  //       //                 borderRadius: BorderRadius.vertical(
-                  //       //                   top: Radius.circular(24),
-                  //       //                 ),
-                  //       //               ),
-                  //       //               builder: (context) {
-                  //       //                 return StatefulBuilder(
-                  //       //                   builder: (context, setModalState) {
-                  //       //                     return Container(
-                  //       //                       decoration: BoxDecoration(
-                  //       //                           // color: Colors.black.withOpacity(0.65),
-                  //       //                           gradient: LinearGradient(
-                  //       //                             begin:
-                  //       //                                 Alignment.centerLeft,
-                  //       //                             end:
-                  //       //                                 Alignment.centerRight,
-                  //       //                             // stops: [0.1, 0.5, 0.7, 0.9],
-                  //       //                             colors: [
-                  //       //                               HexColor("#020204")
-                  //       //                                   .withOpacity(1),
-                  //       //                               HexColor("#36393E")
-                  //       //                                   .withOpacity(1),
-                  //       //                             ],
-                  //       //                           ),
-                  //       //                           boxShadow: [
-                  //       //                             BoxShadow(
-                  //       //                                 color: HexColor(
-                  //       //                                     '#04060F'),
-                  //       //                                 offset: const Offset(
-                  //       //                                     -10, 10),
-                  //       //                                 blurRadius: 20)
-                  //       //                           ],
-                  //       //                           borderRadius:
-                  //       //                               const BorderRadius.only(
-                  //       //                                   topLeft:
-                  //       //                                       Radius.circular(
-                  //       //                                           20),
-                  //       //                                   topRight:
-                  //       //                                       Radius.circular(
-                  //       //                                           20))),
-                  //       //                       padding:
-                  //       //                           const EdgeInsets.all(32),
-                  //       //                       child: SingleChildScrollView(
-                  //       //                         child: Column(
-                  //       //                           children: [
-                  //       //                             // FlatButton(
-                  //       //                             //   onPressed:
-                  //       //                             //       () async {
-                  //       //                             //     // var selectedTime = await showTimePicker(
-                  //       //                             //     //   context: context,
-                  //       //                             //     //   // initialEntryMode: DatePickerEntryMode.calendarOnly,<- this
-                  //       //                             //     //   initialEntryMode: TimePickerEntryMode.dial,
-                  //       //                             //     //   initialTime: TimeOfDay.now(),
-                  //       //                             //     //   builder: (context, child) {
-                  //       //                             //     //     return Theme(
-                  //       //                             //     //       data: Theme.of(
-                  //       //                             //     //               context)
-                  //       //                             //     //           .copyWith(
-                  //       //                             //     //         colorScheme:
-                  //       //                             //     //             ColorScheme
-                  //       //                             //     //                 .dark(
-                  //       //                             //     //           primary:
-                  //       //                             //     //               Colors.black,
-                  //       //                             //     //           onPrimary:
-                  //       //                             //     //               Colors.white,
-                  //       //                             //     //           surface:
-                  //       //                             //     //               ColorUtils.primary_gold,
-                  //       //                             //     //           // onPrimary: Colors.black, // <-- SEE HERE
-                  //       //                             //     //           onSurface:
-                  //       //                             //     //               Colors.black,
-                  //       //                             //     //         ),
-                  //       //                             //     //         dialogBackgroundColor:
-                  //       //                             //     //             ColorUtils
-                  //       //                             //     //                 .primary_gold,
-                  //       //                             //     //         textButtonTheme:
-                  //       //                             //     //             TextButtonThemeData(
-                  //       //                             //     //           style: TextButton
-                  //       //                             //     //               .styleFrom(
-                  //       //                             //     //             primary:
-                  //       //                             //     //                 Colors.black, // button text color
-                  //       //                             //     //           ),
-                  //       //                             //     //         ),
-                  //       //                             //     //       ),
-                  //       //                             //     //       child:
-                  //       //                             //     //           child!,
-                  //       //                             //     //     );
-                  //       //                             //     //   },
-                  //       //                             //     // );
-                  //       //                             //     // if (selectedTime !=
-                  //       //                             //     //     null) {
-                  //       //                             //     //   final now =
-                  //       //                             //     //       DateTime
-                  //       //                             //     //           .now();
-                  //       //                             //     //   var selectedDateTime = DateTime(
-                  //       //                             //     //       now.year,
-                  //       //                             //     //       now.month,
-                  //       //                             //     //       now.day,
-                  //       //                             //     //       selectedTime
-                  //       //                             //     //           .hour,
-                  //       //                             //     //       selectedTime
-                  //       //                             //     //           .minute);
-                  //       //                             //     //   _alarmTime =
-                  //       //                             //     //       selectedDateTime;
-                  //       //                             //     //   setModalState(
-                  //       //                             //     //       () {
-                  //       //                             //     //     _alarmTimeString =
-                  //       //                             //     //         DateFormat(
-                  //       //                             //     //                 'HH:mm')
-                  //       //                             //     //             .format(
-                  //       //                             //     //                 selectedDateTime);
-                  //       //                             //     //   });
-                  //       //                             //     // }
-                  //       //                             //   },
-                  //       //                             //   child: Text(
-                  //       //                             //       _alarmTimeString!,
-                  //       //                             //       style: FontStyleUtility.h35(
-                  //       //                             //           fontColor:
-                  //       //                             //               ColorUtils
-                  //       //                             //                   .primary_gold,
-                  //       //                             //           family:
-                  //       //                             //               'PM')),
-                  //       //                             // ),
-                  //       //                             Container(
-                  //       //                               height: 150,
-                  //       //                               decoration:
-                  //       //                                   BoxDecoration(
-                  //       //                                       borderRadius:
-                  //       //                                           BorderRadius
-                  //       //                                               .circular(
-                  //       //                                                   15),
-                  //       //                                       gradient: LinearGradient(
-                  //       //                                         begin: Alignment
-                  //       //                                             .topCenter,
-                  //       //                                         end: Alignment
-                  //       //                                             .bottomCenter,
-                  //       //                                         colors: [
-                  //       //                                           HexColor(
-                  //       //                                                   "#000000")
-                  //       //                                               .withOpacity(
-                  //       //                                                   1),
-                  //       //                                           HexColor(
-                  //       //                                                   "#04060F")
-                  //       //                                               .withOpacity(
-                  //       //                                                   1),
-                  //       //                                           HexColor(
-                  //       //                                                   "#000000")
-                  //       //                                               .withOpacity(
-                  //       //                                                   1),
-                  //       //                                         ],
-                  //       //                                       ),
-                  //       //                                       boxShadow: [
-                  //       //                                     BoxShadow(
-                  //       //                                         color: HexColor(
-                  //       //                                             '#04060F'),
-                  //       //                                         offset:
-                  //       //                                             Offset(
-                  //       //                                                 3, 3),
-                  //       //                                         blurRadius:
-                  //       //                                             10)
-                  //       //                                   ]),
-                  //       //                               child: Stack(
-                  //       //                                 children: [
-                  //       //                                   CupertinoTheme(
-                  //       //                                     data:
-                  //       //                                         CupertinoThemeData(
-                  //       //                                       brightness:
-                  //       //                                           Brightness
-                  //       //                                               .dark,
-                  //       //                                     ),
-                  //       //                                     child:
-                  //       //                                         CupertinoDatePicker(
-                  //       //                                       // use24hFormat: true,
-                  //       //                                       mode:
-                  //       //                                           CupertinoDatePickerMode
-                  //       //                                               .time,
-                  //       //                                       onDateTimeChanged:
-                  //       //                                           (DateTime
-                  //       //                                               value) {
-                  //       //                                         selected_time =
-                  //       //                                             value;
-                  //       //                                         print(
-                  //       //                                             "${value.hour}:${value.minute}");
-                  //       //
-                  //       //                                         if (selected_time !=
-                  //       //                                             null) {
-                  //       //                                           final now =
-                  //       //                                               DateTime
-                  //       //                                                   .now();
-                  //       //                                           var selectedDateTime = DateTime(
-                  //       //                                               now
-                  //       //                                                   .year,
-                  //       //                                               now
-                  //       //                                                   .month,
-                  //       //                                               now.day,
-                  //       //                                               selected_time
-                  //       //                                                   .hour,
-                  //       //                                               selected_time
-                  //       //                                                   .minute);
-                  //       //                                           _alarmTime =
-                  //       //                                               selectedDateTime;
-                  //       //                                           setModalState(
-                  //       //                                               () {
-                  //       //                                             _alarmTimeString = DateFormat(
-                  //       //                                                     'HH:mm')
-                  //       //                                                 .format(
-                  //       //                                                     selectedDateTime);
-                  //       //                                           });
-                  //       //                                         }
-                  //       //                                       },
-                  //       //                                     ),
-                  //       //                                   ),
-                  //       //                                 ],
-                  //       //                               ),
-                  //       //                             ),
-                  //       //
-                  //       //                             ListTile(
-                  //       //                               onTap: () {
-                  //       //                                 showDialog(
-                  //       //                                   context: context,
-                  //       //                                   builder:
-                  //       //                                       (BuildContext
-                  //       //                                           context) {
-                  //       //                                     double width =
-                  //       //                                         MediaQuery.of(
-                  //       //                                                 context)
-                  //       //                                             .size
-                  //       //                                             .width;
-                  //       //                                     double height =
-                  //       //                                         MediaQuery.of(
-                  //       //                                                 context)
-                  //       //                                             .size
-                  //       //                                             .height;
-                  //       //                                     return BackdropFilter(
-                  //       //                                       filter: ImageFilter
-                  //       //                                           .blur(
-                  //       //                                               sigmaX:
-                  //       //                                                   10,
-                  //       //                                               sigmaY:
-                  //       //                                                   10),
-                  //       //                                       child:
-                  //       //                                           AlertDialog(
-                  //       //                                               backgroundColor:
-                  //       //                                                   Colors
-                  //       //                                                       .transparent,
-                  //       //                                               contentPadding:
-                  //       //                                                   EdgeInsets
-                  //       //                                                       .zero,
-                  //       //                                               elevation:
-                  //       //                                                   0.0,
-                  //       //                                               // title: Center(child: Text("Evaluation our APP")),
-                  //       //                                               content:
-                  //       //                                                   Column(
-                  //       //                                                 mainAxisAlignment:
-                  //       //                                                     MainAxisAlignment.center,
-                  //       //                                                 children: [
-                  //       //                                                   Stack(
-                  //       //                                                     children: [
-                  //       //                                                       Padding(
-                  //       //                                                         padding: const EdgeInsets.all(8.0),
-                  //       //                                                         child: Container(
-                  //       //                                                           decoration:
-                  //       //                                                               BoxDecoration(
-                  //       //                                                                   // color: Colors.black.withOpacity(0.65),
-                  //       //                                                                   gradient:
-                  //       //                                                                       LinearGradient(
-                  //       //                                                                     begin: Alignment.centerLeft,
-                  //       //                                                                     end: Alignment.centerRight,
-                  //       //                                                                     // stops: [0.1, 0.5, 0.7, 0.9],
-                  //       //                                                                     colors: [
-                  //       //                                                                       HexColor("#020204").withOpacity(1),
-                  //       //                                                                       HexColor("#36393E").withOpacity(1),
-                  //       //                                                                     ],
-                  //       //                                                                   ),
-                  //       //                                                                   boxShadow: [
-                  //       //                                                                     BoxShadow(color: HexColor('#04060F'), offset: Offset(10, 10), blurRadius: 10)
-                  //       //                                                                   ],
-                  //       //                                                                   borderRadius: BorderRadius.circular(15)),
-                  //       //                                                           child: Align(
-                  //       //                                                               alignment: Alignment.center,
-                  //       //                                                               child: Padding(
-                  //       //                                                                 padding: const EdgeInsets.all(8.0),
-                  //       //                                                                 child: Column(
-                  //       //                                                                   children: [
-                  //       //                                                                     SizedBox(
-                  //       //                                                                       height: 0,
-                  //       //                                                                     ),
-                  //       //
-                  //       //                                                                     Column(
-                  //       //                                                                       crossAxisAlignment: CrossAxisAlignment.start,
-                  //       //                                                                       children: [
-                  //       //                                                                         Container(
-                  //       //                                                                           margin: EdgeInsets.only(left: 18),
-                  //       //                                                                           child: Text('Title', style: FontStyleUtility.h14(fontColor: ColorUtils.primary_grey, family: 'Pr')),
-                  //       //                                                                         ),
-                  //       //                                                                         SizedBox(
-                  //       //                                                                           height: 11,
-                  //       //                                                                         ),
-                  //       //                                                                         Container(
-                  //       //                                                                           margin: EdgeInsets.symmetric(horizontal: 10),
-                  //       //                                                                           // width: 300,
-                  //       //                                                                           decoration: BoxDecoration(
-                  //       //                                                                               // color: Colors.black.withOpacity(0.65),
-                  //       //                                                                               gradient: LinearGradient(
-                  //       //                                                                                 begin: Alignment.centerLeft,
-                  //       //                                                                                 end: Alignment.centerRight,
-                  //       //                                                                                 // stops: [0.1, 0.5, 0.7, 0.9],
-                  //       //                                                                                 colors: [
-                  //       //                                                                                   HexColor("#36393E").withOpacity(1),
-                  //       //                                                                                   HexColor("#020204").withOpacity(1),
-                  //       //                                                                                 ],
-                  //       //                                                                               ),
-                  //       //                                                                               boxShadow: [BoxShadow(color: HexColor('#04060F'), offset: Offset(10, 10), blurRadius: 10)],
-                  //       //                                                                               borderRadius: BorderRadius.circular(20)),
-                  //       //
-                  //       //                                                                           child: TextFormField(
-                  //       //                                                                             maxLength: 150,
-                  //       //                                                                             decoration: InputDecoration(
-                  //       //                                                                               contentPadding: EdgeInsets.only(left: 20, top: 14, bottom: 14),
-                  //       //                                                                               alignLabelWithHint: false,
-                  //       //                                                                               isDense: true,
-                  //       //                                                                               hintText: 'Add alarm title',
-                  //       //                                                                               counterStyle: TextStyle(
-                  //       //                                                                                 height: double.minPositive,
-                  //       //                                                                               ),
-                  //       //                                                                               counterText: "",
-                  //       //                                                                               filled: true,
-                  //       //                                                                               border: InputBorder.none,
-                  //       //                                                                               enabledBorder: const OutlineInputBorder(
-                  //       //                                                                                 borderSide: BorderSide(color: Colors.transparent, width: 1),
-                  //       //                                                                                 borderRadius: BorderRadius.all(Radius.circular(10)),
-                  //       //                                                                               ),
-                  //       //                                                                               hintStyle: FontStyleUtility.h14(fontColor: HexColor('#CBCBCB'), family: 'PR'),
-                  //       //                                                                             ),
-                  //       //                                                                             style: FontStyleUtility.h14(fontColor: ColorUtils.primary_grey, family: 'PR'),
-                  //       //                                                                             controller: Alarm_title,
-                  //       //                                                                             keyboardType: TextInputType.text,
-                  //       //                                                                           ),
-                  //       //                                                                         ),
-                  //       //                                                                       ],
-                  //       //                                                                     ),
-                  //       //                                                                     SizedBox(
-                  //       //                                                                       height: 10,
-                  //       //                                                                     ),
-                  //       //                                                                     GestureDetector(
-                  //       //                                                                       onTap: () {
-                  //       //                                                                         setState(() {
-                  //       //                                                                           Alarm_title_list.add(Alarm_title.text);
-                  //       //                                                                           Navigator.pop(context);
-                  //       //                                                                         });
-                  //       //                                                                       },
-                  //       //                                                                       child: Container(
-                  //       //                                                                         alignment: Alignment.topRight,
-                  //       //                                                                         child: Text(
-                  //       //                                                                           'Add',
-                  //       //                                                                           style: FontStyleUtility.h12(fontColor: ColorUtils.primary_grey, family: 'PR'),
-                  //       //                                                                         ),
-                  //       //                                                                       ),
-                  //       //                                                                     )
-                  //       //                                                                     // common_button_gold(
-                  //       //                                                                     //   onTap: () {
-                  //       //                                                                     //     Get
-                  //       //                                                                     //         .to(
-                  //       //                                                                     //         DashboardScreen());
-                  //       //                                                                     //   },
-                  //       //                                                                     //   title_text: 'Go to Dashboard',
-                  //       //                                                                     // ),
-                  //       //                                                                   ],
-                  //       //                                                                 ),
-                  //       //                                                               )),
-                  //       //                                                         ),
-                  //       //                                                       ),
-                  //       //                                                       GestureDetector(
-                  //       //                                                         onTap: () {
-                  //       //                                                           Navigator.pop(context);
-                  //       //                                                         },
-                  //       //                                                         child: Container(
-                  //       //                                                           margin: EdgeInsets.only(right: 10),
-                  //       //                                                           alignment: Alignment.topRight,
-                  //       //                                                           child: Container(
-                  //       //                                                               decoration: BoxDecoration(
-                  //       //                                                                   // color: Colors.black.withOpacity(0.65),
-                  //       //                                                                   gradient: LinearGradient(
-                  //       //                                                                     begin: Alignment.centerLeft,
-                  //       //                                                                     end: Alignment.centerRight,
-                  //       //                                                                     // stops: [0.1, 0.5, 0.7, 0.9],
-                  //       //                                                                     colors: [
-                  //       //                                                                       HexColor("#36393E").withOpacity(1),
-                  //       //                                                                       HexColor("#020204").withOpacity(1),
-                  //       //                                                                     ],
-                  //       //                                                                   ),
-                  //       //                                                                   boxShadow: [BoxShadow(color: HexColor('#04060F'), offset: Offset(0, 3), blurRadius: 5)],
-                  //       //                                                                   borderRadius: BorderRadius.circular(20)),
-                  //       //                                                               child: Padding(
-                  //       //                                                                 padding: const EdgeInsets.all(4.0),
-                  //       //                                                                 child: Icon(
-                  //       //                                                                   Icons.cancel_outlined,
-                  //       //                                                                   size: 13,
-                  //       //                                                                   color: ColorUtils.primary_grey,
-                  //       //                                                                 ),
-                  //       //                                                               )),
-                  //       //                                                         ),
-                  //       //                                                       )
-                  //       //                                                     ],
-                  //       //                                                   ),
-                  //       //                                                 ],
-                  //       //                                               )),
-                  //       //                                     );
-                  //       //                                   },
-                  //       //                                 );
-                  //       //                               },
-                  //       //                               title: Text('Title',
-                  //       //                                   style: FontStyleUtility.h14(
-                  //       //                                       fontColor:
-                  //       //                                           ColorUtils
-                  //       //                                               .primary_grey,
-                  //       //                                       family: 'PR')),
-                  //       //                               trailing: const Icon(
-                  //       //                                   Icons
-                  //       //                                       .arrow_forward_ios,
-                  //       //                                   size: 15,
-                  //       //                                   color:
-                  //       //                                       Colors.white),
-                  //       //                             ),
-                  //       //                             ListTile(
-                  //       //                               title: Text(
-                  //       //                                 'Repeat',
-                  //       //                                 style: FontStyleUtility.h14(
-                  //       //                                     fontColor: ColorUtils
-                  //       //                                         .primary_gold,
-                  //       //                                     family: 'PR'),
-                  //       //                               ),
-                  //       //                               trailing: const Icon(
-                  //       //                                 Icons
-                  //       //                                     .arrow_forward_ios,
-                  //       //                                 size: 15,
-                  //       //                                 color: Colors.white,
-                  //       //                               ),
-                  //       //                             ),
-                  //       //                             GestureDetector(
-                  //       //                               onTap: () {
-                  //       //                                 print('object');
-                  //       //
-                  //       //                                 showDialog(
-                  //       //                                   context: context,
-                  //       //                                   builder:
-                  //       //                                       (BuildContext
-                  //       //                                           context) {
-                  //       //                                     double width =
-                  //       //                                         MediaQuery.of(
-                  //       //                                                 context)
-                  //       //                                             .size
-                  //       //                                             .width;
-                  //       //                                     double height =
-                  //       //                                         MediaQuery.of(
-                  //       //                                                 context)
-                  //       //                                             .size
-                  //       //                                             .height;
-                  //       //                                     return AlertDialog(
-                  //       //                                         backgroundColor:
-                  //       //                                             Colors
-                  //       //                                                 .transparent,
-                  //       //                                         contentPadding:
-                  //       //                                             EdgeInsets
-                  //       //                                                 .zero,
-                  //       //                                         elevation:
-                  //       //                                             0.0,
-                  //       //                                         // title: Center(child: Text("Evaluation our APP")),
-                  //       //                                         content:
-                  //       //                                             Column(
-                  //       //                                           mainAxisAlignment:
-                  //       //                                               MainAxisAlignment
-                  //       //                                                   .center,
-                  //       //                                           children: [
-                  //       //                                             Stack(
-                  //       //                                               children: [
-                  //       //                                                 Container(
-                  //       //                                                   // height: 150,
-                  //       //                                                   // height: double.maxFinite,
-                  //       //                                                   height:
-                  //       //                                                       MediaQuery.of(context).size.height / 4,
-                  //       //                                                   width:
-                  //       //                                                       double.maxFinite,
-                  //       //                                                   decoration:
-                  //       //                                                       BoxDecoration(
-                  //       //                                                           // color: Colors.black.withOpacity(0.65),
-                  //       //                                                           gradient:
-                  //       //                                                               LinearGradient(
-                  //       //                                                             begin: Alignment.centerLeft,
-                  //       //                                                             end: Alignment.centerRight,
-                  //       //                                                             // stops: [0.1, 0.5, 0.7, 0.9],
-                  //       //                                                             colors: [
-                  //       //                                                               HexColor("#020204").withOpacity(1),
-                  //       //                                                               HexColor("#36393E").withOpacity(1),
-                  //       //                                                             ],
-                  //       //                                                           ),
-                  //       //                                                           boxShadow: [
-                  //       //                                                             BoxShadow(color: HexColor('#04060F'), offset: Offset(10, 10), blurRadius: 10)
-                  //       //                                                           ],
-                  //       //                                                           borderRadius: BorderRadius.circular(20)),
-                  //       //                                                   margin:
-                  //       //                                                       EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                  //       //                                                   // height: 122,
-                  //       //                                                   // width: 133,
-                  //       //                                                   // padding: const EdgeInsets.all(8.0),
-                  //       //                                                   child:
-                  //       //                                                       Column(
-                  //       //                                                     mainAxisAlignment: MainAxisAlignment.center,
-                  //       //                                                     children: [
-                  //       //                                                       Container(
-                  //       //                                                         // color: Colors.white,
-                  //       //                                                         alignment: Alignment.center,
-                  //       //                                                         child: ListView.builder(
-                  //       //                                                           padding: EdgeInsets.only(bottom: 0),
-                  //       //
-                  //       //                                                           // physics: NeverScrollableScrollPhysics(),
-                  //       //                                                           itemCount: list_alarm.length,
-                  //       //                                                           shrinkWrap: true,
-                  //       //                                                           itemBuilder: (BuildContext context, int index) {
-                  //       //                                                             return GestureDetector(
-                  //       //                                                               onTap: () {
-                  //       //                                                                 setState(() {
-                  //       //                                                                   Selected_sound = list_alarm[index];
-                  //       //                                                                   print("method_selected $Selected_sound");
-                  //       //                                                                 });
-                  //       //                                                                 Navigator.pop(context);
-                  //       //                                                               },
-                  //       //                                                               child: Container(
-                  //       //                                                                 margin: EdgeInsets.symmetric(vertical: 8.5),
-                  //       //                                                                 alignment: Alignment.center,
-                  //       //                                                                 child: Text(
-                  //       //                                                                   list_alarm[index],
-                  //       //                                                                   style: FontStyleUtility.h15(fontColor: ColorUtils.primary_grey, family: 'PM'),
-                  //       //                                                                 ),
-                  //       //                                                               ),
-                  //       //                                                             );
-                  //       //                                                           },
-                  //       //                                                         ),
-                  //       //                                                       ),
-                  //       //                                                     ],
-                  //       //                                                   ),
-                  //       //                                                 ),
-                  //       //                                                 GestureDetector(
-                  //       //                                                   onTap:
-                  //       //                                                       () {
-                  //       //                                                     Navigator.pop(context);
-                  //       //                                                   },
-                  //       //                                                   child:
-                  //       //                                                       Container(
-                  //       //                                                     margin: EdgeInsets.only(right: 0),
-                  //       //                                                     alignment: Alignment.topRight,
-                  //       //                                                     child: Container(
-                  //       //                                                         decoration: BoxDecoration(
-                  //       //                                                             // color: Colors.black.withOpacity(0.65),
-                  //       //                                                             gradient: LinearGradient(
-                  //       //                                                               begin: Alignment.centerLeft,
-                  //       //                                                               end: Alignment.centerRight,
-                  //       //                                                               // stops: [0.1, 0.5, 0.7, 0.9],
-                  //       //                                                               colors: [
-                  //       //                                                                 HexColor("#36393E").withOpacity(1),
-                  //       //                                                                 HexColor("#020204").withOpacity(1),
-                  //       //                                                               ],
-                  //       //                                                             ),
-                  //       //                                                             boxShadow: [BoxShadow(color: HexColor('#04060F'), offset: Offset(0, 3), blurRadius: 5)],
-                  //       //                                                             borderRadius: BorderRadius.circular(20)),
-                  //       //                                                         child: Padding(
-                  //       //                                                           padding: const EdgeInsets.all(4.0),
-                  //       //                                                           child: Icon(
-                  //       //                                                             Icons.cancel_outlined,
-                  //       //                                                             size: 20,
-                  //       //                                                             color: ColorUtils.primary_grey,
-                  //       //                                                           ),
-                  //       //                                                         )),
-                  //       //                                                   ),
-                  //       //                                                 )
-                  //       //                                               ],
-                  //       //                                             ),
-                  //       //                                           ],
-                  //       //                                         ));
-                  //       //                                   },
-                  //       //                                 );
-                  //       //                               },
-                  //       //                               child: ListTile(
-                  //       //                                 title: Text('Sound',
-                  //       //                                     style: FontStyleUtility.h14(
-                  //       //                                         fontColor:
-                  //       //                                             ColorUtils
-                  //       //                                                 .primary_gold,
-                  //       //                                         family:
-                  //       //                                             'PR')),
-                  //       //                                 trailing: const Icon(
-                  //       //                                     Icons
-                  //       //                                         .arrow_forward_ios,
-                  //       //                                     size: 15,
-                  //       //                                     color:
-                  //       //                                         Colors.white),
-                  //       //                               ),
-                  //       //                             ),
-                  //       //                             GestureDetector(
-                  //       //                               onTap: () async {
-                  //       //                                 if (Alarm_title
-                  //       //                                     .text.isEmpty) {
-                  //       //                                   CommonWidget()
-                  //       //                                       .showErrorToaster(
-                  //       //                                           msg:
-                  //       //                                               "Enter Alarm title");
-                  //       //                                   return;
-                  //       //                                 } else {
-                  //       //                                   await onSaveAlarm();
-                  //       //                                 }
-                  //       //                               },
-                  //       //                               child: Container(
-                  //       //                                 width: MediaQuery.of(
-                  //       //                                             context)
-                  //       //                                         .size
-                  //       //                                         .width /
-                  //       //                                     3,
-                  //       //                                 decoration: BoxDecoration(
-                  //       //                                     borderRadius:
-                  //       //                                         BorderRadius
-                  //       //                                             .circular(
-                  //       //                                                 30),
-                  //       //                                     border: Border.all(
-                  //       //                                         color: ColorUtils
-                  //       //                                             .primary_grey,
-                  //       //                                         width: 1)),
-                  //       //                                 child: Padding(
-                  //       //                                   padding:
-                  //       //                                       const EdgeInsets
-                  //       //                                               .symmetric(
-                  //       //                                           vertical:
-                  //       //                                               12.0,
-                  //       //                                           horizontal:
-                  //       //                                               8),
-                  //       //                                   child: Row(
-                  //       //                                     mainAxisAlignment:
-                  //       //                                         MainAxisAlignment
-                  //       //                                             .center,
-                  //       //                                     children: [
-                  //       //                                       const Icon(
-                  //       //                                         Icons.alarm,
-                  //       //                                         color: Colors
-                  //       //                                             .white,
-                  //       //                                         size: 25,
-                  //       //                                       ),
-                  //       //                                       const SizedBox(
-                  //       //                                         width: 10,
-                  //       //                                       ),
-                  //       //                                       Text(
-                  //       //                                         'Save',
-                  //       //                                         style: FontStyleUtility.h16(
-                  //       //                                             fontColor:
-                  //       //                                                 ColorUtils
-                  //       //                                                     .primary_gold,
-                  //       //                                             family:
-                  //       //                                                 'PR'),
-                  //       //                                       ),
-                  //       //                                     ],
-                  //       //                                   ),
-                  //       //                                 ),
-                  //       //                               ),
-                  //       //                             )
-                  //       //                           ],
-                  //       //                         ),
-                  //       //                       ),
-                  //       //                     );
-                  //       //                   },
-                  //       //                 );
-                  //       //               },
-                  //       //             );
-                  //       //             // scheduleAlarm();
-                  //       //           },
-                  //       //           child: Container(
-                  //       //             decoration: BoxDecoration(
-                  //       //                 // color: Colors.black.withOpacity(0.65),
-                  //       //                 gradient: LinearGradient(
-                  //       //                   begin: Alignment.centerLeft,
-                  //       //                   end: Alignment.centerRight,
-                  //       //                   // stops: [0.1, 0.5, 0.7, 0.9],
-                  //       //                   colors: [
-                  //       //                     HexColor("#36393E")
-                  //       //                         .withOpacity(1),
-                  //       //                     HexColor("#020204")
-                  //       //                         .withOpacity(1),
-                  //       //                   ],
-                  //       //                 ),
-                  //       //                 boxShadow: [
-                  //       //                   BoxShadow(
-                  //       //                       color: HexColor('#04060F'),
-                  //       //                       offset: const Offset(10, 10),
-                  //       //                       blurRadius: 20)
-                  //       //                 ],
-                  //       //                 borderRadius:
-                  //       //                     BorderRadius.circular(20)),
-                  //       //             child: Padding(
-                  //       //               padding: const EdgeInsets.all(8.0),
-                  //       //               child: Icon(
-                  //       //                 Icons.add_circle_outline,
-                  //       //                 color: ColorUtils.primary_grey,
-                  //       //               ),
-                  //       //             ),
-                  //       //           )),
-                  //       //     ],
-                  //       //   ),
-                  //       // )
-                  //       // else
-                  //       //   const Center(
-                  //       //       child: Text(
-                  //       //     'Only 5 alarms allowed!',
-                  //       //     style: const TextStyle(color: Colors.white),
-                  //       //   )),
-                  //       FutureBuilder<List<AlarmInfo>>(
-                  //         future: _alarms,
-                  //         builder: (context, snapshot) {
-                  //           if (snapshot.hasData) {
-                  //             _currentAlarms = snapshot.data;
-                  //             return Container(
-                  //               child: ListView(
-                  //                 shrinkWrap: true,
-                  //                 padding: EdgeInsets.zero,
-                  //                 children: snapshot.data!.map<Widget>((alarm) {
-                  //                   var alarmTime = DateFormat('hh:mm aa')
-                  //                       .format(alarm.alarmDateTime!);
-                  //                   var gradientColor = GradientTemplate
-                  //                       .gradientTemplate[
-                  //                           alarm.gradientColorIndex!]
-                  //                       .colors;
-                  //                   return Container(
-                  //                     margin: const EdgeInsets.only(bottom: 0),
-                  //                     padding: const EdgeInsets.symmetric(
-                  //                         horizontal: 16, vertical: 0),
-                  //                     child: Container(
-                  //                       decoration: BoxDecoration(
-                  //                         // color: Colors.black.withOpacity(0.65),
-                  //                         // gradient: LinearGradient(
-                  //                         //   begin: Alignment.centerLeft,
-                  //                         //   end: Alignment.centerRight,
-                  //                         //   // stops: [0.1, 0.5, 0.7, 0.9],
-                  //                         //   colors: [
-                  //                         //     HexColor("#020204").withOpacity(1),
-                  //                         //     HexColor("#36393E").withOpacity(1),
-                  //                         //   ],
-                  //                         // ),
-                  //                         // boxShadow: [
-                  //                         //   BoxShadow(
-                  //                         //       color: HexColor('#04060F'),
-                  //                         //       offset: Offset(-10, 10),
-                  //                         //       blurRadius: 20)
-                  //                         // ],
-                  //                         border: Border(
-                  //                           bottom: BorderSide(
-                  //                             //                   <--- left side
-                  //                             color: HexColor('#1d1d1d'),
-                  //                             width: 1.5,
-                  //                           ),
-                  //                         ),
-                  //                       ),
-                  //                       child: Padding(
-                  //                         padding: const EdgeInsets.symmetric(
-                  //                             vertical: 8.0),
-                  //                         child: Column(
-                  //                           crossAxisAlignment:
-                  //                               CrossAxisAlignment.start,
-                  //                           children: <Widget>[
-                  //                             ListTile(
-                  //                               title: Text(
-                  //                                 alarmTime,
-                  //                                 style: FontStyleUtility.h16(
-                  //                                     fontColor: Colors.white,
-                  //                                     family: 'PR'),
-                  //                               ),
-                  //                               subtitle: Text(alarm.title!,
-                  //                                   style: FontStyleUtility.h14(
-                  //                                       fontColor:
-                  //                                           HexColor('#8A8A8A'),
-                  //                                       family: 'PR')),
-                  //                               trailing: IconButton(
-                  //                                   icon: const Icon(
-                  //                                       Icons.delete),
-                  //                                   color:
-                  //                                       ColorUtils.primary_gold,
-                  //                                   onPressed: () {
-                  //                                     deleteAlarm(alarm.id!);
-                  //                                   }),
-                  //                               // Container(
-                  //                               //   width: 20,
-                  //                               //   child: Transform.scale(
-                  //                               //     scale: 0.5,
-                  //                               //     child: CupertinoSwitch(
-                  //                               //       onChanged: (bool value) {},
-                  //                               //       value: true,
-                  //                               //       trackColor: HexColor('#717171'),
-                  //                               //       thumbColor: Colors.black87,
-                  //                               //       activeColor:
-                  //                               //           ColorUtils.primary_gold,
-                  //                               //     ),
-                  //                               //   ),
-                  //                               // ),
-                  //                             ),
-                  //                           ],
-                  //                         ),
-                  //                       ),
-                  //                     ),
-                  //                   );
-                  //                 }).followedBy([
-                  //                   // if (_currentAlarms!.length < 5)
-                  //                   //   Container(
-                  //                   //     child: FlatButton(
-                  //                   //         padding: const EdgeInsets.symmetric(
-                  //                   //             horizontal: 32, vertical: 10),
-                  //                   //         onPressed: () {
-                  //                   //           _alarmTimeString = DateFormat('HH:mm')
-                  //                   //               .format(selectedDate);
-                  //                   //           showModalBottomSheet(
-                  //                   //             useRootNavigator: true,
-                  //                   //             context: context,
-                  //                   //             clipBehavior: Clip.antiAlias,
-                  //                   //             shape: const RoundedRectangleBorder(
-                  //                   //               borderRadius:
-                  //                   //               BorderRadius.vertical(
-                  //                   //                 top: Radius.circular(24),
-                  //                   //               ),
-                  //                   //             ),
-                  //                   //             builder: (context) {
-                  //                   //               return StatefulBuilder(
-                  //                   //                 builder:
-                  //                   //                     (context, setModalState) {
-                  //                   //                   return Container(
-                  //                   //                     decoration: BoxDecoration(
-                  //                   //                       // color: Colors.black.withOpacity(0.65),
-                  //                   //                         gradient:
-                  //                   //                         LinearGradient(
-                  //                   //                           begin: Alignment
-                  //                   //                               .centerLeft,
-                  //                   //                           end: Alignment
-                  //                   //                               .centerRight,
-                  //                   //                           // stops: [0.1, 0.5, 0.7, 0.9],
-                  //                   //                           colors: [
-                  //                   //                             HexColor("#020204")
-                  //                   //                                 .withOpacity(1),
-                  //                   //                             HexColor("#36393E")
-                  //                   //                                 .withOpacity(1),
-                  //                   //                           ],
-                  //                   //                         ),
-                  //                   //                         boxShadow: [
-                  //                   //                           BoxShadow(
-                  //                   //                               color: HexColor(
-                  //                   //                                   '#04060F'),
-                  //                   //                               offset:
-                  //                   //                               const Offset(
-                  //                   //                                   -10, 10),
-                  //                   //                               blurRadius: 20)
-                  //                   //                         ],
-                  //                   //                         borderRadius:
-                  //                   //                         const BorderRadius
-                  //                   //                             .only(
-                  //                   //                             topLeft: Radius
-                  //                   //                                 .circular(
-                  //                   //                                 20),
-                  //                   //                             topRight: Radius
-                  //                   //                                 .circular(
-                  //                   //                                 20))),
-                  //                   //                     padding:
-                  //                   //                     const EdgeInsets.all(
-                  //                   //                         32),
-                  //                   //                     child:
-                  //                   //                     SingleChildScrollView(
-                  //                   //                       child: Column(
-                  //                   //                         children: [
-                  //                   //                           // FlatButton(
-                  //                   //                           //   onPressed:
-                  //                   //                           //       () async {
-                  //                   //                           //     // var selectedTime = await showTimePicker(
-                  //                   //                           //     //   context: context,
-                  //                   //                           //     //   // initialEntryMode: DatePickerEntryMode.calendarOnly,<- this
-                  //                   //                           //     //   initialEntryMode: TimePickerEntryMode.dial,
-                  //                   //                           //     //   initialTime: TimeOfDay.now(),
-                  //                   //                           //     //   builder: (context, child) {
-                  //                   //                           //     //     return Theme(
-                  //                   //                           //     //       data: Theme.of(
-                  //                   //                           //     //               context)
-                  //                   //                           //     //           .copyWith(
-                  //                   //                           //     //         colorScheme:
-                  //                   //                           //     //             ColorScheme
-                  //                   //                           //     //                 .dark(
-                  //                   //                           //     //           primary:
-                  //                   //                           //     //               Colors.black,
-                  //                   //                           //     //           onPrimary:
-                  //                   //                           //     //               Colors.white,
-                  //                   //                           //     //           surface:
-                  //                   //                           //     //               ColorUtils.primary_gold,
-                  //                   //                           //     //           // onPrimary: Colors.black, // <-- SEE HERE
-                  //                   //                           //     //           onSurface:
-                  //                   //                           //     //               Colors.black,
-                  //                   //                           //     //         ),
-                  //                   //                           //     //         dialogBackgroundColor:
-                  //                   //                           //     //             ColorUtils
-                  //                   //                           //     //                 .primary_gold,
-                  //                   //                           //     //         textButtonTheme:
-                  //                   //                           //     //             TextButtonThemeData(
-                  //                   //                           //     //           style: TextButton
-                  //                   //                           //     //               .styleFrom(
-                  //                   //                           //     //             primary:
-                  //                   //                           //     //                 Colors.black, // button text color
-                  //                   //                           //     //           ),
-                  //                   //                           //     //         ),
-                  //                   //                           //     //       ),
-                  //                   //                           //     //       child:
-                  //                   //                           //     //           child!,
-                  //                   //                           //     //     );
-                  //                   //                           //     //   },
-                  //                   //                           //     // );
-                  //                   //                           //     // if (selectedTime !=
-                  //                   //                           //     //     null) {
-                  //                   //                           //     //   final now =
-                  //                   //                           //     //       DateTime
-                  //                   //                           //     //           .now();
-                  //                   //                           //     //   var selectedDateTime = DateTime(
-                  //                   //                           //     //       now.year,
-                  //                   //                           //     //       now.month,
-                  //                   //                           //     //       now.day,
-                  //                   //                           //     //       selectedTime
-                  //                   //                           //     //           .hour,
-                  //                   //                           //     //       selectedTime
-                  //                   //                           //     //           .minute);
-                  //                   //                           //     //   _alarmTime =
-                  //                   //                           //     //       selectedDateTime;
-                  //                   //                           //     //   setModalState(
-                  //                   //                           //     //       () {
-                  //                   //                           //     //     _alarmTimeString =
-                  //                   //                           //     //         DateFormat(
-                  //                   //                           //     //                 'HH:mm')
-                  //                   //                           //     //             .format(
-                  //                   //                           //     //                 selectedDateTime);
-                  //                   //                           //     //   });
-                  //                   //                           //     // }
-                  //                   //                           //   },
-                  //                   //                           //   child: Text(
-                  //                   //                           //       _alarmTimeString!,
-                  //                   //                           //       style: FontStyleUtility.h35(
-                  //                   //                           //           fontColor:
-                  //                   //                           //               ColorUtils
-                  //                   //                           //                   .primary_gold,
-                  //                   //                           //           family:
-                  //                   //                           //               'PM')),
-                  //                   //                           // ),
-                  //                   //                           Container(
-                  //                   //                             height: 150,
-                  //                   //                             decoration: BoxDecoration(
-                  //                   //                                 borderRadius: BorderRadius.circular(15),
-                  //                   //                                 gradient: LinearGradient(
-                  //                   //                                   begin: Alignment.topCenter,
-                  //                   //                                   end: Alignment.bottomCenter,
-                  //                   //                                   colors: [
-                  //                   //                                     HexColor("#000000").withOpacity(1),
-                  //                   //                                     HexColor("#04060F").withOpacity(1),
-                  //                   //                                     HexColor("#000000").withOpacity(1),
-                  //                   //
-                  //                   //                                   ],
-                  //                   //                                 ),
-                  //                   //                                 boxShadow: [
-                  //                   //                                   BoxShadow(
-                  //                   //                                       color: HexColor('#04060F'),
-                  //                   //                                       offset: Offset(3, 3),
-                  //                   //                                       blurRadius: 10)
-                  //                   //                                 ]),
-                  //                   //                             child: Stack(
-                  //                   //                               children: [
-                  //                   //                                 CupertinoTheme(
-                  //                   //                                   data: CupertinoThemeData(
-                  //                   //                                     brightness: Brightness.dark,
-                  //                   //                                   ),
-                  //                   //                                   child: CupertinoDatePicker(
-                  //                   //                                     // use24hFormat: true,
-                  //                   //                                     mode: CupertinoDatePickerMode.time,
-                  //                   //                                     onDateTimeChanged: (DateTime value) {
-                  //                   //                                       selected_time= value;
-                  //                   //                                       print("${value.hour}:${value.minute}");
-                  //                   //
-                  //                   //
-                  //                   //                                       if (selected_time !=
-                  //                   //                                           null) {
-                  //                   //                                         final now =
-                  //                   //                                         DateTime
-                  //                   //                                             .now();
-                  //                   //                                         var selectedDateTime = DateTime(
-                  //                   //                                             now.year,
-                  //                   //                                             now.month,
-                  //                   //                                             now.day,
-                  //                   //                                             selected_time
-                  //                   //                                                 .hour,
-                  //                   //                                             selected_time
-                  //                   //                                                 .minute);
-                  //                   //                                         _alarmTime =
-                  //                   //                                             selectedDateTime;
-                  //                   //                                         setModalState(
-                  //                   //                                                 () {
-                  //                   //                                               _alarmTimeString =
-                  //                   //                                                   DateFormat(
-                  //                   //                                                       'HH:mm')
-                  //                   //                                                       .format(
-                  //                   //                                                       selectedDateTime);
-                  //                   //                                             });
-                  //                   //                                       }
-                  //                   //                                     },
-                  //                   //                                   ),
-                  //                   //                                 ),
-                  //                   //                               ],
-                  //                   //                             ),
-                  //                   //                           ),
-                  //                   //
-                  //                   //                           ListTile(
-                  //                   //                             onTap: () {
-                  //                   //                               showDialog(
-                  //                   //                                 context:
-                  //                   //                                 context,
-                  //                   //                                 builder:
-                  //                   //                                     (BuildContext
-                  //                   //                                 context) {
-                  //                   //                                   double width =
-                  //                   //                                       MediaQuery.of(
-                  //                   //                                           context)
-                  //                   //                                           .size
-                  //                   //                                           .width;
-                  //                   //                                   double
-                  //                   //                                   height =
-                  //                   //                                       MediaQuery.of(
-                  //                   //                                           context)
-                  //                   //                                           .size
-                  //                   //                                           .height;
-                  //                   //                                   return BackdropFilter(
-                  //                   //                                     filter: ImageFilter.blur(
-                  //                   //                                         sigmaX:
-                  //                   //                                         10,
-                  //                   //                                         sigmaY:
-                  //                   //                                         10),
-                  //                   //                                     child: AlertDialog(
-                  //                   //                                         backgroundColor: Colors.transparent,
-                  //                   //                                         contentPadding: EdgeInsets.zero,
-                  //                   //                                         elevation: 0.0,
-                  //                   //                                         // title: Center(child: Text("Evaluation our APP")),
-                  //                   //                                         content: Column(
-                  //                   //                                           mainAxisAlignment:
-                  //                   //                                           MainAxisAlignment.center,
-                  //                   //                                           children: [
-                  //                   //                                             Stack(
-                  //                   //                                               children: [
-                  //                   //                                                 Padding(
-                  //                   //                                                   padding: const EdgeInsets.all(8.0),
-                  //                   //                                                   child: Container(
-                  //                   //                                                     decoration:
-                  //                   //                                                     BoxDecoration(
-                  //                   //                                                       // color: Colors.black.withOpacity(0.65),
-                  //                   //                                                         gradient:
-                  //                   //                                                         LinearGradient(
-                  //                   //                                                           begin: Alignment.centerLeft,
-                  //                   //                                                           end: Alignment.centerRight,
-                  //                   //                                                           // stops: [0.1, 0.5, 0.7, 0.9],
-                  //                   //                                                           colors: [
-                  //                   //                                                             HexColor("#020204").withOpacity(1),
-                  //                   //                                                             HexColor("#36393E").withOpacity(1),
-                  //                   //                                                           ],
-                  //                   //                                                         ),
-                  //                   //                                                         boxShadow: [
-                  //                   //                                                           BoxShadow(color: HexColor('#04060F'), offset: Offset(10, 10), blurRadius: 10)
-                  //                   //                                                         ],
-                  //                   //                                                         borderRadius: BorderRadius.circular(15)),
-                  //                   //                                                     child: Align(
-                  //                   //                                                         alignment: Alignment.center,
-                  //                   //                                                         child: Padding(
-                  //                   //                                                           padding: const EdgeInsets.all(8.0),
-                  //                   //                                                           child: Column(
-                  //                   //                                                             children: [
-                  //                   //                                                               SizedBox(
-                  //                   //                                                                 height: 0,
-                  //                   //                                                               ),
-                  //                   //
-                  //                   //                                                               Column(
-                  //                   //                                                                 crossAxisAlignment: CrossAxisAlignment.start,
-                  //                   //                                                                 children: [
-                  //                   //                                                                   Container(
-                  //                   //                                                                     margin: EdgeInsets.only(left: 18),
-                  //                   //                                                                     child: Text('Title', style: FontStyleUtility.h14(fontColor: ColorUtils.primary_grey, family: 'Pr')),
-                  //                   //                                                                   ),
-                  //                   //                                                                   SizedBox(
-                  //                   //                                                                     height: 11,
-                  //                   //                                                                   ),
-                  //                   //                                                                   Container(
-                  //                   //                                                                     margin: EdgeInsets.symmetric(horizontal: 10),
-                  //                   //                                                                     // width: 300,
-                  //                   //                                                                     decoration: BoxDecoration(
-                  //                   //                                                                       // color: Colors.black.withOpacity(0.65),
-                  //                   //                                                                         gradient: LinearGradient(
-                  //                   //                                                                           begin: Alignment.centerLeft,
-                  //                   //                                                                           end: Alignment.centerRight,
-                  //                   //                                                                           // stops: [0.1, 0.5, 0.7, 0.9],
-                  //                   //                                                                           colors: [
-                  //                   //                                                                             HexColor("#36393E").withOpacity(1),
-                  //                   //                                                                             HexColor("#020204").withOpacity(1),
-                  //                   //                                                                           ],
-                  //                   //                                                                         ),
-                  //                   //                                                                         boxShadow: [BoxShadow(color: HexColor('#04060F'), offset: Offset(10, 10), blurRadius: 10)],
-                  //                   //                                                                         borderRadius: BorderRadius.circular(20)),
-                  //                   //
-                  //                   //                                                                     child: TextFormField(
-                  //                   //                                                                       maxLength: 150,
-                  //                   //                                                                       decoration: InputDecoration(
-                  //                   //                                                                         contentPadding: EdgeInsets.only(left: 20, top: 14, bottom: 14),
-                  //                   //                                                                         alignLabelWithHint: false,
-                  //                   //                                                                         isDense: true,
-                  //                   //                                                                         hintText: 'Add alarm title',
-                  //                   //                                                                         counterStyle: TextStyle(
-                  //                   //                                                                           height: double.minPositive,
-                  //                   //                                                                         ),
-                  //                   //                                                                         counterText: "",
-                  //                   //                                                                         filled: true,
-                  //                   //                                                                         border: InputBorder.none,
-                  //                   //                                                                         enabledBorder: const OutlineInputBorder(
-                  //                   //                                                                           borderSide: BorderSide(color: Colors.transparent, width: 1),
-                  //                   //                                                                           borderRadius: BorderRadius.all(Radius.circular(10)),
-                  //                   //                                                                         ),
-                  //                   //                                                                         hintStyle: FontStyleUtility.h14(fontColor: HexColor('#CBCBCB'), family: 'PR'),
-                  //                   //                                                                       ),
-                  //                   //                                                                       style: FontStyleUtility.h14(fontColor: ColorUtils.primary_grey, family: 'PR'),
-                  //                   //                                                                       controller: Alarm_title,
-                  //                   //                                                                       keyboardType: TextInputType.text,
-                  //                   //                                                                     ),
-                  //                   //                                                                   ),
-                  //                   //                                                                 ],
-                  //                   //                                                               ),
-                  //                   //                                                               SizedBox(
-                  //                   //                                                                 height: 10,
-                  //                   //                                                               ),
-                  //                   //                                                               GestureDetector(
-                  //                   //                                                                 onTap: () {
-                  //                   //                                                                   setState(() {
-                  //                   //                                                                     Alarm_title_list.add(Alarm_title.text);
-                  //                   //                                                                     Navigator.pop(context);
-                  //                   //                                                                   });
-                  //                   //                                                                 },
-                  //                   //                                                                 child: Container(
-                  //                   //                                                                   alignment: Alignment.topRight,
-                  //                   //                                                                   child: Text(
-                  //                   //                                                                     'Add',
-                  //                   //                                                                     style: FontStyleUtility.h12(fontColor: ColorUtils.primary_grey, family: 'PR'),
-                  //                   //                                                                   ),
-                  //                   //                                                                 ),
-                  //                   //                                                               )
-                  //                   //                                                               // common_button_gold(
-                  //                   //                                                               //   onTap: () {
-                  //                   //                                                               //     Get
-                  //                   //                                                               //         .to(
-                  //                   //                                                               //         DashboardScreen());
-                  //                   //                                                               //   },
-                  //                   //                                                               //   title_text: 'Go to Dashboard',
-                  //                   //                                                               // ),
-                  //                   //                                                             ],
-                  //                   //                                                           ),
-                  //                   //                                                         )),
-                  //                   //                                                   ),
-                  //                   //                                                 ),
-                  //                   //                                                 GestureDetector(
-                  //                   //                                                   onTap: () {
-                  //                   //                                                     Navigator.pop(context);
-                  //                   //                                                   },
-                  //                   //                                                   child: Container(
-                  //                   //                                                     margin: EdgeInsets.only(right: 10),
-                  //                   //                                                     alignment: Alignment.topRight,
-                  //                   //                                                     child: Container(
-                  //                   //                                                         decoration: BoxDecoration(
-                  //                   //                                                           // color: Colors.black.withOpacity(0.65),
-                  //                   //                                                             gradient: LinearGradient(
-                  //                   //                                                               begin: Alignment.centerLeft,
-                  //                   //                                                               end: Alignment.centerRight,
-                  //                   //                                                               // stops: [0.1, 0.5, 0.7, 0.9],
-                  //                   //                                                               colors: [
-                  //                   //                                                                 HexColor("#36393E").withOpacity(1),
-                  //                   //                                                                 HexColor("#020204").withOpacity(1),
-                  //                   //                                                               ],
-                  //                   //                                                             ),
-                  //                   //                                                             boxShadow: [BoxShadow(color: HexColor('#04060F'), offset: Offset(0, 3), blurRadius: 5)],
-                  //                   //                                                             borderRadius: BorderRadius.circular(20)),
-                  //                   //                                                         child: Padding(
-                  //                   //                                                           padding: const EdgeInsets.all(4.0),
-                  //                   //                                                           child: Icon(
-                  //                   //                                                             Icons.cancel_outlined,
-                  //                   //                                                             size: 13,
-                  //                   //                                                             color: ColorUtils.primary_grey,
-                  //                   //                                                           ),
-                  //                   //                                                         )),
-                  //                   //                                                   ),
-                  //                   //                                                 )
-                  //                   //                                               ],
-                  //                   //                                             ),
-                  //                   //                                           ],
-                  //                   //                                         )),
-                  //                   //                                   );
-                  //                   //                                 },
-                  //                   //                               );
-                  //                   //                             },
-                  //                   //                             title: Text('Title',
-                  //                   //                                 style: FontStyleUtility.h14(
-                  //                   //                                     fontColor:
-                  //                   //                                     ColorUtils
-                  //                   //                                         .primary_grey,
-                  //                   //                                     family:
-                  //                   //                                     'PR')),
-                  //                   //                             trailing: const Icon(
-                  //                   //                                 Icons
-                  //                   //                                     .arrow_forward_ios,
-                  //                   //                                 size: 15,
-                  //                   //                                 color: Colors
-                  //                   //                                     .white),
-                  //                   //                           ),
-                  //                   //                           ListTile(
-                  //                   //                             title: Text(
-                  //                   //                               'Repeat',
-                  //                   //                               style: FontStyleUtility.h14(
-                  //                   //                                   fontColor:
-                  //                   //                                   ColorUtils
-                  //                   //                                       .primary_gold,
-                  //                   //                                   family: 'PR'),
-                  //                   //                             ),
-                  //                   //                             trailing:
-                  //                   //                             const Icon(
-                  //                   //                               Icons
-                  //                   //                                   .arrow_forward_ios,
-                  //                   //                               size: 15,
-                  //                   //                               color:
-                  //                   //                               Colors.white,
-                  //                   //                             ),
-                  //                   //                           ),
-                  //                   //                           GestureDetector(
-                  //                   //                             onTap: () {
-                  //                   //                               print('object');
-                  //                   //
-                  //                   //                               showDialog(
-                  //                   //                                 context:
-                  //                   //                                 context,
-                  //                   //                                 builder:
-                  //                   //                                     (BuildContext
-                  //                   //                                 context) {
-                  //                   //                                   double width =
-                  //                   //                                       MediaQuery.of(
-                  //                   //                                           context)
-                  //                   //                                           .size
-                  //                   //                                           .width;
-                  //                   //                                   double
-                  //                   //                                   height =
-                  //                   //                                       MediaQuery.of(
-                  //                   //                                           context)
-                  //                   //                                           .size
-                  //                   //                                           .height;
-                  //                   //                                   return AlertDialog(
-                  //                   //                                       backgroundColor:
-                  //                   //                                       Colors
-                  //                   //                                           .transparent,
-                  //                   //                                       contentPadding:
-                  //                   //                                       EdgeInsets
-                  //                   //                                           .zero,
-                  //                   //                                       elevation:
-                  //                   //                                       0.0,
-                  //                   //                                       // title: Center(child: Text("Evaluation our APP")),
-                  //                   //                                       content:
-                  //                   //                                       Column(
-                  //                   //                                         mainAxisAlignment:
-                  //                   //                                         MainAxisAlignment.center,
-                  //                   //                                         children: [
-                  //                   //                                           Stack(
-                  //                   //                                             children: [
-                  //                   //                                               Container(
-                  //                   //                                                 // height: 150,
-                  //                   //                                                 // height: double.maxFinite,
-                  //                   //                                                 height: MediaQuery.of(context).size.height / 4,
-                  //                   //                                                 width: double.maxFinite,
-                  //                   //                                                 decoration:
-                  //                   //                                                 BoxDecoration(
-                  //                   //                                                   // color: Colors.black.withOpacity(0.65),
-                  //                   //                                                     gradient:
-                  //                   //                                                     LinearGradient(
-                  //                   //                                                       begin: Alignment.centerLeft,
-                  //                   //                                                       end: Alignment.centerRight,
-                  //                   //                                                       // stops: [0.1, 0.5, 0.7, 0.9],
-                  //                   //                                                       colors: [
-                  //                   //                                                         HexColor("#020204").withOpacity(1),
-                  //                   //                                                         HexColor("#36393E").withOpacity(1),
-                  //                   //                                                       ],
-                  //                   //                                                     ),
-                  //                   //                                                     boxShadow: [
-                  //                   //                                                       BoxShadow(color: HexColor('#04060F'), offset: Offset(10, 10), blurRadius: 10)
-                  //                   //                                                     ],
-                  //                   //                                                     borderRadius: BorderRadius.circular(20)),
-                  //                   //                                                 margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                  //                   //                                                 // height: 122,
-                  //                   //                                                 // width: 133,
-                  //                   //                                                 // padding: const EdgeInsets.all(8.0),
-                  //                   //                                                 child: Column(
-                  //                   //                                                   mainAxisAlignment: MainAxisAlignment.center,
-                  //                   //                                                   children: [
-                  //                   //                                                     Container(
-                  //                   //                                                       // color: Colors.white,
-                  //                   //                                                       alignment: Alignment.center,
-                  //                   //                                                       child: ListView.builder(
-                  //                   //                                                         padding: EdgeInsets.only(bottom: 0),
-                  //                   //
-                  //                   //                                                         // physics: NeverScrollableScrollPhysics(),
-                  //                   //                                                         itemCount: list_alarm.length,
-                  //                   //                                                         shrinkWrap: true,
-                  //                   //                                                         itemBuilder: (BuildContext context, int index) {
-                  //                   //                                                           return GestureDetector(
-                  //                   //                                                             onTap: () {
-                  //                   //                                                               setState(() {
-                  //                   //                                                                 Selected_sound = list_alarm[index];
-                  //                   //                                                                 print("method_selected $Selected_sound");
-                  //                   //                                                               });
-                  //                   //                                                               Navigator.pop(context);
-                  //                   //                                                             },
-                  //                   //                                                             child: Container(
-                  //                   //                                                               margin: EdgeInsets.symmetric(vertical: 8.5),
-                  //                   //                                                               alignment: Alignment.center,
-                  //                   //                                                               child: Text(
-                  //                   //                                                                 list_alarm[index],
-                  //                   //                                                                 style: FontStyleUtility.h15(fontColor: ColorUtils.primary_grey, family: 'PM'),
-                  //                   //                                                               ),
-                  //                   //                                                             ),
-                  //                   //                                                           );
-                  //                   //                                                         },
-                  //                   //                                                       ),
-                  //                   //                                                     ),
-                  //                   //                                                   ],
-                  //                   //                                                 ),
-                  //                   //                                               ),
-                  //                   //                                               GestureDetector(
-                  //                   //                                                 onTap: () {
-                  //                   //                                                   Navigator.pop(context);
-                  //                   //                                                 },
-                  //                   //                                                 child: Container(
-                  //                   //                                                   margin: EdgeInsets.only(right: 0),
-                  //                   //                                                   alignment: Alignment.topRight,
-                  //                   //                                                   child: Container(
-                  //                   //                                                       decoration: BoxDecoration(
-                  //                   //                                                         // color: Colors.black.withOpacity(0.65),
-                  //                   //                                                           gradient: LinearGradient(
-                  //                   //                                                             begin: Alignment.centerLeft,
-                  //                   //                                                             end: Alignment.centerRight,
-                  //                   //                                                             // stops: [0.1, 0.5, 0.7, 0.9],
-                  //                   //                                                             colors: [
-                  //                   //                                                               HexColor("#36393E").withOpacity(1),
-                  //                   //                                                               HexColor("#020204").withOpacity(1),
-                  //                   //                                                             ],
-                  //                   //                                                           ),
-                  //                   //                                                           boxShadow: [BoxShadow(color: HexColor('#04060F'), offset: Offset(0, 3), blurRadius: 5)],
-                  //                   //                                                           borderRadius: BorderRadius.circular(20)),
-                  //                   //                                                       child: Padding(
-                  //                   //                                                         padding: const EdgeInsets.all(4.0),
-                  //                   //                                                         child: Icon(
-                  //                   //                                                           Icons.cancel_outlined,
-                  //                   //                                                           size: 20,
-                  //                   //                                                           color: ColorUtils.primary_grey,
-                  //                   //                                                         ),
-                  //                   //                                                       )),
-                  //                   //                                                 ),
-                  //                   //                                               )
-                  //                   //                                             ],
-                  //                   //                                           ),
-                  //                   //                                         ],
-                  //                   //                                       ));
-                  //                   //                                 },
-                  //                   //                               );
-                  //                   //                             },
-                  //                   //                             child: ListTile(
-                  //                   //                               title: Text(
-                  //                   //                                   'Sound',
-                  //                   //                                   style: FontStyleUtility.h14(
-                  //                   //                                       fontColor:
-                  //                   //                                       ColorUtils
-                  //                   //                                           .primary_gold,
-                  //                   //                                       family:
-                  //                   //                                       'PR')),
-                  //                   //                               trailing: const Icon(
-                  //                   //                                   Icons
-                  //                   //                                       .arrow_forward_ios,
-                  //                   //                                   size: 15,
-                  //                   //                                   color: Colors
-                  //                   //                                       .white),
-                  //                   //                             ),
-                  //                   //                           ),
-                  //                   //                           GestureDetector(
-                  //                   //                             onTap: () async {
-                  //                   //                               if (Alarm_title
-                  //                   //                                   .text
-                  //                   //                                   .isEmpty) {
-                  //                   //                                 CommonWidget()
-                  //                   //                                     .showErrorToaster(
-                  //                   //                                     msg:
-                  //                   //                                     "Enter Alarm title");
-                  //                   //                                 return;
-                  //                   //                               } else {
-                  //                   //                                 await onSaveAlarm();
-                  //                   //                               }
-                  //                   //                             },
-                  //                   //                             child: Container(
-                  //                   //                               width: MediaQuery.of(
-                  //                   //                                   context)
-                  //                   //                                   .size
-                  //                   //                                   .width /
-                  //                   //                                   3,
-                  //                   //                               decoration: BoxDecoration(
-                  //                   //                                   borderRadius:
-                  //                   //                                   BorderRadius
-                  //                   //                                       .circular(
-                  //                   //                                       30),
-                  //                   //                                   border: Border.all(
-                  //                   //                                       color: ColorUtils
-                  //                   //                                           .primary_grey,
-                  //                   //                                       width:
-                  //                   //                                       1)),
-                  //                   //                               child: Padding(
-                  //                   //                                 padding: const EdgeInsets
-                  //                   //                                     .symmetric(
-                  //                   //                                     vertical:
-                  //                   //                                     12.0,
-                  //                   //                                     horizontal:
-                  //                   //                                     8),
-                  //                   //                                 child: Row(
-                  //                   //                                   mainAxisAlignment:
-                  //                   //                                   MainAxisAlignment
-                  //                   //                                       .center,
-                  //                   //                                   children: [
-                  //                   //                                     const Icon(
-                  //                   //                                       Icons
-                  //                   //                                           .alarm,
-                  //                   //                                       color: Colors
-                  //                   //                                           .white,
-                  //                   //                                       size: 25,
-                  //                   //                                     ),
-                  //                   //                                     const SizedBox(
-                  //                   //                                       width: 10,
-                  //                   //                                     ),
-                  //                   //                                     Text(
-                  //                   //                                       'Save',
-                  //                   //                                       style: FontStyleUtility.h16(
-                  //                   //                                           fontColor: ColorUtils
-                  //                   //                                               .primary_gold,
-                  //                   //                                           family:
-                  //                   //                                           'PR'),
-                  //                   //                                     ),
-                  //                   //                                   ],
-                  //                   //                                 ),
-                  //                   //                               ),
-                  //                   //                             ),
-                  //                   //                           )
-                  //                   //                         ],
-                  //                   //                       ),
-                  //                   //                     ),
-                  //                   //                   );
-                  //                   //                 },
-                  //                   //               );
-                  //                   //             },
-                  //                   //           );
-                  //                   //           // scheduleAlarm();
-                  //                   //         },
-                  //                   //         child: Container(
-                  //                   //           decoration: BoxDecoration(
-                  //                   //             // color: Colors.black.withOpacity(0.65),
-                  //                   //               gradient: LinearGradient(
-                  //                   //                 begin: Alignment.centerLeft,
-                  //                   //                 end: Alignment.centerRight,
-                  //                   //                 // stops: [0.1, 0.5, 0.7, 0.9],
-                  //                   //                 colors: [
-                  //                   //                   HexColor("#36393E")
-                  //                   //                       .withOpacity(1),
-                  //                   //                   HexColor("#020204")
-                  //                   //                       .withOpacity(1),
-                  //                   //                 ],
-                  //                   //               ),
-                  //                   //               boxShadow: [
-                  //                   //                 BoxShadow(
-                  //                   //                     color: HexColor('#04060F'),
-                  //                   //                     offset:
-                  //                   //                     const Offset(10, 10),
-                  //                   //                     blurRadius: 20)
-                  //                   //               ],
-                  //                   //               borderRadius:
-                  //                   //               BorderRadius.circular(20)),
-                  //                   //           child: Padding(
-                  //                   //             padding: const EdgeInsets.all(8.0),
-                  //                   //             child: Icon(
-                  //                   //               Icons.add_circle_outline,
-                  //                   //               color: ColorUtils.primary_grey,
-                  //                   //             ),
-                  //                   //           ),
-                  //                   //         )),
-                  //                   //   )
-                  //                   // else
-                  //                   //   const Center(
-                  //                   //       child: Text(
-                  //                   //         'Only 5 alarms allowed!',
-                  //                   //         style: const TextStyle(color: Colors.white),
-                  //                   //       )),
-                  //                 ]).toList(),
-                  //               ),
-                  //             );
-                  //           }
-                  //           return const Center(
-                  //             child: const Text(
-                  //               'Loading..',
-                  //               style: TextStyle(color: Colors.white),
-                  //             ),
-                  //           );
-                  //         },
-                  //       ),
-                  //     ],
-                  //   ),
-                  // ),
-                  Container(
-                    decoration: BoxDecoration(
-                        // color: Colors.black.withOpacity(0.65),
-                        gradient: LinearGradient(
-                          begin: Alignment.centerLeft,
-                          end: Alignment.centerRight,
-                          // stops: [0.1, 0.5, 0.7, 0.9],
-                          colors: [
-                            HexColor("#36393E").withOpacity(1),
-                            HexColor("#020204").withOpacity(1),
-                          ],
+                              child: Text(
+                                (started ? 'Start' : 'Finish'),
+                                style: FontStyleUtility.h16(
+                                    fontColor: Colors.black, family: 'PM'),
+                              )),
                         ),
-                        boxShadow: [
-                          BoxShadow(
-                              color: HexColor('#04060F'),
-                              offset: const Offset(10, 10),
-                              blurRadius: 20)
-                        ],
-                        borderRadius: BorderRadius.circular(20)),
-                    child: Column(
-                      children: [
-                        // if (_currentAlarms!.length < 5)
-                        Row(
-                          children: [
-                            Expanded(
-                              flex: 1,
+                      ),
+                      const SizedBox(
+                        height: 12,
+                      ),
+                      Text(
+                          (levels == 'Easy'
+                              ? ('$counter/8')
+                              : (levels == 'Normal'
+                                  ? ('$counter/10')
+                                  : ('$counter/4'))),
+                          style: FontStyleUtility.h25(
+                              fontColor: ColorUtils.primary_gold,
+                              family: 'PM')),
+                      const SizedBox(
+                        height: 27,
+                      ),
+                      Obx(() => _kegel_controller.isuserinfoLoading.value ==
+                              false
+                          ? Container(
+                              margin: const EdgeInsets.symmetric(horizontal: 0),
+                              // height: 45,
+                              // width:(width ?? 300) ,
+                              decoration: BoxDecoration(
+                                  // color: Colors.black.withOpacity(0.65),
+                                  gradient: LinearGradient(
+                                    begin: Alignment.centerLeft,
+                                    end: Alignment.centerRight,
+                                    // stops: [0.1, 0.5, 0.7, 0.9],
+                                    colors: [
+                                      HexColor("#36393E").withOpacity(0.9),
+                                      HexColor("#020204").withOpacity(0.9),
+                                    ],
+                                  ),
+                                  borderRadius: BorderRadius.circular(20)),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: TableCalendar(
+                                  // initialCalendarFormat: CalendarFormat.week,
+                                  calendarStyle: CalendarStyle(
+                                    defaultTextStyle: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 14.0,
+                                        color: Colors.white),
+                                    todayTextStyle: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18.0,
+                                        color: ColorUtils.dark_grey),
+                                    todayDecoration: BoxDecoration(
+                                        color:
+                                            HexColor("#ffffff").withOpacity(1),
+                                        borderRadius:
+                                            BorderRadius.circular(100)),
+                                    // todayColor: Colors.orange,
+                                    selectedTextStyle: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16.0,
+                                        color: Colors.green),
+                                    weekendTextStyle: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 14.0,
+                                        color: Colors.white),
+                                    isTodayHighlighted: true,
+                                    selectedDecoration: BoxDecoration(
+                                      color: Colors.blue,
+                                      shape: BoxShape.rectangle,
+                                      borderRadius: BorderRadius.circular(5.0),
+                                    ),
+                                  ),
+
+                                  headerStyle: HeaderStyle(
+                                    leftChevronIcon: Icon(
+                                      Icons.arrow_back_ios,
+                                      color: ColorUtils.primary_gold,
+                                      size: 15,
+                                    ),
+                                    rightChevronIcon: Icon(
+                                      Icons.arrow_forward_ios,
+                                      color: ColorUtils.primary_gold,
+                                      size: 15,
+                                    ),
+                                    formatButtonVisible: false,
+                                    titleTextStyle: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16.0,
+                                        color: Colors.white),
+                                    // centerHeaderTitle: true,
+                                    formatButtonDecoration: BoxDecoration(
+                                      color: ColorUtils.primary_gold,
+                                      borderRadius: BorderRadius.circular(20.0),
+                                    ),
+                                    formatButtonTextStyle:
+                                        const TextStyle(color: Colors.black),
+                                    formatButtonShowsNext: false,
+                                  ),
+                                  daysOfWeekStyle: DaysOfWeekStyle(
+                                      weekdayStyle: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 12.0,
+                                          color: Colors.white),
+                                      weekendStyle: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 12.0,
+                                          color: Colors.white)),
+                                  startingDayOfWeek: StartingDayOfWeek.monday,
+                                  onDaySelected: (date, events) async {
+                                    // print(date);
+                                    // print(DateFormat('yyyy-MM-dd').format(date));
+                                    //
+                                    // Data? person = await _peeScreenController
+                                    //     .peeGetModel!.data!
+                                    //     .firstWhereOrNull(
+                                    //   (element) =>
+                                    //       element.createdDate ==
+                                    //       DateFormat('yyyy-MM-dd').format(date),
+                                    // );
+                                    // // print("person  $person");
+                                    // if (person != null) {
+                                    //   print("person ${person.sets}");
+                                    //   print(
+                                    //       "User peed ${person.sets} on ${person.createdDate}");
+                                    // } else {
+                                    //   print("no data found");
+                                    // }
+                                  },
+                                  // builders: CalendarBuilders(
+                                  //   selectedDayBuilder: (context, date, events) => Container(
+                                  //       margin: const EdgeInsets.all(4.0),
+                                  //       alignment: Alignment.center,
+                                  //       decoration: BoxDecoration(
+                                  //           color: Theme.of(context).primaryColor,
+                                  //           borderRadius: BorderRadius.circular(10.0)),
+                                  //       child: Text(
+                                  //         date.day.toString(),
+                                  //         style: TextStyle(color: Colors.white),
+                                  //       )),
+                                  //   todayDayBuilder: (context, date, events) => Container(
+                                  //       margin: const EdgeInsets.all(4.0),
+                                  //       alignment: Alignment.center,
+                                  //       decoration: BoxDecoration(
+                                  //           color: Colors.orange,
+                                  //           borderRadius: BorderRadius.circular(10.0)),
+                                  //       child: Text(
+                                  //         date.day.toString(),
+                                  //         style: TextStyle(color: Colors.white),
+                                  //       )),
+
+                                  calendarBuilders: CalendarBuilders(
+                                    markerBuilder:
+                                        (BuildContext context, date, events) {
+                                      for (var i = 0;
+                                          i <
+                                              _kegel_controller
+                                                  .kegelGetModel!.data!.length;
+                                          i++) {
+                                        if (DateFormat('yyyy-MM-dd')
+                                                .format(date) ==
+                                            _kegel_controller.kegelGetModel!
+                                                .data![i].createdDate) {
+                                          return GestureDetector(
+                                            onTap: () {
+                                              setState(() {
+                                                selected_date_sets =
+                                                    _kegel_controller
+                                                        .kegelGetModel!
+                                                        .data![i]
+                                                        .sets!;
+                                                selected_date =
+                                                    _kegel_controller
+                                                        .kegelGetModel!
+                                                        .data![i]
+                                                        .createdDate!;
+                                              });
+                                              print(selected_date_sets);
+                                              print(selected_date);
+                                            },
+                                            child: Container(
+                                              margin: EdgeInsets.all(5),
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(100),
+                                                border: Border.all(
+                                                    color:
+                                                        ColorUtils.primary_gold,
+                                                    width: 2),
+                                              ),
+                                            ),
+                                          );
+                                        }
+                                      }
+                                      // return ListView.builder(
+                                      //     shrinkWrap: true,
+                                      //     scrollDirection: Axis.horizontal,
+                                      //     itemCount: events.length,
+                                      //     itemBuilder: (context, index) {
+                                      //       return Container(
+                                      //         margin: const EdgeInsets.only(top: 20),
+                                      //         padding: const EdgeInsets.all(1),
+                                      //         child: Container(
+                                      //           // height: 7,
+                                      //           width: 5,
+                                      //           decoration: BoxDecoration(
+                                      //               shape: BoxShape.circle,
+                                      //               color: Colors.primaries[Random()
+                                      //                   .nextInt(Colors.primaries.length)]),
+                                      //         ),
+                                      //       );
+                                      //     });
+                                    },
+                                  ),
+
+                                  calendarFormat: CalendarFormat.month,
+                                  // calendarController: _controller,
+                                  firstDay: DateTime.utc(2010, 10, 16),
+                                  lastDay: DateTime.utc(2030, 3, 14),
+                                  focusedDay: DateTime.now(),
+                                ),
+                              ),
+                            )
+                          : SizedBox.shrink()),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      (selected_date_sets!.isEmpty
+                          ? SizedBox.shrink()
+                          : Container(
+                              decoration: BoxDecoration(
+                                  // color: Colors.black.withOpacity(0.65),
+                                  gradient: LinearGradient(
+                                    begin: Alignment.centerLeft,
+                                    end: Alignment.centerRight,
+                                    // stops: [0.1, 0.5, 0.7, 0.9],
+                                    colors: [
+                                      HexColor("#36393E").withOpacity(1),
+                                      HexColor("#020204").withOpacity(1),
+                                    ],
+                                  ),
+                                  borderRadius: BorderRadius.circular(20)),
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(
-                                    horizontal: 16, vertical: 0),
-                                child: Container(
-                                  margin: EdgeInsets.only(left: 0),
-                                  child: Text(
-                                    "Add Alarm",
-                                    style: FontStyleUtility.h16(
-                                        fontColor: ColorUtils.primary_gold,
-                                        family: 'PM'),
+                                    vertical: 8.0, horizontal: 15),
+                                child: Text(
+                                  'Exercise perormed ${selected_date_sets} times on ${selected_date}',
+                                  style: FontStyleUtility.h14(
+                                      fontColor: HexColor('#FFFFFF'),
+                                      family: 'PM'),
+                                ),
+                              ),
+                            )),
+                      const SizedBox(
+                        height: 10,
+                      ),
+
+                      // Container(
+                      //   decoration: BoxDecoration(
+                      //       // color: Colors.black.withOpacity(0.65),
+                      //       gradient: LinearGradient(
+                      //         begin: Alignment.centerLeft,
+                      //         end: Alignment.centerRight,
+                      //         // stops: [0.1, 0.5, 0.7, 0.9],
+                      //         colors: [
+                      //           HexColor("#36393E").withOpacity(1),
+                      //           HexColor("#020204").withOpacity(1),
+                      //         ],
+                      //       ),
+                      //       boxShadow: [
+                      //         BoxShadow(
+                      //             color: HexColor('#04060F'),
+                      //             offset: const Offset(10, 10),
+                      //             blurRadius: 20)
+                      //       ],
+                      //       borderRadius: BorderRadius.circular(20)),
+                      //   child: Column(
+                      //     children: [
+                      //       // if (_currentAlarms!.length < 5)
+                      //       Padding(
+                      //         padding: const EdgeInsets.symmetric(
+                      //             horizontal: 16, vertical: 0),
+                      //         child: ListTile(
+                      //           leading: Container(
+                      //             margin: EdgeInsets.only(left: 0),
+                      //             child: Text(
+                      //               "Add Alarm",
+                      //               style: FontStyleUtility.h16(
+                      //                   fontColor: ColorUtils.primary_gold,
+                      //                   family: 'PM'),
+                      //             ),
+                      //           ),
+                      //           title: GestureDetector(
+                      //               onTap: () {
+                      //                 _alarmTimeString =
+                      //                     DateFormat('HH:mm').format(selectedDate);
+                      //                 showModalBottomSheet(
+                      //                   useRootNavigator: true,
+                      //                   context: context,
+                      //                   clipBehavior: Clip.antiAlias,
+                      //                   shape: const RoundedRectangleBorder(
+                      //                     borderRadius: BorderRadius.vertical(
+                      //                       top: Radius.circular(24),
+                      //                     ),
+                      //                   ),
+                      //                   builder: (context) {
+                      //                     return StatefulBuilder(
+                      //                       builder: (context, setModalState) {
+                      //                         return Container(
+                      //                           decoration: BoxDecoration(
+                      //                               // color: Colors.black.withOpacity(0.65),
+                      //                               gradient: LinearGradient(
+                      //                                 begin: Alignment.centerLeft,
+                      //                                 end: Alignment.centerRight,
+                      //                                 // stops: [0.1, 0.5, 0.7, 0.9],
+                      //                                 colors: [
+                      //                                   HexColor("#020204")
+                      //                                       .withOpacity(1),
+                      //                                   HexColor("#36393E")
+                      //                                       .withOpacity(1),
+                      //                                 ],
+                      //                               ),
+                      //                               boxShadow: [
+                      //                                 BoxShadow(
+                      //                                     color:
+                      //                                         HexColor('#04060F'),
+                      //                                     offset:
+                      //                                         const Offset(-10, 10),
+                      //                                     blurRadius: 20)
+                      //                               ],
+                      //                               borderRadius:
+                      //                                   const BorderRadius.only(
+                      //                                       topLeft:
+                      //                                           Radius.circular(20),
+                      //                                       topRight:
+                      //                                           Radius.circular(
+                      //                                               20))),
+                      //                           padding: const EdgeInsets.all(32),
+                      //                           child: SingleChildScrollView(
+                      //                             child: Column(
+                      //                               children: [
+                      //                                 // FlatButton(
+                      //                                 //   onPressed:
+                      //                                 //       () async {
+                      //                                 //     // var selectedTime = await showTimePicker(
+                      //                                 //     //   context: context,
+                      //                                 //     //   // initialEntryMode: DatePickerEntryMode.calendarOnly,<- this
+                      //                                 //     //   initialEntryMode: TimePickerEntryMode.dial,
+                      //                                 //     //   initialTime: TimeOfDay.now(),
+                      //                                 //     //   builder: (context, child) {
+                      //                                 //     //     return Theme(
+                      //                                 //     //       data: Theme.of(
+                      //                                 //     //               context)
+                      //                                 //     //           .copyWith(
+                      //                                 //     //         colorScheme:
+                      //                                 //     //             ColorScheme
+                      //                                 //     //                 .dark(
+                      //                                 //     //           primary:
+                      //                                 //     //               Colors.black,
+                      //                                 //     //           onPrimary:
+                      //                                 //     //               Colors.white,
+                      //                                 //     //           surface:
+                      //                                 //     //               ColorUtils.primary_gold,
+                      //                                 //     //           // onPrimary: Colors.black, // <-- SEE HERE
+                      //                                 //     //           onSurface:
+                      //                                 //     //               Colors.black,
+                      //                                 //     //         ),
+                      //                                 //     //         dialogBackgroundColor:
+                      //                                 //     //             ColorUtils
+                      //                                 //     //                 .primary_gold,
+                      //                                 //     //         textButtonTheme:
+                      //                                 //     //             TextButtonThemeData(
+                      //                                 //     //           style: TextButton
+                      //                                 //     //               .styleFrom(
+                      //                                 //     //             primary:
+                      //                                 //     //                 Colors.black, // button text color
+                      //                                 //     //           ),
+                      //                                 //     //         ),
+                      //                                 //     //       ),
+                      //                                 //     //       child:
+                      //                                 //     //           child!,
+                      //                                 //     //     );
+                      //                                 //     //   },
+                      //                                 //     // );
+                      //                                 //     // if (selectedTime !=
+                      //                                 //     //     null) {
+                      //                                 //     //   final now =
+                      //                                 //     //       DateTime
+                      //                                 //     //           .now();
+                      //                                 //     //   var selectedDateTime = DateTime(
+                      //                                 //     //       now.year,
+                      //                                 //     //       now.month,
+                      //                                 //     //       now.day,
+                      //                                 //     //       selectedTime
+                      //                                 //     //           .hour,
+                      //                                 //     //       selectedTime
+                      //                                 //     //           .minute);
+                      //                                 //     //   _alarmTime =
+                      //                                 //     //       selectedDateTime;
+                      //                                 //     //   setModalState(
+                      //                                 //     //       () {
+                      //                                 //     //     _alarmTimeString =
+                      //                                 //     //         DateFormat(
+                      //                                 //     //                 'HH:mm')
+                      //                                 //     //             .format(
+                      //                                 //     //                 selectedDateTime);
+                      //                                 //     //   });
+                      //                                 //     // }
+                      //                                 //   },
+                      //                                 //   child: Text(
+                      //                                 //       _alarmTimeString!,
+                      //                                 //       style: FontStyleUtility.h35(
+                      //                                 //           fontColor:
+                      //                                 //               ColorUtils
+                      //                                 //                   .primary_gold,
+                      //                                 //           family:
+                      //                                 //               'PM')),
+                      //                                 // ),
+                      //                                 Container(
+                      //                                   height: 150,
+                      //                                   decoration: BoxDecoration(
+                      //                                       borderRadius:
+                      //                                           BorderRadius
+                      //                                               .circular(15),
+                      //                                       gradient:
+                      //                                           LinearGradient(
+                      //                                         begin: Alignment
+                      //                                             .topCenter,
+                      //                                         end: Alignment
+                      //                                             .bottomCenter,
+                      //                                         colors: [
+                      //                                           HexColor("#000000")
+                      //                                               .withOpacity(1),
+                      //                                           HexColor("#04060F")
+                      //                                               .withOpacity(1),
+                      //                                           HexColor("#000000")
+                      //                                               .withOpacity(1),
+                      //                                         ],
+                      //                                       ),
+                      //                                       boxShadow: [
+                      //                                         BoxShadow(
+                      //                                             color: HexColor(
+                      //                                                 '#04060F'),
+                      //                                             offset:
+                      //                                                 Offset(3, 3),
+                      //                                             blurRadius: 10)
+                      //                                       ]),
+                      //                                   child: Stack(
+                      //                                     children: [
+                      //                                       CupertinoTheme(
+                      //                                         data:
+                      //                                             CupertinoThemeData(
+                      //                                           brightness:
+                      //                                               Brightness.dark,
+                      //                                         ),
+                      //                                         child:
+                      //                                             CupertinoDatePicker(
+                      //                                           // use24hFormat: true,
+                      //                                           mode:
+                      //                                               CupertinoDatePickerMode
+                      //                                                   .time,
+                      //                                           onDateTimeChanged:
+                      //                                               (DateTime
+                      //                                                   value) {
+                      //                                             selected_time =
+                      //                                                 value;
+                      //                                             print(
+                      //                                                 "${value.hour}:${value.minute}");
+                      //
+                      //                                             if (selected_time !=
+                      //                                                 null) {
+                      //                                               final now =
+                      //                                                   DateTime
+                      //                                                       .now();
+                      //                                               var selectedDateTime = DateTime(
+                      //                                                   now.year,
+                      //                                                   now.month,
+                      //                                                   now.day,
+                      //                                                   selected_time
+                      //                                                       .hour,
+                      //                                                   selected_time
+                      //                                                       .minute);
+                      //                                               _alarmTime =
+                      //                                                   selectedDateTime;
+                      //                                               setModalState(
+                      //                                                   () {
+                      //                                                 _alarmTimeString =
+                      //                                                     DateFormat(
+                      //                                                             'HH:mm')
+                      //                                                         .format(
+                      //                                                             selectedDateTime);
+                      //                                               });
+                      //                                             }
+                      //                                           },
+                      //                                         ),
+                      //                                       ),
+                      //                                     ],
+                      //                                   ),
+                      //                                 ),
+                      //
+                      //                                 ListTile(
+                      //                                   onTap: () {
+                      //                                     showDialog(
+                      //                                       context: context,
+                      //                                       builder: (BuildContext
+                      //                                           context) {
+                      //                                         double width =
+                      //                                             MediaQuery.of(
+                      //                                                     context)
+                      //                                                 .size
+                      //                                                 .width;
+                      //                                         double height =
+                      //                                             MediaQuery.of(
+                      //                                                     context)
+                      //                                                 .size
+                      //                                                 .height;
+                      //                                         return BackdropFilter(
+                      //                                           filter: ImageFilter
+                      //                                               .blur(
+                      //                                                   sigmaX: 10,
+                      //                                                   sigmaY: 10),
+                      //                                           child: AlertDialog(
+                      //                                               backgroundColor:
+                      //                                                   Colors
+                      //                                                       .transparent,
+                      //                                               contentPadding:
+                      //                                                   EdgeInsets
+                      //                                                       .zero,
+                      //                                               elevation: 0.0,
+                      //                                               // title: Center(child: Text("Evaluation our APP")),
+                      //                                               content: Column(
+                      //                                                 mainAxisAlignment:
+                      //                                                     MainAxisAlignment
+                      //                                                         .center,
+                      //                                                 children: [
+                      //                                                   Stack(
+                      //                                                     children: [
+                      //                                                       Padding(
+                      //                                                         padding:
+                      //                                                             const EdgeInsets.all(8.0),
+                      //                                                         child:
+                      //                                                             Container(
+                      //                                                           decoration:
+                      //                                                               BoxDecoration(
+                      //                                                                   // color: Colors.black.withOpacity(0.65),
+                      //                                                                   gradient:
+                      //                                                                       LinearGradient(
+                      //                                                                     begin: Alignment.centerLeft,
+                      //                                                                     end: Alignment.centerRight,
+                      //                                                                     // stops: [0.1, 0.5, 0.7, 0.9],
+                      //                                                                     colors: [
+                      //                                                                       HexColor("#020204").withOpacity(1),
+                      //                                                                       HexColor("#36393E").withOpacity(1),
+                      //                                                                     ],
+                      //                                                                   ),
+                      //                                                                   boxShadow: [
+                      //                                                                     BoxShadow(color: HexColor('#04060F'), offset: Offset(10, 10), blurRadius: 10)
+                      //                                                                   ],
+                      //                                                                   borderRadius: BorderRadius.circular(15)),
+                      //                                                           child: Align(
+                      //                                                               alignment: Alignment.center,
+                      //                                                               child: Padding(
+                      //                                                                 padding: const EdgeInsets.all(8.0),
+                      //                                                                 child: Column(
+                      //                                                                   children: [
+                      //                                                                     SizedBox(
+                      //                                                                       height: 0,
+                      //                                                                     ),
+                      //
+                      //                                                                     Column(
+                      //                                                                       crossAxisAlignment: CrossAxisAlignment.start,
+                      //                                                                       children: [
+                      //                                                                         Container(
+                      //                                                                           margin: EdgeInsets.only(left: 18),
+                      //                                                                           child: Text('Title', style: FontStyleUtility.h14(fontColor: ColorUtils.primary_grey, family: 'Pr')),
+                      //                                                                         ),
+                      //                                                                         SizedBox(
+                      //                                                                           height: 11,
+                      //                                                                         ),
+                      //                                                                         Container(
+                      //                                                                           margin: EdgeInsets.symmetric(horizontal: 10),
+                      //                                                                           // width: 300,
+                      //                                                                           decoration: BoxDecoration(
+                      //                                                                               // color: Colors.black.withOpacity(0.65),
+                      //                                                                               gradient: LinearGradient(
+                      //                                                                                 begin: Alignment.centerLeft,
+                      //                                                                                 end: Alignment.centerRight,
+                      //                                                                                 // stops: [0.1, 0.5, 0.7, 0.9],
+                      //                                                                                 colors: [
+                      //                                                                                   HexColor("#36393E").withOpacity(1),
+                      //                                                                                   HexColor("#020204").withOpacity(1),
+                      //                                                                                 ],
+                      //                                                                               ),
+                      //                                                                               boxShadow: [BoxShadow(color: HexColor('#04060F'), offset: Offset(10, 10), blurRadius: 10)],
+                      //                                                                               borderRadius: BorderRadius.circular(20)),
+                      //
+                      //                                                                           child: TextFormField(
+                      //                                                                             maxLength: 150,
+                      //                                                                             decoration: InputDecoration(
+                      //                                                                               contentPadding: EdgeInsets.only(left: 20, top: 14, bottom: 14),
+                      //                                                                               alignLabelWithHint: false,
+                      //                                                                               isDense: true,
+                      //                                                                               hintText: 'Add alarm title',
+                      //                                                                               counterStyle: TextStyle(
+                      //                                                                                 height: double.minPositive,
+                      //                                                                               ),
+                      //                                                                               counterText: "",
+                      //                                                                               filled: true,
+                      //                                                                               border: InputBorder.none,
+                      //                                                                               enabledBorder: const OutlineInputBorder(
+                      //                                                                                 borderSide: BorderSide(color: Colors.transparent, width: 1),
+                      //                                                                                 borderRadius: BorderRadius.all(Radius.circular(10)),
+                      //                                                                               ),
+                      //                                                                               hintStyle: FontStyleUtility.h14(fontColor: HexColor('#CBCBCB'), family: 'PR'),
+                      //                                                                             ),
+                      //                                                                             style: FontStyleUtility.h14(fontColor: ColorUtils.primary_grey, family: 'PR'),
+                      //                                                                             controller: Alarm_title,
+                      //                                                                             keyboardType: TextInputType.text,
+                      //                                                                           ),
+                      //                                                                         ),
+                      //                                                                       ],
+                      //                                                                     ),
+                      //                                                                     SizedBox(
+                      //                                                                       height: 10,
+                      //                                                                     ),
+                      //                                                                     GestureDetector(
+                      //                                                                       onTap: () {
+                      //                                                                         setState(() {
+                      //                                                                           Alarm_title_list.add(Alarm_title.text);
+                      //                                                                           Navigator.pop(context);
+                      //                                                                         });
+                      //                                                                       },
+                      //                                                                       child: Container(
+                      //                                                                         alignment: Alignment.topRight,
+                      //                                                                         child: Text(
+                      //                                                                           'Add',
+                      //                                                                           style: FontStyleUtility.h12(fontColor: ColorUtils.primary_grey, family: 'PR'),
+                      //                                                                         ),
+                      //                                                                       ),
+                      //                                                                     )
+                      //                                                                     // common_button_gold(
+                      //                                                                     //   onTap: () {
+                      //                                                                     //     Get
+                      //                                                                     //         .to(
+                      //                                                                     //         DashboardScreen());
+                      //                                                                     //   },
+                      //                                                                     //   title_text: 'Go to Dashboard',
+                      //                                                                     // ),
+                      //                                                                   ],
+                      //                                                                 ),
+                      //                                                               )),
+                      //                                                         ),
+                      //                                                       ),
+                      //                                                       GestureDetector(
+                      //                                                         onTap:
+                      //                                                             () {
+                      //                                                           Navigator.pop(context);
+                      //                                                         },
+                      //                                                         child:
+                      //                                                             Container(
+                      //                                                           margin:
+                      //                                                               EdgeInsets.only(right: 10),
+                      //                                                           alignment:
+                      //                                                               Alignment.topRight,
+                      //                                                           child: Container(
+                      //                                                               decoration: BoxDecoration(
+                      //                                                                   // color: Colors.black.withOpacity(0.65),
+                      //                                                                   gradient: LinearGradient(
+                      //                                                                     begin: Alignment.centerLeft,
+                      //                                                                     end: Alignment.centerRight,
+                      //                                                                     // stops: [0.1, 0.5, 0.7, 0.9],
+                      //                                                                     colors: [
+                      //                                                                       HexColor("#36393E").withOpacity(1),
+                      //                                                                       HexColor("#020204").withOpacity(1),
+                      //                                                                     ],
+                      //                                                                   ),
+                      //                                                                   boxShadow: [BoxShadow(color: HexColor('#04060F'), offset: Offset(0, 3), blurRadius: 5)],
+                      //                                                                   borderRadius: BorderRadius.circular(20)),
+                      //                                                               child: Padding(
+                      //                                                                 padding: const EdgeInsets.all(4.0),
+                      //                                                                 child: Icon(
+                      //                                                                   Icons.cancel_outlined,
+                      //                                                                   size: 13,
+                      //                                                                   color: ColorUtils.primary_grey,
+                      //                                                                 ),
+                      //                                                               )),
+                      //                                                         ),
+                      //                                                       )
+                      //                                                     ],
+                      //                                                   ),
+                      //                                                 ],
+                      //                                               )),
+                      //                                         );
+                      //                                       },
+                      //                                     );
+                      //                                   },
+                      //                                   title: Text('Title',
+                      //                                       style: FontStyleUtility.h14(
+                      //                                           fontColor: ColorUtils
+                      //                                               .primary_grey,
+                      //                                           family: 'PR')),
+                      //                                   trailing: const Icon(
+                      //                                       Icons.arrow_forward_ios,
+                      //                                       size: 15,
+                      //                                       color: Colors.white),
+                      //                                 ),
+                      //                                 ListTile(
+                      //                                   title: Text(
+                      //                                     'Repeat',
+                      //                                     style: FontStyleUtility.h14(
+                      //                                         fontColor: ColorUtils
+                      //                                             .primary_gold,
+                      //                                         family: 'PR'),
+                      //                                   ),
+                      //                                   trailing: const Icon(
+                      //                                     Icons.arrow_forward_ios,
+                      //                                     size: 15,
+                      //                                     color: Colors.white,
+                      //                                   ),
+                      //                                 ),
+                      //                                 GestureDetector(
+                      //                                   onTap: () {
+                      //                                     print('object');
+                      //
+                      //                                     showDialog(
+                      //                                       context: context,
+                      //                                       builder: (BuildContext
+                      //                                           context) {
+                      //                                         double width =
+                      //                                             MediaQuery.of(
+                      //                                                     context)
+                      //                                                 .size
+                      //                                                 .width;
+                      //                                         double height =
+                      //                                             MediaQuery.of(
+                      //                                                     context)
+                      //                                                 .size
+                      //                                                 .height;
+                      //                                         return AlertDialog(
+                      //                                             backgroundColor:
+                      //                                                 Colors
+                      //                                                     .transparent,
+                      //                                             contentPadding:
+                      //                                                 EdgeInsets
+                      //                                                     .zero,
+                      //                                             elevation: 0.0,
+                      //                                             // title: Center(child: Text("Evaluation our APP")),
+                      //                                             content: Column(
+                      //                                               mainAxisAlignment:
+                      //                                                   MainAxisAlignment
+                      //                                                       .center,
+                      //                                               children: [
+                      //                                                 Stack(
+                      //                                                   children: [
+                      //                                                     Container(
+                      //                                                       // height: 150,
+                      //                                                       // height: double.maxFinite,
+                      //                                                       height:
+                      //                                                           MediaQuery.of(context).size.height /
+                      //                                                               4,
+                      //                                                       width: double
+                      //                                                           .maxFinite,
+                      //                                                       decoration:
+                      //                                                           BoxDecoration(
+                      //                                                               // color: Colors.black.withOpacity(0.65),
+                      //                                                               gradient:
+                      //                                                                   LinearGradient(
+                      //                                                                 begin: Alignment.centerLeft,
+                      //                                                                 end: Alignment.centerRight,
+                      //                                                                 // stops: [0.1, 0.5, 0.7, 0.9],
+                      //                                                                 colors: [
+                      //                                                                   HexColor("#020204").withOpacity(1),
+                      //                                                                   HexColor("#36393E").withOpacity(1),
+                      //                                                                 ],
+                      //                                                               ),
+                      //                                                               boxShadow: [
+                      //                                                                 BoxShadow(color: HexColor('#04060F'), offset: Offset(10, 10), blurRadius: 10)
+                      //                                                               ],
+                      //                                                               borderRadius: BorderRadius.circular(20)),
+                      //                                                       margin: EdgeInsets.symmetric(
+                      //                                                           horizontal:
+                      //                                                               10,
+                      //                                                           vertical:
+                      //                                                               10),
+                      //                                                       // height: 122,
+                      //                                                       // width: 133,
+                      //                                                       // padding: const EdgeInsets.all(8.0),
+                      //                                                       child:
+                      //                                                           Column(
+                      //                                                         mainAxisAlignment:
+                      //                                                             MainAxisAlignment.center,
+                      //                                                         children: [
+                      //                                                           Container(
+                      //                                                             // color: Colors.white,
+                      //                                                             alignment: Alignment.center,
+                      //                                                             child: ListView.builder(
+                      //                                                               padding: EdgeInsets.only(bottom: 0),
+                      //
+                      //                                                               // physics: NeverScrollableScrollPhysics(),
+                      //                                                               itemCount: list_alarm.length,
+                      //                                                               shrinkWrap: true,
+                      //                                                               itemBuilder: (BuildContext context, int index) {
+                      //                                                                 return GestureDetector(
+                      //                                                                   onTap: () {
+                      //                                                                     setState(() {
+                      //                                                                       Selected_sound = list_alarm[index];
+                      //                                                                       print("method_selected $Selected_sound");
+                      //                                                                     });
+                      //                                                                     Navigator.pop(context);
+                      //                                                                   },
+                      //                                                                   child: Container(
+                      //                                                                     margin: EdgeInsets.symmetric(vertical: 8.5),
+                      //                                                                     alignment: Alignment.center,
+                      //                                                                     child: Text(
+                      //                                                                       list_alarm[index],
+                      //                                                                       style: FontStyleUtility.h15(fontColor: ColorUtils.primary_grey, family: 'PM'),
+                      //                                                                     ),
+                      //                                                                   ),
+                      //                                                                 );
+                      //                                                               },
+                      //                                                             ),
+                      //                                                           ),
+                      //                                                         ],
+                      //                                                       ),
+                      //                                                     ),
+                      //                                                     GestureDetector(
+                      //                                                       onTap:
+                      //                                                           () {
+                      //                                                         Navigator.pop(
+                      //                                                             context);
+                      //                                                       },
+                      //                                                       child:
+                      //                                                           Container(
+                      //                                                         margin:
+                      //                                                             EdgeInsets.only(right: 0),
+                      //                                                         alignment:
+                      //                                                             Alignment.topRight,
+                      //                                                         child: Container(
+                      //                                                             decoration: BoxDecoration(
+                      //                                                                 // color: Colors.black.withOpacity(0.65),
+                      //                                                                 gradient: LinearGradient(
+                      //                                                                   begin: Alignment.centerLeft,
+                      //                                                                   end: Alignment.centerRight,
+                      //                                                                   // stops: [0.1, 0.5, 0.7, 0.9],
+                      //                                                                   colors: [
+                      //                                                                     HexColor("#36393E").withOpacity(1),
+                      //                                                                     HexColor("#020204").withOpacity(1),
+                      //                                                                   ],
+                      //                                                                 ),
+                      //                                                                 boxShadow: [BoxShadow(color: HexColor('#04060F'), offset: Offset(0, 3), blurRadius: 5)],
+                      //                                                                 borderRadius: BorderRadius.circular(20)),
+                      //                                                             child: Padding(
+                      //                                                               padding: const EdgeInsets.all(4.0),
+                      //                                                               child: Icon(
+                      //                                                                 Icons.cancel_outlined,
+                      //                                                                 size: 20,
+                      //                                                                 color: ColorUtils.primary_grey,
+                      //                                                               ),
+                      //                                                             )),
+                      //                                                       ),
+                      //                                                     )
+                      //                                                   ],
+                      //                                                 ),
+                      //                                               ],
+                      //                                             ));
+                      //                                       },
+                      //                                     );
+                      //                                   },
+                      //                                   child: ListTile(
+                      //                                     title: Text('Sound',
+                      //                                         style: FontStyleUtility.h14(
+                      //                                             fontColor: ColorUtils
+                      //                                                 .primary_gold,
+                      //                                             family: 'PR')),
+                      //                                     trailing: const Icon(
+                      //                                         Icons
+                      //                                             .arrow_forward_ios,
+                      //                                         size: 15,
+                      //                                         color: Colors.white),
+                      //                                   ),
+                      //                                 ),
+                      //                                 GestureDetector(
+                      //                                   onTap: () async {
+                      //                                     if (Alarm_title
+                      //                                         .text.isEmpty) {
+                      //                                       CommonWidget()
+                      //                                           .showErrorToaster(
+                      //                                               msg:
+                      //                                                   "Enter Alarm title");
+                      //                                       return;
+                      //                                     } else {
+                      //                                       await onSaveAlarm();
+                      //                                     }
+                      //                                   },
+                      //                                   child: Container(
+                      //                                     width:
+                      //                                         MediaQuery.of(context)
+                      //                                                 .size
+                      //                                                 .width /
+                      //                                             3,
+                      //                                     decoration: BoxDecoration(
+                      //                                         borderRadius:
+                      //                                             BorderRadius
+                      //                                                 .circular(30),
+                      //                                         border: Border.all(
+                      //                                             color: ColorUtils
+                      //                                                 .primary_grey,
+                      //                                             width: 1)),
+                      //                                     child: Padding(
+                      //                                       padding:
+                      //                                           const EdgeInsets
+                      //                                                   .symmetric(
+                      //                                               vertical: 12.0,
+                      //                                               horizontal: 8),
+                      //                                       child: Row(
+                      //                                         mainAxisAlignment:
+                      //                                             MainAxisAlignment
+                      //                                                 .center,
+                      //                                         children: [
+                      //                                           const Icon(
+                      //                                             Icons.alarm,
+                      //                                             color:
+                      //                                                 Colors.white,
+                      //                                             size: 25,
+                      //                                           ),
+                      //                                           const SizedBox(
+                      //                                             width: 10,
+                      //                                           ),
+                      //                                           Text(
+                      //                                             'Save',
+                      //                                             style: FontStyleUtility.h16(
+                      //                                                 fontColor:
+                      //                                                     ColorUtils
+                      //                                                         .primary_gold,
+                      //                                                 family: 'PR'),
+                      //                                           ),
+                      //                                         ],
+                      //                                       ),
+                      //                                     ),
+                      //                                   ),
+                      //                                 )
+                      //                               ],
+                      //                             ),
+                      //                           ),
+                      //                         );
+                      //                       },
+                      //                     );
+                      //                   },
+                      //                 );
+                      //                 // scheduleAlarm();
+                      //               },
+                      //               child: Container(
+                      //                 child: Padding(
+                      //                   padding: const EdgeInsets.all(0.0),
+                      //                   child: Icon(
+                      //                     Icons.add_circle_outline,
+                      //                     color: ColorUtils.primary_grey,
+                      //                   ),
+                      //                 ),
+                      //               )),
+                      //           // trailing: Padding(
+                      //           //   padding: const EdgeInsets.symmetric(
+                      //           //       horizontal: 16, vertical: 10),
+                      //           //   child: GestureDetector(
+                      //           //       onTap: () {
+                      //           //         _alarmTimeString = DateFormat('HH:mm')
+                      //           //             .format(selectedDate);
+                      //           //         showModalBottomSheet(
+                      //           //           useRootNavigator: true,
+                      //           //           context: context,
+                      //           //           clipBehavior: Clip.antiAlias,
+                      //           //           shape: const RoundedRectangleBorder(
+                      //           //             borderRadius: BorderRadius.vertical(
+                      //           //               top: Radius.circular(24),
+                      //           //             ),
+                      //           //           ),
+                      //           //           builder: (context) {
+                      //           //             return StatefulBuilder(
+                      //           //               builder: (context, setModalState) {
+                      //           //                 return Container(
+                      //           //                   decoration: BoxDecoration(
+                      //           //                       // color: Colors.black.withOpacity(0.65),
+                      //           //                       gradient: LinearGradient(
+                      //           //                         begin: Alignment.centerLeft,
+                      //           //                         end: Alignment.centerRight,
+                      //           //                         // stops: [0.1, 0.5, 0.7, 0.9],
+                      //           //                         colors: [
+                      //           //                           HexColor("#020204")
+                      //           //                               .withOpacity(1),
+                      //           //                           HexColor("#36393E")
+                      //           //                               .withOpacity(1),
+                      //           //                         ],
+                      //           //                       ),
+                      //           //                       boxShadow: [
+                      //           //                         BoxShadow(
+                      //           //                             color:
+                      //           //                                 HexColor('#04060F'),
+                      //           //                             offset: const Offset(
+                      //           //                                 -10, 10),
+                      //           //                             blurRadius: 20)
+                      //           //                       ],
+                      //           //                       borderRadius:
+                      //           //                           const BorderRadius.only(
+                      //           //                               topLeft:
+                      //           //                                   Radius.circular(
+                      //           //                                       20),
+                      //           //                               topRight:
+                      //           //                                   Radius.circular(
+                      //           //                                       20))),
+                      //           //                   padding: const EdgeInsets.all(32),
+                      //           //                   child: SingleChildScrollView(
+                      //           //                     child: Column(
+                      //           //                       children: [
+                      //           //                         // FlatButton(
+                      //           //                         //   onPressed:
+                      //           //                         //       () async {
+                      //           //                         //     // var selectedTime = await showTimePicker(
+                      //           //                         //     //   context: context,
+                      //           //                         //     //   // initialEntryMode: DatePickerEntryMode.calendarOnly,<- this
+                      //           //                         //     //   initialEntryMode: TimePickerEntryMode.dial,
+                      //           //                         //     //   initialTime: TimeOfDay.now(),
+                      //           //                         //     //   builder: (context, child) {
+                      //           //                         //     //     return Theme(
+                      //           //                         //     //       data: Theme.of(
+                      //           //                         //     //               context)
+                      //           //                         //     //           .copyWith(
+                      //           //                         //     //         colorScheme:
+                      //           //                         //     //             ColorScheme
+                      //           //                         //     //                 .dark(
+                      //           //                         //     //           primary:
+                      //           //                         //     //               Colors.black,
+                      //           //                         //     //           onPrimary:
+                      //           //                         //     //               Colors.white,
+                      //           //                         //     //           surface:
+                      //           //                         //     //               ColorUtils.primary_gold,
+                      //           //                         //     //           // onPrimary: Colors.black, // <-- SEE HERE
+                      //           //                         //     //           onSurface:
+                      //           //                         //     //               Colors.black,
+                      //           //                         //     //         ),
+                      //           //                         //     //         dialogBackgroundColor:
+                      //           //                         //     //             ColorUtils
+                      //           //                         //     //                 .primary_gold,
+                      //           //                         //     //         textButtonTheme:
+                      //           //                         //     //             TextButtonThemeData(
+                      //           //                         //     //           style: TextButton
+                      //           //                         //     //               .styleFrom(
+                      //           //                         //     //             primary:
+                      //           //                         //     //                 Colors.black, // button text color
+                      //           //                         //     //           ),
+                      //           //                         //     //         ),
+                      //           //                         //     //       ),
+                      //           //                         //     //       child:
+                      //           //                         //     //           child!,
+                      //           //                         //     //     );
+                      //           //                         //     //   },
+                      //           //                         //     // );
+                      //           //                         //     // if (selectedTime !=
+                      //           //                         //     //     null) {
+                      //           //                         //     //   final now =
+                      //           //                         //     //       DateTime
+                      //           //                         //     //           .now();
+                      //           //                         //     //   var selectedDateTime = DateTime(
+                      //           //                         //     //       now.year,
+                      //           //                         //     //       now.month,
+                      //           //                         //     //       now.day,
+                      //           //                         //     //       selectedTime
+                      //           //                         //     //           .hour,
+                      //           //                         //     //       selectedTime
+                      //           //                         //     //           .minute);
+                      //           //                         //     //   _alarmTime =
+                      //           //                         //     //       selectedDateTime;
+                      //           //                         //     //   setModalState(
+                      //           //                         //     //       () {
+                      //           //                         //     //     _alarmTimeString =
+                      //           //                         //     //         DateFormat(
+                      //           //                         //     //                 'HH:mm')
+                      //           //                         //     //             .format(
+                      //           //                         //     //                 selectedDateTime);
+                      //           //                         //     //   });
+                      //           //                         //     // }
+                      //           //                         //   },
+                      //           //                         //   child: Text(
+                      //           //                         //       _alarmTimeString!,
+                      //           //                         //       style: FontStyleUtility.h35(
+                      //           //                         //           fontColor:
+                      //           //                         //               ColorUtils
+                      //           //                         //                   .primary_gold,
+                      //           //                         //           family:
+                      //           //                         //               'PM')),
+                      //           //                         // ),
+                      //           //                         Container(
+                      //           //                           height: 150,
+                      //           //                           decoration: BoxDecoration(
+                      //           //                               borderRadius:
+                      //           //                                   BorderRadius
+                      //           //                                       .circular(15),
+                      //           //                               gradient:
+                      //           //                                   LinearGradient(
+                      //           //                                 begin: Alignment
+                      //           //                                     .topCenter,
+                      //           //                                 end: Alignment
+                      //           //                                     .bottomCenter,
+                      //           //                                 colors: [
+                      //           //                                   HexColor(
+                      //           //                                           "#000000")
+                      //           //                                       .withOpacity(
+                      //           //                                           1),
+                      //           //                                   HexColor(
+                      //           //                                           "#04060F")
+                      //           //                                       .withOpacity(
+                      //           //                                           1),
+                      //           //                                   HexColor(
+                      //           //                                           "#000000")
+                      //           //                                       .withOpacity(
+                      //           //                                           1),
+                      //           //                                 ],
+                      //           //                               ),
+                      //           //                               boxShadow: [
+                      //           //                                 BoxShadow(
+                      //           //                                     color: HexColor(
+                      //           //                                         '#04060F'),
+                      //           //                                     offset: Offset(
+                      //           //                                         3, 3),
+                      //           //                                     blurRadius: 10)
+                      //           //                               ]),
+                      //           //                           child: Stack(
+                      //           //                             children: [
+                      //           //                               CupertinoTheme(
+                      //           //                                 data:
+                      //           //                                     CupertinoThemeData(
+                      //           //                                   brightness:
+                      //           //                                       Brightness
+                      //           //                                           .dark,
+                      //           //                                 ),
+                      //           //                                 child:
+                      //           //                                     CupertinoDatePicker(
+                      //           //                                   // use24hFormat: true,
+                      //           //                                   mode:
+                      //           //                                       CupertinoDatePickerMode
+                      //           //                                           .time,
+                      //           //                                   onDateTimeChanged:
+                      //           //                                       (DateTime
+                      //           //                                           value) {
+                      //           //                                     selected_time =
+                      //           //                                         value;
+                      //           //                                     print(
+                      //           //                                         "${value.hour}:${value.minute}");
+                      //           //
+                      //           //                                     if (selected_time !=
+                      //           //                                         null) {
+                      //           //                                       final now =
+                      //           //                                           DateTime
+                      //           //                                               .now();
+                      //           //                                       var selectedDateTime = DateTime(
+                      //           //                                           now.year,
+                      //           //                                           now.month,
+                      //           //                                           now.day,
+                      //           //                                           selected_time
+                      //           //                                               .hour,
+                      //           //                                           selected_time
+                      //           //                                               .minute);
+                      //           //                                       _alarmTime =
+                      //           //                                           selectedDateTime;
+                      //           //                                       setModalState(
+                      //           //                                           () {
+                      //           //                                         _alarmTimeString = DateFormat(
+                      //           //                                                 'HH:mm')
+                      //           //                                             .format(
+                      //           //                                                 selectedDateTime);
+                      //           //                                       });
+                      //           //                                     }
+                      //           //                                   },
+                      //           //                                 ),
+                      //           //                               ),
+                      //           //                             ],
+                      //           //                           ),
+                      //           //                         ),
+                      //           //
+                      //           //                         ListTile(
+                      //           //                           onTap: () {
+                      //           //                             showDialog(
+                      //           //                               context: context,
+                      //           //                               builder: (BuildContext
+                      //           //                                   context) {
+                      //           //                                 double width =
+                      //           //                                     MediaQuery.of(
+                      //           //                                             context)
+                      //           //                                         .size
+                      //           //                                         .width;
+                      //           //                                 double height =
+                      //           //                                     MediaQuery.of(
+                      //           //                                             context)
+                      //           //                                         .size
+                      //           //                                         .height;
+                      //           //                                 return BackdropFilter(
+                      //           //                                   filter: ImageFilter
+                      //           //                                       .blur(
+                      //           //                                           sigmaX:
+                      //           //                                               10,
+                      //           //                                           sigmaY:
+                      //           //                                               10),
+                      //           //                                   child:
+                      //           //                                       AlertDialog(
+                      //           //                                           backgroundColor:
+                      //           //                                               Colors
+                      //           //                                                   .transparent,
+                      //           //                                           contentPadding:
+                      //           //                                               EdgeInsets
+                      //           //                                                   .zero,
+                      //           //                                           elevation:
+                      //           //                                               0.0,
+                      //           //                                           // title: Center(child: Text("Evaluation our APP")),
+                      //           //                                           content:
+                      //           //                                               Column(
+                      //           //                                             mainAxisAlignment:
+                      //           //                                                 MainAxisAlignment.center,
+                      //           //                                             children: [
+                      //           //                                               Stack(
+                      //           //                                                 children: [
+                      //           //                                                   Padding(
+                      //           //                                                     padding: const EdgeInsets.all(8.0),
+                      //           //                                                     child: Container(
+                      //           //                                                       decoration:
+                      //           //                                                           BoxDecoration(
+                      //           //                                                               // color: Colors.black.withOpacity(0.65),
+                      //           //                                                               gradient:
+                      //           //                                                                   LinearGradient(
+                      //           //                                                                 begin: Alignment.centerLeft,
+                      //           //                                                                 end: Alignment.centerRight,
+                      //           //                                                                 // stops: [0.1, 0.5, 0.7, 0.9],
+                      //           //                                                                 colors: [
+                      //           //                                                                   HexColor("#020204").withOpacity(1),
+                      //           //                                                                   HexColor("#36393E").withOpacity(1),
+                      //           //                                                                 ],
+                      //           //                                                               ),
+                      //           //                                                               boxShadow: [
+                      //           //                                                                 BoxShadow(color: HexColor('#04060F'), offset: Offset(10, 10), blurRadius: 10)
+                      //           //                                                               ],
+                      //           //                                                               borderRadius: BorderRadius.circular(15)),
+                      //           //                                                       child: Align(
+                      //           //                                                           alignment: Alignment.center,
+                      //           //                                                           child: Padding(
+                      //           //                                                             padding: const EdgeInsets.all(8.0),
+                      //           //                                                             child: Column(
+                      //           //                                                               children: [
+                      //           //                                                                 SizedBox(
+                      //           //                                                                   height: 0,
+                      //           //                                                                 ),
+                      //           //
+                      //           //                                                                 Column(
+                      //           //                                                                   crossAxisAlignment: CrossAxisAlignment.start,
+                      //           //                                                                   children: [
+                      //           //                                                                     Container(
+                      //           //                                                                       margin: EdgeInsets.only(left: 18),
+                      //           //                                                                       child: Text('Title', style: FontStyleUtility.h14(fontColor: ColorUtils.primary_grey, family: 'Pr')),
+                      //           //                                                                     ),
+                      //           //                                                                     SizedBox(
+                      //           //                                                                       height: 11,
+                      //           //                                                                     ),
+                      //           //                                                                     Container(
+                      //           //                                                                       margin: EdgeInsets.symmetric(horizontal: 10),
+                      //           //                                                                       // width: 300,
+                      //           //                                                                       decoration: BoxDecoration(
+                      //           //                                                                           // color: Colors.black.withOpacity(0.65),
+                      //           //                                                                           gradient: LinearGradient(
+                      //           //                                                                             begin: Alignment.centerLeft,
+                      //           //                                                                             end: Alignment.centerRight,
+                      //           //                                                                             // stops: [0.1, 0.5, 0.7, 0.9],
+                      //           //                                                                             colors: [
+                      //           //                                                                               HexColor("#36393E").withOpacity(1),
+                      //           //                                                                               HexColor("#020204").withOpacity(1),
+                      //           //                                                                             ],
+                      //           //                                                                           ),
+                      //           //                                                                           boxShadow: [BoxShadow(color: HexColor('#04060F'), offset: Offset(10, 10), blurRadius: 10)],
+                      //           //                                                                           borderRadius: BorderRadius.circular(20)),
+                      //           //
+                      //           //                                                                       child: TextFormField(
+                      //           //                                                                         maxLength: 150,
+                      //           //                                                                         decoration: InputDecoration(
+                      //           //                                                                           contentPadding: EdgeInsets.only(left: 20, top: 14, bottom: 14),
+                      //           //                                                                           alignLabelWithHint: false,
+                      //           //                                                                           isDense: true,
+                      //           //                                                                           hintText: 'Add alarm title',
+                      //           //                                                                           counterStyle: TextStyle(
+                      //           //                                                                             height: double.minPositive,
+                      //           //                                                                           ),
+                      //           //                                                                           counterText: "",
+                      //           //                                                                           filled: true,
+                      //           //                                                                           border: InputBorder.none,
+                      //           //                                                                           enabledBorder: const OutlineInputBorder(
+                      //           //                                                                             borderSide: BorderSide(color: Colors.transparent, width: 1),
+                      //           //                                                                             borderRadius: BorderRadius.all(Radius.circular(10)),
+                      //           //                                                                           ),
+                      //           //                                                                           hintStyle: FontStyleUtility.h14(fontColor: HexColor('#CBCBCB'), family: 'PR'),
+                      //           //                                                                         ),
+                      //           //                                                                         style: FontStyleUtility.h14(fontColor: ColorUtils.primary_grey, family: 'PR'),
+                      //           //                                                                         controller: Alarm_title,
+                      //           //                                                                         keyboardType: TextInputType.text,
+                      //           //                                                                       ),
+                      //           //                                                                     ),
+                      //           //                                                                   ],
+                      //           //                                                                 ),
+                      //           //                                                                 SizedBox(
+                      //           //                                                                   height: 10,
+                      //           //                                                                 ),
+                      //           //                                                                 GestureDetector(
+                      //           //                                                                   onTap: () {
+                      //           //                                                                     setState(() {
+                      //           //                                                                       Alarm_title_list.add(Alarm_title.text);
+                      //           //                                                                       Navigator.pop(context);
+                      //           //                                                                     });
+                      //           //                                                                   },
+                      //           //                                                                   child: Container(
+                      //           //                                                                     alignment: Alignment.topRight,
+                      //           //                                                                     child: Text(
+                      //           //                                                                       'Add',
+                      //           //                                                                       style: FontStyleUtility.h12(fontColor: ColorUtils.primary_grey, family: 'PR'),
+                      //           //                                                                     ),
+                      //           //                                                                   ),
+                      //           //                                                                 )
+                      //           //                                                                 // common_button_gold(
+                      //           //                                                                 //   onTap: () {
+                      //           //                                                                 //     Get
+                      //           //                                                                 //         .to(
+                      //           //                                                                 //         DashboardScreen());
+                      //           //                                                                 //   },
+                      //           //                                                                 //   title_text: 'Go to Dashboard',
+                      //           //                                                                 // ),
+                      //           //                                                               ],
+                      //           //                                                             ),
+                      //           //                                                           )),
+                      //           //                                                     ),
+                      //           //                                                   ),
+                      //           //                                                   GestureDetector(
+                      //           //                                                     onTap: () {
+                      //           //                                                       Navigator.pop(context);
+                      //           //                                                     },
+                      //           //                                                     child: Container(
+                      //           //                                                       margin: EdgeInsets.only(right: 10),
+                      //           //                                                       alignment: Alignment.topRight,
+                      //           //                                                       child: Container(
+                      //           //                                                           decoration: BoxDecoration(
+                      //           //                                                               // color: Colors.black.withOpacity(0.65),
+                      //           //                                                               gradient: LinearGradient(
+                      //           //                                                                 begin: Alignment.centerLeft,
+                      //           //                                                                 end: Alignment.centerRight,
+                      //           //                                                                 // stops: [0.1, 0.5, 0.7, 0.9],
+                      //           //                                                                 colors: [
+                      //           //                                                                   HexColor("#36393E").withOpacity(1),
+                      //           //                                                                   HexColor("#020204").withOpacity(1),
+                      //           //                                                                 ],
+                      //           //                                                               ),
+                      //           //                                                               boxShadow: [BoxShadow(color: HexColor('#04060F'), offset: Offset(0, 3), blurRadius: 5)],
+                      //           //                                                               borderRadius: BorderRadius.circular(20)),
+                      //           //                                                           child: Padding(
+                      //           //                                                             padding: const EdgeInsets.all(4.0),
+                      //           //                                                             child: Icon(
+                      //           //                                                               Icons.cancel_outlined,
+                      //           //                                                               size: 13,
+                      //           //                                                               color: ColorUtils.primary_grey,
+                      //           //                                                             ),
+                      //           //                                                           )),
+                      //           //                                                     ),
+                      //           //                                                   )
+                      //           //                                                 ],
+                      //           //                                               ),
+                      //           //                                             ],
+                      //           //                                           )),
+                      //           //                                 );
+                      //           //                               },
+                      //           //                             );
+                      //           //                           },
+                      //           //                           title: Text('Title',
+                      //           //                               style: FontStyleUtility.h14(
+                      //           //                                   fontColor: ColorUtils
+                      //           //                                       .primary_grey,
+                      //           //                                   family: 'PR')),
+                      //           //                           trailing: const Icon(
+                      //           //                               Icons
+                      //           //                                   .arrow_forward_ios,
+                      //           //                               size: 15,
+                      //           //                               color: Colors.white),
+                      //           //                         ),
+                      //           //                         ListTile(
+                      //           //                           title: Text(
+                      //           //                             'Repeat',
+                      //           //                             style: FontStyleUtility.h14(
+                      //           //                                 fontColor: ColorUtils
+                      //           //                                     .primary_gold,
+                      //           //                                 family: 'PR'),
+                      //           //                           ),
+                      //           //                           trailing: const Icon(
+                      //           //                             Icons.arrow_forward_ios,
+                      //           //                             size: 15,
+                      //           //                             color: Colors.white,
+                      //           //                           ),
+                      //           //                         ),
+                      //           //                         GestureDetector(
+                      //           //                           onTap: () {
+                      //           //                             print('object');
+                      //           //
+                      //           //                             showDialog(
+                      //           //                               context: context,
+                      //           //                               builder: (BuildContext
+                      //           //                                   context) {
+                      //           //                                 double width =
+                      //           //                                     MediaQuery.of(
+                      //           //                                             context)
+                      //           //                                         .size
+                      //           //                                         .width;
+                      //           //                                 double height =
+                      //           //                                     MediaQuery.of(
+                      //           //                                             context)
+                      //           //                                         .size
+                      //           //                                         .height;
+                      //           //                                 return AlertDialog(
+                      //           //                                     backgroundColor:
+                      //           //                                         Colors
+                      //           //                                             .transparent,
+                      //           //                                     contentPadding:
+                      //           //                                         EdgeInsets
+                      //           //                                             .zero,
+                      //           //                                     elevation: 0.0,
+                      //           //                                     // title: Center(child: Text("Evaluation our APP")),
+                      //           //                                     content: Column(
+                      //           //                                       mainAxisAlignment:
+                      //           //                                           MainAxisAlignment
+                      //           //                                               .center,
+                      //           //                                       children: [
+                      //           //                                         Stack(
+                      //           //                                           children: [
+                      //           //                                             Container(
+                      //           //                                               // height: 150,
+                      //           //                                               // height: double.maxFinite,
+                      //           //                                               height:
+                      //           //                                                   MediaQuery.of(context).size.height / 4,
+                      //           //                                               width:
+                      //           //                                                   double.maxFinite,
+                      //           //                                               decoration:
+                      //           //                                                   BoxDecoration(
+                      //           //                                                       // color: Colors.black.withOpacity(0.65),
+                      //           //                                                       gradient:
+                      //           //                                                           LinearGradient(
+                      //           //                                                         begin: Alignment.centerLeft,
+                      //           //                                                         end: Alignment.centerRight,
+                      //           //                                                         // stops: [0.1, 0.5, 0.7, 0.9],
+                      //           //                                                         colors: [
+                      //           //                                                           HexColor("#020204").withOpacity(1),
+                      //           //                                                           HexColor("#36393E").withOpacity(1),
+                      //           //                                                         ],
+                      //           //                                                       ),
+                      //           //                                                       boxShadow: [
+                      //           //                                                         BoxShadow(color: HexColor('#04060F'), offset: Offset(10, 10), blurRadius: 10)
+                      //           //                                                       ],
+                      //           //                                                       borderRadius: BorderRadius.circular(20)),
+                      //           //                                               margin: EdgeInsets.symmetric(
+                      //           //                                                   horizontal: 10,
+                      //           //                                                   vertical: 10),
+                      //           //                                               // height: 122,
+                      //           //                                               // width: 133,
+                      //           //                                               // padding: const EdgeInsets.all(8.0),
+                      //           //                                               child:
+                      //           //                                                   Column(
+                      //           //                                                 mainAxisAlignment:
+                      //           //                                                     MainAxisAlignment.center,
+                      //           //                                                 children: [
+                      //           //                                                   Container(
+                      //           //                                                     // color: Colors.white,
+                      //           //                                                     alignment: Alignment.center,
+                      //           //                                                     child: ListView.builder(
+                      //           //                                                       padding: EdgeInsets.only(bottom: 0),
+                      //           //
+                      //           //                                                       // physics: NeverScrollableScrollPhysics(),
+                      //           //                                                       itemCount: list_alarm.length,
+                      //           //                                                       shrinkWrap: true,
+                      //           //                                                       itemBuilder: (BuildContext context, int index) {
+                      //           //                                                         return GestureDetector(
+                      //           //                                                           onTap: () {
+                      //           //                                                             setState(() {
+                      //           //                                                               Selected_sound = list_alarm[index];
+                      //           //                                                               print("method_selected $Selected_sound");
+                      //           //                                                             });
+                      //           //                                                             Navigator.pop(context);
+                      //           //                                                           },
+                      //           //                                                           child: Container(
+                      //           //                                                             margin: EdgeInsets.symmetric(vertical: 8.5),
+                      //           //                                                             alignment: Alignment.center,
+                      //           //                                                             child: Text(
+                      //           //                                                               list_alarm[index],
+                      //           //                                                               style: FontStyleUtility.h15(fontColor: ColorUtils.primary_grey, family: 'PM'),
+                      //           //                                                             ),
+                      //           //                                                           ),
+                      //           //                                                         );
+                      //           //                                                       },
+                      //           //                                                     ),
+                      //           //                                                   ),
+                      //           //                                                 ],
+                      //           //                                               ),
+                      //           //                                             ),
+                      //           //                                             GestureDetector(
+                      //           //                                               onTap:
+                      //           //                                                   () {
+                      //           //                                                 Navigator.pop(context);
+                      //           //                                               },
+                      //           //                                               child:
+                      //           //                                                   Container(
+                      //           //                                                 margin:
+                      //           //                                                     EdgeInsets.only(right: 0),
+                      //           //                                                 alignment:
+                      //           //                                                     Alignment.topRight,
+                      //           //                                                 child: Container(
+                      //           //                                                     decoration: BoxDecoration(
+                      //           //                                                         // color: Colors.black.withOpacity(0.65),
+                      //           //                                                         gradient: LinearGradient(
+                      //           //                                                           begin: Alignment.centerLeft,
+                      //           //                                                           end: Alignment.centerRight,
+                      //           //                                                           // stops: [0.1, 0.5, 0.7, 0.9],
+                      //           //                                                           colors: [
+                      //           //                                                             HexColor("#36393E").withOpacity(1),
+                      //           //                                                             HexColor("#020204").withOpacity(1),
+                      //           //                                                           ],
+                      //           //                                                         ),
+                      //           //                                                         boxShadow: [BoxShadow(color: HexColor('#04060F'), offset: Offset(0, 3), blurRadius: 5)],
+                      //           //                                                         borderRadius: BorderRadius.circular(20)),
+                      //           //                                                     child: Padding(
+                      //           //                                                       padding: const EdgeInsets.all(4.0),
+                      //           //                                                       child: Icon(
+                      //           //                                                         Icons.cancel_outlined,
+                      //           //                                                         size: 20,
+                      //           //                                                         color: ColorUtils.primary_grey,
+                      //           //                                                       ),
+                      //           //                                                     )),
+                      //           //                                               ),
+                      //           //                                             )
+                      //           //                                           ],
+                      //           //                                         ),
+                      //           //                                       ],
+                      //           //                                     ));
+                      //           //                               },
+                      //           //                             );
+                      //           //                           },
+                      //           //                           child: ListTile(
+                      //           //                             title: Text('Sound',
+                      //           //                                 style: FontStyleUtility.h14(
+                      //           //                                     fontColor:
+                      //           //                                         ColorUtils
+                      //           //                                             .primary_gold,
+                      //           //                                     family: 'PR')),
+                      //           //                             trailing: const Icon(
+                      //           //                                 Icons
+                      //           //                                     .arrow_forward_ios,
+                      //           //                                 size: 15,
+                      //           //                                 color:
+                      //           //                                     Colors.white),
+                      //           //                           ),
+                      //           //                         ),
+                      //           //                         GestureDetector(
+                      //           //                           onTap: () async {
+                      //           //                             if (Alarm_title
+                      //           //                                 .text.isEmpty) {
+                      //           //                               CommonWidget()
+                      //           //                                   .showErrorToaster(
+                      //           //                                       msg:
+                      //           //                                           "Enter Alarm title");
+                      //           //                               return;
+                      //           //                             } else {
+                      //           //                               await onSaveAlarm();
+                      //           //                             }
+                      //           //                           },
+                      //           //                           child: Container(
+                      //           //                             width: MediaQuery.of(
+                      //           //                                         context)
+                      //           //                                     .size
+                      //           //                                     .width /
+                      //           //                                 3,
+                      //           //                             decoration: BoxDecoration(
+                      //           //                                 borderRadius:
+                      //           //                                     BorderRadius
+                      //           //                                         .circular(
+                      //           //                                             30),
+                      //           //                                 border: Border.all(
+                      //           //                                     color: ColorUtils
+                      //           //                                         .primary_grey,
+                      //           //                                     width: 1)),
+                      //           //                             child: Padding(
+                      //           //                               padding:
+                      //           //                                   const EdgeInsets
+                      //           //                                           .symmetric(
+                      //           //                                       vertical:
+                      //           //                                           12.0,
+                      //           //                                       horizontal:
+                      //           //                                           8),
+                      //           //                               child: Row(
+                      //           //                                 mainAxisAlignment:
+                      //           //                                     MainAxisAlignment
+                      //           //                                         .center,
+                      //           //                                 children: [
+                      //           //                                   const Icon(
+                      //           //                                     Icons.alarm,
+                      //           //                                     color: Colors
+                      //           //                                         .white,
+                      //           //                                     size: 25,
+                      //           //                                   ),
+                      //           //                                   const SizedBox(
+                      //           //                                     width: 10,
+                      //           //                                   ),
+                      //           //                                   Text(
+                      //           //                                     'Save',
+                      //           //                                     style: FontStyleUtility.h16(
+                      //           //                                         fontColor:
+                      //           //                                             ColorUtils
+                      //           //                                                 .primary_gold,
+                      //           //                                         family:
+                      //           //                                             'PR'),
+                      //           //                                   ),
+                      //           //                                 ],
+                      //           //                               ),
+                      //           //                             ),
+                      //           //                           ),
+                      //           //                         )
+                      //           //                       ],
+                      //           //                     ),
+                      //           //                   ),
+                      //           //                 );
+                      //           //               },
+                      //           //             );
+                      //           //           },
+                      //           //         );
+                      //           //         // scheduleAlarm();
+                      //           //       },
+                      //           //       child: Container(
+                      //           //         decoration: BoxDecoration(
+                      //           //             // color: Colors.black.withOpacity(0.65),
+                      //           //             gradient: LinearGradient(
+                      //           //               begin: Alignment.centerLeft,
+                      //           //               end: Alignment.centerRight,
+                      //           //               // stops: [0.1, 0.5, 0.7, 0.9],
+                      //           //               colors: [
+                      //           //                 HexColor("#36393E").withOpacity(1),
+                      //           //                 HexColor("#020204").withOpacity(1),
+                      //           //               ],
+                      //           //             ),
+                      //           //             boxShadow: [
+                      //           //               BoxShadow(
+                      //           //                   color: HexColor('#04060F'),
+                      //           //                   offset: const Offset(10, 10),
+                      //           //                   blurRadius: 20)
+                      //           //             ],
+                      //           //             borderRadius:
+                      //           //                 BorderRadius.circular(20)),
+                      //           //         child: Padding(
+                      //           //           padding: const EdgeInsets.all(0.0),
+                      //           //           child: Icon(
+                      //           //             Icons.add_circle_outline,
+                      //           //             color: ColorUtils.primary_grey,
+                      //           //           ),
+                      //           //         ),
+                      //           //       )),
+                      //           // ),
+                      //         ),
+                      //       ),
+                      //       // Container(
+                      //       //   padding: const EdgeInsets.symmetric(
+                      //       //       horizontal: 16, vertical: 0),
+                      //       //   child: Row(
+                      //       //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //       //     children: [
+                      //       //       Container(
+                      //       //         margin: EdgeInsets.only(left: 16),
+                      //       //         child: Text(
+                      //       //           "Add Alarm",
+                      //       //           style: FontStyleUtility.h16(
+                      //       //               fontColor: ColorUtils.primary_gold,
+                      //       //               family: 'PM'),
+                      //       //         ),
+                      //       //       ),
+                      //       //       FlatButton(
+                      //       //           padding: const EdgeInsets.symmetric(
+                      //       //               horizontal: 32, vertical: 10),
+                      //       //           onPressed: () {
+                      //       //             _alarmTimeString = DateFormat('HH:mm')
+                      //       //                 .format(selectedDate);
+                      //       //             showModalBottomSheet(
+                      //       //               useRootNavigator: true,
+                      //       //               context: context,
+                      //       //               clipBehavior: Clip.antiAlias,
+                      //       //               shape: const RoundedRectangleBorder(
+                      //       //                 borderRadius: BorderRadius.vertical(
+                      //       //                   top: Radius.circular(24),
+                      //       //                 ),
+                      //       //               ),
+                      //       //               builder: (context) {
+                      //       //                 return StatefulBuilder(
+                      //       //                   builder: (context, setModalState) {
+                      //       //                     return Container(
+                      //       //                       decoration: BoxDecoration(
+                      //       //                           // color: Colors.black.withOpacity(0.65),
+                      //       //                           gradient: LinearGradient(
+                      //       //                             begin:
+                      //       //                                 Alignment.centerLeft,
+                      //       //                             end:
+                      //       //                                 Alignment.centerRight,
+                      //       //                             // stops: [0.1, 0.5, 0.7, 0.9],
+                      //       //                             colors: [
+                      //       //                               HexColor("#020204")
+                      //       //                                   .withOpacity(1),
+                      //       //                               HexColor("#36393E")
+                      //       //                                   .withOpacity(1),
+                      //       //                             ],
+                      //       //                           ),
+                      //       //                           boxShadow: [
+                      //       //                             BoxShadow(
+                      //       //                                 color: HexColor(
+                      //       //                                     '#04060F'),
+                      //       //                                 offset: const Offset(
+                      //       //                                     -10, 10),
+                      //       //                                 blurRadius: 20)
+                      //       //                           ],
+                      //       //                           borderRadius:
+                      //       //                               const BorderRadius.only(
+                      //       //                                   topLeft:
+                      //       //                                       Radius.circular(
+                      //       //                                           20),
+                      //       //                                   topRight:
+                      //       //                                       Radius.circular(
+                      //       //                                           20))),
+                      //       //                       padding:
+                      //       //                           const EdgeInsets.all(32),
+                      //       //                       child: SingleChildScrollView(
+                      //       //                         child: Column(
+                      //       //                           children: [
+                      //       //                             // FlatButton(
+                      //       //                             //   onPressed:
+                      //       //                             //       () async {
+                      //       //                             //     // var selectedTime = await showTimePicker(
+                      //       //                             //     //   context: context,
+                      //       //                             //     //   // initialEntryMode: DatePickerEntryMode.calendarOnly,<- this
+                      //       //                             //     //   initialEntryMode: TimePickerEntryMode.dial,
+                      //       //                             //     //   initialTime: TimeOfDay.now(),
+                      //       //                             //     //   builder: (context, child) {
+                      //       //                             //     //     return Theme(
+                      //       //                             //     //       data: Theme.of(
+                      //       //                             //     //               context)
+                      //       //                             //     //           .copyWith(
+                      //       //                             //     //         colorScheme:
+                      //       //                             //     //             ColorScheme
+                      //       //                             //     //                 .dark(
+                      //       //                             //     //           primary:
+                      //       //                             //     //               Colors.black,
+                      //       //                             //     //           onPrimary:
+                      //       //                             //     //               Colors.white,
+                      //       //                             //     //           surface:
+                      //       //                             //     //               ColorUtils.primary_gold,
+                      //       //                             //     //           // onPrimary: Colors.black, // <-- SEE HERE
+                      //       //                             //     //           onSurface:
+                      //       //                             //     //               Colors.black,
+                      //       //                             //     //         ),
+                      //       //                             //     //         dialogBackgroundColor:
+                      //       //                             //     //             ColorUtils
+                      //       //                             //     //                 .primary_gold,
+                      //       //                             //     //         textButtonTheme:
+                      //       //                             //     //             TextButtonThemeData(
+                      //       //                             //     //           style: TextButton
+                      //       //                             //     //               .styleFrom(
+                      //       //                             //     //             primary:
+                      //       //                             //     //                 Colors.black, // button text color
+                      //       //                             //     //           ),
+                      //       //                             //     //         ),
+                      //       //                             //     //       ),
+                      //       //                             //     //       child:
+                      //       //                             //     //           child!,
+                      //       //                             //     //     );
+                      //       //                             //     //   },
+                      //       //                             //     // );
+                      //       //                             //     // if (selectedTime !=
+                      //       //                             //     //     null) {
+                      //       //                             //     //   final now =
+                      //       //                             //     //       DateTime
+                      //       //                             //     //           .now();
+                      //       //                             //     //   var selectedDateTime = DateTime(
+                      //       //                             //     //       now.year,
+                      //       //                             //     //       now.month,
+                      //       //                             //     //       now.day,
+                      //       //                             //     //       selectedTime
+                      //       //                             //     //           .hour,
+                      //       //                             //     //       selectedTime
+                      //       //                             //     //           .minute);
+                      //       //                             //     //   _alarmTime =
+                      //       //                             //     //       selectedDateTime;
+                      //       //                             //     //   setModalState(
+                      //       //                             //     //       () {
+                      //       //                             //     //     _alarmTimeString =
+                      //       //                             //     //         DateFormat(
+                      //       //                             //     //                 'HH:mm')
+                      //       //                             //     //             .format(
+                      //       //                             //     //                 selectedDateTime);
+                      //       //                             //     //   });
+                      //       //                             //     // }
+                      //       //                             //   },
+                      //       //                             //   child: Text(
+                      //       //                             //       _alarmTimeString!,
+                      //       //                             //       style: FontStyleUtility.h35(
+                      //       //                             //           fontColor:
+                      //       //                             //               ColorUtils
+                      //       //                             //                   .primary_gold,
+                      //       //                             //           family:
+                      //       //                             //               'PM')),
+                      //       //                             // ),
+                      //       //                             Container(
+                      //       //                               height: 150,
+                      //       //                               decoration:
+                      //       //                                   BoxDecoration(
+                      //       //                                       borderRadius:
+                      //       //                                           BorderRadius
+                      //       //                                               .circular(
+                      //       //                                                   15),
+                      //       //                                       gradient: LinearGradient(
+                      //       //                                         begin: Alignment
+                      //       //                                             .topCenter,
+                      //       //                                         end: Alignment
+                      //       //                                             .bottomCenter,
+                      //       //                                         colors: [
+                      //       //                                           HexColor(
+                      //       //                                                   "#000000")
+                      //       //                                               .withOpacity(
+                      //       //                                                   1),
+                      //       //                                           HexColor(
+                      //       //                                                   "#04060F")
+                      //       //                                               .withOpacity(
+                      //       //                                                   1),
+                      //       //                                           HexColor(
+                      //       //                                                   "#000000")
+                      //       //                                               .withOpacity(
+                      //       //                                                   1),
+                      //       //                                         ],
+                      //       //                                       ),
+                      //       //                                       boxShadow: [
+                      //       //                                     BoxShadow(
+                      //       //                                         color: HexColor(
+                      //       //                                             '#04060F'),
+                      //       //                                         offset:
+                      //       //                                             Offset(
+                      //       //                                                 3, 3),
+                      //       //                                         blurRadius:
+                      //       //                                             10)
+                      //       //                                   ]),
+                      //       //                               child: Stack(
+                      //       //                                 children: [
+                      //       //                                   CupertinoTheme(
+                      //       //                                     data:
+                      //       //                                         CupertinoThemeData(
+                      //       //                                       brightness:
+                      //       //                                           Brightness
+                      //       //                                               .dark,
+                      //       //                                     ),
+                      //       //                                     child:
+                      //       //                                         CupertinoDatePicker(
+                      //       //                                       // use24hFormat: true,
+                      //       //                                       mode:
+                      //       //                                           CupertinoDatePickerMode
+                      //       //                                               .time,
+                      //       //                                       onDateTimeChanged:
+                      //       //                                           (DateTime
+                      //       //                                               value) {
+                      //       //                                         selected_time =
+                      //       //                                             value;
+                      //       //                                         print(
+                      //       //                                             "${value.hour}:${value.minute}");
+                      //       //
+                      //       //                                         if (selected_time !=
+                      //       //                                             null) {
+                      //       //                                           final now =
+                      //       //                                               DateTime
+                      //       //                                                   .now();
+                      //       //                                           var selectedDateTime = DateTime(
+                      //       //                                               now
+                      //       //                                                   .year,
+                      //       //                                               now
+                      //       //                                                   .month,
+                      //       //                                               now.day,
+                      //       //                                               selected_time
+                      //       //                                                   .hour,
+                      //       //                                               selected_time
+                      //       //                                                   .minute);
+                      //       //                                           _alarmTime =
+                      //       //                                               selectedDateTime;
+                      //       //                                           setModalState(
+                      //       //                                               () {
+                      //       //                                             _alarmTimeString = DateFormat(
+                      //       //                                                     'HH:mm')
+                      //       //                                                 .format(
+                      //       //                                                     selectedDateTime);
+                      //       //                                           });
+                      //       //                                         }
+                      //       //                                       },
+                      //       //                                     ),
+                      //       //                                   ),
+                      //       //                                 ],
+                      //       //                               ),
+                      //       //                             ),
+                      //       //
+                      //       //                             ListTile(
+                      //       //                               onTap: () {
+                      //       //                                 showDialog(
+                      //       //                                   context: context,
+                      //       //                                   builder:
+                      //       //                                       (BuildContext
+                      //       //                                           context) {
+                      //       //                                     double width =
+                      //       //                                         MediaQuery.of(
+                      //       //                                                 context)
+                      //       //                                             .size
+                      //       //                                             .width;
+                      //       //                                     double height =
+                      //       //                                         MediaQuery.of(
+                      //       //                                                 context)
+                      //       //                                             .size
+                      //       //                                             .height;
+                      //       //                                     return BackdropFilter(
+                      //       //                                       filter: ImageFilter
+                      //       //                                           .blur(
+                      //       //                                               sigmaX:
+                      //       //                                                   10,
+                      //       //                                               sigmaY:
+                      //       //                                                   10),
+                      //       //                                       child:
+                      //       //                                           AlertDialog(
+                      //       //                                               backgroundColor:
+                      //       //                                                   Colors
+                      //       //                                                       .transparent,
+                      //       //                                               contentPadding:
+                      //       //                                                   EdgeInsets
+                      //       //                                                       .zero,
+                      //       //                                               elevation:
+                      //       //                                                   0.0,
+                      //       //                                               // title: Center(child: Text("Evaluation our APP")),
+                      //       //                                               content:
+                      //       //                                                   Column(
+                      //       //                                                 mainAxisAlignment:
+                      //       //                                                     MainAxisAlignment.center,
+                      //       //                                                 children: [
+                      //       //                                                   Stack(
+                      //       //                                                     children: [
+                      //       //                                                       Padding(
+                      //       //                                                         padding: const EdgeInsets.all(8.0),
+                      //       //                                                         child: Container(
+                      //       //                                                           decoration:
+                      //       //                                                               BoxDecoration(
+                      //       //                                                                   // color: Colors.black.withOpacity(0.65),
+                      //       //                                                                   gradient:
+                      //       //                                                                       LinearGradient(
+                      //       //                                                                     begin: Alignment.centerLeft,
+                      //       //                                                                     end: Alignment.centerRight,
+                      //       //                                                                     // stops: [0.1, 0.5, 0.7, 0.9],
+                      //       //                                                                     colors: [
+                      //       //                                                                       HexColor("#020204").withOpacity(1),
+                      //       //                                                                       HexColor("#36393E").withOpacity(1),
+                      //       //                                                                     ],
+                      //       //                                                                   ),
+                      //       //                                                                   boxShadow: [
+                      //       //                                                                     BoxShadow(color: HexColor('#04060F'), offset: Offset(10, 10), blurRadius: 10)
+                      //       //                                                                   ],
+                      //       //                                                                   borderRadius: BorderRadius.circular(15)),
+                      //       //                                                           child: Align(
+                      //       //                                                               alignment: Alignment.center,
+                      //       //                                                               child: Padding(
+                      //       //                                                                 padding: const EdgeInsets.all(8.0),
+                      //       //                                                                 child: Column(
+                      //       //                                                                   children: [
+                      //       //                                                                     SizedBox(
+                      //       //                                                                       height: 0,
+                      //       //                                                                     ),
+                      //       //
+                      //       //                                                                     Column(
+                      //       //                                                                       crossAxisAlignment: CrossAxisAlignment.start,
+                      //       //                                                                       children: [
+                      //       //                                                                         Container(
+                      //       //                                                                           margin: EdgeInsets.only(left: 18),
+                      //       //                                                                           child: Text('Title', style: FontStyleUtility.h14(fontColor: ColorUtils.primary_grey, family: 'Pr')),
+                      //       //                                                                         ),
+                      //       //                                                                         SizedBox(
+                      //       //                                                                           height: 11,
+                      //       //                                                                         ),
+                      //       //                                                                         Container(
+                      //       //                                                                           margin: EdgeInsets.symmetric(horizontal: 10),
+                      //       //                                                                           // width: 300,
+                      //       //                                                                           decoration: BoxDecoration(
+                      //       //                                                                               // color: Colors.black.withOpacity(0.65),
+                      //       //                                                                               gradient: LinearGradient(
+                      //       //                                                                                 begin: Alignment.centerLeft,
+                      //       //                                                                                 end: Alignment.centerRight,
+                      //       //                                                                                 // stops: [0.1, 0.5, 0.7, 0.9],
+                      //       //                                                                                 colors: [
+                      //       //                                                                                   HexColor("#36393E").withOpacity(1),
+                      //       //                                                                                   HexColor("#020204").withOpacity(1),
+                      //       //                                                                                 ],
+                      //       //                                                                               ),
+                      //       //                                                                               boxShadow: [BoxShadow(color: HexColor('#04060F'), offset: Offset(10, 10), blurRadius: 10)],
+                      //       //                                                                               borderRadius: BorderRadius.circular(20)),
+                      //       //
+                      //       //                                                                           child: TextFormField(
+                      //       //                                                                             maxLength: 150,
+                      //       //                                                                             decoration: InputDecoration(
+                      //       //                                                                               contentPadding: EdgeInsets.only(left: 20, top: 14, bottom: 14),
+                      //       //                                                                               alignLabelWithHint: false,
+                      //       //                                                                               isDense: true,
+                      //       //                                                                               hintText: 'Add alarm title',
+                      //       //                                                                               counterStyle: TextStyle(
+                      //       //                                                                                 height: double.minPositive,
+                      //       //                                                                               ),
+                      //       //                                                                               counterText: "",
+                      //       //                                                                               filled: true,
+                      //       //                                                                               border: InputBorder.none,
+                      //       //                                                                               enabledBorder: const OutlineInputBorder(
+                      //       //                                                                                 borderSide: BorderSide(color: Colors.transparent, width: 1),
+                      //       //                                                                                 borderRadius: BorderRadius.all(Radius.circular(10)),
+                      //       //                                                                               ),
+                      //       //                                                                               hintStyle: FontStyleUtility.h14(fontColor: HexColor('#CBCBCB'), family: 'PR'),
+                      //       //                                                                             ),
+                      //       //                                                                             style: FontStyleUtility.h14(fontColor: ColorUtils.primary_grey, family: 'PR'),
+                      //       //                                                                             controller: Alarm_title,
+                      //       //                                                                             keyboardType: TextInputType.text,
+                      //       //                                                                           ),
+                      //       //                                                                         ),
+                      //       //                                                                       ],
+                      //       //                                                                     ),
+                      //       //                                                                     SizedBox(
+                      //       //                                                                       height: 10,
+                      //       //                                                                     ),
+                      //       //                                                                     GestureDetector(
+                      //       //                                                                       onTap: () {
+                      //       //                                                                         setState(() {
+                      //       //                                                                           Alarm_title_list.add(Alarm_title.text);
+                      //       //                                                                           Navigator.pop(context);
+                      //       //                                                                         });
+                      //       //                                                                       },
+                      //       //                                                                       child: Container(
+                      //       //                                                                         alignment: Alignment.topRight,
+                      //       //                                                                         child: Text(
+                      //       //                                                                           'Add',
+                      //       //                                                                           style: FontStyleUtility.h12(fontColor: ColorUtils.primary_grey, family: 'PR'),
+                      //       //                                                                         ),
+                      //       //                                                                       ),
+                      //       //                                                                     )
+                      //       //                                                                     // common_button_gold(
+                      //       //                                                                     //   onTap: () {
+                      //       //                                                                     //     Get
+                      //       //                                                                     //         .to(
+                      //       //                                                                     //         DashboardScreen());
+                      //       //                                                                     //   },
+                      //       //                                                                     //   title_text: 'Go to Dashboard',
+                      //       //                                                                     // ),
+                      //       //                                                                   ],
+                      //       //                                                                 ),
+                      //       //                                                               )),
+                      //       //                                                         ),
+                      //       //                                                       ),
+                      //       //                                                       GestureDetector(
+                      //       //                                                         onTap: () {
+                      //       //                                                           Navigator.pop(context);
+                      //       //                                                         },
+                      //       //                                                         child: Container(
+                      //       //                                                           margin: EdgeInsets.only(right: 10),
+                      //       //                                                           alignment: Alignment.topRight,
+                      //       //                                                           child: Container(
+                      //       //                                                               decoration: BoxDecoration(
+                      //       //                                                                   // color: Colors.black.withOpacity(0.65),
+                      //       //                                                                   gradient: LinearGradient(
+                      //       //                                                                     begin: Alignment.centerLeft,
+                      //       //                                                                     end: Alignment.centerRight,
+                      //       //                                                                     // stops: [0.1, 0.5, 0.7, 0.9],
+                      //       //                                                                     colors: [
+                      //       //                                                                       HexColor("#36393E").withOpacity(1),
+                      //       //                                                                       HexColor("#020204").withOpacity(1),
+                      //       //                                                                     ],
+                      //       //                                                                   ),
+                      //       //                                                                   boxShadow: [BoxShadow(color: HexColor('#04060F'), offset: Offset(0, 3), blurRadius: 5)],
+                      //       //                                                                   borderRadius: BorderRadius.circular(20)),
+                      //       //                                                               child: Padding(
+                      //       //                                                                 padding: const EdgeInsets.all(4.0),
+                      //       //                                                                 child: Icon(
+                      //       //                                                                   Icons.cancel_outlined,
+                      //       //                                                                   size: 13,
+                      //       //                                                                   color: ColorUtils.primary_grey,
+                      //       //                                                                 ),
+                      //       //                                                               )),
+                      //       //                                                         ),
+                      //       //                                                       )
+                      //       //                                                     ],
+                      //       //                                                   ),
+                      //       //                                                 ],
+                      //       //                                               )),
+                      //       //                                     );
+                      //       //                                   },
+                      //       //                                 );
+                      //       //                               },
+                      //       //                               title: Text('Title',
+                      //       //                                   style: FontStyleUtility.h14(
+                      //       //                                       fontColor:
+                      //       //                                           ColorUtils
+                      //       //                                               .primary_grey,
+                      //       //                                       family: 'PR')),
+                      //       //                               trailing: const Icon(
+                      //       //                                   Icons
+                      //       //                                       .arrow_forward_ios,
+                      //       //                                   size: 15,
+                      //       //                                   color:
+                      //       //                                       Colors.white),
+                      //       //                             ),
+                      //       //                             ListTile(
+                      //       //                               title: Text(
+                      //       //                                 'Repeat',
+                      //       //                                 style: FontStyleUtility.h14(
+                      //       //                                     fontColor: ColorUtils
+                      //       //                                         .primary_gold,
+                      //       //                                     family: 'PR'),
+                      //       //                               ),
+                      //       //                               trailing: const Icon(
+                      //       //                                 Icons
+                      //       //                                     .arrow_forward_ios,
+                      //       //                                 size: 15,
+                      //       //                                 color: Colors.white,
+                      //       //                               ),
+                      //       //                             ),
+                      //       //                             GestureDetector(
+                      //       //                               onTap: () {
+                      //       //                                 print('object');
+                      //       //
+                      //       //                                 showDialog(
+                      //       //                                   context: context,
+                      //       //                                   builder:
+                      //       //                                       (BuildContext
+                      //       //                                           context) {
+                      //       //                                     double width =
+                      //       //                                         MediaQuery.of(
+                      //       //                                                 context)
+                      //       //                                             .size
+                      //       //                                             .width;
+                      //       //                                     double height =
+                      //       //                                         MediaQuery.of(
+                      //       //                                                 context)
+                      //       //                                             .size
+                      //       //                                             .height;
+                      //       //                                     return AlertDialog(
+                      //       //                                         backgroundColor:
+                      //       //                                             Colors
+                      //       //                                                 .transparent,
+                      //       //                                         contentPadding:
+                      //       //                                             EdgeInsets
+                      //       //                                                 .zero,
+                      //       //                                         elevation:
+                      //       //                                             0.0,
+                      //       //                                         // title: Center(child: Text("Evaluation our APP")),
+                      //       //                                         content:
+                      //       //                                             Column(
+                      //       //                                           mainAxisAlignment:
+                      //       //                                               MainAxisAlignment
+                      //       //                                                   .center,
+                      //       //                                           children: [
+                      //       //                                             Stack(
+                      //       //                                               children: [
+                      //       //                                                 Container(
+                      //       //                                                   // height: 150,
+                      //       //                                                   // height: double.maxFinite,
+                      //       //                                                   height:
+                      //       //                                                       MediaQuery.of(context).size.height / 4,
+                      //       //                                                   width:
+                      //       //                                                       double.maxFinite,
+                      //       //                                                   decoration:
+                      //       //                                                       BoxDecoration(
+                      //       //                                                           // color: Colors.black.withOpacity(0.65),
+                      //       //                                                           gradient:
+                      //       //                                                               LinearGradient(
+                      //       //                                                             begin: Alignment.centerLeft,
+                      //       //                                                             end: Alignment.centerRight,
+                      //       //                                                             // stops: [0.1, 0.5, 0.7, 0.9],
+                      //       //                                                             colors: [
+                      //       //                                                               HexColor("#020204").withOpacity(1),
+                      //       //                                                               HexColor("#36393E").withOpacity(1),
+                      //       //                                                             ],
+                      //       //                                                           ),
+                      //       //                                                           boxShadow: [
+                      //       //                                                             BoxShadow(color: HexColor('#04060F'), offset: Offset(10, 10), blurRadius: 10)
+                      //       //                                                           ],
+                      //       //                                                           borderRadius: BorderRadius.circular(20)),
+                      //       //                                                   margin:
+                      //       //                                                       EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                      //       //                                                   // height: 122,
+                      //       //                                                   // width: 133,
+                      //       //                                                   // padding: const EdgeInsets.all(8.0),
+                      //       //                                                   child:
+                      //       //                                                       Column(
+                      //       //                                                     mainAxisAlignment: MainAxisAlignment.center,
+                      //       //                                                     children: [
+                      //       //                                                       Container(
+                      //       //                                                         // color: Colors.white,
+                      //       //                                                         alignment: Alignment.center,
+                      //       //                                                         child: ListView.builder(
+                      //       //                                                           padding: EdgeInsets.only(bottom: 0),
+                      //       //
+                      //       //                                                           // physics: NeverScrollableScrollPhysics(),
+                      //       //                                                           itemCount: list_alarm.length,
+                      //       //                                                           shrinkWrap: true,
+                      //       //                                                           itemBuilder: (BuildContext context, int index) {
+                      //       //                                                             return GestureDetector(
+                      //       //                                                               onTap: () {
+                      //       //                                                                 setState(() {
+                      //       //                                                                   Selected_sound = list_alarm[index];
+                      //       //                                                                   print("method_selected $Selected_sound");
+                      //       //                                                                 });
+                      //       //                                                                 Navigator.pop(context);
+                      //       //                                                               },
+                      //       //                                                               child: Container(
+                      //       //                                                                 margin: EdgeInsets.symmetric(vertical: 8.5),
+                      //       //                                                                 alignment: Alignment.center,
+                      //       //                                                                 child: Text(
+                      //       //                                                                   list_alarm[index],
+                      //       //                                                                   style: FontStyleUtility.h15(fontColor: ColorUtils.primary_grey, family: 'PM'),
+                      //       //                                                                 ),
+                      //       //                                                               ),
+                      //       //                                                             );
+                      //       //                                                           },
+                      //       //                                                         ),
+                      //       //                                                       ),
+                      //       //                                                     ],
+                      //       //                                                   ),
+                      //       //                                                 ),
+                      //       //                                                 GestureDetector(
+                      //       //                                                   onTap:
+                      //       //                                                       () {
+                      //       //                                                     Navigator.pop(context);
+                      //       //                                                   },
+                      //       //                                                   child:
+                      //       //                                                       Container(
+                      //       //                                                     margin: EdgeInsets.only(right: 0),
+                      //       //                                                     alignment: Alignment.topRight,
+                      //       //                                                     child: Container(
+                      //       //                                                         decoration: BoxDecoration(
+                      //       //                                                             // color: Colors.black.withOpacity(0.65),
+                      //       //                                                             gradient: LinearGradient(
+                      //       //                                                               begin: Alignment.centerLeft,
+                      //       //                                                               end: Alignment.centerRight,
+                      //       //                                                               // stops: [0.1, 0.5, 0.7, 0.9],
+                      //       //                                                               colors: [
+                      //       //                                                                 HexColor("#36393E").withOpacity(1),
+                      //       //                                                                 HexColor("#020204").withOpacity(1),
+                      //       //                                                               ],
+                      //       //                                                             ),
+                      //       //                                                             boxShadow: [BoxShadow(color: HexColor('#04060F'), offset: Offset(0, 3), blurRadius: 5)],
+                      //       //                                                             borderRadius: BorderRadius.circular(20)),
+                      //       //                                                         child: Padding(
+                      //       //                                                           padding: const EdgeInsets.all(4.0),
+                      //       //                                                           child: Icon(
+                      //       //                                                             Icons.cancel_outlined,
+                      //       //                                                             size: 20,
+                      //       //                                                             color: ColorUtils.primary_grey,
+                      //       //                                                           ),
+                      //       //                                                         )),
+                      //       //                                                   ),
+                      //       //                                                 )
+                      //       //                                               ],
+                      //       //                                             ),
+                      //       //                                           ],
+                      //       //                                         ));
+                      //       //                                   },
+                      //       //                                 );
+                      //       //                               },
+                      //       //                               child: ListTile(
+                      //       //                                 title: Text('Sound',
+                      //       //                                     style: FontStyleUtility.h14(
+                      //       //                                         fontColor:
+                      //       //                                             ColorUtils
+                      //       //                                                 .primary_gold,
+                      //       //                                         family:
+                      //       //                                             'PR')),
+                      //       //                                 trailing: const Icon(
+                      //       //                                     Icons
+                      //       //                                         .arrow_forward_ios,
+                      //       //                                     size: 15,
+                      //       //                                     color:
+                      //       //                                         Colors.white),
+                      //       //                               ),
+                      //       //                             ),
+                      //       //                             GestureDetector(
+                      //       //                               onTap: () async {
+                      //       //                                 if (Alarm_title
+                      //       //                                     .text.isEmpty) {
+                      //       //                                   CommonWidget()
+                      //       //                                       .showErrorToaster(
+                      //       //                                           msg:
+                      //       //                                               "Enter Alarm title");
+                      //       //                                   return;
+                      //       //                                 } else {
+                      //       //                                   await onSaveAlarm();
+                      //       //                                 }
+                      //       //                               },
+                      //       //                               child: Container(
+                      //       //                                 width: MediaQuery.of(
+                      //       //                                             context)
+                      //       //                                         .size
+                      //       //                                         .width /
+                      //       //                                     3,
+                      //       //                                 decoration: BoxDecoration(
+                      //       //                                     borderRadius:
+                      //       //                                         BorderRadius
+                      //       //                                             .circular(
+                      //       //                                                 30),
+                      //       //                                     border: Border.all(
+                      //       //                                         color: ColorUtils
+                      //       //                                             .primary_grey,
+                      //       //                                         width: 1)),
+                      //       //                                 child: Padding(
+                      //       //                                   padding:
+                      //       //                                       const EdgeInsets
+                      //       //                                               .symmetric(
+                      //       //                                           vertical:
+                      //       //                                               12.0,
+                      //       //                                           horizontal:
+                      //       //                                               8),
+                      //       //                                   child: Row(
+                      //       //                                     mainAxisAlignment:
+                      //       //                                         MainAxisAlignment
+                      //       //                                             .center,
+                      //       //                                     children: [
+                      //       //                                       const Icon(
+                      //       //                                         Icons.alarm,
+                      //       //                                         color: Colors
+                      //       //                                             .white,
+                      //       //                                         size: 25,
+                      //       //                                       ),
+                      //       //                                       const SizedBox(
+                      //       //                                         width: 10,
+                      //       //                                       ),
+                      //       //                                       Text(
+                      //       //                                         'Save',
+                      //       //                                         style: FontStyleUtility.h16(
+                      //       //                                             fontColor:
+                      //       //                                                 ColorUtils
+                      //       //                                                     .primary_gold,
+                      //       //                                             family:
+                      //       //                                                 'PR'),
+                      //       //                                       ),
+                      //       //                                     ],
+                      //       //                                   ),
+                      //       //                                 ),
+                      //       //                               ),
+                      //       //                             )
+                      //       //                           ],
+                      //       //                         ),
+                      //       //                       ),
+                      //       //                     );
+                      //       //                   },
+                      //       //                 );
+                      //       //               },
+                      //       //             );
+                      //       //             // scheduleAlarm();
+                      //       //           },
+                      //       //           child: Container(
+                      //       //             decoration: BoxDecoration(
+                      //       //                 // color: Colors.black.withOpacity(0.65),
+                      //       //                 gradient: LinearGradient(
+                      //       //                   begin: Alignment.centerLeft,
+                      //       //                   end: Alignment.centerRight,
+                      //       //                   // stops: [0.1, 0.5, 0.7, 0.9],
+                      //       //                   colors: [
+                      //       //                     HexColor("#36393E")
+                      //       //                         .withOpacity(1),
+                      //       //                     HexColor("#020204")
+                      //       //                         .withOpacity(1),
+                      //       //                   ],
+                      //       //                 ),
+                      //       //                 boxShadow: [
+                      //       //                   BoxShadow(
+                      //       //                       color: HexColor('#04060F'),
+                      //       //                       offset: const Offset(10, 10),
+                      //       //                       blurRadius: 20)
+                      //       //                 ],
+                      //       //                 borderRadius:
+                      //       //                     BorderRadius.circular(20)),
+                      //       //             child: Padding(
+                      //       //               padding: const EdgeInsets.all(8.0),
+                      //       //               child: Icon(
+                      //       //                 Icons.add_circle_outline,
+                      //       //                 color: ColorUtils.primary_grey,
+                      //       //               ),
+                      //       //             ),
+                      //       //           )),
+                      //       //     ],
+                      //       //   ),
+                      //       // )
+                      //       // else
+                      //       //   const Center(
+                      //       //       child: Text(
+                      //       //     'Only 5 alarms allowed!',
+                      //       //     style: const TextStyle(color: Colors.white),
+                      //       //   )),
+                      //       FutureBuilder<List<AlarmInfo>>(
+                      //         future: _alarms,
+                      //         builder: (context, snapshot) {
+                      //           if (snapshot.hasData) {
+                      //             _currentAlarms = snapshot.data;
+                      //             return Container(
+                      //               child: ListView(
+                      //                 shrinkWrap: true,
+                      //                 padding: EdgeInsets.zero,
+                      //                 children: snapshot.data!.map<Widget>((alarm) {
+                      //                   var alarmTime = DateFormat('hh:mm aa')
+                      //                       .format(alarm.alarmDateTime!);
+                      //                   var gradientColor = GradientTemplate
+                      //                       .gradientTemplate[
+                      //                           alarm.gradientColorIndex!]
+                      //                       .colors;
+                      //                   return Container(
+                      //                     margin: const EdgeInsets.only(bottom: 0),
+                      //                     padding: const EdgeInsets.symmetric(
+                      //                         horizontal: 16, vertical: 0),
+                      //                     child: Container(
+                      //                       decoration: BoxDecoration(
+                      //                         // color: Colors.black.withOpacity(0.65),
+                      //                         // gradient: LinearGradient(
+                      //                         //   begin: Alignment.centerLeft,
+                      //                         //   end: Alignment.centerRight,
+                      //                         //   // stops: [0.1, 0.5, 0.7, 0.9],
+                      //                         //   colors: [
+                      //                         //     HexColor("#020204").withOpacity(1),
+                      //                         //     HexColor("#36393E").withOpacity(1),
+                      //                         //   ],
+                      //                         // ),
+                      //                         // boxShadow: [
+                      //                         //   BoxShadow(
+                      //                         //       color: HexColor('#04060F'),
+                      //                         //       offset: Offset(-10, 10),
+                      //                         //       blurRadius: 20)
+                      //                         // ],
+                      //                         border: Border(
+                      //                           bottom: BorderSide(
+                      //                             //                   <--- left side
+                      //                             color: HexColor('#1d1d1d'),
+                      //                             width: 1.5,
+                      //                           ),
+                      //                         ),
+                      //                       ),
+                      //                       child: Padding(
+                      //                         padding: const EdgeInsets.symmetric(
+                      //                             vertical: 8.0),
+                      //                         child: Column(
+                      //                           crossAxisAlignment:
+                      //                               CrossAxisAlignment.start,
+                      //                           children: <Widget>[
+                      //                             ListTile(
+                      //                               title: Text(
+                      //                                 alarmTime,
+                      //                                 style: FontStyleUtility.h16(
+                      //                                     fontColor: Colors.white,
+                      //                                     family: 'PR'),
+                      //                               ),
+                      //                               subtitle: Text(alarm.title!,
+                      //                                   style: FontStyleUtility.h14(
+                      //                                       fontColor:
+                      //                                           HexColor('#8A8A8A'),
+                      //                                       family: 'PR')),
+                      //                               trailing: IconButton(
+                      //                                   icon: const Icon(
+                      //                                       Icons.delete),
+                      //                                   color:
+                      //                                       ColorUtils.primary_gold,
+                      //                                   onPressed: () {
+                      //                                     deleteAlarm(alarm.id!);
+                      //                                   }),
+                      //                               // Container(
+                      //                               //   width: 20,
+                      //                               //   child: Transform.scale(
+                      //                               //     scale: 0.5,
+                      //                               //     child: CupertinoSwitch(
+                      //                               //       onChanged: (bool value) {},
+                      //                               //       value: true,
+                      //                               //       trackColor: HexColor('#717171'),
+                      //                               //       thumbColor: Colors.black87,
+                      //                               //       activeColor:
+                      //                               //           ColorUtils.primary_gold,
+                      //                               //     ),
+                      //                               //   ),
+                      //                               // ),
+                      //                             ),
+                      //                           ],
+                      //                         ),
+                      //                       ),
+                      //                     ),
+                      //                   );
+                      //                 }).followedBy([
+                      //                   // if (_currentAlarms!.length < 5)
+                      //                   //   Container(
+                      //                   //     child: FlatButton(
+                      //                   //         padding: const EdgeInsets.symmetric(
+                      //                   //             horizontal: 32, vertical: 10),
+                      //                   //         onPressed: () {
+                      //                   //           _alarmTimeString = DateFormat('HH:mm')
+                      //                   //               .format(selectedDate);
+                      //                   //           showModalBottomSheet(
+                      //                   //             useRootNavigator: true,
+                      //                   //             context: context,
+                      //                   //             clipBehavior: Clip.antiAlias,
+                      //                   //             shape: const RoundedRectangleBorder(
+                      //                   //               borderRadius:
+                      //                   //               BorderRadius.vertical(
+                      //                   //                 top: Radius.circular(24),
+                      //                   //               ),
+                      //                   //             ),
+                      //                   //             builder: (context) {
+                      //                   //               return StatefulBuilder(
+                      //                   //                 builder:
+                      //                   //                     (context, setModalState) {
+                      //                   //                   return Container(
+                      //                   //                     decoration: BoxDecoration(
+                      //                   //                       // color: Colors.black.withOpacity(0.65),
+                      //                   //                         gradient:
+                      //                   //                         LinearGradient(
+                      //                   //                           begin: Alignment
+                      //                   //                               .centerLeft,
+                      //                   //                           end: Alignment
+                      //                   //                               .centerRight,
+                      //                   //                           // stops: [0.1, 0.5, 0.7, 0.9],
+                      //                   //                           colors: [
+                      //                   //                             HexColor("#020204")
+                      //                   //                                 .withOpacity(1),
+                      //                   //                             HexColor("#36393E")
+                      //                   //                                 .withOpacity(1),
+                      //                   //                           ],
+                      //                   //                         ),
+                      //                   //                         boxShadow: [
+                      //                   //                           BoxShadow(
+                      //                   //                               color: HexColor(
+                      //                   //                                   '#04060F'),
+                      //                   //                               offset:
+                      //                   //                               const Offset(
+                      //                   //                                   -10, 10),
+                      //                   //                               blurRadius: 20)
+                      //                   //                         ],
+                      //                   //                         borderRadius:
+                      //                   //                         const BorderRadius
+                      //                   //                             .only(
+                      //                   //                             topLeft: Radius
+                      //                   //                                 .circular(
+                      //                   //                                 20),
+                      //                   //                             topRight: Radius
+                      //                   //                                 .circular(
+                      //                   //                                 20))),
+                      //                   //                     padding:
+                      //                   //                     const EdgeInsets.all(
+                      //                   //                         32),
+                      //                   //                     child:
+                      //                   //                     SingleChildScrollView(
+                      //                   //                       child: Column(
+                      //                   //                         children: [
+                      //                   //                           // FlatButton(
+                      //                   //                           //   onPressed:
+                      //                   //                           //       () async {
+                      //                   //                           //     // var selectedTime = await showTimePicker(
+                      //                   //                           //     //   context: context,
+                      //                   //                           //     //   // initialEntryMode: DatePickerEntryMode.calendarOnly,<- this
+                      //                   //                           //     //   initialEntryMode: TimePickerEntryMode.dial,
+                      //                   //                           //     //   initialTime: TimeOfDay.now(),
+                      //                   //                           //     //   builder: (context, child) {
+                      //                   //                           //     //     return Theme(
+                      //                   //                           //     //       data: Theme.of(
+                      //                   //                           //     //               context)
+                      //                   //                           //     //           .copyWith(
+                      //                   //                           //     //         colorScheme:
+                      //                   //                           //     //             ColorScheme
+                      //                   //                           //     //                 .dark(
+                      //                   //                           //     //           primary:
+                      //                   //                           //     //               Colors.black,
+                      //                   //                           //     //           onPrimary:
+                      //                   //                           //     //               Colors.white,
+                      //                   //                           //     //           surface:
+                      //                   //                           //     //               ColorUtils.primary_gold,
+                      //                   //                           //     //           // onPrimary: Colors.black, // <-- SEE HERE
+                      //                   //                           //     //           onSurface:
+                      //                   //                           //     //               Colors.black,
+                      //                   //                           //     //         ),
+                      //                   //                           //     //         dialogBackgroundColor:
+                      //                   //                           //     //             ColorUtils
+                      //                   //                           //     //                 .primary_gold,
+                      //                   //                           //     //         textButtonTheme:
+                      //                   //                           //     //             TextButtonThemeData(
+                      //                   //                           //     //           style: TextButton
+                      //                   //                           //     //               .styleFrom(
+                      //                   //                           //     //             primary:
+                      //                   //                           //     //                 Colors.black, // button text color
+                      //                   //                           //     //           ),
+                      //                   //                           //     //         ),
+                      //                   //                           //     //       ),
+                      //                   //                           //     //       child:
+                      //                   //                           //     //           child!,
+                      //                   //                           //     //     );
+                      //                   //                           //     //   },
+                      //                   //                           //     // );
+                      //                   //                           //     // if (selectedTime !=
+                      //                   //                           //     //     null) {
+                      //                   //                           //     //   final now =
+                      //                   //                           //     //       DateTime
+                      //                   //                           //     //           .now();
+                      //                   //                           //     //   var selectedDateTime = DateTime(
+                      //                   //                           //     //       now.year,
+                      //                   //                           //     //       now.month,
+                      //                   //                           //     //       now.day,
+                      //                   //                           //     //       selectedTime
+                      //                   //                           //     //           .hour,
+                      //                   //                           //     //       selectedTime
+                      //                   //                           //     //           .minute);
+                      //                   //                           //     //   _alarmTime =
+                      //                   //                           //     //       selectedDateTime;
+                      //                   //                           //     //   setModalState(
+                      //                   //                           //     //       () {
+                      //                   //                           //     //     _alarmTimeString =
+                      //                   //                           //     //         DateFormat(
+                      //                   //                           //     //                 'HH:mm')
+                      //                   //                           //     //             .format(
+                      //                   //                           //     //                 selectedDateTime);
+                      //                   //                           //     //   });
+                      //                   //                           //     // }
+                      //                   //                           //   },
+                      //                   //                           //   child: Text(
+                      //                   //                           //       _alarmTimeString!,
+                      //                   //                           //       style: FontStyleUtility.h35(
+                      //                   //                           //           fontColor:
+                      //                   //                           //               ColorUtils
+                      //                   //                           //                   .primary_gold,
+                      //                   //                           //           family:
+                      //                   //                           //               'PM')),
+                      //                   //                           // ),
+                      //                   //                           Container(
+                      //                   //                             height: 150,
+                      //                   //                             decoration: BoxDecoration(
+                      //                   //                                 borderRadius: BorderRadius.circular(15),
+                      //                   //                                 gradient: LinearGradient(
+                      //                   //                                   begin: Alignment.topCenter,
+                      //                   //                                   end: Alignment.bottomCenter,
+                      //                   //                                   colors: [
+                      //                   //                                     HexColor("#000000").withOpacity(1),
+                      //                   //                                     HexColor("#04060F").withOpacity(1),
+                      //                   //                                     HexColor("#000000").withOpacity(1),
+                      //                   //
+                      //                   //                                   ],
+                      //                   //                                 ),
+                      //                   //                                 boxShadow: [
+                      //                   //                                   BoxShadow(
+                      //                   //                                       color: HexColor('#04060F'),
+                      //                   //                                       offset: Offset(3, 3),
+                      //                   //                                       blurRadius: 10)
+                      //                   //                                 ]),
+                      //                   //                             child: Stack(
+                      //                   //                               children: [
+                      //                   //                                 CupertinoTheme(
+                      //                   //                                   data: CupertinoThemeData(
+                      //                   //                                     brightness: Brightness.dark,
+                      //                   //                                   ),
+                      //                   //                                   child: CupertinoDatePicker(
+                      //                   //                                     // use24hFormat: true,
+                      //                   //                                     mode: CupertinoDatePickerMode.time,
+                      //                   //                                     onDateTimeChanged: (DateTime value) {
+                      //                   //                                       selected_time= value;
+                      //                   //                                       print("${value.hour}:${value.minute}");
+                      //                   //
+                      //                   //
+                      //                   //                                       if (selected_time !=
+                      //                   //                                           null) {
+                      //                   //                                         final now =
+                      //                   //                                         DateTime
+                      //                   //                                             .now();
+                      //                   //                                         var selectedDateTime = DateTime(
+                      //                   //                                             now.year,
+                      //                   //                                             now.month,
+                      //                   //                                             now.day,
+                      //                   //                                             selected_time
+                      //                   //                                                 .hour,
+                      //                   //                                             selected_time
+                      //                   //                                                 .minute);
+                      //                   //                                         _alarmTime =
+                      //                   //                                             selectedDateTime;
+                      //                   //                                         setModalState(
+                      //                   //                                                 () {
+                      //                   //                                               _alarmTimeString =
+                      //                   //                                                   DateFormat(
+                      //                   //                                                       'HH:mm')
+                      //                   //                                                       .format(
+                      //                   //                                                       selectedDateTime);
+                      //                   //                                             });
+                      //                   //                                       }
+                      //                   //                                     },
+                      //                   //                                   ),
+                      //                   //                                 ),
+                      //                   //                               ],
+                      //                   //                             ),
+                      //                   //                           ),
+                      //                   //
+                      //                   //                           ListTile(
+                      //                   //                             onTap: () {
+                      //                   //                               showDialog(
+                      //                   //                                 context:
+                      //                   //                                 context,
+                      //                   //                                 builder:
+                      //                   //                                     (BuildContext
+                      //                   //                                 context) {
+                      //                   //                                   double width =
+                      //                   //                                       MediaQuery.of(
+                      //                   //                                           context)
+                      //                   //                                           .size
+                      //                   //                                           .width;
+                      //                   //                                   double
+                      //                   //                                   height =
+                      //                   //                                       MediaQuery.of(
+                      //                   //                                           context)
+                      //                   //                                           .size
+                      //                   //                                           .height;
+                      //                   //                                   return BackdropFilter(
+                      //                   //                                     filter: ImageFilter.blur(
+                      //                   //                                         sigmaX:
+                      //                   //                                         10,
+                      //                   //                                         sigmaY:
+                      //                   //                                         10),
+                      //                   //                                     child: AlertDialog(
+                      //                   //                                         backgroundColor: Colors.transparent,
+                      //                   //                                         contentPadding: EdgeInsets.zero,
+                      //                   //                                         elevation: 0.0,
+                      //                   //                                         // title: Center(child: Text("Evaluation our APP")),
+                      //                   //                                         content: Column(
+                      //                   //                                           mainAxisAlignment:
+                      //                   //                                           MainAxisAlignment.center,
+                      //                   //                                           children: [
+                      //                   //                                             Stack(
+                      //                   //                                               children: [
+                      //                   //                                                 Padding(
+                      //                   //                                                   padding: const EdgeInsets.all(8.0),
+                      //                   //                                                   child: Container(
+                      //                   //                                                     decoration:
+                      //                   //                                                     BoxDecoration(
+                      //                   //                                                       // color: Colors.black.withOpacity(0.65),
+                      //                   //                                                         gradient:
+                      //                   //                                                         LinearGradient(
+                      //                   //                                                           begin: Alignment.centerLeft,
+                      //                   //                                                           end: Alignment.centerRight,
+                      //                   //                                                           // stops: [0.1, 0.5, 0.7, 0.9],
+                      //                   //                                                           colors: [
+                      //                   //                                                             HexColor("#020204").withOpacity(1),
+                      //                   //                                                             HexColor("#36393E").withOpacity(1),
+                      //                   //                                                           ],
+                      //                   //                                                         ),
+                      //                   //                                                         boxShadow: [
+                      //                   //                                                           BoxShadow(color: HexColor('#04060F'), offset: Offset(10, 10), blurRadius: 10)
+                      //                   //                                                         ],
+                      //                   //                                                         borderRadius: BorderRadius.circular(15)),
+                      //                   //                                                     child: Align(
+                      //                   //                                                         alignment: Alignment.center,
+                      //                   //                                                         child: Padding(
+                      //                   //                                                           padding: const EdgeInsets.all(8.0),
+                      //                   //                                                           child: Column(
+                      //                   //                                                             children: [
+                      //                   //                                                               SizedBox(
+                      //                   //                                                                 height: 0,
+                      //                   //                                                               ),
+                      //                   //
+                      //                   //                                                               Column(
+                      //                   //                                                                 crossAxisAlignment: CrossAxisAlignment.start,
+                      //                   //                                                                 children: [
+                      //                   //                                                                   Container(
+                      //                   //                                                                     margin: EdgeInsets.only(left: 18),
+                      //                   //                                                                     child: Text('Title', style: FontStyleUtility.h14(fontColor: ColorUtils.primary_grey, family: 'Pr')),
+                      //                   //                                                                   ),
+                      //                   //                                                                   SizedBox(
+                      //                   //                                                                     height: 11,
+                      //                   //                                                                   ),
+                      //                   //                                                                   Container(
+                      //                   //                                                                     margin: EdgeInsets.symmetric(horizontal: 10),
+                      //                   //                                                                     // width: 300,
+                      //                   //                                                                     decoration: BoxDecoration(
+                      //                   //                                                                       // color: Colors.black.withOpacity(0.65),
+                      //                   //                                                                         gradient: LinearGradient(
+                      //                   //                                                                           begin: Alignment.centerLeft,
+                      //                   //                                                                           end: Alignment.centerRight,
+                      //                   //                                                                           // stops: [0.1, 0.5, 0.7, 0.9],
+                      //                   //                                                                           colors: [
+                      //                   //                                                                             HexColor("#36393E").withOpacity(1),
+                      //                   //                                                                             HexColor("#020204").withOpacity(1),
+                      //                   //                                                                           ],
+                      //                   //                                                                         ),
+                      //                   //                                                                         boxShadow: [BoxShadow(color: HexColor('#04060F'), offset: Offset(10, 10), blurRadius: 10)],
+                      //                   //                                                                         borderRadius: BorderRadius.circular(20)),
+                      //                   //
+                      //                   //                                                                     child: TextFormField(
+                      //                   //                                                                       maxLength: 150,
+                      //                   //                                                                       decoration: InputDecoration(
+                      //                   //                                                                         contentPadding: EdgeInsets.only(left: 20, top: 14, bottom: 14),
+                      //                   //                                                                         alignLabelWithHint: false,
+                      //                   //                                                                         isDense: true,
+                      //                   //                                                                         hintText: 'Add alarm title',
+                      //                   //                                                                         counterStyle: TextStyle(
+                      //                   //                                                                           height: double.minPositive,
+                      //                   //                                                                         ),
+                      //                   //                                                                         counterText: "",
+                      //                   //                                                                         filled: true,
+                      //                   //                                                                         border: InputBorder.none,
+                      //                   //                                                                         enabledBorder: const OutlineInputBorder(
+                      //                   //                                                                           borderSide: BorderSide(color: Colors.transparent, width: 1),
+                      //                   //                                                                           borderRadius: BorderRadius.all(Radius.circular(10)),
+                      //                   //                                                                         ),
+                      //                   //                                                                         hintStyle: FontStyleUtility.h14(fontColor: HexColor('#CBCBCB'), family: 'PR'),
+                      //                   //                                                                       ),
+                      //                   //                                                                       style: FontStyleUtility.h14(fontColor: ColorUtils.primary_grey, family: 'PR'),
+                      //                   //                                                                       controller: Alarm_title,
+                      //                   //                                                                       keyboardType: TextInputType.text,
+                      //                   //                                                                     ),
+                      //                   //                                                                   ),
+                      //                   //                                                                 ],
+                      //                   //                                                               ),
+                      //                   //                                                               SizedBox(
+                      //                   //                                                                 height: 10,
+                      //                   //                                                               ),
+                      //                   //                                                               GestureDetector(
+                      //                   //                                                                 onTap: () {
+                      //                   //                                                                   setState(() {
+                      //                   //                                                                     Alarm_title_list.add(Alarm_title.text);
+                      //                   //                                                                     Navigator.pop(context);
+                      //                   //                                                                   });
+                      //                   //                                                                 },
+                      //                   //                                                                 child: Container(
+                      //                   //                                                                   alignment: Alignment.topRight,
+                      //                   //                                                                   child: Text(
+                      //                   //                                                                     'Add',
+                      //                   //                                                                     style: FontStyleUtility.h12(fontColor: ColorUtils.primary_grey, family: 'PR'),
+                      //                   //                                                                   ),
+                      //                   //                                                                 ),
+                      //                   //                                                               )
+                      //                   //                                                               // common_button_gold(
+                      //                   //                                                               //   onTap: () {
+                      //                   //                                                               //     Get
+                      //                   //                                                               //         .to(
+                      //                   //                                                               //         DashboardScreen());
+                      //                   //                                                               //   },
+                      //                   //                                                               //   title_text: 'Go to Dashboard',
+                      //                   //                                                               // ),
+                      //                   //                                                             ],
+                      //                   //                                                           ),
+                      //                   //                                                         )),
+                      //                   //                                                   ),
+                      //                   //                                                 ),
+                      //                   //                                                 GestureDetector(
+                      //                   //                                                   onTap: () {
+                      //                   //                                                     Navigator.pop(context);
+                      //                   //                                                   },
+                      //                   //                                                   child: Container(
+                      //                   //                                                     margin: EdgeInsets.only(right: 10),
+                      //                   //                                                     alignment: Alignment.topRight,
+                      //                   //                                                     child: Container(
+                      //                   //                                                         decoration: BoxDecoration(
+                      //                   //                                                           // color: Colors.black.withOpacity(0.65),
+                      //                   //                                                             gradient: LinearGradient(
+                      //                   //                                                               begin: Alignment.centerLeft,
+                      //                   //                                                               end: Alignment.centerRight,
+                      //                   //                                                               // stops: [0.1, 0.5, 0.7, 0.9],
+                      //                   //                                                               colors: [
+                      //                   //                                                                 HexColor("#36393E").withOpacity(1),
+                      //                   //                                                                 HexColor("#020204").withOpacity(1),
+                      //                   //                                                               ],
+                      //                   //                                                             ),
+                      //                   //                                                             boxShadow: [BoxShadow(color: HexColor('#04060F'), offset: Offset(0, 3), blurRadius: 5)],
+                      //                   //                                                             borderRadius: BorderRadius.circular(20)),
+                      //                   //                                                         child: Padding(
+                      //                   //                                                           padding: const EdgeInsets.all(4.0),
+                      //                   //                                                           child: Icon(
+                      //                   //                                                             Icons.cancel_outlined,
+                      //                   //                                                             size: 13,
+                      //                   //                                                             color: ColorUtils.primary_grey,
+                      //                   //                                                           ),
+                      //                   //                                                         )),
+                      //                   //                                                   ),
+                      //                   //                                                 )
+                      //                   //                                               ],
+                      //                   //                                             ),
+                      //                   //                                           ],
+                      //                   //                                         )),
+                      //                   //                                   );
+                      //                   //                                 },
+                      //                   //                               );
+                      //                   //                             },
+                      //                   //                             title: Text('Title',
+                      //                   //                                 style: FontStyleUtility.h14(
+                      //                   //                                     fontColor:
+                      //                   //                                     ColorUtils
+                      //                   //                                         .primary_grey,
+                      //                   //                                     family:
+                      //                   //                                     'PR')),
+                      //                   //                             trailing: const Icon(
+                      //                   //                                 Icons
+                      //                   //                                     .arrow_forward_ios,
+                      //                   //                                 size: 15,
+                      //                   //                                 color: Colors
+                      //                   //                                     .white),
+                      //                   //                           ),
+                      //                   //                           ListTile(
+                      //                   //                             title: Text(
+                      //                   //                               'Repeat',
+                      //                   //                               style: FontStyleUtility.h14(
+                      //                   //                                   fontColor:
+                      //                   //                                   ColorUtils
+                      //                   //                                       .primary_gold,
+                      //                   //                                   family: 'PR'),
+                      //                   //                             ),
+                      //                   //                             trailing:
+                      //                   //                             const Icon(
+                      //                   //                               Icons
+                      //                   //                                   .arrow_forward_ios,
+                      //                   //                               size: 15,
+                      //                   //                               color:
+                      //                   //                               Colors.white,
+                      //                   //                             ),
+                      //                   //                           ),
+                      //                   //                           GestureDetector(
+                      //                   //                             onTap: () {
+                      //                   //                               print('object');
+                      //                   //
+                      //                   //                               showDialog(
+                      //                   //                                 context:
+                      //                   //                                 context,
+                      //                   //                                 builder:
+                      //                   //                                     (BuildContext
+                      //                   //                                 context) {
+                      //                   //                                   double width =
+                      //                   //                                       MediaQuery.of(
+                      //                   //                                           context)
+                      //                   //                                           .size
+                      //                   //                                           .width;
+                      //                   //                                   double
+                      //                   //                                   height =
+                      //                   //                                       MediaQuery.of(
+                      //                   //                                           context)
+                      //                   //                                           .size
+                      //                   //                                           .height;
+                      //                   //                                   return AlertDialog(
+                      //                   //                                       backgroundColor:
+                      //                   //                                       Colors
+                      //                   //                                           .transparent,
+                      //                   //                                       contentPadding:
+                      //                   //                                       EdgeInsets
+                      //                   //                                           .zero,
+                      //                   //                                       elevation:
+                      //                   //                                       0.0,
+                      //                   //                                       // title: Center(child: Text("Evaluation our APP")),
+                      //                   //                                       content:
+                      //                   //                                       Column(
+                      //                   //                                         mainAxisAlignment:
+                      //                   //                                         MainAxisAlignment.center,
+                      //                   //                                         children: [
+                      //                   //                                           Stack(
+                      //                   //                                             children: [
+                      //                   //                                               Container(
+                      //                   //                                                 // height: 150,
+                      //                   //                                                 // height: double.maxFinite,
+                      //                   //                                                 height: MediaQuery.of(context).size.height / 4,
+                      //                   //                                                 width: double.maxFinite,
+                      //                   //                                                 decoration:
+                      //                   //                                                 BoxDecoration(
+                      //                   //                                                   // color: Colors.black.withOpacity(0.65),
+                      //                   //                                                     gradient:
+                      //                   //                                                     LinearGradient(
+                      //                   //                                                       begin: Alignment.centerLeft,
+                      //                   //                                                       end: Alignment.centerRight,
+                      //                   //                                                       // stops: [0.1, 0.5, 0.7, 0.9],
+                      //                   //                                                       colors: [
+                      //                   //                                                         HexColor("#020204").withOpacity(1),
+                      //                   //                                                         HexColor("#36393E").withOpacity(1),
+                      //                   //                                                       ],
+                      //                   //                                                     ),
+                      //                   //                                                     boxShadow: [
+                      //                   //                                                       BoxShadow(color: HexColor('#04060F'), offset: Offset(10, 10), blurRadius: 10)
+                      //                   //                                                     ],
+                      //                   //                                                     borderRadius: BorderRadius.circular(20)),
+                      //                   //                                                 margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                      //                   //                                                 // height: 122,
+                      //                   //                                                 // width: 133,
+                      //                   //                                                 // padding: const EdgeInsets.all(8.0),
+                      //                   //                                                 child: Column(
+                      //                   //                                                   mainAxisAlignment: MainAxisAlignment.center,
+                      //                   //                                                   children: [
+                      //                   //                                                     Container(
+                      //                   //                                                       // color: Colors.white,
+                      //                   //                                                       alignment: Alignment.center,
+                      //                   //                                                       child: ListView.builder(
+                      //                   //                                                         padding: EdgeInsets.only(bottom: 0),
+                      //                   //
+                      //                   //                                                         // physics: NeverScrollableScrollPhysics(),
+                      //                   //                                                         itemCount: list_alarm.length,
+                      //                   //                                                         shrinkWrap: true,
+                      //                   //                                                         itemBuilder: (BuildContext context, int index) {
+                      //                   //                                                           return GestureDetector(
+                      //                   //                                                             onTap: () {
+                      //                   //                                                               setState(() {
+                      //                   //                                                                 Selected_sound = list_alarm[index];
+                      //                   //                                                                 print("method_selected $Selected_sound");
+                      //                   //                                                               });
+                      //                   //                                                               Navigator.pop(context);
+                      //                   //                                                             },
+                      //                   //                                                             child: Container(
+                      //                   //                                                               margin: EdgeInsets.symmetric(vertical: 8.5),
+                      //                   //                                                               alignment: Alignment.center,
+                      //                   //                                                               child: Text(
+                      //                   //                                                                 list_alarm[index],
+                      //                   //                                                                 style: FontStyleUtility.h15(fontColor: ColorUtils.primary_grey, family: 'PM'),
+                      //                   //                                                               ),
+                      //                   //                                                             ),
+                      //                   //                                                           );
+                      //                   //                                                         },
+                      //                   //                                                       ),
+                      //                   //                                                     ),
+                      //                   //                                                   ],
+                      //                   //                                                 ),
+                      //                   //                                               ),
+                      //                   //                                               GestureDetector(
+                      //                   //                                                 onTap: () {
+                      //                   //                                                   Navigator.pop(context);
+                      //                   //                                                 },
+                      //                   //                                                 child: Container(
+                      //                   //                                                   margin: EdgeInsets.only(right: 0),
+                      //                   //                                                   alignment: Alignment.topRight,
+                      //                   //                                                   child: Container(
+                      //                   //                                                       decoration: BoxDecoration(
+                      //                   //                                                         // color: Colors.black.withOpacity(0.65),
+                      //                   //                                                           gradient: LinearGradient(
+                      //                   //                                                             begin: Alignment.centerLeft,
+                      //                   //                                                             end: Alignment.centerRight,
+                      //                   //                                                             // stops: [0.1, 0.5, 0.7, 0.9],
+                      //                   //                                                             colors: [
+                      //                   //                                                               HexColor("#36393E").withOpacity(1),
+                      //                   //                                                               HexColor("#020204").withOpacity(1),
+                      //                   //                                                             ],
+                      //                   //                                                           ),
+                      //                   //                                                           boxShadow: [BoxShadow(color: HexColor('#04060F'), offset: Offset(0, 3), blurRadius: 5)],
+                      //                   //                                                           borderRadius: BorderRadius.circular(20)),
+                      //                   //                                                       child: Padding(
+                      //                   //                                                         padding: const EdgeInsets.all(4.0),
+                      //                   //                                                         child: Icon(
+                      //                   //                                                           Icons.cancel_outlined,
+                      //                   //                                                           size: 20,
+                      //                   //                                                           color: ColorUtils.primary_grey,
+                      //                   //                                                         ),
+                      //                   //                                                       )),
+                      //                   //                                                 ),
+                      //                   //                                               )
+                      //                   //                                             ],
+                      //                   //                                           ),
+                      //                   //                                         ],
+                      //                   //                                       ));
+                      //                   //                                 },
+                      //                   //                               );
+                      //                   //                             },
+                      //                   //                             child: ListTile(
+                      //                   //                               title: Text(
+                      //                   //                                   'Sound',
+                      //                   //                                   style: FontStyleUtility.h14(
+                      //                   //                                       fontColor:
+                      //                   //                                       ColorUtils
+                      //                   //                                           .primary_gold,
+                      //                   //                                       family:
+                      //                   //                                       'PR')),
+                      //                   //                               trailing: const Icon(
+                      //                   //                                   Icons
+                      //                   //                                       .arrow_forward_ios,
+                      //                   //                                   size: 15,
+                      //                   //                                   color: Colors
+                      //                   //                                       .white),
+                      //                   //                             ),
+                      //                   //                           ),
+                      //                   //                           GestureDetector(
+                      //                   //                             onTap: () async {
+                      //                   //                               if (Alarm_title
+                      //                   //                                   .text
+                      //                   //                                   .isEmpty) {
+                      //                   //                                 CommonWidget()
+                      //                   //                                     .showErrorToaster(
+                      //                   //                                     msg:
+                      //                   //                                     "Enter Alarm title");
+                      //                   //                                 return;
+                      //                   //                               } else {
+                      //                   //                                 await onSaveAlarm();
+                      //                   //                               }
+                      //                   //                             },
+                      //                   //                             child: Container(
+                      //                   //                               width: MediaQuery.of(
+                      //                   //                                   context)
+                      //                   //                                   .size
+                      //                   //                                   .width /
+                      //                   //                                   3,
+                      //                   //                               decoration: BoxDecoration(
+                      //                   //                                   borderRadius:
+                      //                   //                                   BorderRadius
+                      //                   //                                       .circular(
+                      //                   //                                       30),
+                      //                   //                                   border: Border.all(
+                      //                   //                                       color: ColorUtils
+                      //                   //                                           .primary_grey,
+                      //                   //                                       width:
+                      //                   //                                       1)),
+                      //                   //                               child: Padding(
+                      //                   //                                 padding: const EdgeInsets
+                      //                   //                                     .symmetric(
+                      //                   //                                     vertical:
+                      //                   //                                     12.0,
+                      //                   //                                     horizontal:
+                      //                   //                                     8),
+                      //                   //                                 child: Row(
+                      //                   //                                   mainAxisAlignment:
+                      //                   //                                   MainAxisAlignment
+                      //                   //                                       .center,
+                      //                   //                                   children: [
+                      //                   //                                     const Icon(
+                      //                   //                                       Icons
+                      //                   //                                           .alarm,
+                      //                   //                                       color: Colors
+                      //                   //                                           .white,
+                      //                   //                                       size: 25,
+                      //                   //                                     ),
+                      //                   //                                     const SizedBox(
+                      //                   //                                       width: 10,
+                      //                   //                                     ),
+                      //                   //                                     Text(
+                      //                   //                                       'Save',
+                      //                   //                                       style: FontStyleUtility.h16(
+                      //                   //                                           fontColor: ColorUtils
+                      //                   //                                               .primary_gold,
+                      //                   //                                           family:
+                      //                   //                                           'PR'),
+                      //                   //                                     ),
+                      //                   //                                   ],
+                      //                   //                                 ),
+                      //                   //                               ),
+                      //                   //                             ),
+                      //                   //                           )
+                      //                   //                         ],
+                      //                   //                       ),
+                      //                   //                     ),
+                      //                   //                   );
+                      //                   //                 },
+                      //                   //               );
+                      //                   //             },
+                      //                   //           );
+                      //                   //           // scheduleAlarm();
+                      //                   //         },
+                      //                   //         child: Container(
+                      //                   //           decoration: BoxDecoration(
+                      //                   //             // color: Colors.black.withOpacity(0.65),
+                      //                   //               gradient: LinearGradient(
+                      //                   //                 begin: Alignment.centerLeft,
+                      //                   //                 end: Alignment.centerRight,
+                      //                   //                 // stops: [0.1, 0.5, 0.7, 0.9],
+                      //                   //                 colors: [
+                      //                   //                   HexColor("#36393E")
+                      //                   //                       .withOpacity(1),
+                      //                   //                   HexColor("#020204")
+                      //                   //                       .withOpacity(1),
+                      //                   //                 ],
+                      //                   //               ),
+                      //                   //               boxShadow: [
+                      //                   //                 BoxShadow(
+                      //                   //                     color: HexColor('#04060F'),
+                      //                   //                     offset:
+                      //                   //                     const Offset(10, 10),
+                      //                   //                     blurRadius: 20)
+                      //                   //               ],
+                      //                   //               borderRadius:
+                      //                   //               BorderRadius.circular(20)),
+                      //                   //           child: Padding(
+                      //                   //             padding: const EdgeInsets.all(8.0),
+                      //                   //             child: Icon(
+                      //                   //               Icons.add_circle_outline,
+                      //                   //               color: ColorUtils.primary_grey,
+                      //                   //             ),
+                      //                   //           ),
+                      //                   //         )),
+                      //                   //   )
+                      //                   // else
+                      //                   //   const Center(
+                      //                   //       child: Text(
+                      //                   //         'Only 5 alarms allowed!',
+                      //                   //         style: const TextStyle(color: Colors.white),
+                      //                   //       )),
+                      //                 ]).toList(),
+                      //               ),
+                      //             );
+                      //           }
+                      //           return const Center(
+                      //             child: const Text(
+                      //               'Loading..',
+                      //               style: TextStyle(color: Colors.white),
+                      //             ),
+                      //           );
+                      //         },
+                      //       ),
+                      //     ],
+                      //   ),
+                      // ),
+                      Container(
+                        decoration: BoxDecoration(
+                            // color: Colors.black.withOpacity(0.65),
+                            gradient: LinearGradient(
+                              begin: Alignment.centerLeft,
+                              end: Alignment.centerRight,
+                              // stops: [0.1, 0.5, 0.7, 0.9],
+                              colors: [
+                                HexColor("#36393E").withOpacity(1),
+                                HexColor("#020204").withOpacity(1),
+                              ],
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                  color: HexColor('#04060F'),
+                                  offset: const Offset(10, 10),
+                                  blurRadius: 20)
+                            ],
+                            borderRadius: BorderRadius.circular(20)),
+                        child: Column(
+                          children: [
+                            // if (_currentAlarms!.length < 5)
+                            Row(
+                              children: [
+                                Expanded(
+                                  flex: 1,
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 16, vertical: 0),
+                                    child: Container(
+                                      margin: EdgeInsets.only(left: 0),
+                                      child: Text(
+                                        "Add Alarm",
+                                        style: FontStyleUtility.h16(
+                                            fontColor: ColorUtils.primary_gold,
+                                            family: 'PM'),
+                                      ),
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ),
-                            Expanded(
-                              flex: 1,
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 0, vertical: 10),
-                                child: GestureDetector(
-                                    onTap: () {
-                                      _alarmTimeString = DateFormat('HH:mm')
-                                          .format(selectedDate);
-                                      showModalBottomSheet(
-                                        useRootNavigator: true,
-                                        context: context,
-                                        clipBehavior: Clip.antiAlias,
-                                        shape: const RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.vertical(
-                                            top: Radius.circular(24),
-                                          ),
-                                        ),
-                                        builder: (context) {
-                                          return StatefulBuilder(
-                                            builder: (context, setModalState) {
-                                              return Container(
-                                                decoration: BoxDecoration(
-                                                    // color: Colors.black.withOpacity(0.65),
-                                                    gradient: LinearGradient(
-                                                      begin:
-                                                          Alignment.centerLeft,
-                                                      end:
-                                                          Alignment.centerRight,
-                                                      // stops: [0.1, 0.5, 0.7, 0.9],
-                                                      colors: [
-                                                        HexColor("#020204")
-                                                            .withOpacity(1),
-                                                        HexColor("#36393E")
-                                                            .withOpacity(1),
-                                                      ],
-                                                    ),
-                                                    boxShadow: [
-                                                      BoxShadow(
-                                                          color: HexColor(
-                                                              '#04060F'),
-                                                          offset: const Offset(
-                                                              -10, 10),
-                                                          blurRadius: 20)
-                                                    ],
-                                                    borderRadius:
-                                                        const BorderRadius.only(
-                                                            topLeft:
-                                                                Radius.circular(
-                                                                    20),
-                                                            topRight:
-                                                                Radius.circular(
-                                                                    20))),
-                                                padding:
-                                                    const EdgeInsets.all(32),
-                                                child: SingleChildScrollView(
-                                                  child: Column(
-                                                    children: [
-                                                      // FlatButton(
-                                                      //   onPressed:
-                                                      //       () async {
-                                                      //     // var selectedTime = await showTimePicker(
-                                                      //     //   context: context,
-                                                      //     //   // initialEntryMode: DatePickerEntryMode.calendarOnly,<- this
-                                                      //     //   initialEntryMode: TimePickerEntryMode.dial,
-                                                      //     //   initialTime: TimeOfDay.now(),
-                                                      //     //   builder: (context, child) {
-                                                      //     //     return Theme(
-                                                      //     //       data: Theme.of(
-                                                      //     //               context)
-                                                      //     //           .copyWith(
-                                                      //     //         colorScheme:
-                                                      //     //             ColorScheme
-                                                      //     //                 .dark(
-                                                      //     //           primary:
-                                                      //     //               Colors.black,
-                                                      //     //           onPrimary:
-                                                      //     //               Colors.white,
-                                                      //     //           surface:
-                                                      //     //               ColorUtils.primary_gold,
-                                                      //     //           // onPrimary: Colors.black, // <-- SEE HERE
-                                                      //     //           onSurface:
-                                                      //     //               Colors.black,
-                                                      //     //         ),
-                                                      //     //         dialogBackgroundColor:
-                                                      //     //             ColorUtils
-                                                      //     //                 .primary_gold,
-                                                      //     //         textButtonTheme:
-                                                      //     //             TextButtonThemeData(
-                                                      //     //           style: TextButton
-                                                      //     //               .styleFrom(
-                                                      //     //             primary:
-                                                      //     //                 Colors.black, // button text color
-                                                      //     //           ),
-                                                      //     //         ),
-                                                      //     //       ),
-                                                      //     //       child:
-                                                      //     //           child!,
-                                                      //     //     );
-                                                      //     //   },
-                                                      //     // );
-                                                      //     // if (selectedTime !=
-                                                      //     //     null) {
-                                                      //     //   final now =
-                                                      //     //       DateTime
-                                                      //     //           .now();
-                                                      //     //   var selectedDateTime = DateTime(
-                                                      //     //       now.year,
-                                                      //     //       now.month,
-                                                      //     //       now.day,
-                                                      //     //       selectedTime
-                                                      //     //           .hour,
-                                                      //     //       selectedTime
-                                                      //     //           .minute);
-                                                      //     //   _alarmTime =
-                                                      //     //       selectedDateTime;
-                                                      //     //   setModalState(
-                                                      //     //       () {
-                                                      //     //     _alarmTimeString =
-                                                      //     //         DateFormat(
-                                                      //     //                 'HH:mm')
-                                                      //     //             .format(
-                                                      //     //                 selectedDateTime);
-                                                      //     //   });
-                                                      //     // }
-                                                      //   },
-                                                      //   child: Text(
-                                                      //       _alarmTimeString!,
-                                                      //       style: FontStyleUtility.h35(
-                                                      //           fontColor:
-                                                      //               ColorUtils
-                                                      //                   .primary_gold,
-                                                      //           family:
-                                                      //               'PM')),
-                                                      // ),
-                                                      Container(
-                                                        height: 150,
-                                                        decoration:
-                                                            BoxDecoration(
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            15),
-                                                                gradient: LinearGradient(
-                                                                  begin: Alignment
-                                                                      .topCenter,
-                                                                  end: Alignment
-                                                                      .bottomCenter,
-                                                                  colors: [
-                                                                    HexColor(
-                                                                            "#000000")
-                                                                        .withOpacity(
-                                                                            1),
-                                                                    HexColor(
-                                                                            "#04060F")
-                                                                        .withOpacity(
-                                                                            1),
-                                                                    HexColor(
-                                                                            "#000000")
-                                                                        .withOpacity(
-                                                                            1),
-                                                                  ],
-                                                                ),
-                                                                boxShadow: [
-                                                              BoxShadow(
-                                                                  color: HexColor(
-                                                                      '#04060F'),
-                                                                  offset:
-                                                                      Offset(
-                                                                          3, 3),
-                                                                  blurRadius:
-                                                                      10)
-                                                            ]),
-                                                        child: Stack(
+                                Expanded(
+                                  flex: 1,
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 0, vertical: 10),
+                                    child: GestureDetector(
+                                        onTap: () {
+                                          print(_currentAlarms!.length);
+                                          _alarmTimeString = DateFormat('HH:mm')
+                                              .format(selectedDate);
+                                          if (_currentAlarms!.length >= 3) {
+                                            CommonWidget().showErrorToaster(
+                                                msg: "Only 3 alarams/Day");
+                                          } else {
+                                            showModalBottomSheet(
+                                              useRootNavigator: true,
+                                              context: context,
+                                              clipBehavior: Clip.antiAlias,
+                                              shape:
+                                                  const RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.vertical(
+                                                  top: Radius.circular(24),
+                                                ),
+                                              ),
+                                              builder: (context) {
+                                                return StatefulBuilder(
+                                                  builder:
+                                                      (context, setModalState) {
+                                                    return Container(
+                                                      decoration: BoxDecoration(
+                                                          // color: Colors.black.withOpacity(0.65),
+                                                          gradient:
+                                                              LinearGradient(
+                                                            begin: Alignment
+                                                                .centerLeft,
+                                                            end: Alignment
+                                                                .centerRight,
+                                                            // stops: [0.1, 0.5, 0.7, 0.9],
+                                                            colors: [
+                                                              HexColor(
+                                                                      "#020204")
+                                                                  .withOpacity(
+                                                                      1),
+                                                              HexColor(
+                                                                      "#36393E")
+                                                                  .withOpacity(
+                                                                      1),
+                                                            ],
+                                                          ),
+                                                          boxShadow: [
+                                                            BoxShadow(
+                                                                color: HexColor(
+                                                                    '#04060F'),
+                                                                offset:
+                                                                    const Offset(
+                                                                        -10,
+                                                                        10),
+                                                                blurRadius: 20)
+                                                          ],
+                                                          borderRadius:
+                                                              const BorderRadius
+                                                                      .only(
+                                                                  topLeft: Radius
+                                                                      .circular(
+                                                                          20),
+                                                                  topRight: Radius
+                                                                      .circular(
+                                                                          20))),
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              32),
+                                                      child:
+                                                          SingleChildScrollView(
+                                                        child: Column(
                                                           children: [
-                                                            CupertinoTheme(
-                                                              data:
-                                                                  CupertinoThemeData(
-                                                                brightness:
-                                                                    Brightness
-                                                                        .dark,
-                                                              ),
-                                                              child:
-                                                                  CupertinoDatePicker(
-                                                                // use24hFormat: true,
-                                                                mode:
-                                                                    CupertinoDatePickerMode
-                                                                        .time,
-                                                                onDateTimeChanged:
-                                                                    (DateTime
-                                                                        value) {
-                                                                  selected_time =
-                                                                      value;
-                                                                  print(
-                                                                      "${value.hour}:${value.minute}");
+                                                            // FlatButton(
+                                                            //   onPressed:
+                                                            //       () async {
+                                                            //     // var selectedTime = await showTimePicker(
+                                                            //     //   context: context,
+                                                            //     //   // initialEntryMode: DatePickerEntryMode.calendarOnly,<- this
+                                                            //     //   initialEntryMode: TimePickerEntryMode.dial,
+                                                            //     //   initialTime: TimeOfDay.now(),
+                                                            //     //   builder: (context, child) {
+                                                            //     //     return Theme(
+                                                            //     //       data: Theme.of(
+                                                            //     //               context)
+                                                            //     //           .copyWith(
+                                                            //     //         colorScheme:
+                                                            //     //             ColorScheme
+                                                            //     //                 .dark(
+                                                            //     //           primary:
+                                                            //     //               Colors.black,
+                                                            //     //           onPrimary:
+                                                            //     //               Colors.white,
+                                                            //     //           surface:
+                                                            //     //               ColorUtils.primary_gold,
+                                                            //     //           // onPrimary: Colors.black, // <-- SEE HERE
+                                                            //     //           onSurface:
+                                                            //     //               Colors.black,
+                                                            //     //         ),
+                                                            //     //         dialogBackgroundColor:
+                                                            //     //             ColorUtils
+                                                            //     //                 .primary_gold,
+                                                            //     //         textButtonTheme:
+                                                            //     //             TextButtonThemeData(
+                                                            //     //           style: TextButton
+                                                            //     //               .styleFrom(
+                                                            //     //             primary:
+                                                            //     //                 Colors.black, // button text color
+                                                            //     //           ),
+                                                            //     //         ),
+                                                            //     //       ),
+                                                            //     //       child:
+                                                            //     //           child!,
+                                                            //     //     );
+                                                            //     //   },
+                                                            //     // );
+                                                            //     // if (selectedTime !=
+                                                            //     //     null) {
+                                                            //     //   final now =
+                                                            //     //       DateTime
+                                                            //     //           .now();
+                                                            //     //   var selectedDateTime = DateTime(
+                                                            //     //       now.year,
+                                                            //     //       now.month,
+                                                            //     //       now.day,
+                                                            //     //       selectedTime
+                                                            //     //           .hour,
+                                                            //     //       selectedTime
+                                                            //     //           .minute);
+                                                            //     //   _alarmTime =
+                                                            //     //       selectedDateTime;
+                                                            //     //   setModalState(
+                                                            //     //       () {
+                                                            //     //     _alarmTimeString =
+                                                            //     //         DateFormat(
+                                                            //     //                 'HH:mm')
+                                                            //     //             .format(
+                                                            //     //                 selectedDateTime);
+                                                            //     //   });
+                                                            //     // }
+                                                            //   },
+                                                            //   child: Text(
+                                                            //       _alarmTimeString!,
+                                                            //       style: FontStyleUtility.h35(
+                                                            //           fontColor:
+                                                            //               ColorUtils
+                                                            //                   .primary_gold,
+                                                            //           family:
+                                                            //               'PM')),
+                                                            // ),
+                                                            Container(
+                                                              height: 150,
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                      borderRadius:
+                                                                          BorderRadius.circular(15),
+                                                                      gradient: LinearGradient(
+                                                                        begin: Alignment
+                                                                            .topCenter,
+                                                                        end: Alignment
+                                                                            .bottomCenter,
+                                                                        colors: [
+                                                                          HexColor("#000000")
+                                                                              .withOpacity(1),
+                                                                          HexColor("#04060F")
+                                                                              .withOpacity(1),
+                                                                          HexColor("#000000")
+                                                                              .withOpacity(1),
+                                                                        ],
+                                                                      ),
+                                                                      boxShadow: [
+                                                                    BoxShadow(
+                                                                        color: HexColor(
+                                                                            '#04060F'),
+                                                                        offset: Offset(
+                                                                            3,
+                                                                            3),
+                                                                        blurRadius:
+                                                                            10)
+                                                                  ]),
+                                                              child: Stack(
+                                                                children: [
+                                                                  CupertinoTheme(
+                                                                    data:
+                                                                        CupertinoThemeData(
+                                                                      brightness:
+                                                                          Brightness
+                                                                              .dark,
+                                                                    ),
+                                                                    child:
+                                                                        CupertinoDatePicker(
+                                                                      // use24hFormat: true,
+                                                                      mode: CupertinoDatePickerMode
+                                                                          .time,
+                                                                      onDateTimeChanged:
+                                                                          (DateTime
+                                                                              value) {
+                                                                        selected_time =
+                                                                            value;
+                                                                        print(
+                                                                            "${value.hour}:${value.minute}");
 
-                                                                  if (selected_time !=
-                                                                      null) {
-                                                                    final now =
-                                                                        DateTime
-                                                                            .now();
-                                                                    var selectedDateTime = DateTime(
-                                                                        now
-                                                                            .year,
-                                                                        now
-                                                                            .month,
-                                                                        now.day,
-                                                                        selected_time
-                                                                            .hour,
-                                                                        selected_time
-                                                                            .minute);
-                                                                    _alarmTime =
-                                                                        selectedDateTime;
-                                                                    setModalState(
-                                                                        () {
-                                                                      _alarmTimeString = DateFormat(
-                                                                              'HH:mm')
-                                                                          .format(
-                                                                              selectedDateTime);
-                                                                    });
-                                                                  }
-                                                                },
+                                                                        if (selected_time !=
+                                                                            null) {
+                                                                          final now =
+                                                                              DateTime.now();
+                                                                          var selectedDateTime = DateTime(
+                                                                              now.year,
+                                                                              now.month,
+                                                                              now.day,
+                                                                              selected_time.hour,
+                                                                              selected_time.minute);
+                                                                          _alarmTime =
+                                                                              selectedDateTime;
+                                                                          setModalState(
+                                                                              () {
+                                                                            _alarmTimeString =
+                                                                                DateFormat('HH:mm').format(selectedDateTime);
+                                                                          });
+                                                                        }
+                                                                      },
+                                                                    ),
+                                                                  ),
+                                                                ],
                                                               ),
                                                             ),
-                                                          ],
-                                                        ),
-                                                      ),
 
-                                                      ListTile(
-                                                        onTap: () {
-                                                          showDialog(
-                                                            context: context,
-                                                            builder:
-                                                                (BuildContext
-                                                                    context) {
-                                                              double width =
-                                                                  MediaQuery.of(
-                                                                          context)
-                                                                      .size
-                                                                      .width;
-                                                              double height =
-                                                                  MediaQuery.of(
-                                                                          context)
-                                                                      .size
-                                                                      .height;
-                                                              return BackdropFilter(
-                                                                filter: ImageFilter
-                                                                    .blur(
-                                                                        sigmaX:
-                                                                            10,
-                                                                        sigmaY:
-                                                                            10),
-                                                                child:
-                                                                    AlertDialog(
+                                                            ListTile(
+                                                              onTap: () {
+                                                                showDialog(
+                                                                  context:
+                                                                      context,
+                                                                  builder:
+                                                                      (BuildContext
+                                                                          context) {
+                                                                    double
+                                                                        width =
+                                                                        MediaQuery.of(context)
+                                                                            .size
+                                                                            .width;
+                                                                    double
+                                                                        height =
+                                                                        MediaQuery.of(context)
+                                                                            .size
+                                                                            .height;
+                                                                    Alarm_title.text = "Kegel ${(_currentAlarms!.length +1)}";
+                                                                    return BackdropFilter(
+                                                                      filter: ImageFilter.blur(
+                                                                          sigmaX:
+                                                                              10,
+                                                                          sigmaY:
+                                                                              10),
+                                                                      child: AlertDialog(
+                                                                          backgroundColor: Colors.transparent,
+                                                                          contentPadding: EdgeInsets.zero,
+                                                                          elevation: 0.0,
+                                                                          // title: Center(child: Text("Evaluation our APP")),
+                                                                          content: Column(
+                                                                            mainAxisAlignment:
+                                                                                MainAxisAlignment.center,
+                                                                            children: [
+                                                                              Stack(
+                                                                                children: [
+                                                                                  Padding(
+                                                                                    padding: const EdgeInsets.all(8.0),
+                                                                                    child: Container(
+                                                                                      decoration:
+                                                                                          BoxDecoration(
+                                                                                              // color: Colors.black.withOpacity(0.65),
+                                                                                              gradient:
+                                                                                                  LinearGradient(
+                                                                                                begin: Alignment.centerLeft,
+                                                                                                end: Alignment.centerRight,
+                                                                                                // stops: [0.1, 0.5, 0.7, 0.9],
+                                                                                                colors: [
+                                                                                                  HexColor("#020204").withOpacity(1),
+                                                                                                  HexColor("#36393E").withOpacity(1),
+                                                                                                ],
+                                                                                              ),
+                                                                                              boxShadow: [
+                                                                                                BoxShadow(color: HexColor('#04060F'), offset: Offset(10, 10), blurRadius: 10)
+                                                                                              ],
+                                                                                              borderRadius: BorderRadius.circular(15)),
+                                                                                      child: Align(
+                                                                                          alignment: Alignment.center,
+                                                                                          child: Padding(
+                                                                                            padding: const EdgeInsets.all(8.0),
+                                                                                            child: Column(
+                                                                                              children: [
+                                                                                                SizedBox(
+                                                                                                  height: 0,
+                                                                                                ),
+
+                                                                                                Column(
+                                                                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                                                                  children: [
+                                                                                                    Container(
+                                                                                                      margin: EdgeInsets.only(left: 18),
+                                                                                                      child: Text('Title', style: FontStyleUtility.h14(fontColor: ColorUtils.primary_grey, family: 'Pr')),
+                                                                                                    ),
+                                                                                                    SizedBox(
+                                                                                                      height: 11,
+                                                                                                    ),
+                                                                                                    Container(
+                                                                                                      margin: EdgeInsets.symmetric(horizontal: 10),
+                                                                                                      // width: 300,
+                                                                                                      decoration: BoxDecoration(
+                                                                                                          // color: Colors.black.withOpacity(0.65),
+                                                                                                          gradient: LinearGradient(
+                                                                                                            begin: Alignment.centerLeft,
+                                                                                                            end: Alignment.centerRight,
+                                                                                                            // stops: [0.1, 0.5, 0.7, 0.9],
+                                                                                                            colors: [
+                                                                                                              HexColor("#36393E").withOpacity(1),
+                                                                                                              HexColor("#020204").withOpacity(1),
+                                                                                                            ],
+                                                                                                          ),
+                                                                                                          boxShadow: [BoxShadow(color: HexColor('#04060F'), offset: Offset(10, 10), blurRadius: 10)],
+                                                                                                          borderRadius: BorderRadius.circular(20)),
+
+                                                                                                      child: TextFormField(
+                                                                                                        maxLength: 150,
+                                                                                                        decoration: InputDecoration(
+                                                                                                          contentPadding: EdgeInsets.only(left: 20, top: 14, bottom: 14),
+                                                                                                          alignLabelWithHint: false,
+                                                                                                          isDense: true,
+                                                                                                          hintText: 'Add alarm title',
+                                                                                                          counterStyle: TextStyle(
+                                                                                                            height: double.minPositive,
+                                                                                                          ),
+                                                                                                          counterText: "",
+                                                                                                          filled: true,
+                                                                                                          border: InputBorder.none,
+                                                                                                          enabledBorder: const OutlineInputBorder(
+                                                                                                            borderSide: BorderSide(color: Colors.transparent, width: 1),
+                                                                                                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                                                                                                          ),
+                                                                                                          hintStyle: FontStyleUtility.h14(fontColor: HexColor('#CBCBCB'), family: 'PR'),
+                                                                                                        ),
+                                                                                                        style: FontStyleUtility.h14(fontColor: ColorUtils.primary_grey, family: 'PR'),
+                                                                                                        controller: Alarm_title,
+                                                                                                        keyboardType: TextInputType.text,
+                                                                                                      ),
+                                                                                                    ),
+                                                                                                  ],
+                                                                                                ),
+                                                                                                SizedBox(
+                                                                                                  height: 10,
+                                                                                                ),
+                                                                                                GestureDetector(
+                                                                                                  onTap: () {
+                                                                                                    setState(() {
+                                                                                                      Alarm_title_list.add(Alarm_title.text);
+                                                                                                      Navigator.pop(context);
+                                                                                                    });
+                                                                                                  },
+                                                                                                  child: Container(
+                                                                                                    alignment: Alignment.topRight,
+                                                                                                    child: Text(
+                                                                                                      'Add',
+                                                                                                      style: FontStyleUtility.h12(fontColor: ColorUtils.primary_grey, family: 'PR'),
+                                                                                                    ),
+                                                                                                  ),
+                                                                                                )
+                                                                                                // common_button_gold(
+                                                                                                //   onTap: () {
+                                                                                                //     Get
+                                                                                                //         .to(
+                                                                                                //         DashboardScreen());
+                                                                                                //   },
+                                                                                                //   title_text: 'Go to Dashboard',
+                                                                                                // ),
+                                                                                              ],
+                                                                                            ),
+                                                                                          )),
+                                                                                    ),
+                                                                                  ),
+                                                                                  GestureDetector(
+                                                                                    onTap: () {
+                                                                                      Navigator.pop(context);
+                                                                                    },
+                                                                                    child: Container(
+                                                                                      margin: EdgeInsets.only(right: 10),
+                                                                                      alignment: Alignment.topRight,
+                                                                                      child: Container(
+                                                                                          decoration: BoxDecoration(
+                                                                                              // color: Colors.black.withOpacity(0.65),
+                                                                                              gradient: LinearGradient(
+                                                                                                begin: Alignment.centerLeft,
+                                                                                                end: Alignment.centerRight,
+                                                                                                // stops: [0.1, 0.5, 0.7, 0.9],
+                                                                                                colors: [
+                                                                                                  HexColor("#36393E").withOpacity(1),
+                                                                                                  HexColor("#020204").withOpacity(1),
+                                                                                                ],
+                                                                                              ),
+                                                                                              boxShadow: [BoxShadow(color: HexColor('#04060F'), offset: Offset(0, 3), blurRadius: 5)],
+                                                                                              borderRadius: BorderRadius.circular(20)),
+                                                                                          child: Padding(
+                                                                                            padding: const EdgeInsets.all(4.0),
+                                                                                            child: Icon(
+                                                                                              Icons.cancel_outlined,
+                                                                                              size: 13,
+                                                                                              color: ColorUtils.primary_grey,
+                                                                                            ),
+                                                                                          )),
+                                                                                    ),
+                                                                                  )
+                                                                                ],
+                                                                              ),
+                                                                            ],
+                                                                          )),
+                                                                    );
+                                                                  },
+                                                                );
+                                                              },
+                                                              title: Text(
+                                                                  'Title',
+                                                                  style: FontStyleUtility.h14(
+                                                                      fontColor:
+                                                                          ColorUtils
+                                                                              .primary_grey,
+                                                                      family:
+                                                                          'PR')),
+                                                              trailing: const Icon(
+                                                                  Icons
+                                                                      .arrow_forward_ios,
+                                                                  size: 15,
+                                                                  color: Colors
+                                                                      .white),
+                                                            ),
+                                                            // ListTile(
+                                                            //   title: Text(
+                                                            //     'Repeat',
+                                                            //     style: FontStyleUtility.h14(
+                                                            //         fontColor: ColorUtils
+                                                            //             .primary_gold,
+                                                            //         family: 'PR'),
+                                                            //   ),
+                                                            //   trailing: const Icon(
+                                                            //     Icons.arrow_forward_ios,
+                                                            //     size: 15,
+                                                            //     color: Colors.white,
+                                                            //   ),
+                                                            // ),
+                                                            GestureDetector(
+                                                              onTap: () {
+                                                                print('object');
+
+                                                                showDialog(
+                                                                  context:
+                                                                      context,
+                                                                  builder:
+                                                                      (BuildContext
+                                                                          context) {
+                                                                    double
+                                                                        width =
+                                                                        MediaQuery.of(context)
+                                                                            .size
+                                                                            .width;
+                                                                    double
+                                                                        height =
+                                                                        MediaQuery.of(context)
+                                                                            .size
+                                                                            .height;
+                                                                    return AlertDialog(
                                                                         backgroundColor:
                                                                             Colors
                                                                                 .transparent,
@@ -4873,118 +5458,66 @@ class _KegelScreenState extends State<KegelScreen>
                                                                           children: [
                                                                             Stack(
                                                                               children: [
-                                                                                Padding(
-                                                                                  padding: const EdgeInsets.all(8.0),
-                                                                                  child: Container(
-                                                                                    decoration:
-                                                                                        BoxDecoration(
-                                                                                            // color: Colors.black.withOpacity(0.65),
-                                                                                            gradient:
-                                                                                                LinearGradient(
-                                                                                              begin: Alignment.centerLeft,
-                                                                                              end: Alignment.centerRight,
-                                                                                              // stops: [0.1, 0.5, 0.7, 0.9],
-                                                                                              colors: [
-                                                                                                HexColor("#020204").withOpacity(1),
-                                                                                                HexColor("#36393E").withOpacity(1),
-                                                                                              ],
-                                                                                            ),
-                                                                                            boxShadow: [
-                                                                                              BoxShadow(color: HexColor('#04060F'), offset: Offset(10, 10), blurRadius: 10)
-                                                                                            ],
-                                                                                            borderRadius: BorderRadius.circular(15)),
-                                                                                    child: Align(
-                                                                                        alignment: Alignment.center,
-                                                                                        child: Padding(
-                                                                                          padding: const EdgeInsets.all(8.0),
-                                                                                          child: Column(
-                                                                                            children: [
-                                                                                              SizedBox(
-                                                                                                height: 0,
-                                                                                              ),
-
-                                                                                              Column(
-                                                                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                                                                children: [
-                                                                                                  Container(
-                                                                                                    margin: EdgeInsets.only(left: 18),
-                                                                                                    child: Text('Title', style: FontStyleUtility.h14(fontColor: ColorUtils.primary_grey, family: 'Pr')),
-                                                                                                  ),
-                                                                                                  SizedBox(
-                                                                                                    height: 11,
-                                                                                                  ),
-                                                                                                  Container(
-                                                                                                    margin: EdgeInsets.symmetric(horizontal: 10),
-                                                                                                    // width: 300,
-                                                                                                    decoration: BoxDecoration(
-                                                                                                        // color: Colors.black.withOpacity(0.65),
-                                                                                                        gradient: LinearGradient(
-                                                                                                          begin: Alignment.centerLeft,
-                                                                                                          end: Alignment.centerRight,
-                                                                                                          // stops: [0.1, 0.5, 0.7, 0.9],
-                                                                                                          colors: [
-                                                                                                            HexColor("#36393E").withOpacity(1),
-                                                                                                            HexColor("#020204").withOpacity(1),
-                                                                                                          ],
-                                                                                                        ),
-                                                                                                        boxShadow: [BoxShadow(color: HexColor('#04060F'), offset: Offset(10, 10), blurRadius: 10)],
-                                                                                                        borderRadius: BorderRadius.circular(20)),
-
-                                                                                                    child: TextFormField(
-                                                                                                      maxLength: 150,
-                                                                                                      decoration: InputDecoration(
-                                                                                                        contentPadding: EdgeInsets.only(left: 20, top: 14, bottom: 14),
-                                                                                                        alignLabelWithHint: false,
-                                                                                                        isDense: true,
-                                                                                                        hintText: 'Add alarm title',
-                                                                                                        counterStyle: TextStyle(
-                                                                                                          height: double.minPositive,
-                                                                                                        ),
-                                                                                                        counterText: "",
-                                                                                                        filled: true,
-                                                                                                        border: InputBorder.none,
-                                                                                                        enabledBorder: const OutlineInputBorder(
-                                                                                                          borderSide: BorderSide(color: Colors.transparent, width: 1),
-                                                                                                          borderRadius: BorderRadius.all(Radius.circular(10)),
-                                                                                                        ),
-                                                                                                        hintStyle: FontStyleUtility.h14(fontColor: HexColor('#CBCBCB'), family: 'PR'),
-                                                                                                      ),
-                                                                                                      style: FontStyleUtility.h14(fontColor: ColorUtils.primary_grey, family: 'PR'),
-                                                                                                      controller: Alarm_title,
-                                                                                                      keyboardType: TextInputType.text,
-                                                                                                    ),
-                                                                                                  ),
-                                                                                                ],
-                                                                                              ),
-                                                                                              SizedBox(
-                                                                                                height: 10,
-                                                                                              ),
-                                                                                              GestureDetector(
-                                                                                                onTap: () {
-                                                                                                  setState(() {
-                                                                                                    Alarm_title_list.add(Alarm_title.text);
-                                                                                                    Navigator.pop(context);
-                                                                                                  });
-                                                                                                },
-                                                                                                child: Container(
-                                                                                                  alignment: Alignment.topRight,
-                                                                                                  child: Text(
-                                                                                                    'Add',
-                                                                                                    style: FontStyleUtility.h12(fontColor: ColorUtils.primary_grey, family: 'PR'),
-                                                                                                  ),
-                                                                                                ),
-                                                                                              )
-                                                                                              // common_button_gold(
-                                                                                              //   onTap: () {
-                                                                                              //     Get
-                                                                                              //         .to(
-                                                                                              //         DashboardScreen());
-                                                                                              //   },
-                                                                                              //   title_text: 'Go to Dashboard',
-                                                                                              // ),
+                                                                                Container(
+                                                                                  // height: 150,
+                                                                                  // height: double.maxFinite,
+                                                                                  height: MediaQuery.of(context).size.height / 4,
+                                                                                  width: double.maxFinite,
+                                                                                  decoration:
+                                                                                      BoxDecoration(
+                                                                                          // color: Colors.black.withOpacity(0.65),
+                                                                                          gradient:
+                                                                                              LinearGradient(
+                                                                                            begin: Alignment.centerLeft,
+                                                                                            end: Alignment.centerRight,
+                                                                                            // stops: [0.1, 0.5, 0.7, 0.9],
+                                                                                            colors: [
+                                                                                              HexColor("#020204").withOpacity(1),
+                                                                                              HexColor("#36393E").withOpacity(1),
                                                                                             ],
                                                                                           ),
-                                                                                        )),
+                                                                                          boxShadow: [
+                                                                                            BoxShadow(color: HexColor('#04060F'), offset: Offset(10, 10), blurRadius: 10)
+                                                                                          ],
+                                                                                          borderRadius: BorderRadius.circular(20)),
+                                                                                  margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                                                                                  // height: 122,
+                                                                                  // width: 133,
+                                                                                  // padding: const EdgeInsets.all(8.0),
+                                                                                  child: Column(
+                                                                                    mainAxisAlignment: MainAxisAlignment.center,
+                                                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                                                    children: [
+                                                                                      Container(
+                                                                                        // color: Colors.white,
+                                                                                        child: ListView.builder(
+                                                                                          padding: EdgeInsets.only(left: 10),
+
+                                                                                          // physics: NeverScrollableScrollPhysics(),
+                                                                                          itemCount: list_alarm.length,
+                                                                                          shrinkWrap: true,
+                                                                                          itemBuilder: (BuildContext context, int index) {
+                                                                                            return GestureDetector(
+                                                                                              onTap: () {
+                                                                                                setState(() {
+                                                                                                  Selected_sound = list_alarm[index];
+                                                                                                  print("method_selected $Selected_sound");
+                                                                                                });
+                                                                                                Navigator.pop(context);
+                                                                                              },
+                                                                                              child: Container(
+                                                                                                margin: EdgeInsets.symmetric(vertical: 8.5),
+                                                                                                alignment: Alignment.centerLeft,
+                                                                                                child: Text(
+                                                                                                  list_alarm[index].capitalizeFirst!,
+                                                                                                  style: FontStyleUtility.h15(fontColor: ColorUtils.primary_grey, family: 'PM'),
+                                                                                                ),
+                                                                                              ),
+                                                                                            );
+                                                                                          },
+                                                                                        ),
+                                                                                      ),
+                                                                                    ],
                                                                                   ),
                                                                                 ),
                                                                                 GestureDetector(
@@ -4992,7 +5525,7 @@ class _KegelScreenState extends State<KegelScreen>
                                                                                     Navigator.pop(context);
                                                                                   },
                                                                                   child: Container(
-                                                                                    margin: EdgeInsets.only(right: 10),
+                                                                                    margin: EdgeInsets.only(right: 0),
                                                                                     alignment: Alignment.topRight,
                                                                                     child: Container(
                                                                                         decoration: BoxDecoration(
@@ -5012,7 +5545,7 @@ class _KegelScreenState extends State<KegelScreen>
                                                                                           padding: const EdgeInsets.all(4.0),
                                                                                           child: Icon(
                                                                                             Icons.cancel_outlined,
-                                                                                            size: 13,
+                                                                                            size: 20,
                                                                                             color: ColorUtils.primary_grey,
                                                                                           ),
                                                                                         )),
@@ -5021,1226 +5554,1069 @@ class _KegelScreenState extends State<KegelScreen>
                                                                               ],
                                                                             ),
                                                                           ],
-                                                                        )),
-                                                              );
-                                                            },
-                                                          );
-                                                        },
-                                                        title: Text('Title',
-                                                            style: FontStyleUtility.h14(
-                                                                fontColor:
-                                                                    ColorUtils
-                                                                        .primary_grey,
-                                                                family: 'PR')),
-                                                        trailing: const Icon(
-                                                            Icons
-                                                                .arrow_forward_ios,
-                                                            size: 15,
-                                                            color:
-                                                                Colors.white),
-                                                      ),
-                                                      // ListTile(
-                                                      //   title: Text(
-                                                      //     'Repeat',
-                                                      //     style: FontStyleUtility.h14(
-                                                      //         fontColor: ColorUtils
-                                                      //             .primary_gold,
-                                                      //         family: 'PR'),
-                                                      //   ),
-                                                      //   trailing: const Icon(
-                                                      //     Icons.arrow_forward_ios,
-                                                      //     size: 15,
-                                                      //     color: Colors.white,
-                                                      //   ),
-                                                      // ),
-                                                      GestureDetector(
-                                                        onTap: () {
-                                                          print('object');
-
-                                                          showDialog(
-                                                            context: context,
-                                                            builder:
-                                                                (BuildContext
-                                                                    context) {
-                                                              double width =
-                                                                  MediaQuery.of(
-                                                                          context)
-                                                                      .size
-                                                                      .width;
-                                                              double height =
-                                                                  MediaQuery.of(
-                                                                          context)
-                                                                      .size
-                                                                      .height;
-                                                              return AlertDialog(
-                                                                  backgroundColor:
-                                                                      Colors
-                                                                          .transparent,
-                                                                  contentPadding:
-                                                                      EdgeInsets
-                                                                          .zero,
-                                                                  elevation:
-                                                                      0.0,
-                                                                  // title: Center(child: Text("Evaluation our APP")),
-                                                                  content:
-                                                                      Column(
+                                                                        ));
+                                                                  },
+                                                                );
+                                                              },
+                                                              child: ListTile(
+                                                                title: Text(
+                                                                    'Sound',
+                                                                    style: FontStyleUtility.h14(
+                                                                        fontColor:
+                                                                            ColorUtils
+                                                                                .primary_gold,
+                                                                        family:
+                                                                            'PR')),
+                                                                trailing: const Icon(
+                                                                    Icons
+                                                                        .arrow_forward_ios,
+                                                                    size: 15,
+                                                                    color: Colors
+                                                                        .white),
+                                                              ),
+                                                            ),
+                                                            GestureDetector(
+                                                              onTap: () async {
+                                                                if (Alarm_title
+                                                                    .text
+                                                                    .isEmpty) {
+                                                                  CommonWidget()
+                                                                      .showErrorToaster(
+                                                                          msg:
+                                                                              "Enter Alarm title");
+                                                                  return;
+                                                                } else {
+                                                                  await onSaveAlarm();
+                                                                }
+                                                              },
+                                                              child: Container(
+                                                                width: MediaQuery.of(
+                                                                            context)
+                                                                        .size
+                                                                        .width /
+                                                                    3,
+                                                                decoration: BoxDecoration(
+                                                                    borderRadius:
+                                                                        BorderRadius.circular(
+                                                                            30),
+                                                                    border: Border.all(
+                                                                        color: ColorUtils
+                                                                            .primary_grey,
+                                                                        width:
+                                                                            1)),
+                                                                child: Padding(
+                                                                  padding: const EdgeInsets
+                                                                          .symmetric(
+                                                                      vertical:
+                                                                          12.0,
+                                                                      horizontal:
+                                                                          8),
+                                                                  child: Row(
                                                                     mainAxisAlignment:
                                                                         MainAxisAlignment
                                                                             .center,
                                                                     children: [
-                                                                      Stack(
-                                                                        children: [
-                                                                          Container(
-                                                                            // height: 150,
-                                                                            // height: double.maxFinite,
-                                                                            height:
-                                                                                MediaQuery.of(context).size.height / 4,
-                                                                            width:
-                                                                                double.maxFinite,
-                                                                            decoration:
-                                                                                BoxDecoration(
-                                                                                    // color: Colors.black.withOpacity(0.65),
-                                                                                    gradient:
-                                                                                        LinearGradient(
-                                                                                      begin: Alignment.centerLeft,
-                                                                                      end: Alignment.centerRight,
-                                                                                      // stops: [0.1, 0.5, 0.7, 0.9],
-                                                                                      colors: [
-                                                                                        HexColor("#020204").withOpacity(1),
-                                                                                        HexColor("#36393E").withOpacity(1),
-                                                                                      ],
-                                                                                    ),
-                                                                                    boxShadow: [
-                                                                                      BoxShadow(color: HexColor('#04060F'), offset: Offset(10, 10), blurRadius: 10)
-                                                                                    ],
-                                                                                    borderRadius: BorderRadius.circular(20)),
-                                                                            margin:
-                                                                                EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                                                                            // height: 122,
-                                                                            // width: 133,
-                                                                            // padding: const EdgeInsets.all(8.0),
-                                                                            child:
-                                                                                Column(
-                                                                              mainAxisAlignment: MainAxisAlignment.center,
-                                                                              children: [
-                                                                                Container(
-                                                                                  // color: Colors.white,
-                                                                                  alignment: Alignment.center,
-                                                                                  child: ListView.builder(
-                                                                                    padding: EdgeInsets.only(bottom: 0),
-
-                                                                                    // physics: NeverScrollableScrollPhysics(),
-                                                                                    itemCount: list_alarm.length,
-                                                                                    shrinkWrap: true,
-                                                                                    itemBuilder: (BuildContext context, int index) {
-                                                                                      return GestureDetector(
-                                                                                        onTap: () {
-                                                                                          setState(() {
-                                                                                            Selected_sound = list_alarm[index];
-                                                                                            print("method_selected $Selected_sound");
-                                                                                          });
-                                                                                          Navigator.pop(context);
-                                                                                        },
-                                                                                        child: Container(
-                                                                                          margin: EdgeInsets.symmetric(vertical: 8.5),
-                                                                                          alignment: Alignment.center,
-                                                                                          child: Text(
-                                                                                            list_alarm[index],
-                                                                                            style: FontStyleUtility.h15(fontColor: ColorUtils.primary_grey, family: 'PM'),
-                                                                                          ),
-                                                                                        ),
-                                                                                      );
-                                                                                    },
-                                                                                  ),
-                                                                                ),
-                                                                              ],
-                                                                            ),
-                                                                          ),
-                                                                          GestureDetector(
-                                                                            onTap:
-                                                                                () {
-                                                                              Navigator.pop(context);
-                                                                            },
-                                                                            child:
-                                                                                Container(
-                                                                              margin: EdgeInsets.only(right: 0),
-                                                                              alignment: Alignment.topRight,
-                                                                              child: Container(
-                                                                                  decoration: BoxDecoration(
-                                                                                      // color: Colors.black.withOpacity(0.65),
-                                                                                      gradient: LinearGradient(
-                                                                                        begin: Alignment.centerLeft,
-                                                                                        end: Alignment.centerRight,
-                                                                                        // stops: [0.1, 0.5, 0.7, 0.9],
-                                                                                        colors: [
-                                                                                          HexColor("#36393E").withOpacity(1),
-                                                                                          HexColor("#020204").withOpacity(1),
-                                                                                        ],
-                                                                                      ),
-                                                                                      boxShadow: [BoxShadow(color: HexColor('#04060F'), offset: Offset(0, 3), blurRadius: 5)],
-                                                                                      borderRadius: BorderRadius.circular(20)),
-                                                                                  child: Padding(
-                                                                                    padding: const EdgeInsets.all(4.0),
-                                                                                    child: Icon(
-                                                                                      Icons.cancel_outlined,
-                                                                                      size: 20,
-                                                                                      color: ColorUtils.primary_grey,
-                                                                                    ),
-                                                                                  )),
-                                                                            ),
-                                                                          )
-                                                                        ],
+                                                                      const Icon(
+                                                                        Icons
+                                                                            .alarm,
+                                                                        color: Colors
+                                                                            .white,
+                                                                        size:
+                                                                            25,
+                                                                      ),
+                                                                      const SizedBox(
+                                                                        width:
+                                                                            10,
+                                                                      ),
+                                                                      Text(
+                                                                        'Save',
+                                                                        style: FontStyleUtility.h16(
+                                                                            fontColor:
+                                                                                ColorUtils.primary_gold,
+                                                                            family: 'PR'),
                                                                       ),
                                                                     ],
-                                                                  ));
-                                                            },
-                                                          );
-                                                        },
-                                                        child: ListTile(
-                                                          title: Text('Sound',
-                                                              style: FontStyleUtility.h14(
-                                                                  fontColor:
-                                                                      ColorUtils
-                                                                          .primary_gold,
-                                                                  family:
-                                                                      'PR')),
-                                                          trailing: const Icon(
-                                                              Icons
-                                                                  .arrow_forward_ios,
-                                                              size: 15,
-                                                              color:
-                                                                  Colors.white),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            )
+                                                          ],
                                                         ),
                                                       ),
-                                                      GestureDetector(
-                                                        onTap: () async {
-                                                          if (Alarm_title
-                                                              .text.isEmpty) {
-                                                            CommonWidget()
-                                                                .showErrorToaster(
-                                                                    msg:
-                                                                        "Enter Alarm title");
-                                                            return;
-                                                          } else {
-                                                            await onSaveAlarm();
-                                                          }
-                                                        },
-                                                        child: Container(
-                                                          width: MediaQuery.of(
-                                                                      context)
-                                                                  .size
-                                                                  .width /
-                                                              3,
-                                                          decoration: BoxDecoration(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          30),
-                                                              border: Border.all(
-                                                                  color: ColorUtils
-                                                                      .primary_grey,
-                                                                  width: 1)),
-                                                          child: Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                        .symmetric(
-                                                                    vertical:
-                                                                        12.0,
-                                                                    horizontal:
-                                                                        8),
-                                                            child: Row(
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .center,
-                                                              children: [
-                                                                const Icon(
-                                                                  Icons.alarm,
-                                                                  color: Colors
-                                                                      .white,
-                                                                  size: 25,
-                                                                ),
-                                                                const SizedBox(
-                                                                  width: 10,
-                                                                ),
-                                                                Text(
-                                                                  'Save',
-                                                                  style: FontStyleUtility.h16(
-                                                                      fontColor:
-                                                                          ColorUtils
-                                                                              .primary_gold,
-                                                                      family:
-                                                                          'PR'),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      )
-                                                    ],
-                                                  ),
-                                                ),
-                                              );
-                                            },
-                                          );
+                                                    );
+                                                  },
+                                                );
+                                              },
+                                            );
+                                          }
+                                          // scheduleAlarm();
                                         },
-                                      );
-                                      // scheduleAlarm();
-                                    },
-                                    child: Container(
-                                      // color: Colors.white60,
-                                      // width: 10,
-                                      height: 30,
-                                      child: Container(
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(0.0),
-                                          child: Icon(
-                                            Icons.add_circle_outline,
-                                            color: ColorUtils.primary_grey,
-                                          ),
-                                        ),
-                                      ),
-                                    )),
-                              ),
-                            ),
-                            Expanded(
-                              flex: 1,
-                              child: Container(),
-                            )
-                          ],
-                        ),
-                        // Container(
-                        //   padding: const EdgeInsets.symmetric(
-                        //       horizontal: 16, vertical: 0),
-                        //   child: Row(
-                        //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        //     children: [
-                        //       Container(
-                        //         margin: EdgeInsets.only(left: 16),
-                        //         child: Text(
-                        //           "Add Alarm",
-                        //           style: FontStyleUtility.h16(
-                        //               fontColor: ColorUtils.primary_gold,
-                        //               family: 'PM'),
-                        //         ),
-                        //       ),
-                        //       FlatButton(
-                        //           padding: const EdgeInsets.symmetric(
-                        //               horizontal: 32, vertical: 10),
-                        //           onPressed: () {
-                        //             _alarmTimeString = DateFormat('HH:mm')
-                        //                 .format(selectedDate);
-                        //             showModalBottomSheet(
-                        //               useRootNavigator: true,
-                        //               context: context,
-                        //               clipBehavior: Clip.antiAlias,
-                        //               shape: const RoundedRectangleBorder(
-                        //                 borderRadius: BorderRadius.vertical(
-                        //                   top: Radius.circular(24),
-                        //                 ),
-                        //               ),
-                        //               builder: (context) {
-                        //                 return StatefulBuilder(
-                        //                   builder: (context, setModalState) {
-                        //                     return Container(
-                        //                       decoration: BoxDecoration(
-                        //                           // color: Colors.black.withOpacity(0.65),
-                        //                           gradient: LinearGradient(
-                        //                             begin:
-                        //                                 Alignment.centerLeft,
-                        //                             end:
-                        //                                 Alignment.centerRight,
-                        //                             // stops: [0.1, 0.5, 0.7, 0.9],
-                        //                             colors: [
-                        //                               HexColor("#020204")
-                        //                                   .withOpacity(1),
-                        //                               HexColor("#36393E")
-                        //                                   .withOpacity(1),
-                        //                             ],
-                        //                           ),
-                        //                           boxShadow: [
-                        //                             BoxShadow(
-                        //                                 color: HexColor(
-                        //                                     '#04060F'),
-                        //                                 offset: const Offset(
-                        //                                     -10, 10),
-                        //                                 blurRadius: 20)
-                        //                           ],
-                        //                           borderRadius:
-                        //                               const BorderRadius.only(
-                        //                                   topLeft:
-                        //                                       Radius.circular(
-                        //                                           20),
-                        //                                   topRight:
-                        //                                       Radius.circular(
-                        //                                           20))),
-                        //                       padding:
-                        //                           const EdgeInsets.all(32),
-                        //                       child: SingleChildScrollView(
-                        //                         child: Column(
-                        //                           children: [
-                        //                             // FlatButton(
-                        //                             //   onPressed:
-                        //                             //       () async {
-                        //                             //     // var selectedTime = await showTimePicker(
-                        //                             //     //   context: context,
-                        //                             //     //   // initialEntryMode: DatePickerEntryMode.calendarOnly,<- this
-                        //                             //     //   initialEntryMode: TimePickerEntryMode.dial,
-                        //                             //     //   initialTime: TimeOfDay.now(),
-                        //                             //     //   builder: (context, child) {
-                        //                             //     //     return Theme(
-                        //                             //     //       data: Theme.of(
-                        //                             //     //               context)
-                        //                             //     //           .copyWith(
-                        //                             //     //         colorScheme:
-                        //                             //     //             ColorScheme
-                        //                             //     //                 .dark(
-                        //                             //     //           primary:
-                        //                             //     //               Colors.black,
-                        //                             //     //           onPrimary:
-                        //                             //     //               Colors.white,
-                        //                             //     //           surface:
-                        //                             //     //               ColorUtils.primary_gold,
-                        //                             //     //           // onPrimary: Colors.black, // <-- SEE HERE
-                        //                             //     //           onSurface:
-                        //                             //     //               Colors.black,
-                        //                             //     //         ),
-                        //                             //     //         dialogBackgroundColor:
-                        //                             //     //             ColorUtils
-                        //                             //     //                 .primary_gold,
-                        //                             //     //         textButtonTheme:
-                        //                             //     //             TextButtonThemeData(
-                        //                             //     //           style: TextButton
-                        //                             //     //               .styleFrom(
-                        //                             //     //             primary:
-                        //                             //     //                 Colors.black, // button text color
-                        //                             //     //           ),
-                        //                             //     //         ),
-                        //                             //     //       ),
-                        //                             //     //       child:
-                        //                             //     //           child!,
-                        //                             //     //     );
-                        //                             //     //   },
-                        //                             //     // );
-                        //                             //     // if (selectedTime !=
-                        //                             //     //     null) {
-                        //                             //     //   final now =
-                        //                             //     //       DateTime
-                        //                             //     //           .now();
-                        //                             //     //   var selectedDateTime = DateTime(
-                        //                             //     //       now.year,
-                        //                             //     //       now.month,
-                        //                             //     //       now.day,
-                        //                             //     //       selectedTime
-                        //                             //     //           .hour,
-                        //                             //     //       selectedTime
-                        //                             //     //           .minute);
-                        //                             //     //   _alarmTime =
-                        //                             //     //       selectedDateTime;
-                        //                             //     //   setModalState(
-                        //                             //     //       () {
-                        //                             //     //     _alarmTimeString =
-                        //                             //     //         DateFormat(
-                        //                             //     //                 'HH:mm')
-                        //                             //     //             .format(
-                        //                             //     //                 selectedDateTime);
-                        //                             //     //   });
-                        //                             //     // }
-                        //                             //   },
-                        //                             //   child: Text(
-                        //                             //       _alarmTimeString!,
-                        //                             //       style: FontStyleUtility.h35(
-                        //                             //           fontColor:
-                        //                             //               ColorUtils
-                        //                             //                   .primary_gold,
-                        //                             //           family:
-                        //                             //               'PM')),
-                        //                             // ),
-                        //                             Container(
-                        //                               height: 150,
-                        //                               decoration:
-                        //                                   BoxDecoration(
-                        //                                       borderRadius:
-                        //                                           BorderRadius
-                        //                                               .circular(
-                        //                                                   15),
-                        //                                       gradient: LinearGradient(
-                        //                                         begin: Alignment
-                        //                                             .topCenter,
-                        //                                         end: Alignment
-                        //                                             .bottomCenter,
-                        //                                         colors: [
-                        //                                           HexColor(
-                        //                                                   "#000000")
-                        //                                               .withOpacity(
-                        //                                                   1),
-                        //                                           HexColor(
-                        //                                                   "#04060F")
-                        //                                               .withOpacity(
-                        //                                                   1),
-                        //                                           HexColor(
-                        //                                                   "#000000")
-                        //                                               .withOpacity(
-                        //                                                   1),
-                        //                                         ],
-                        //                                       ),
-                        //                                       boxShadow: [
-                        //                                     BoxShadow(
-                        //                                         color: HexColor(
-                        //                                             '#04060F'),
-                        //                                         offset:
-                        //                                             Offset(
-                        //                                                 3, 3),
-                        //                                         blurRadius:
-                        //                                             10)
-                        //                                   ]),
-                        //                               child: Stack(
-                        //                                 children: [
-                        //                                   CupertinoTheme(
-                        //                                     data:
-                        //                                         CupertinoThemeData(
-                        //                                       brightness:
-                        //                                           Brightness
-                        //                                               .dark,
-                        //                                     ),
-                        //                                     child:
-                        //                                         CupertinoDatePicker(
-                        //                                       // use24hFormat: true,
-                        //                                       mode:
-                        //                                           CupertinoDatePickerMode
-                        //                                               .time,
-                        //                                       onDateTimeChanged:
-                        //                                           (DateTime
-                        //                                               value) {
-                        //                                         selected_time =
-                        //                                             value;
-                        //                                         print(
-                        //                                             "${value.hour}:${value.minute}");
-                        //
-                        //                                         if (selected_time !=
-                        //                                             null) {
-                        //                                           final now =
-                        //                                               DateTime
-                        //                                                   .now();
-                        //                                           var selectedDateTime = DateTime(
-                        //                                               now
-                        //                                                   .year,
-                        //                                               now
-                        //                                                   .month,
-                        //                                               now.day,
-                        //                                               selected_time
-                        //                                                   .hour,
-                        //                                               selected_time
-                        //                                                   .minute);
-                        //                                           _alarmTime =
-                        //                                               selectedDateTime;
-                        //                                           setModalState(
-                        //                                               () {
-                        //                                             _alarmTimeString = DateFormat(
-                        //                                                     'HH:mm')
-                        //                                                 .format(
-                        //                                                     selectedDateTime);
-                        //                                           });
-                        //                                         }
-                        //                                       },
-                        //                                     ),
-                        //                                   ),
-                        //                                 ],
-                        //                               ),
-                        //                             ),
-                        //
-                        //                             ListTile(
-                        //                               onTap: () {
-                        //                                 showDialog(
-                        //                                   context: context,
-                        //                                   builder:
-                        //                                       (BuildContext
-                        //                                           context) {
-                        //                                     double width =
-                        //                                         MediaQuery.of(
-                        //                                                 context)
-                        //                                             .size
-                        //                                             .width;
-                        //                                     double height =
-                        //                                         MediaQuery.of(
-                        //                                                 context)
-                        //                                             .size
-                        //                                             .height;
-                        //                                     return BackdropFilter(
-                        //                                       filter: ImageFilter
-                        //                                           .blur(
-                        //                                               sigmaX:
-                        //                                                   10,
-                        //                                               sigmaY:
-                        //                                                   10),
-                        //                                       child:
-                        //                                           AlertDialog(
-                        //                                               backgroundColor:
-                        //                                                   Colors
-                        //                                                       .transparent,
-                        //                                               contentPadding:
-                        //                                                   EdgeInsets
-                        //                                                       .zero,
-                        //                                               elevation:
-                        //                                                   0.0,
-                        //                                               // title: Center(child: Text("Evaluation our APP")),
-                        //                                               content:
-                        //                                                   Column(
-                        //                                                 mainAxisAlignment:
-                        //                                                     MainAxisAlignment.center,
-                        //                                                 children: [
-                        //                                                   Stack(
-                        //                                                     children: [
-                        //                                                       Padding(
-                        //                                                         padding: const EdgeInsets.all(8.0),
-                        //                                                         child: Container(
-                        //                                                           decoration:
-                        //                                                               BoxDecoration(
-                        //                                                                   // color: Colors.black.withOpacity(0.65),
-                        //                                                                   gradient:
-                        //                                                                       LinearGradient(
-                        //                                                                     begin: Alignment.centerLeft,
-                        //                                                                     end: Alignment.centerRight,
-                        //                                                                     // stops: [0.1, 0.5, 0.7, 0.9],
-                        //                                                                     colors: [
-                        //                                                                       HexColor("#020204").withOpacity(1),
-                        //                                                                       HexColor("#36393E").withOpacity(1),
-                        //                                                                     ],
-                        //                                                                   ),
-                        //                                                                   boxShadow: [
-                        //                                                                     BoxShadow(color: HexColor('#04060F'), offset: Offset(10, 10), blurRadius: 10)
-                        //                                                                   ],
-                        //                                                                   borderRadius: BorderRadius.circular(15)),
-                        //                                                           child: Align(
-                        //                                                               alignment: Alignment.center,
-                        //                                                               child: Padding(
-                        //                                                                 padding: const EdgeInsets.all(8.0),
-                        //                                                                 child: Column(
-                        //                                                                   children: [
-                        //                                                                     SizedBox(
-                        //                                                                       height: 0,
-                        //                                                                     ),
-                        //
-                        //                                                                     Column(
-                        //                                                                       crossAxisAlignment: CrossAxisAlignment.start,
-                        //                                                                       children: [
-                        //                                                                         Container(
-                        //                                                                           margin: EdgeInsets.only(left: 18),
-                        //                                                                           child: Text('Title', style: FontStyleUtility.h14(fontColor: ColorUtils.primary_grey, family: 'Pr')),
-                        //                                                                         ),
-                        //                                                                         SizedBox(
-                        //                                                                           height: 11,
-                        //                                                                         ),
-                        //                                                                         Container(
-                        //                                                                           margin: EdgeInsets.symmetric(horizontal: 10),
-                        //                                                                           // width: 300,
-                        //                                                                           decoration: BoxDecoration(
-                        //                                                                               // color: Colors.black.withOpacity(0.65),
-                        //                                                                               gradient: LinearGradient(
-                        //                                                                                 begin: Alignment.centerLeft,
-                        //                                                                                 end: Alignment.centerRight,
-                        //                                                                                 // stops: [0.1, 0.5, 0.7, 0.9],
-                        //                                                                                 colors: [
-                        //                                                                                   HexColor("#36393E").withOpacity(1),
-                        //                                                                                   HexColor("#020204").withOpacity(1),
-                        //                                                                                 ],
-                        //                                                                               ),
-                        //                                                                               boxShadow: [BoxShadow(color: HexColor('#04060F'), offset: Offset(10, 10), blurRadius: 10)],
-                        //                                                                               borderRadius: BorderRadius.circular(20)),
-                        //
-                        //                                                                           child: TextFormField(
-                        //                                                                             maxLength: 150,
-                        //                                                                             decoration: InputDecoration(
-                        //                                                                               contentPadding: EdgeInsets.only(left: 20, top: 14, bottom: 14),
-                        //                                                                               alignLabelWithHint: false,
-                        //                                                                               isDense: true,
-                        //                                                                               hintText: 'Add alarm title',
-                        //                                                                               counterStyle: TextStyle(
-                        //                                                                                 height: double.minPositive,
-                        //                                                                               ),
-                        //                                                                               counterText: "",
-                        //                                                                               filled: true,
-                        //                                                                               border: InputBorder.none,
-                        //                                                                               enabledBorder: const OutlineInputBorder(
-                        //                                                                                 borderSide: BorderSide(color: Colors.transparent, width: 1),
-                        //                                                                                 borderRadius: BorderRadius.all(Radius.circular(10)),
-                        //                                                                               ),
-                        //                                                                               hintStyle: FontStyleUtility.h14(fontColor: HexColor('#CBCBCB'), family: 'PR'),
-                        //                                                                             ),
-                        //                                                                             style: FontStyleUtility.h14(fontColor: ColorUtils.primary_grey, family: 'PR'),
-                        //                                                                             controller: Alarm_title,
-                        //                                                                             keyboardType: TextInputType.text,
-                        //                                                                           ),
-                        //                                                                         ),
-                        //                                                                       ],
-                        //                                                                     ),
-                        //                                                                     SizedBox(
-                        //                                                                       height: 10,
-                        //                                                                     ),
-                        //                                                                     GestureDetector(
-                        //                                                                       onTap: () {
-                        //                                                                         setState(() {
-                        //                                                                           Alarm_title_list.add(Alarm_title.text);
-                        //                                                                           Navigator.pop(context);
-                        //                                                                         });
-                        //                                                                       },
-                        //                                                                       child: Container(
-                        //                                                                         alignment: Alignment.topRight,
-                        //                                                                         child: Text(
-                        //                                                                           'Add',
-                        //                                                                           style: FontStyleUtility.h12(fontColor: ColorUtils.primary_grey, family: 'PR'),
-                        //                                                                         ),
-                        //                                                                       ),
-                        //                                                                     )
-                        //                                                                     // common_button_gold(
-                        //                                                                     //   onTap: () {
-                        //                                                                     //     Get
-                        //                                                                     //         .to(
-                        //                                                                     //         DashboardScreen());
-                        //                                                                     //   },
-                        //                                                                     //   title_text: 'Go to Dashboard',
-                        //                                                                     // ),
-                        //                                                                   ],
-                        //                                                                 ),
-                        //                                                               )),
-                        //                                                         ),
-                        //                                                       ),
-                        //                                                       GestureDetector(
-                        //                                                         onTap: () {
-                        //                                                           Navigator.pop(context);
-                        //                                                         },
-                        //                                                         child: Container(
-                        //                                                           margin: EdgeInsets.only(right: 10),
-                        //                                                           alignment: Alignment.topRight,
-                        //                                                           child: Container(
-                        //                                                               decoration: BoxDecoration(
-                        //                                                                   // color: Colors.black.withOpacity(0.65),
-                        //                                                                   gradient: LinearGradient(
-                        //                                                                     begin: Alignment.centerLeft,
-                        //                                                                     end: Alignment.centerRight,
-                        //                                                                     // stops: [0.1, 0.5, 0.7, 0.9],
-                        //                                                                     colors: [
-                        //                                                                       HexColor("#36393E").withOpacity(1),
-                        //                                                                       HexColor("#020204").withOpacity(1),
-                        //                                                                     ],
-                        //                                                                   ),
-                        //                                                                   boxShadow: [BoxShadow(color: HexColor('#04060F'), offset: Offset(0, 3), blurRadius: 5)],
-                        //                                                                   borderRadius: BorderRadius.circular(20)),
-                        //                                                               child: Padding(
-                        //                                                                 padding: const EdgeInsets.all(4.0),
-                        //                                                                 child: Icon(
-                        //                                                                   Icons.cancel_outlined,
-                        //                                                                   size: 13,
-                        //                                                                   color: ColorUtils.primary_grey,
-                        //                                                                 ),
-                        //                                                               )),
-                        //                                                         ),
-                        //                                                       )
-                        //                                                     ],
-                        //                                                   ),
-                        //                                                 ],
-                        //                                               )),
-                        //                                     );
-                        //                                   },
-                        //                                 );
-                        //                               },
-                        //                               title: Text('Title',
-                        //                                   style: FontStyleUtility.h14(
-                        //                                       fontColor:
-                        //                                           ColorUtils
-                        //                                               .primary_grey,
-                        //                                       family: 'PR')),
-                        //                               trailing: const Icon(
-                        //                                   Icons
-                        //                                       .arrow_forward_ios,
-                        //                                   size: 15,
-                        //                                   color:
-                        //                                       Colors.white),
-                        //                             ),
-                        //                             ListTile(
-                        //                               title: Text(
-                        //                                 'Repeat',
-                        //                                 style: FontStyleUtility.h14(
-                        //                                     fontColor: ColorUtils
-                        //                                         .primary_gold,
-                        //                                     family: 'PR'),
-                        //                               ),
-                        //                               trailing: const Icon(
-                        //                                 Icons
-                        //                                     .arrow_forward_ios,
-                        //                                 size: 15,
-                        //                                 color: Colors.white,
-                        //                               ),
-                        //                             ),
-                        //                             GestureDetector(
-                        //                               onTap: () {
-                        //                                 print('object');
-                        //
-                        //                                 showDialog(
-                        //                                   context: context,
-                        //                                   builder:
-                        //                                       (BuildContext
-                        //                                           context) {
-                        //                                     double width =
-                        //                                         MediaQuery.of(
-                        //                                                 context)
-                        //                                             .size
-                        //                                             .width;
-                        //                                     double height =
-                        //                                         MediaQuery.of(
-                        //                                                 context)
-                        //                                             .size
-                        //                                             .height;
-                        //                                     return AlertDialog(
-                        //                                         backgroundColor:
-                        //                                             Colors
-                        //                                                 .transparent,
-                        //                                         contentPadding:
-                        //                                             EdgeInsets
-                        //                                                 .zero,
-                        //                                         elevation:
-                        //                                             0.0,
-                        //                                         // title: Center(child: Text("Evaluation our APP")),
-                        //                                         content:
-                        //                                             Column(
-                        //                                           mainAxisAlignment:
-                        //                                               MainAxisAlignment
-                        //                                                   .center,
-                        //                                           children: [
-                        //                                             Stack(
-                        //                                               children: [
-                        //                                                 Container(
-                        //                                                   // height: 150,
-                        //                                                   // height: double.maxFinite,
-                        //                                                   height:
-                        //                                                       MediaQuery.of(context).size.height / 4,
-                        //                                                   width:
-                        //                                                       double.maxFinite,
-                        //                                                   decoration:
-                        //                                                       BoxDecoration(
-                        //                                                           // color: Colors.black.withOpacity(0.65),
-                        //                                                           gradient:
-                        //                                                               LinearGradient(
-                        //                                                             begin: Alignment.centerLeft,
-                        //                                                             end: Alignment.centerRight,
-                        //                                                             // stops: [0.1, 0.5, 0.7, 0.9],
-                        //                                                             colors: [
-                        //                                                               HexColor("#020204").withOpacity(1),
-                        //                                                               HexColor("#36393E").withOpacity(1),
-                        //                                                             ],
-                        //                                                           ),
-                        //                                                           boxShadow: [
-                        //                                                             BoxShadow(color: HexColor('#04060F'), offset: Offset(10, 10), blurRadius: 10)
-                        //                                                           ],
-                        //                                                           borderRadius: BorderRadius.circular(20)),
-                        //                                                   margin:
-                        //                                                       EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                        //                                                   // height: 122,
-                        //                                                   // width: 133,
-                        //                                                   // padding: const EdgeInsets.all(8.0),
-                        //                                                   child:
-                        //                                                       Column(
-                        //                                                     mainAxisAlignment: MainAxisAlignment.center,
-                        //                                                     children: [
-                        //                                                       Container(
-                        //                                                         // color: Colors.white,
-                        //                                                         alignment: Alignment.center,
-                        //                                                         child: ListView.builder(
-                        //                                                           padding: EdgeInsets.only(bottom: 0),
-                        //
-                        //                                                           // physics: NeverScrollableScrollPhysics(),
-                        //                                                           itemCount: list_alarm.length,
-                        //                                                           shrinkWrap: true,
-                        //                                                           itemBuilder: (BuildContext context, int index) {
-                        //                                                             return GestureDetector(
-                        //                                                               onTap: () {
-                        //                                                                 setState(() {
-                        //                                                                   Selected_sound = list_alarm[index];
-                        //                                                                   print("method_selected $Selected_sound");
-                        //                                                                 });
-                        //                                                                 Navigator.pop(context);
-                        //                                                               },
-                        //                                                               child: Container(
-                        //                                                                 margin: EdgeInsets.symmetric(vertical: 8.5),
-                        //                                                                 alignment: Alignment.center,
-                        //                                                                 child: Text(
-                        //                                                                   list_alarm[index],
-                        //                                                                   style: FontStyleUtility.h15(fontColor: ColorUtils.primary_grey, family: 'PM'),
-                        //                                                                 ),
-                        //                                                               ),
-                        //                                                             );
-                        //                                                           },
-                        //                                                         ),
-                        //                                                       ),
-                        //                                                     ],
-                        //                                                   ),
-                        //                                                 ),
-                        //                                                 GestureDetector(
-                        //                                                   onTap:
-                        //                                                       () {
-                        //                                                     Navigator.pop(context);
-                        //                                                   },
-                        //                                                   child:
-                        //                                                       Container(
-                        //                                                     margin: EdgeInsets.only(right: 0),
-                        //                                                     alignment: Alignment.topRight,
-                        //                                                     child: Container(
-                        //                                                         decoration: BoxDecoration(
-                        //                                                             // color: Colors.black.withOpacity(0.65),
-                        //                                                             gradient: LinearGradient(
-                        //                                                               begin: Alignment.centerLeft,
-                        //                                                               end: Alignment.centerRight,
-                        //                                                               // stops: [0.1, 0.5, 0.7, 0.9],
-                        //                                                               colors: [
-                        //                                                                 HexColor("#36393E").withOpacity(1),
-                        //                                                                 HexColor("#020204").withOpacity(1),
-                        //                                                               ],
-                        //                                                             ),
-                        //                                                             boxShadow: [BoxShadow(color: HexColor('#04060F'), offset: Offset(0, 3), blurRadius: 5)],
-                        //                                                             borderRadius: BorderRadius.circular(20)),
-                        //                                                         child: Padding(
-                        //                                                           padding: const EdgeInsets.all(4.0),
-                        //                                                           child: Icon(
-                        //                                                             Icons.cancel_outlined,
-                        //                                                             size: 20,
-                        //                                                             color: ColorUtils.primary_grey,
-                        //                                                           ),
-                        //                                                         )),
-                        //                                                   ),
-                        //                                                 )
-                        //                                               ],
-                        //                                             ),
-                        //                                           ],
-                        //                                         ));
-                        //                                   },
-                        //                                 );
-                        //                               },
-                        //                               child: ListTile(
-                        //                                 title: Text('Sound',
-                        //                                     style: FontStyleUtility.h14(
-                        //                                         fontColor:
-                        //                                             ColorUtils
-                        //                                                 .primary_gold,
-                        //                                         family:
-                        //                                             'PR')),
-                        //                                 trailing: const Icon(
-                        //                                     Icons
-                        //                                         .arrow_forward_ios,
-                        //                                     size: 15,
-                        //                                     color:
-                        //                                         Colors.white),
-                        //                               ),
-                        //                             ),
-                        //                             GestureDetector(
-                        //                               onTap: () async {
-                        //                                 if (Alarm_title
-                        //                                     .text.isEmpty) {
-                        //                                   CommonWidget()
-                        //                                       .showErrorToaster(
-                        //                                           msg:
-                        //                                               "Enter Alarm title");
-                        //                                   return;
-                        //                                 } else {
-                        //                                   await onSaveAlarm();
-                        //                                 }
-                        //                               },
-                        //                               child: Container(
-                        //                                 width: MediaQuery.of(
-                        //                                             context)
-                        //                                         .size
-                        //                                         .width /
-                        //                                     3,
-                        //                                 decoration: BoxDecoration(
-                        //                                     borderRadius:
-                        //                                         BorderRadius
-                        //                                             .circular(
-                        //                                                 30),
-                        //                                     border: Border.all(
-                        //                                         color: ColorUtils
-                        //                                             .primary_grey,
-                        //                                         width: 1)),
-                        //                                 child: Padding(
-                        //                                   padding:
-                        //                                       const EdgeInsets
-                        //                                               .symmetric(
-                        //                                           vertical:
-                        //                                               12.0,
-                        //                                           horizontal:
-                        //                                               8),
-                        //                                   child: Row(
-                        //                                     mainAxisAlignment:
-                        //                                         MainAxisAlignment
-                        //                                             .center,
-                        //                                     children: [
-                        //                                       const Icon(
-                        //                                         Icons.alarm,
-                        //                                         color: Colors
-                        //                                             .white,
-                        //                                         size: 25,
-                        //                                       ),
-                        //                                       const SizedBox(
-                        //                                         width: 10,
-                        //                                       ),
-                        //                                       Text(
-                        //                                         'Save',
-                        //                                         style: FontStyleUtility.h16(
-                        //                                             fontColor:
-                        //                                                 ColorUtils
-                        //                                                     .primary_gold,
-                        //                                             family:
-                        //                                                 'PR'),
-                        //                                       ),
-                        //                                     ],
-                        //                                   ),
-                        //                                 ),
-                        //                               ),
-                        //                             )
-                        //                           ],
-                        //                         ),
-                        //                       ),
-                        //                     );
-                        //                   },
-                        //                 );
-                        //               },
-                        //             );
-                        //             // scheduleAlarm();
-                        //           },
-                        //           child: Container(
-                        //             decoration: BoxDecoration(
-                        //                 // color: Colors.black.withOpacity(0.65),
-                        //                 gradient: LinearGradient(
-                        //                   begin: Alignment.centerLeft,
-                        //                   end: Alignment.centerRight,
-                        //                   // stops: [0.1, 0.5, 0.7, 0.9],
-                        //                   colors: [
-                        //                     HexColor("#36393E")
-                        //                         .withOpacity(1),
-                        //                     HexColor("#020204")
-                        //                         .withOpacity(1),
-                        //                   ],
-                        //                 ),
-                        //                 boxShadow: [
-                        //                   BoxShadow(
-                        //                       color: HexColor('#04060F'),
-                        //                       offset: const Offset(10, 10),
-                        //                       blurRadius: 20)
-                        //                 ],
-                        //                 borderRadius:
-                        //                     BorderRadius.circular(20)),
-                        //             child: Padding(
-                        //               padding: const EdgeInsets.all(8.0),
-                        //               child: Icon(
-                        //                 Icons.add_circle_outline,
-                        //                 color: ColorUtils.primary_grey,
-                        //               ),
-                        //             ),
-                        //           )),
-                        //     ],
-                        //   ),
-                        // )
-                        // else
-                        //   const Center(
-                        //       child: Text(
-                        //     'Only 5 alarms allowed!',
-                        //     style: const TextStyle(color: Colors.white),
-                        //   )),
-                        FutureBuilder<List<AlarmInfo>>(
-                          future: _alarms,
-                          builder: (context, snapshot) {
-                            if (snapshot.hasData) {
-                              _currentAlarms = snapshot.data;
-                              return Container(
-                                child: ListView(
-                                  shrinkWrap: true,
-                                  padding: EdgeInsets.zero,
-                                  children: snapshot.data!.map<Widget>((alarm) {
-                                    var alarmTime = DateFormat('hh:mm aa')
-                                        .format(alarm.alarmDateTime!);
-                                    var gradientColor = GradientTemplate
-                                        .gradientTemplate[
-                                            alarm.gradientColorIndex!]
-                                        .colors;
-                                    return Container(
-                                      margin: const EdgeInsets.only(bottom: 0),
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 16, vertical: 0),
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          // color: Colors.black.withOpacity(0.65),
-                                          // gradient: LinearGradient(
-                                          //   begin: Alignment.centerLeft,
-                                          //   end: Alignment.centerRight,
-                                          //   // stops: [0.1, 0.5, 0.7, 0.9],
-                                          //   colors: [
-                                          //     HexColor("#020204").withOpacity(1),
-                                          //     HexColor("#36393E").withOpacity(1),
-                                          //   ],
-                                          // ),
-                                          // boxShadow: [
-                                          //   BoxShadow(
-                                          //       color: HexColor('#04060F'),
-                                          //       offset: Offset(-10, 10),
-                                          //       blurRadius: 20)
-                                          // ],
-                                          border: Border(
-                                            bottom: BorderSide(
-                                              //                   <--- left side
-                                              color: HexColor('#1d1d1d'),
-                                              width: 1.5,
+                                        child: Container(
+                                          // color: Colors.white60,
+                                          // width: 10,
+                                          height: 30,
+                                          child: Container(
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(0.0),
+                                              child: Icon(
+                                                Icons.add_circle_outline,
+                                                color: ColorUtils.primary_grey,
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                        child: Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              vertical: 8.0),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: <Widget>[
-                                              ListTile(
-                                                title: Text(
-                                                  alarmTime,
-                                                  style: FontStyleUtility.h16(
-                                                      fontColor: Colors.white,
-                                                      family: 'PR'),
-                                                ),
-                                                subtitle: Text(alarm.title!,
-                                                    style: FontStyleUtility.h14(
-                                                        fontColor:
-                                                            HexColor('#8A8A8A'),
-                                                        family: 'PR')),
-                                                trailing: IconButton(
-                                                    icon: const Icon(
-                                                        Icons.delete),
-                                                    color:
-                                                        ColorUtils.primary_gold,
-                                                    onPressed: () {
-                                                      deleteAlarm(alarm.id!);
-                                                    }),
-                                                // Container(
-                                                //   width: 20,
-                                                //   child: Transform.scale(
-                                                //     scale: 0.5,
-                                                //     child: CupertinoSwitch(
-                                                //       onChanged: (bool value) {},
-                                                //       value: true,
-                                                //       trackColor: HexColor('#717171'),
-                                                //       thumbColor: Colors.black87,
-                                                //       activeColor:
-                                                //           ColorUtils.primary_gold,
-                                                //     ),
-                                                //   ),
-                                                // ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    );
-                                  }).followedBy([]).toList(),
+                                        )),
+                                  ),
                                 ),
-                              );
-                            }
-                            return const Center(
-                              child: const Text(
-                                'Loading..',
-                                style: TextStyle(color: Colors.white),
-                              ),
-                            );
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                        // color: Colors.black.withOpacity(0.65),
-                        gradient: LinearGradient(
-                          begin: Alignment.centerLeft,
-                          end: Alignment.centerRight,
-                          // stops: [0.1, 0.5, 0.7, 0.9],
-                          colors: [
-                            HexColor("#36393E").withOpacity(1),
-                            HexColor("#020204").withOpacity(1),
+                                Expanded(
+                                  flex: 1,
+                                  child: Container(),
+                                )
+                              ],
+                            ),
+                            // Container(
+                            //   padding: const EdgeInsets.symmetric(
+                            //       horizontal: 16, vertical: 0),
+                            //   child: Row(
+                            //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            //     children: [
+                            //       Container(
+                            //         margin: EdgeInsets.only(left: 16),
+                            //         child: Text(
+                            //           "Add Alarm",
+                            //           style: FontStyleUtility.h16(
+                            //               fontColor: ColorUtils.primary_gold,
+                            //               family: 'PM'),
+                            //         ),
+                            //       ),
+                            //       FlatButton(
+                            //           padding: const EdgeInsets.symmetric(
+                            //               horizontal: 32, vertical: 10),
+                            //           onPressed: () {
+                            //             _alarmTimeString = DateFormat('HH:mm')
+                            //                 .format(selectedDate);
+                            //             showModalBottomSheet(
+                            //               useRootNavigator: true,
+                            //               context: context,
+                            //               clipBehavior: Clip.antiAlias,
+                            //               shape: const RoundedRectangleBorder(
+                            //                 borderRadius: BorderRadius.vertical(
+                            //                   top: Radius.circular(24),
+                            //                 ),
+                            //               ),
+                            //               builder: (context) {
+                            //                 return StatefulBuilder(
+                            //                   builder: (context, setModalState) {
+                            //                     return Container(
+                            //                       decoration: BoxDecoration(
+                            //                           // color: Colors.black.withOpacity(0.65),
+                            //                           gradient: LinearGradient(
+                            //                             begin:
+                            //                                 Alignment.centerLeft,
+                            //                             end:
+                            //                                 Alignment.centerRight,
+                            //                             // stops: [0.1, 0.5, 0.7, 0.9],
+                            //                             colors: [
+                            //                               HexColor("#020204")
+                            //                                   .withOpacity(1),
+                            //                               HexColor("#36393E")
+                            //                                   .withOpacity(1),
+                            //                             ],
+                            //                           ),
+                            //                           boxShadow: [
+                            //                             BoxShadow(
+                            //                                 color: HexColor(
+                            //                                     '#04060F'),
+                            //                                 offset: const Offset(
+                            //                                     -10, 10),
+                            //                                 blurRadius: 20)
+                            //                           ],
+                            //                           borderRadius:
+                            //                               const BorderRadius.only(
+                            //                                   topLeft:
+                            //                                       Radius.circular(
+                            //                                           20),
+                            //                                   topRight:
+                            //                                       Radius.circular(
+                            //                                           20))),
+                            //                       padding:
+                            //                           const EdgeInsets.all(32),
+                            //                       child: SingleChildScrollView(
+                            //                         child: Column(
+                            //                           children: [
+                            //                             // FlatButton(
+                            //                             //   onPressed:
+                            //                             //       () async {
+                            //                             //     // var selectedTime = await showTimePicker(
+                            //                             //     //   context: context,
+                            //                             //     //   // initialEntryMode: DatePickerEntryMode.calendarOnly,<- this
+                            //                             //     //   initialEntryMode: TimePickerEntryMode.dial,
+                            //                             //     //   initialTime: TimeOfDay.now(),
+                            //                             //     //   builder: (context, child) {
+                            //                             //     //     return Theme(
+                            //                             //     //       data: Theme.of(
+                            //                             //     //               context)
+                            //                             //     //           .copyWith(
+                            //                             //     //         colorScheme:
+                            //                             //     //             ColorScheme
+                            //                             //     //                 .dark(
+                            //                             //     //           primary:
+                            //                             //     //               Colors.black,
+                            //                             //     //           onPrimary:
+                            //                             //     //               Colors.white,
+                            //                             //     //           surface:
+                            //                             //     //               ColorUtils.primary_gold,
+                            //                             //     //           // onPrimary: Colors.black, // <-- SEE HERE
+                            //                             //     //           onSurface:
+                            //                             //     //               Colors.black,
+                            //                             //     //         ),
+                            //                             //     //         dialogBackgroundColor:
+                            //                             //     //             ColorUtils
+                            //                             //     //                 .primary_gold,
+                            //                             //     //         textButtonTheme:
+                            //                             //     //             TextButtonThemeData(
+                            //                             //     //           style: TextButton
+                            //                             //     //               .styleFrom(
+                            //                             //     //             primary:
+                            //                             //     //                 Colors.black, // button text color
+                            //                             //     //           ),
+                            //                             //     //         ),
+                            //                             //     //       ),
+                            //                             //     //       child:
+                            //                             //     //           child!,
+                            //                             //     //     );
+                            //                             //     //   },
+                            //                             //     // );
+                            //                             //     // if (selectedTime !=
+                            //                             //     //     null) {
+                            //                             //     //   final now =
+                            //                             //     //       DateTime
+                            //                             //     //           .now();
+                            //                             //     //   var selectedDateTime = DateTime(
+                            //                             //     //       now.year,
+                            //                             //     //       now.month,
+                            //                             //     //       now.day,
+                            //                             //     //       selectedTime
+                            //                             //     //           .hour,
+                            //                             //     //       selectedTime
+                            //                             //     //           .minute);
+                            //                             //     //   _alarmTime =
+                            //                             //     //       selectedDateTime;
+                            //                             //     //   setModalState(
+                            //                             //     //       () {
+                            //                             //     //     _alarmTimeString =
+                            //                             //     //         DateFormat(
+                            //                             //     //                 'HH:mm')
+                            //                             //     //             .format(
+                            //                             //     //                 selectedDateTime);
+                            //                             //     //   });
+                            //                             //     // }
+                            //                             //   },
+                            //                             //   child: Text(
+                            //                             //       _alarmTimeString!,
+                            //                             //       style: FontStyleUtility.h35(
+                            //                             //           fontColor:
+                            //                             //               ColorUtils
+                            //                             //                   .primary_gold,
+                            //                             //           family:
+                            //                             //               'PM')),
+                            //                             // ),
+                            //                             Container(
+                            //                               height: 150,
+                            //                               decoration:
+                            //                                   BoxDecoration(
+                            //                                       borderRadius:
+                            //                                           BorderRadius
+                            //                                               .circular(
+                            //                                                   15),
+                            //                                       gradient: LinearGradient(
+                            //                                         begin: Alignment
+                            //                                             .topCenter,
+                            //                                         end: Alignment
+                            //                                             .bottomCenter,
+                            //                                         colors: [
+                            //                                           HexColor(
+                            //                                                   "#000000")
+                            //                                               .withOpacity(
+                            //                                                   1),
+                            //                                           HexColor(
+                            //                                                   "#04060F")
+                            //                                               .withOpacity(
+                            //                                                   1),
+                            //                                           HexColor(
+                            //                                                   "#000000")
+                            //                                               .withOpacity(
+                            //                                                   1),
+                            //                                         ],
+                            //                                       ),
+                            //                                       boxShadow: [
+                            //                                     BoxShadow(
+                            //                                         color: HexColor(
+                            //                                             '#04060F'),
+                            //                                         offset:
+                            //                                             Offset(
+                            //                                                 3, 3),
+                            //                                         blurRadius:
+                            //                                             10)
+                            //                                   ]),
+                            //                               child: Stack(
+                            //                                 children: [
+                            //                                   CupertinoTheme(
+                            //                                     data:
+                            //                                         CupertinoThemeData(
+                            //                                       brightness:
+                            //                                           Brightness
+                            //                                               .dark,
+                            //                                     ),
+                            //                                     child:
+                            //                                         CupertinoDatePicker(
+                            //                                       // use24hFormat: true,
+                            //                                       mode:
+                            //                                           CupertinoDatePickerMode
+                            //                                               .time,
+                            //                                       onDateTimeChanged:
+                            //                                           (DateTime
+                            //                                               value) {
+                            //                                         selected_time =
+                            //                                             value;
+                            //                                         print(
+                            //                                             "${value.hour}:${value.minute}");
+                            //
+                            //                                         if (selected_time !=
+                            //                                             null) {
+                            //                                           final now =
+                            //                                               DateTime
+                            //                                                   .now();
+                            //                                           var selectedDateTime = DateTime(
+                            //                                               now
+                            //                                                   .year,
+                            //                                               now
+                            //                                                   .month,
+                            //                                               now.day,
+                            //                                               selected_time
+                            //                                                   .hour,
+                            //                                               selected_time
+                            //                                                   .minute);
+                            //                                           _alarmTime =
+                            //                                               selectedDateTime;
+                            //                                           setModalState(
+                            //                                               () {
+                            //                                             _alarmTimeString = DateFormat(
+                            //                                                     'HH:mm')
+                            //                                                 .format(
+                            //                                                     selectedDateTime);
+                            //                                           });
+                            //                                         }
+                            //                                       },
+                            //                                     ),
+                            //                                   ),
+                            //                                 ],
+                            //                               ),
+                            //                             ),
+                            //
+                            //                             ListTile(
+                            //                               onTap: () {
+                            //                                 showDialog(
+                            //                                   context: context,
+                            //                                   builder:
+                            //                                       (BuildContext
+                            //                                           context) {
+                            //                                     double width =
+                            //                                         MediaQuery.of(
+                            //                                                 context)
+                            //                                             .size
+                            //                                             .width;
+                            //                                     double height =
+                            //                                         MediaQuery.of(
+                            //                                                 context)
+                            //                                             .size
+                            //                                             .height;
+                            //                                     return BackdropFilter(
+                            //                                       filter: ImageFilter
+                            //                                           .blur(
+                            //                                               sigmaX:
+                            //                                                   10,
+                            //                                               sigmaY:
+                            //                                                   10),
+                            //                                       child:
+                            //                                           AlertDialog(
+                            //                                               backgroundColor:
+                            //                                                   Colors
+                            //                                                       .transparent,
+                            //                                               contentPadding:
+                            //                                                   EdgeInsets
+                            //                                                       .zero,
+                            //                                               elevation:
+                            //                                                   0.0,
+                            //                                               // title: Center(child: Text("Evaluation our APP")),
+                            //                                               content:
+                            //                                                   Column(
+                            //                                                 mainAxisAlignment:
+                            //                                                     MainAxisAlignment.center,
+                            //                                                 children: [
+                            //                                                   Stack(
+                            //                                                     children: [
+                            //                                                       Padding(
+                            //                                                         padding: const EdgeInsets.all(8.0),
+                            //                                                         child: Container(
+                            //                                                           decoration:
+                            //                                                               BoxDecoration(
+                            //                                                                   // color: Colors.black.withOpacity(0.65),
+                            //                                                                   gradient:
+                            //                                                                       LinearGradient(
+                            //                                                                     begin: Alignment.centerLeft,
+                            //                                                                     end: Alignment.centerRight,
+                            //                                                                     // stops: [0.1, 0.5, 0.7, 0.9],
+                            //                                                                     colors: [
+                            //                                                                       HexColor("#020204").withOpacity(1),
+                            //                                                                       HexColor("#36393E").withOpacity(1),
+                            //                                                                     ],
+                            //                                                                   ),
+                            //                                                                   boxShadow: [
+                            //                                                                     BoxShadow(color: HexColor('#04060F'), offset: Offset(10, 10), blurRadius: 10)
+                            //                                                                   ],
+                            //                                                                   borderRadius: BorderRadius.circular(15)),
+                            //                                                           child: Align(
+                            //                                                               alignment: Alignment.center,
+                            //                                                               child: Padding(
+                            //                                                                 padding: const EdgeInsets.all(8.0),
+                            //                                                                 child: Column(
+                            //                                                                   children: [
+                            //                                                                     SizedBox(
+                            //                                                                       height: 0,
+                            //                                                                     ),
+                            //
+                            //                                                                     Column(
+                            //                                                                       crossAxisAlignment: CrossAxisAlignment.start,
+                            //                                                                       children: [
+                            //                                                                         Container(
+                            //                                                                           margin: EdgeInsets.only(left: 18),
+                            //                                                                           child: Text('Title', style: FontStyleUtility.h14(fontColor: ColorUtils.primary_grey, family: 'Pr')),
+                            //                                                                         ),
+                            //                                                                         SizedBox(
+                            //                                                                           height: 11,
+                            //                                                                         ),
+                            //                                                                         Container(
+                            //                                                                           margin: EdgeInsets.symmetric(horizontal: 10),
+                            //                                                                           // width: 300,
+                            //                                                                           decoration: BoxDecoration(
+                            //                                                                               // color: Colors.black.withOpacity(0.65),
+                            //                                                                               gradient: LinearGradient(
+                            //                                                                                 begin: Alignment.centerLeft,
+                            //                                                                                 end: Alignment.centerRight,
+                            //                                                                                 // stops: [0.1, 0.5, 0.7, 0.9],
+                            //                                                                                 colors: [
+                            //                                                                                   HexColor("#36393E").withOpacity(1),
+                            //                                                                                   HexColor("#020204").withOpacity(1),
+                            //                                                                                 ],
+                            //                                                                               ),
+                            //                                                                               boxShadow: [BoxShadow(color: HexColor('#04060F'), offset: Offset(10, 10), blurRadius: 10)],
+                            //                                                                               borderRadius: BorderRadius.circular(20)),
+                            //
+                            //                                                                           child: TextFormField(
+                            //                                                                             maxLength: 150,
+                            //                                                                             decoration: InputDecoration(
+                            //                                                                               contentPadding: EdgeInsets.only(left: 20, top: 14, bottom: 14),
+                            //                                                                               alignLabelWithHint: false,
+                            //                                                                               isDense: true,
+                            //                                                                               hintText: 'Add alarm title',
+                            //                                                                               counterStyle: TextStyle(
+                            //                                                                                 height: double.minPositive,
+                            //                                                                               ),
+                            //                                                                               counterText: "",
+                            //                                                                               filled: true,
+                            //                                                                               border: InputBorder.none,
+                            //                                                                               enabledBorder: const OutlineInputBorder(
+                            //                                                                                 borderSide: BorderSide(color: Colors.transparent, width: 1),
+                            //                                                                                 borderRadius: BorderRadius.all(Radius.circular(10)),
+                            //                                                                               ),
+                            //                                                                               hintStyle: FontStyleUtility.h14(fontColor: HexColor('#CBCBCB'), family: 'PR'),
+                            //                                                                             ),
+                            //                                                                             style: FontStyleUtility.h14(fontColor: ColorUtils.primary_grey, family: 'PR'),
+                            //                                                                             controller: Alarm_title,
+                            //                                                                             keyboardType: TextInputType.text,
+                            //                                                                           ),
+                            //                                                                         ),
+                            //                                                                       ],
+                            //                                                                     ),
+                            //                                                                     SizedBox(
+                            //                                                                       height: 10,
+                            //                                                                     ),
+                            //                                                                     GestureDetector(
+                            //                                                                       onTap: () {
+                            //                                                                         setState(() {
+                            //                                                                           Alarm_title_list.add(Alarm_title.text);
+                            //                                                                           Navigator.pop(context);
+                            //                                                                         });
+                            //                                                                       },
+                            //                                                                       child: Container(
+                            //                                                                         alignment: Alignment.topRight,
+                            //                                                                         child: Text(
+                            //                                                                           'Add',
+                            //                                                                           style: FontStyleUtility.h12(fontColor: ColorUtils.primary_grey, family: 'PR'),
+                            //                                                                         ),
+                            //                                                                       ),
+                            //                                                                     )
+                            //                                                                     // common_button_gold(
+                            //                                                                     //   onTap: () {
+                            //                                                                     //     Get
+                            //                                                                     //         .to(
+                            //                                                                     //         DashboardScreen());
+                            //                                                                     //   },
+                            //                                                                     //   title_text: 'Go to Dashboard',
+                            //                                                                     // ),
+                            //                                                                   ],
+                            //                                                                 ),
+                            //                                                               )),
+                            //                                                         ),
+                            //                                                       ),
+                            //                                                       GestureDetector(
+                            //                                                         onTap: () {
+                            //                                                           Navigator.pop(context);
+                            //                                                         },
+                            //                                                         child: Container(
+                            //                                                           margin: EdgeInsets.only(right: 10),
+                            //                                                           alignment: Alignment.topRight,
+                            //                                                           child: Container(
+                            //                                                               decoration: BoxDecoration(
+                            //                                                                   // color: Colors.black.withOpacity(0.65),
+                            //                                                                   gradient: LinearGradient(
+                            //                                                                     begin: Alignment.centerLeft,
+                            //                                                                     end: Alignment.centerRight,
+                            //                                                                     // stops: [0.1, 0.5, 0.7, 0.9],
+                            //                                                                     colors: [
+                            //                                                                       HexColor("#36393E").withOpacity(1),
+                            //                                                                       HexColor("#020204").withOpacity(1),
+                            //                                                                     ],
+                            //                                                                   ),
+                            //                                                                   boxShadow: [BoxShadow(color: HexColor('#04060F'), offset: Offset(0, 3), blurRadius: 5)],
+                            //                                                                   borderRadius: BorderRadius.circular(20)),
+                            //                                                               child: Padding(
+                            //                                                                 padding: const EdgeInsets.all(4.0),
+                            //                                                                 child: Icon(
+                            //                                                                   Icons.cancel_outlined,
+                            //                                                                   size: 13,
+                            //                                                                   color: ColorUtils.primary_grey,
+                            //                                                                 ),
+                            //                                                               )),
+                            //                                                         ),
+                            //                                                       )
+                            //                                                     ],
+                            //                                                   ),
+                            //                                                 ],
+                            //                                               )),
+                            //                                     );
+                            //                                   },
+                            //                                 );
+                            //                               },
+                            //                               title: Text('Title',
+                            //                                   style: FontStyleUtility.h14(
+                            //                                       fontColor:
+                            //                                           ColorUtils
+                            //                                               .primary_grey,
+                            //                                       family: 'PR')),
+                            //                               trailing: const Icon(
+                            //                                   Icons
+                            //                                       .arrow_forward_ios,
+                            //                                   size: 15,
+                            //                                   color:
+                            //                                       Colors.white),
+                            //                             ),
+                            //                             ListTile(
+                            //                               title: Text(
+                            //                                 'Repeat',
+                            //                                 style: FontStyleUtility.h14(
+                            //                                     fontColor: ColorUtils
+                            //                                         .primary_gold,
+                            //                                     family: 'PR'),
+                            //                               ),
+                            //                               trailing: const Icon(
+                            //                                 Icons
+                            //                                     .arrow_forward_ios,
+                            //                                 size: 15,
+                            //                                 color: Colors.white,
+                            //                               ),
+                            //                             ),
+                            //                             GestureDetector(
+                            //                               onTap: () {
+                            //                                 print('object');
+                            //
+                            //                                 showDialog(
+                            //                                   context: context,
+                            //                                   builder:
+                            //                                       (BuildContext
+                            //                                           context) {
+                            //                                     double width =
+                            //                                         MediaQuery.of(
+                            //                                                 context)
+                            //                                             .size
+                            //                                             .width;
+                            //                                     double height =
+                            //                                         MediaQuery.of(
+                            //                                                 context)
+                            //                                             .size
+                            //                                             .height;
+                            //                                     return AlertDialog(
+                            //                                         backgroundColor:
+                            //                                             Colors
+                            //                                                 .transparent,
+                            //                                         contentPadding:
+                            //                                             EdgeInsets
+                            //                                                 .zero,
+                            //                                         elevation:
+                            //                                             0.0,
+                            //                                         // title: Center(child: Text("Evaluation our APP")),
+                            //                                         content:
+                            //                                             Column(
+                            //                                           mainAxisAlignment:
+                            //                                               MainAxisAlignment
+                            //                                                   .center,
+                            //                                           children: [
+                            //                                             Stack(
+                            //                                               children: [
+                            //                                                 Container(
+                            //                                                   // height: 150,
+                            //                                                   // height: double.maxFinite,
+                            //                                                   height:
+                            //                                                       MediaQuery.of(context).size.height / 4,
+                            //                                                   width:
+                            //                                                       double.maxFinite,
+                            //                                                   decoration:
+                            //                                                       BoxDecoration(
+                            //                                                           // color: Colors.black.withOpacity(0.65),
+                            //                                                           gradient:
+                            //                                                               LinearGradient(
+                            //                                                             begin: Alignment.centerLeft,
+                            //                                                             end: Alignment.centerRight,
+                            //                                                             // stops: [0.1, 0.5, 0.7, 0.9],
+                            //                                                             colors: [
+                            //                                                               HexColor("#020204").withOpacity(1),
+                            //                                                               HexColor("#36393E").withOpacity(1),
+                            //                                                             ],
+                            //                                                           ),
+                            //                                                           boxShadow: [
+                            //                                                             BoxShadow(color: HexColor('#04060F'), offset: Offset(10, 10), blurRadius: 10)
+                            //                                                           ],
+                            //                                                           borderRadius: BorderRadius.circular(20)),
+                            //                                                   margin:
+                            //                                                       EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                            //                                                   // height: 122,
+                            //                                                   // width: 133,
+                            //                                                   // padding: const EdgeInsets.all(8.0),
+                            //                                                   child:
+                            //                                                       Column(
+                            //                                                     mainAxisAlignment: MainAxisAlignment.center,
+                            //                                                     children: [
+                            //                                                       Container(
+                            //                                                         // color: Colors.white,
+                            //                                                         alignment: Alignment.center,
+                            //                                                         child: ListView.builder(
+                            //                                                           padding: EdgeInsets.only(bottom: 0),
+                            //
+                            //                                                           // physics: NeverScrollableScrollPhysics(),
+                            //                                                           itemCount: list_alarm.length,
+                            //                                                           shrinkWrap: true,
+                            //                                                           itemBuilder: (BuildContext context, int index) {
+                            //                                                             return GestureDetector(
+                            //                                                               onTap: () {
+                            //                                                                 setState(() {
+                            //                                                                   Selected_sound = list_alarm[index];
+                            //                                                                   print("method_selected $Selected_sound");
+                            //                                                                 });
+                            //                                                                 Navigator.pop(context);
+                            //                                                               },
+                            //                                                               child: Container(
+                            //                                                                 margin: EdgeInsets.symmetric(vertical: 8.5),
+                            //                                                                 alignment: Alignment.center,
+                            //                                                                 child: Text(
+                            //                                                                   list_alarm[index],
+                            //                                                                   style: FontStyleUtility.h15(fontColor: ColorUtils.primary_grey, family: 'PM'),
+                            //                                                                 ),
+                            //                                                               ),
+                            //                                                             );
+                            //                                                           },
+                            //                                                         ),
+                            //                                                       ),
+                            //                                                     ],
+                            //                                                   ),
+                            //                                                 ),
+                            //                                                 GestureDetector(
+                            //                                                   onTap:
+                            //                                                       () {
+                            //                                                     Navigator.pop(context);
+                            //                                                   },
+                            //                                                   child:
+                            //                                                       Container(
+                            //                                                     margin: EdgeInsets.only(right: 0),
+                            //                                                     alignment: Alignment.topRight,
+                            //                                                     child: Container(
+                            //                                                         decoration: BoxDecoration(
+                            //                                                             // color: Colors.black.withOpacity(0.65),
+                            //                                                             gradient: LinearGradient(
+                            //                                                               begin: Alignment.centerLeft,
+                            //                                                               end: Alignment.centerRight,
+                            //                                                               // stops: [0.1, 0.5, 0.7, 0.9],
+                            //                                                               colors: [
+                            //                                                                 HexColor("#36393E").withOpacity(1),
+                            //                                                                 HexColor("#020204").withOpacity(1),
+                            //                                                               ],
+                            //                                                             ),
+                            //                                                             boxShadow: [BoxShadow(color: HexColor('#04060F'), offset: Offset(0, 3), blurRadius: 5)],
+                            //                                                             borderRadius: BorderRadius.circular(20)),
+                            //                                                         child: Padding(
+                            //                                                           padding: const EdgeInsets.all(4.0),
+                            //                                                           child: Icon(
+                            //                                                             Icons.cancel_outlined,
+                            //                                                             size: 20,
+                            //                                                             color: ColorUtils.primary_grey,
+                            //                                                           ),
+                            //                                                         )),
+                            //                                                   ),
+                            //                                                 )
+                            //                                               ],
+                            //                                             ),
+                            //                                           ],
+                            //                                         ));
+                            //                                   },
+                            //                                 );
+                            //                               },
+                            //                               child: ListTile(
+                            //                                 title: Text('Sound',
+                            //                                     style: FontStyleUtility.h14(
+                            //                                         fontColor:
+                            //                                             ColorUtils
+                            //                                                 .primary_gold,
+                            //                                         family:
+                            //                                             'PR')),
+                            //                                 trailing: const Icon(
+                            //                                     Icons
+                            //                                         .arrow_forward_ios,
+                            //                                     size: 15,
+                            //                                     color:
+                            //                                         Colors.white),
+                            //                               ),
+                            //                             ),
+                            //                             GestureDetector(
+                            //                               onTap: () async {
+                            //                                 if (Alarm_title
+                            //                                     .text.isEmpty) {
+                            //                                   CommonWidget()
+                            //                                       .showErrorToaster(
+                            //                                           msg:
+                            //                                               "Enter Alarm title");
+                            //                                   return;
+                            //                                 } else {
+                            //                                   await onSaveAlarm();
+                            //                                 }
+                            //                               },
+                            //                               child: Container(
+                            //                                 width: MediaQuery.of(
+                            //                                             context)
+                            //                                         .size
+                            //                                         .width /
+                            //                                     3,
+                            //                                 decoration: BoxDecoration(
+                            //                                     borderRadius:
+                            //                                         BorderRadius
+                            //                                             .circular(
+                            //                                                 30),
+                            //                                     border: Border.all(
+                            //                                         color: ColorUtils
+                            //                                             .primary_grey,
+                            //                                         width: 1)),
+                            //                                 child: Padding(
+                            //                                   padding:
+                            //                                       const EdgeInsets
+                            //                                               .symmetric(
+                            //                                           vertical:
+                            //                                               12.0,
+                            //                                           horizontal:
+                            //                                               8),
+                            //                                   child: Row(
+                            //                                     mainAxisAlignment:
+                            //                                         MainAxisAlignment
+                            //                                             .center,
+                            //                                     children: [
+                            //                                       const Icon(
+                            //                                         Icons.alarm,
+                            //                                         color: Colors
+                            //                                             .white,
+                            //                                         size: 25,
+                            //                                       ),
+                            //                                       const SizedBox(
+                            //                                         width: 10,
+                            //                                       ),
+                            //                                       Text(
+                            //                                         'Save',
+                            //                                         style: FontStyleUtility.h16(
+                            //                                             fontColor:
+                            //                                                 ColorUtils
+                            //                                                     .primary_gold,
+                            //                                             family:
+                            //                                                 'PR'),
+                            //                                       ),
+                            //                                     ],
+                            //                                   ),
+                            //                                 ),
+                            //                               ),
+                            //                             )
+                            //                           ],
+                            //                         ),
+                            //                       ),
+                            //                     );
+                            //                   },
+                            //                 );
+                            //               },
+                            //             );
+                            //             // scheduleAlarm();
+                            //           },
+                            //           child: Container(
+                            //             decoration: BoxDecoration(
+                            //                 // color: Colors.black.withOpacity(0.65),
+                            //                 gradient: LinearGradient(
+                            //                   begin: Alignment.centerLeft,
+                            //                   end: Alignment.centerRight,
+                            //                   // stops: [0.1, 0.5, 0.7, 0.9],
+                            //                   colors: [
+                            //                     HexColor("#36393E")
+                            //                         .withOpacity(1),
+                            //                     HexColor("#020204")
+                            //                         .withOpacity(1),
+                            //                   ],
+                            //                 ),
+                            //                 boxShadow: [
+                            //                   BoxShadow(
+                            //                       color: HexColor('#04060F'),
+                            //                       offset: const Offset(10, 10),
+                            //                       blurRadius: 20)
+                            //                 ],
+                            //                 borderRadius:
+                            //                     BorderRadius.circular(20)),
+                            //             child: Padding(
+                            //               padding: const EdgeInsets.all(8.0),
+                            //               child: Icon(
+                            //                 Icons.add_circle_outline,
+                            //                 color: ColorUtils.primary_grey,
+                            //               ),
+                            //             ),
+                            //           )),
+                            //     ],
+                            //   ),
+                            // )
+                            // else
+                            //   const Center(
+                            //       child: Text(
+                            //     'Only 5 alarms allowed!',
+                            //     style: const TextStyle(color: Colors.white),
+                            //   )),
+                            FutureBuilder<List<AlarmInfo>>(
+                              future: _alarms,
+                              builder: (context, snapshot) {
+                                if (snapshot.hasData) {
+                                  _currentAlarms = snapshot.data;
+                                  return Container(
+                                    child: ListView(
+                                      shrinkWrap: true,
+                                      padding: EdgeInsets.zero,
+                                      children:
+                                          snapshot.data!.map<Widget>((alarm) {
+                                        var alarmTime = DateFormat('hh:mm aa')
+                                            .format(alarm.alarmDateTime!);
+                                        var gradientColor = GradientTemplate
+                                            .gradientTemplate[
+                                                alarm.gradientColorIndex!]
+                                            .colors;
+                                        return Container(
+                                          margin:
+                                              const EdgeInsets.only(bottom: 0),
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 16, vertical: 0),
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              // color: Colors.black.withOpacity(0.65),
+                                              // gradient: LinearGradient(
+                                              //   begin: Alignment.centerLeft,
+                                              //   end: Alignment.centerRight,
+                                              //   // stops: [0.1, 0.5, 0.7, 0.9],
+                                              //   colors: [
+                                              //     HexColor("#020204").withOpacity(1),
+                                              //     HexColor("#36393E").withOpacity(1),
+                                              //   ],
+                                              // ),
+                                              // boxShadow: [
+                                              //   BoxShadow(
+                                              //       color: HexColor('#04060F'),
+                                              //       offset: Offset(-10, 10),
+                                              //       blurRadius: 20)
+                                              // ],
+                                              border: Border(
+                                                bottom: BorderSide(
+                                                  //                   <--- left side
+                                                  color: HexColor('#1d1d1d'),
+                                                  width: 1.5,
+                                                ),
+                                              ),
+                                            ),
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      vertical: 8.0),
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: <Widget>[
+                                                  ListTile(
+                                                    title: Text(
+                                                      alarmTime,
+                                                      style:
+                                                          FontStyleUtility.h16(
+                                                              fontColor:
+                                                                  Colors.white,
+                                                              family: 'PR'),
+                                                    ),
+                                                    subtitle: Text(alarm.title!,
+                                                        style: FontStyleUtility
+                                                            .h14(
+                                                                fontColor:
+                                                                    HexColor(
+                                                                        '#8A8A8A'),
+                                                                family: 'PR')),
+                                                    trailing: IconButton(
+                                                        icon: const Icon(
+                                                            Icons.delete),
+                                                        color: ColorUtils
+                                                            .primary_gold,
+                                                        onPressed: () {
+                                                          deleteAlarm(
+                                                              alarm.id!);
+                                                        }),
+                                                    // Container(
+                                                    //   width: 20,
+                                                    //   child: Transform.scale(
+                                                    //     scale: 0.5,
+                                                    //     child: CupertinoSwitch(
+                                                    //       onChanged: (bool value) {},
+                                                    //       value: true,
+                                                    //       trackColor: HexColor('#717171'),
+                                                    //       thumbColor: Colors.black87,
+                                                    //       activeColor:
+                                                    //           ColorUtils.primary_gold,
+                                                    //     ),
+                                                    //   ),
+                                                    // ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      }).followedBy([]).toList(),
+                                    ),
+                                  );
+                                }
+                                return const Center(
+                                  child: const Text(
+                                    'Loading..',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                );
+                              },
+                            ),
                           ],
                         ),
-                        boxShadow: [
-                          BoxShadow(
-                              color: HexColor('#04060F'),
-                              offset: const Offset(10, 10),
-                              blurRadius: 20)
-                        ],
-                        borderRadius: BorderRadius.circular(20)),
-                    width: MediaQuery.of(context).size.width,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          margin: const EdgeInsets.only(top: 8, left: 27),
-                          child: Text(
-                            'Kegel Info',
-                            style: FontStyleUtility.h16(
-                                fontColor: HexColor('#F2F2F2'), family: 'PR'),
-                          ),
-                        ),
-                        Container(
-                          margin: const EdgeInsets.only(top: 8, left: 27),
-                          child: Text(
-                            'Level : $levels',
-                            style: FontStyleUtility.h16(
-                                fontColor: HexColor('#F2F2F2'), family: 'PR'),
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 12,
-                        ),
-                        Container(
-                          margin: const EdgeInsets.only(
-                              top: 0, left: 27, right: 27),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                child: Text(
-                                  (levels == 'Easy'
-                                      ? "Each exercise has a duration of 8 seconds and stop for 2 seconds (repeating the process 8 times is considered 1 set). \nUser needs to complete 3 sets per day"
-                                      : (levels == 'Normal'
-                                          ? "Each exercise has a duration of 10 seconds and stop for 2 seconds, repeating the process 10 times is considered 1 set. \nUser needs to complete 3 sets per day"
-                                          : "kegel info")),
-                                  textAlign: TextAlign.justify,
-                                  style: FontStyleUtility.h16(
-                                      fontColor: ColorUtils.primary_grey,
-                                      family: 'PR'),
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 17,
-                              ),
+                      ),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                            // color: Colors.black.withOpacity(0.65),
+                            gradient: LinearGradient(
+                              begin: Alignment.centerLeft,
+                              end: Alignment.centerRight,
+                              // stops: [0.1, 0.5, 0.7, 0.9],
+                              colors: [
+                                HexColor("#36393E").withOpacity(1),
+                                HexColor("#020204").withOpacity(1),
+                              ],
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                  color: HexColor('#04060F'),
+                                  offset: const Offset(10, 10),
+                                  blurRadius: 20)
                             ],
-                          ),
+                            borderRadius: BorderRadius.circular(20)),
+                        width: MediaQuery.of(context).size.width,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              margin: const EdgeInsets.only(top: 8, left: 27),
+                              child: Text(
+                                'Kegel Info',
+                                style: FontStyleUtility.h16(
+                                    fontColor: HexColor('#F2F2F2'),
+                                    family: 'PR'),
+                              ),
+                            ),
+                            Container(
+                              margin: const EdgeInsets.only(top: 8, left: 27),
+                              child: Text(
+                                'Level : $levels',
+                                style: FontStyleUtility.h16(
+                                    fontColor: HexColor('#F2F2F2'),
+                                    family: 'PR'),
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 12,
+                            ),
+                            Container(
+                              margin: const EdgeInsets.only(
+                                  top: 0, left: 27, right: 27),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                    child: Text(
+                                      (levels == 'Easy'
+                                          ? "Each exercise has a duration of 8 seconds and stop for 2 seconds (repeating the process 8 times is considered 1 set). \nUser needs to complete 3 sets per day"
+                                          : (levels == 'Normal'
+                                              ? "Each exercise has a duration of 10 seconds and stop for 2 seconds, repeating the process 10 times is considered 1 set. \nUser needs to complete 3 sets per day"
+                                              : "kegel info")),
+                                      textAlign: TextAlign.justify,
+                                      style: FontStyleUtility.h16(
+                                          fontColor: ColorUtils.primary_grey,
+                                          family: 'PR'),
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    height: 17,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
+                      ),
+
+                      // ElevatedButton(
+                      //   onPressed: () {
+                      //     Navigator.push(context,
+                      //         MaterialPageRoute(builder: (context) => AlarmPage()));
+                      //   },
+                      //   child: Text('alarm page'),
+                      // ),
+
+                      const SizedBox(
+                        height: 50,
+                      )
+                    ],
                   ),
-
-                  // ElevatedButton(
-                  //   onPressed: () {
-                  //     Navigator.push(context,
-                  //         MaterialPageRoute(builder: (context) => AlarmPage()));
-                  //   },
-                  //   child: Text('alarm page'),
-                  // ),
-
-                  const SizedBox(
-                    height: 50,
-                  )
-                ],
+                ),
               ),
-            ),
-          ),
-        ),
+            )),
       ],
     );
   }
@@ -6401,8 +6777,8 @@ class _KegelScreenState extends State<KegelScreen>
       largeIcon: DrawableResourceAndroidBitmap('app_icon'),
     );
 
-    var iOSPlatformChannelSpecifics = const IOSNotificationDetails(
-        sound: 'a_long_cold_sting.wav',
+    var iOSPlatformChannelSpecifics = IOSNotificationDetails(
+        sound: Selected_sound,
         presentAlert: true,
         presentBadge: true,
         threadIdentifier: 'thread_id',
