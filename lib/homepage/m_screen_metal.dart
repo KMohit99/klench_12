@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:math';
 
 import 'dart:ui';
 
@@ -72,13 +73,13 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
   }
 
   final List<ChartData> chartData = [
-    ChartData("M", 10, 5, 12),
+    ChartData("M", 1, 5, 1),
     ChartData("T", 5, 4, 4),
-    ChartData("W", 2, 12, 4),
-    ChartData("T", 20, 11, 4),
-    ChartData("F", 10, 5, 4),
-    ChartData("S", 15, 7, 4),
-    ChartData("S", 10, 8, 4),
+    ChartData("W", 5, 2, 4),
+    ChartData("T", 2, 3, 4),
+    ChartData("F", 2, 5, 4),
+    ChartData("S", 1, 3, 4),
+    ChartData("S", 1, 2, 4),
   ];
   TooltipBehavior? _tooltipBehavior;
 
@@ -181,7 +182,7 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
           builder: (context, setModalState) {
             return Container(
               decoration: BoxDecoration(
-                // color: Colors.black.withOpacity(0.65),
+                  // color: Colors.black.withOpacity(0.65),
                   gradient: LinearGradient(
                     begin: Alignment.centerLeft,
                     end: Alignment.centerRight,
@@ -245,12 +246,11 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
                                       selected!.hour,
                                       selected!.minute);
 
-
                                   if (selected != selectedDate) {
                                     setModalState(() {
-                                     print(  DateFormat('MM-dd-yyyy')
-                                         .format(selected!)
-                                         .toString());
+                                      print(DateFormat('MM-dd-yyyy')
+                                          .format(selected!)
+                                          .toString());
                                     });
                                   }
                                 }
@@ -269,7 +269,6 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
       },
     );
   }
-
 
   DateTime selectedDate = DateTime.now();
   String showInvoiceDate = '';
@@ -732,23 +731,25 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
                               width: 20,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(50),
-                                gradient:(paused_time.length >= 4 ? LinearGradient(
-                                  begin: Alignment.bottomLeft,
-                                  end: Alignment.topRight,
-                                  // stops: [0.1, 0.5, 0.7, 0.9],
-                                  colors: [
-                                    HexColor("#DD3931").withOpacity(1),
-                                    HexColor("#DD3931").withOpacity(1),
-                                  ],
-                                ) :  LinearGradient(
-                                  begin: Alignment.bottomLeft,
-                                  end: Alignment.topRight,
-                                  // stops: [0.1, 0.5, 0.7, 0.9],
-                                  colors: [
-                                    HexColor("#34343E").withOpacity(1),
-                                    HexColor("#8A8B8D").withOpacity(1),
-                                  ],
-                                ) ),
+                                gradient: (paused_time.length >= 4
+                                    ? LinearGradient(
+                                        begin: Alignment.bottomLeft,
+                                        end: Alignment.topRight,
+                                        // stops: [0.1, 0.5, 0.7, 0.9],
+                                        colors: [
+                                          HexColor("#DD3931").withOpacity(1),
+                                          HexColor("#DD3931").withOpacity(1),
+                                        ],
+                                      )
+                                    : LinearGradient(
+                                        begin: Alignment.bottomLeft,
+                                        end: Alignment.topRight,
+                                        // stops: [0.1, 0.5, 0.7, 0.9],
+                                        colors: [
+                                          HexColor("#34343E").withOpacity(1),
+                                          HexColor("#8A8B8D").withOpacity(1),
+                                        ],
+                                      )),
                               ),
                               child: Padding(
                                 padding: const EdgeInsets.all(2.0),
@@ -765,23 +766,25 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
                               width: 20,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(50),
-                                gradient:(paused_time.length >= 3 ? LinearGradient(
-                                  begin: Alignment.bottomLeft,
-                                  end: Alignment.topRight,
-                                  // stops: [0.1, 0.5, 0.7, 0.9],
-                                  colors: [
-                                    HexColor("#DD3931").withOpacity(1),
-                                    HexColor("#DD3931").withOpacity(1),
-                                  ],
-                                ) :  LinearGradient(
-                                  begin: Alignment.bottomLeft,
-                                  end: Alignment.topRight,
-                                  // stops: [0.1, 0.5, 0.7, 0.9],
-                                  colors: [
-                                    HexColor("#34343E").withOpacity(1),
-                                    HexColor("#8A8B8D").withOpacity(1),
-                                  ],
-                                ) ),
+                                gradient: (paused_time.length >= 3
+                                    ? LinearGradient(
+                                        begin: Alignment.bottomLeft,
+                                        end: Alignment.topRight,
+                                        // stops: [0.1, 0.5, 0.7, 0.9],
+                                        colors: [
+                                          HexColor("#DD3931").withOpacity(1),
+                                          HexColor("#DD3931").withOpacity(1),
+                                        ],
+                                      )
+                                    : LinearGradient(
+                                        begin: Alignment.bottomLeft,
+                                        end: Alignment.topRight,
+                                        // stops: [0.1, 0.5, 0.7, 0.9],
+                                        colors: [
+                                          HexColor("#34343E").withOpacity(1),
+                                          HexColor("#8A8B8D").withOpacity(1),
+                                        ],
+                                      )),
                               ),
                               child: Padding(
                                 padding: const EdgeInsets.all(2.0),
@@ -1592,6 +1595,7 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
                             onTap: () async {
                               if (started == false) {
                                 await stopWatch_finish();
+                                await changeIndex();
                                 method_time.add(ListMethodClass(
                                     method_name: method_selected,
                                     pauses: paused_time.length.toString(),
@@ -2084,11 +2088,13 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
                                                                   .all(4.5),
                                                           child: Text(
                                                             '${method_time[index].method_name}',
-                                                            style: FontStyleUtility.h14(
-                                                                fontColor:
-                                                                    ColorUtils
-                                                                        .primary_gold,
-                                                                family: 'PR'),
+                                                            style: FontStyleUtility
+                                                                .h14(
+                                                                    fontColor:
+                                                                        colors[
+                                                                            index],
+                                                                    family:
+                                                                        'PR'),
                                                           ),
                                                         ),
                                                       ),
@@ -2610,9 +2616,7 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
                                                 width: 0.5,
                                                 spacing: 0.6,
                                                 color: HexColor('#1880C3'),
-                                                dataSource:
-                                                    _masturbation_screen_controller
-                                                        .gst_payable_list,
+                                                dataSource: chartData,
                                                 xValueMapper:
                                                     (ChartData data, _) =>
                                                         data.x,
@@ -3100,6 +3104,15 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
   var x_axis = ["M", "T", "W", "T", "F", "S", "S"];
   List<ChartData> gst_payable_list = [];
 
+  List colors = [Colors.red, Colors.green, Colors.yellow,Colors.purple];
+  Random random = new Random();
+
+  int index = 0;
+
+  Future changeIndex() async {
+    setState(() => index = random.nextInt(4));
+  }
+
   // Future<dynamic> MasturbationWeekly_Data_get_API(BuildContext context) async {
   //   print('Inside creator get email');
   //   showLoader(context);
@@ -3283,19 +3296,25 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
           // await Get.to(Dashboard());
           CommonWidget().showToaster(msg: m_screenWeeklyDataModel!.message!);
 
-          // for (var i = 0; i < m_screenWeeklyDataModel!.data!.length; i++) {
+          // for (var i = 0;
+          //     i < m_screenWeeklyDataModel!.data![0].methods!.length;
+          //     i++) {
           //   // x_axis = data_sales[i]["month"];
           //   var y1 = double.parse(
-          //       m_screenWeeklyDataModel!.data![0].methods![i].totalTime!);
+          //       m_screenWeeklyDataModel!.data![0].methods![i].totalPauses!);
           //   // var y2 = data_gst_receivable[i]['value'];
           //   // var y3 =
-          //   gst_payable_list.add(ChartData(
-          //     x_axis[i],
-          //     y1,
-          //     y1,
-          //     y1,
-          //   ));
+          //   setState(() {
+          //     gst_payable_list.add(ChartData(
+          //       x_axis[i],
+          //       y1,
+          //       y1,
+          //       y1,
+          //     ));
+          //   });
+          //   print(gst_payable_list[i].y);
           // }
+          print("gst_payable_list");
 
           return m_screenWeeklyDataModel;
         } else {

@@ -25,7 +25,7 @@ class Kegel_controller extends GetxController {
   var getUSerModelList = KegelGetModel().obs;
 
   Future<dynamic> Kegel_get_API(BuildContext context) async {
-
+    isuserinfoLoading(true);
     String id_user = await PreferenceManager().getPref(URLConstants.id);
     String url = "${URLConstants.base_url}${URLConstants.kegel_get}?userId=$id_user";
     showLoader(context);
@@ -49,6 +49,7 @@ class Kegel_controller extends GetxController {
         // CommonWidget().showToaster(msg: breathingGetModel!.message!);
         // CommonWidget().showToaster(msg: data["success"].toString());
         // await Get.to(Dashboard());
+        isuserinfoLoading(false);
 
         return kegelGetModel;
       } else {

@@ -451,8 +451,11 @@ class _FrontScreenState extends State<FrontScreen> {
                           ),
                         ),
                         GestureDetector(
-                          onTap: (){
+                          onTap: ()async{
                             // Get.to(SignUpScreen());
+                            await PreferenceManager()
+                                .setPref(URLConstants.trial, 'true');
+
                             Get.to(AskSignUp());
 
                           },

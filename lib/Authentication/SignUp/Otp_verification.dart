@@ -113,32 +113,32 @@ class _VerifyOtpState extends State<VerifyOtp> {
             appBar: AppBar(
               backgroundColor: Colors.transparent,
               automaticallyImplyLeading: false,
-              leading: GestureDetector(
-                onTap: () {
-                  Navigator.pop(context);
-                },
-                child: Container(
-                    width: 41,
-                    margin: EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(100),
-                        gradient: LinearGradient(
-                            begin: Alignment(-1.0, -4.0),
-                            end: Alignment(1.0, 4.0),
-                            colors: [
-                              HexColor('#020204'),
-                              HexColor('#36393E')
-                            ])),
-                    child: Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Image.asset(
-                        AssetUtils.arrow_back,
-                        height: 14,
-                        width: 15,
-                      ),
-                    )),
-              ),
+              // leading: GestureDetector(
+              //   onTap: () {
+              //     Navigator.pop(context);
+              //   },
+              //   child: Container(
+              //       width: 41,
+              //       margin: EdgeInsets.all(8),
+              //       decoration: BoxDecoration(
+              //           color: Colors.white,
+              //           borderRadius: BorderRadius.circular(100),
+              //           gradient: LinearGradient(
+              //               begin: Alignment(-1.0, -4.0),
+              //               end: Alignment(1.0, 4.0),
+              //               colors: [
+              //                 HexColor('#020204'),
+              //                 HexColor('#36393E')
+              //               ])),
+              //       child: Padding(
+              //         padding: const EdgeInsets.all(10.0),
+              //         child: Image.asset(
+              //           AssetUtils.arrow_back,
+              //           height: 14,
+              //           width: 15,
+              //         ),
+              //       )),
+              // ),
               title: Text(
                 'Verify OTP',
                 style: FontStyleUtility.h16(

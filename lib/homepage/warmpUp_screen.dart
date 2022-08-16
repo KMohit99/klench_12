@@ -213,25 +213,25 @@ class _WarmUpScreenState extends State<WarmUpScreen>
         vsync: this, duration: const Duration(milliseconds: 500));
     _animationController_middle!.forward();
     _animation_middle =
-        Tween(begin: 15.0, end: 100.0).animate(_animationController_middle!)
+        Tween(begin: 15.0, end: 80.0).animate(_animationController_middle!)
           ..addStatusListener((status) {
             print(status);
             // shadow_animation1_completed = true;
           });
     _animation_middle2 =
-        Tween(begin: 15.0, end: 150.0).animate(_animationController_middle!)
+        Tween(begin: 15.0, end: 100.0).animate(_animationController_middle!)
           ..addStatusListener((status) {
             print(status);
             // shadow_animation1_completed = true;
           });
     _animation_middle3 =
-        Tween(begin: 15.0, end: 220.0).animate(_animationController_middle!)
+        Tween(begin: 15.0, end: 200.0).animate(_animationController_middle!)
           ..addStatusListener((status) {
             print(status);
             // shadow_animation1_completed = true;
           });
     _animation_middle4 =
-        Tween(begin: 15.0, end: 190.0).animate(_animationController_middle!)
+        Tween(begin: 15.0, end: 170.0).animate(_animationController_middle!)
           ..addStatusListener((status) {
             print(status);
             // shadow_animation1_completed = true;
@@ -558,464 +558,530 @@ class _WarmUpScreenState extends State<WarmUpScreen>
                       ),
 
                       (timer_started
-                          ? Row(
+                          ? Column(
+                            children: [
+                              Row(
                         children: [
-                          Expanded(
-                            flex: 2,
-                            child: Container(
-                              // color: Colors.red,
-                              child: ('$seconds' == '3'
-                                  ? Row(
-                                mainAxisAlignment:
-                                MainAxisAlignment.center,
-                                children: [
-                                  Expanded(
-                                    flex: 1,
-                                    child: Container(
-                                      child: Padding(
-                                        padding:
-                                        const EdgeInsets.all(
-                                            8.0),
-                                        child: Text(
-                                          'Set',
-                                          style:
-                                          FontStyleUtility.h18(
-                                              fontColor: Colors
-                                                  .transparent,
-                                              family: "PR"),
+                              Expanded(
+                                flex: 2,
+                                child: Container(
+                                  // color: Colors.red,
+                                  child: ('$seconds' == '3'
+                                      ? Row(
+                                    mainAxisAlignment:
+                                    MainAxisAlignment.center,
+                                    children: [
+                                      Expanded(
+                                        flex: 1,
+                                        child: Container(
+                                          child: Padding(
+                                            padding:
+                                            const EdgeInsets.all(
+                                                8.0),
+                                            child: Text(
+                                              'Set',
+                                              style:
+                                              FontStyleUtility.h18(
+                                                  fontColor: Colors
+                                                      .transparent,
+                                                  family: "PR"),
+                                            ),
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                  ),
-                                  Expanded(
-                                    flex: 1,
-                                    child: Container(
-                                      width: 80,
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                          BorderRadius.circular(
-                                              10),
-                                          border: Border.all(
-                                              color: Colors.white,
-                                              width: 0.5)),
-                                      child: Padding(
-                                        padding:
-                                        const EdgeInsets.all(
-                                            8.0),
-                                        child: Text(
-                                          'Ready',
-                                          textAlign:
-                                          TextAlign.center,
-                                          style: FontStyleUtility.h22(
-                                              fontColor: ColorUtils
-                                                  .primary_gold,
-                                              family: "PM"),
+                                      Expanded(
+                                        flex: 1,
+                                        child: Container(
+                                          width: 80,
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                              BorderRadius.circular(
+                                                  10),
+                                              border: Border.all(
+                                                  color: Colors.white,
+                                                  width: 0.5)),
+                                          child: Padding(
+                                            padding:
+                                            const EdgeInsets.all(
+                                                8.0),
+                                            child: Text(
+                                              'Ready',
+                                              textAlign:
+                                              TextAlign.center,
+                                              style: FontStyleUtility.h22(
+                                                  fontColor: ColorUtils
+                                                      .primary_gold,
+                                                  family: "PM"),
+                                            ),
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                  ),
-                                ],
-                              )
-                                  : ('$seconds' == '2'
-                                  ? Row(
-                                mainAxisAlignment:
-                                MainAxisAlignment.center,
-                                children: [
-                                  Expanded(
-                                    flex: 1,
-                                    child: Row(
-                                      mainAxisAlignment:
-                                      MainAxisAlignment.end,
-                                      children: [
-                                        Container(
+                                    ],
+                                  )
+                                      : ('$seconds' == '2'
+                                      ? Row(
+                                    mainAxisAlignment:
+                                    MainAxisAlignment.center,
+                                    children: [
+                                      Expanded(
+                                        flex: 1,
+                                        child: Row(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment.end,
+                                          children: [
+                                            Container(
+                                              child: Padding(
+                                                padding:
+                                                const EdgeInsets
+                                                    .all(8.0),
+                                                child: Text(
+                                                  'Ready',
+                                                  style: FontStyleUtility
+                                                      .h16(
+                                                      fontColor:
+                                                      Colors
+                                                          .white,
+                                                      family:
+                                                      "PR"),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Expanded(
+                                        flex: 1,
+                                        child: Container(
+                                          width: 80,
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                              BorderRadius
+                                                  .circular(10),
+                                              border: Border.all(
+                                                  color:
+                                                  Colors.white,
+                                                  width: 0.5)),
                                           child: Padding(
                                             padding:
                                             const EdgeInsets
                                                 .all(8.0),
                                             child: Text(
-                                              'Ready',
-                                              style: FontStyleUtility
-                                                  .h16(
-                                                  fontColor:
-                                                  Colors
-                                                      .white,
-                                                  family:
-                                                  "PR"),
+                                              'Set',
+                                              textAlign:
+                                              TextAlign.center,
+                                              style: FontStyleUtility.h22(
+                                                  fontColor: ColorUtils
+                                                      .primary_gold,
+                                                  family: "PM"),
                                             ),
                                           ),
                                         ),
-                                      ],
-                                    ),
-                                  ),
-                                  Expanded(
-                                    flex: 1,
-                                    child: Container(
-                                      width: 80,
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                          BorderRadius
-                                              .circular(10),
-                                          border: Border.all(
-                                              color:
-                                              Colors.white,
-                                              width: 0.5)),
-                                      child: Padding(
-                                        padding:
-                                        const EdgeInsets
-                                            .all(8.0),
-                                        child: Text(
-                                          'Set',
-                                          textAlign:
-                                          TextAlign.center,
-                                          style: FontStyleUtility.h22(
-                                              fontColor: ColorUtils
-                                                  .primary_gold,
-                                              family: "PM"),
+                                      ),
+                                    ],
+                                  )
+                                      : ('$seconds' == '1'
+                                      ? Row(
+                                    mainAxisAlignment:
+                                    MainAxisAlignment
+                                        .center,
+                                    children: [
+                                      Expanded(
+                                        flex: 1,
+                                        child: Row(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment
+                                              .end,
+                                          children: [
+                                            Container(
+                                              child: Padding(
+                                                padding:
+                                                const EdgeInsets
+                                                    .all(
+                                                    8.0),
+                                                child: Text(
+                                                  'Set',
+                                                  style: FontStyleUtility.h16(
+                                                      fontColor:
+                                                      Colors
+                                                          .white,
+                                                      family:
+                                                      "PR"),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ),
-                                    ),
-                                  ),
-                                ],
-                              )
-                                  : ('$seconds' == '1'
-                                  ? Row(
-                                mainAxisAlignment:
-                                MainAxisAlignment
-                                    .center,
-                                children: [
-                                  Expanded(
-                                    flex: 1,
-                                    child: Row(
-                                      mainAxisAlignment:
-                                      MainAxisAlignment
-                                          .end,
-                                      children: [
-                                        Container(
+                                      Expanded(
+                                        flex: 1,
+                                        child: Container(
+                                          width: 100,
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                              BorderRadius
+                                                  .circular(
+                                                  10),
+                                              border: Border.all(
+                                                  color: Colors
+                                                      .white,
+                                                  width: 0.5)),
+                                          child: Padding(
+                                            padding:
+                                            const EdgeInsets
+                                                .all(8.0),
+                                            child: Text(
+                                              'WarmUp',
+                                              textAlign:
+                                              TextAlign
+                                                  .center,
+                                              style: FontStyleUtility.h22(
+                                                  fontColor:
+                                                  ColorUtils
+                                                      .primary_gold,
+                                                  family: "PM"),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                      : (four_started
+                                      ? Row(
+                                    mainAxisAlignment:
+                                    MainAxisAlignment
+                                        .end,
+                                    children: [
+                                      Expanded(
+                                        flex: 1,
+                                        child: Row(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment
+                                              .end,
+                                          children: [
+                                            Container(
+                                              child:
+                                              Padding(
+                                                padding:
+                                                const EdgeInsets.all(
+                                                    4.0),
+                                                child: Text(
+                                                  'Set',
+                                                  style: FontStyleUtility.h14(
+                                                      fontColor: Colors
+                                                          .transparent,
+                                                      family:
+                                                      "PR"),
+                                                ),
+                                              ),
+                                            ),
+                                            Container(
+                                              child:
+                                              Padding(
+                                                padding:
+                                                const EdgeInsets.all(
+                                                    4.0),
+                                                child: Text(
+                                                  'Warmup',
+                                                  style: FontStyleUtility.h16(
+                                                      fontColor: Colors
+                                                          .white,
+                                                      family:
+                                                      "PR"),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Expanded(
+                                        flex: 1,
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                              BorderRadius
+                                                  .circular(
+                                                  10),
+                                              border: Border.all(
+                                                  color: Colors
+                                                      .white,
+                                                  width:
+                                                  0.5)),
                                           child: Padding(
                                             padding:
                                             const EdgeInsets
                                                 .all(
                                                 8.0),
                                             child: Text(
-                                              'Set',
-                                              style: FontStyleUtility.h16(
+                                              'HOLD',
+                                              textAlign:
+                                              TextAlign
+                                                  .center,
+                                              style: FontStyleUtility.h22(
                                                   fontColor:
-                                                  Colors
-                                                      .white,
+                                                  ColorUtils
+                                                      .primary_gold,
                                                   family:
-                                                  "PR"),
+                                                  "PM"),
                                             ),
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Expanded(
-                                    flex: 1,
-                                    child: Container(
-                                      width: 100,
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                          BorderRadius
-                                              .circular(
-                                              10),
-                                          border: Border.all(
-                                              color: Colors
-                                                  .white,
-                                              width: 0.5)),
-                                      child: Padding(
-                                        padding:
-                                        const EdgeInsets
-                                            .all(8.0),
-                                        child: Text(
-                                          'WarmUp',
-                                          textAlign:
-                                          TextAlign
-                                              .center,
-                                          style: FontStyleUtility.h22(
-                                              fontColor:
-                                              ColorUtils
-                                                  .primary_gold,
-                                              family: "PM"),
                                         ),
                                       ),
-                                    ),
-                                  ),
-                                ],
-                              )
-                                  : (four_started
-                                  ? Row(
-                                mainAxisAlignment:
-                                MainAxisAlignment
-                                    .end,
-                                children: [
-                                  Expanded(
-                                    flex: 1,
-                                    child: Row(
-                                      mainAxisAlignment:
-                                      MainAxisAlignment
-                                          .end,
-                                      children: [
-                                        Container(
-                                          child:
-                                          Padding(
-                                            padding:
-                                            const EdgeInsets.all(
-                                                4.0),
-                                            child: Text(
-                                              'Set',
-                                              style: FontStyleUtility.h14(
-                                                  fontColor: Colors
-                                                      .transparent,
-                                                  family:
-                                                  "PR"),
+                                    ],
+                                  )
+                                      : Row(
+                                    mainAxisAlignment:
+                                    MainAxisAlignment
+                                        .center,
+                                    children: [
+                                      Expanded(
+                                        flex: 1,
+                                        child: Row(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment
+                                              .end,
+                                          children: [
+                                            Container(
+                                              child:
+                                              Padding(
+                                                padding:
+                                                const EdgeInsets.all(
+                                                    8.0),
+                                                child: Text(
+                                                  'Set',
+                                                  style: FontStyleUtility.h16(
+                                                      fontColor: Colors
+                                                          .white,
+                                                      family:
+                                                      "PR"),
+                                                ),
+                                              ),
                                             ),
-                                          ),
-                                        ),
-                                        Container(
-                                          child:
-                                          Padding(
-                                            padding:
-                                            const EdgeInsets.all(
-                                                4.0),
-                                            child: Text(
-                                              'Warmup',
-                                              style: FontStyleUtility.h16(
-                                                  fontColor: Colors
-                                                      .white,
-                                                  family:
-                                                  "PR"),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Expanded(
-                                    flex: 1,
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                          BorderRadius
-                                              .circular(
-                                              10),
-                                          border: Border.all(
-                                              color: Colors
-                                                  .white,
-                                              width:
-                                              0.5)),
-                                      child: Padding(
-                                        padding:
-                                        const EdgeInsets
-                                            .all(
-                                            8.0),
-                                        child: Text(
-                                          'HOLD',
-                                          textAlign:
-                                          TextAlign
-                                              .center,
-                                          style: FontStyleUtility.h22(
-                                              fontColor:
-                                              ColorUtils
-                                                  .primary_gold,
-                                              family:
-                                              "PM"),
+                                          ],
                                         ),
                                       ),
-                                    ),
-                                  ),
-                                ],
-                              )
-                                  : Row(
-                                mainAxisAlignment:
-                                MainAxisAlignment
-                                    .center,
-                                children: [
-                                  Expanded(
-                                    flex: 1,
-                                    child: Row(
-                                      mainAxisAlignment:
-                                      MainAxisAlignment
-                                          .end,
-                                      children: [
-                                        Container(
-                                          child:
-                                          Padding(
+                                      Expanded(
+                                        flex: 1,
+                                        child: Container(
+                                          width: 100,
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                              BorderRadius
+                                                  .circular(
+                                                  10),
+                                              border: Border.all(
+                                                  color: Colors
+                                                      .white,
+                                                  width:
+                                                  0.5)),
+                                          child: Padding(
                                             padding:
-                                            const EdgeInsets.all(
+                                            const EdgeInsets
+                                                .all(
                                                 8.0),
                                             child: Text(
-                                              'Set',
-                                              style: FontStyleUtility.h16(
-                                                  fontColor: Colors
-                                                      .white,
+                                              'WarmUp',
+                                              textAlign:
+                                              TextAlign
+                                                  .center,
+                                              style: FontStyleUtility.h22(
+                                                  fontColor:
+                                                  ColorUtils
+                                                      .primary_gold,
                                                   family:
-                                                  "PR"),
+                                                  "PM"),
                                             ),
                                           ),
                                         ),
-                                      ],
-                                    ),
-                                  ),
-                                  Expanded(
-                                    flex: 1,
-                                    child: Container(
-                                      width: 100,
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                          BorderRadius
-                                              .circular(
-                                              10),
-                                          border: Border.all(
-                                              color: Colors
-                                                  .white,
-                                              width:
-                                              0.5)),
-                                      child: Padding(
-                                        padding:
-                                        const EdgeInsets
-                                            .all(
-                                            8.0),
-                                        child: Text(
-                                          'WarmUp',
-                                          textAlign:
-                                          TextAlign
-                                              .center,
-                                          style: FontStyleUtility.h22(
-                                              fontColor:
-                                              ColorUtils
-                                                  .primary_gold,
-                                              family:
-                                              "PM"),
+                                      ),
+                                    ],
+                                  ))))),
+                                ),
+                              ),
+                              Expanded(
+                                flex: 1,
+                                child: Container(
+                                  // color: Colors.red,
+                                  child: ('$seconds' == '3'
+                                      ? Row(
+                                    mainAxisAlignment:
+                                    MainAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        child: Padding(
+                                          padding:
+                                          const EdgeInsets.all(8.0),
+                                          child: Text(
+                                            'Set',
+                                            style: FontStyleUtility.h16(
+                                                fontColor: Colors.white,
+                                                family: "PR"),
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                  ),
-                                ],
-                              ))))),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Container(
-                              // color: Colors.red,
-                              child: ('$seconds' == '3'
-                                  ? Row(
-                                mainAxisAlignment:
-                                MainAxisAlignment.start,
-                                children: [
-                                  Container(
-                                    child: Padding(
-                                      padding:
-                                      const EdgeInsets.all(8.0),
-                                      child: Text(
-                                        'Set',
-                                        style: FontStyleUtility.h16(
-                                            fontColor: Colors.white,
-                                            family: "PR"),
+                                    ],
+                                  )
+                                      : ('$seconds' == '2'
+                                      ? Row(
+                                    mainAxisAlignment:
+                                    MainAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        child: Padding(
+                                          padding:
+                                          const EdgeInsets.all(
+                                              8.0),
+                                          child: Text(
+                                            'WarmUp',
+                                            style: FontStyleUtility
+                                                .h16(
+                                                fontColor:
+                                                Colors
+                                                    .white,
+                                                family: "PR"),
+                                          ),
+                                        ),
                                       ),
-                                    ),
-                                  ),
-                                ],
+                                    ],
+                                  )
+                                      : ('$seconds' == '1'
+                                      ? Row(
+                                    mainAxisAlignment:
+                                    MainAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        child: Padding(
+                                          padding:
+                                          const EdgeInsets
+                                              .all(8.0),
+                                          child: Text(
+                                            'Hold',
+                                            style: FontStyleUtility
+                                                .h16(
+                                                fontColor:
+                                                Colors
+                                                    .white,
+                                                family:
+                                                "PR"),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                      : (four_started
+                                      ? Row(
+                                    mainAxisAlignment:
+                                    MainAxisAlignment
+                                        .start,
+                                    children: [
+                                      Container(
+                                        child: Padding(
+                                          padding:
+                                          const EdgeInsets
+                                              .all(4.0),
+                                          child: Text(
+                                            'Ready',
+                                            style: FontStyleUtility.h18(
+                                                fontColor:
+                                                Colors
+                                                    .white,
+                                                family:
+                                                "PR"),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                      : Row(
+                                    mainAxisAlignment:
+                                    MainAxisAlignment
+                                        .start,
+                                    children: [
+                                      Container(
+                                        child: Padding(
+                                          padding:
+                                          const EdgeInsets
+                                              .all(8.0),
+                                          child: Text(
+                                            'HOLD',
+                                            style: FontStyleUtility.h16(
+                                                fontColor:
+                                                Colors
+                                                    .white,
+                                                family:
+                                                "PR"),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ))))),
+                                ),
                               )
-                                  : ('$seconds' == '2'
-                                  ? Row(
-                                mainAxisAlignment:
-                                MainAxisAlignment.start,
-                                children: [
-                                  Container(
-                                    child: Padding(
-                                      padding:
-                                      const EdgeInsets.all(
-                                          8.0),
-                                      child: Text(
-                                        'WarmUp',
-                                        style: FontStyleUtility
-                                            .h16(
-                                            fontColor:
-                                            Colors
-                                                .white,
-                                            family: "PR"),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              )
-                                  : ('$seconds' == '1'
-                                  ? Row(
-                                mainAxisAlignment:
-                                MainAxisAlignment.start,
-                                children: [
-                                  Container(
-                                    child: Padding(
-                                      padding:
-                                      const EdgeInsets
-                                          .all(8.0),
-                                      child: Text(
-                                        'Hold',
-                                        style: FontStyleUtility
-                                            .h16(
-                                            fontColor:
-                                            Colors
-                                                .white,
-                                            family:
-                                            "PR"),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              )
-                                  : (four_started
-                                  ? Row(
-                                mainAxisAlignment:
-                                MainAxisAlignment
-                                    .start,
-                                children: [
-                                  Container(
-                                    child: Padding(
-                                      padding:
-                                      const EdgeInsets
-                                          .all(4.0),
-                                      child: Text(
-                                        'Ready',
-                                        style: FontStyleUtility.h18(
-                                            fontColor:
-                                            Colors
-                                                .white,
-                                            family:
-                                            "PR"),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              )
-                                  : Row(
-                                mainAxisAlignment:
-                                MainAxisAlignment
-                                    .start,
-                                children: [
-                                  Container(
-                                    child: Padding(
-                                      padding:
-                                      const EdgeInsets
-                                          .all(8.0),
-                                      child: Text(
-                                        'HOLD',
-                                        style: FontStyleUtility.h16(
-                                            fontColor:
-                                            Colors
-                                                .white,
-                                            family:
-                                            "PR"),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ))))),
-                            ),
-                          )
                         ],
-                      )
+                      ),
+                              Container(
+                                // color: Colors.red,
+                                child: ('$seconds' == '3'
+                                    ? SizedBox(
+                                    height : 40
+                                )
+                                    : ('$seconds' == '2'
+                                    ? SizedBox(                                  height : 40
+                                )
+                                    :('$seconds' == '1'?
+                                Container(
+                                  child: Padding(
+                                    padding:
+                                    const EdgeInsets
+                                        .all(8.0),
+                                    child: Text(
+                                      'Squeeze',
+                                      textAlign:
+                                      TextAlign
+                                          .center,
+                                      style: FontStyleUtility.h16(
+                                          fontColor: Colors
+                                              .white,
+                                          family:
+                                          "PR"),
+                                    ),
+                                  ),
+                                )  : (four_started
+                                    ? Container(
+                                  height : 40,
+
+                                  child: Text(
+                                    'HOLD',
+                                    textAlign:
+                                    TextAlign
+                                        .center,
+                                    style: FontStyleUtility.h16(
+                                        fontColor: Colors.white,
+                                        family:
+                                        "PM"),
+                                  ),
+                                )
+                                    : Container(
+                                  height : 40,
+                                  child: Padding(
+                                    padding:
+                                    const EdgeInsets
+                                        .all(8.0),
+                                    child: Text(
+                                      'Squeeze',
+                                      textAlign:
+                                      TextAlign
+                                          .center,
+                                      style: FontStyleUtility.h16(
+                                          fontColor: Colors
+                                              .white,
+                                          family:
+                                          "PR"),
+                                    ),
+                                  ),
+                                ) )))),
+                              ),
+                            ],
+                          )
                           : SizedBox(
                         height: 0,
                       )),
@@ -1039,6 +1105,7 @@ class _WarmUpScreenState extends State<WarmUpScreen>
                             await _animationController_middle!.reverse();
 
                             setState(() {
+                              timer_started = false;
                               elapsedTime = '00';
                               percent = 0.0;
                               back_wallpaper = true;

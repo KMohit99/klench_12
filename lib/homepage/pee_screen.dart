@@ -786,6 +786,7 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
                           await _animationController_middle!.reverse();
                           _peeScreenController.sets++;
                           await _peeScreenController.Pee_post_API(context);
+                          await _peeScreenController.Pee_get_API(context);
 
                           setState(() {
                             elapsedTime = '00';
@@ -971,15 +972,22 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
                                             print(selected_date);
                                           },
                                           child: Container(
-                                            height:40,
-                                            width: 40,
-                                            margin: EdgeInsets.all(5),
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(100),
-                                              border: Border.all(
-                                                  color: ColorUtils.primary_gold,
-                                                  width: 2),
+                                            // color: Colors.white60,
+                                            alignment: Alignment.center,
+                                            padding: EdgeInsets.only(bottom: 5),
+                                            // margin: EdgeInsets.only(bottom: 7),
+                                            // decoration: BoxDecoration(
+                                            //   borderRadius:
+                                            //       BorderRadius.circular(100),
+                                            //   border: Border.all(
+                                            //       color:
+                                            //           ColorUtils.primary_gold,
+                                            //       width: 2),
+                                            // ),
+                                            child: Icon(
+                                              Icons.star_rounded,
+                                              color: ColorUtils.primary_gold.withOpacity(0.5),
+                                              size: 50,
                                             ),
                                           ),
                                         );

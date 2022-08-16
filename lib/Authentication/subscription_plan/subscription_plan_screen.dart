@@ -423,9 +423,9 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                           common_button_gold(
                             title_text: '12 days free trial',
                             onTap: () {
-                              Get.to(WelcomeVideoScreen2(signup: true,));
+                              // Get.to(WelcomeVideoScreen2(signup: true,));
 
-                              // Get.to(DashboardScreen());
+                              Get.to(DashboardScreen());
                             },
                           ),
                           Container(

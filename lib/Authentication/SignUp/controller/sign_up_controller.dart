@@ -187,7 +187,7 @@ class SignUpScreenController extends GetxController {
 
     var response = await http.post(
       Uri.parse(url),
-      body: data,
+      body: data
     );
     print(response.body);
     print(response.request);

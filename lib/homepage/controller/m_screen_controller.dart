@@ -257,19 +257,21 @@ class Masturbation_screen_controller {
           // await Get.to(Dashboard());
           // CommonWidget().showToaster(msg: m_screenWeeklyDataModel!.message!);
 
-          // for (var i = 0; i < m_screenWeeklyDataModel!.data!.length; i++) {
-          //   // x_axis = data_sales[i]["month"];
-          //   var y1 = double.parse(
-          //       m_screenWeeklyDataModel!.data![0].methods![i].totalTime!);
-          //   // var y2 = data_gst_receivable[i]['value'];
-          //   // var y3 =
-          //   gst_payable_list.add(ChartData(
-          //     x_axis[i],
-          //     y1,
-          //     y1,
-          //     y1,
-          //   ));
-          // }
+          for (var i = 0; i < m_screenWeeklyDataModel!.data!.length; i++) {
+            // x_axis = data_sales[i]["month"];
+            var y1 = double.parse(
+                m_screenWeeklyDataModel!.data![0].methods![i].totalPauses!);
+            // var y2 = data_gst_receivable[i]['value'];
+            // var y3 =
+            gst_payable_list.add(ChartData(
+              x_axis[i],
+              y1,
+              y1,
+              y1,
+            ));
+          }
+          print("gst_payable_list");
+          print(gst_payable_list);
 
           return m_screenWeeklyDataModel;
         } else {

@@ -818,7 +818,7 @@ class _BreathingScreenState extends State<BreathingScreen>
                               ),
                             ),
                             SizedBox(
-                              height: 15,
+                              height: 20,
                             ),
                             Column(
                               mainAxisAlignment: MainAxisAlignment.start,
@@ -877,7 +877,7 @@ class _BreathingScreenState extends State<BreathingScreen>
                                       borderRadius: BorderRadius.circular(10)),
                                   child: Padding(
                                     padding: const EdgeInsets.symmetric(
-                                        horizontal: 17, vertical: 10),
+                                        horizontal: 17, vertical: 15),
                                     child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
@@ -1012,8 +1012,8 @@ class _BreathingScreenState extends State<BreathingScreen>
       startStop = true;
       Vibration.cancel();
       animation_started = false;
-      _animationController!.stop();
-      _animationController_shadow1!.stop();
+      // _animationController!.dispose();
+      // _animationController_shadow1!.dispose();
       watch.stop();
       percent = 0.0;
       setTime();

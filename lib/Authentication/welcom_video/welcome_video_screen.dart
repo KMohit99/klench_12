@@ -293,9 +293,10 @@ class _WelcomeVideoScreenState extends State<WelcomeVideoScreen> {
                                     // (widget.signup
                                     //     ? await Get.to(SubscriptionScreen())
                                     //     : await Get.to(DashboardScreen()));
-                                    (trial == 'true'
-                                        ? await Get.to(DashboardScreen())
-                                        : await Get.to(SubscriptionScreen()));
+                                    // (trial == 'true'
+                                    //     ? await Get.to(DashboardScreen())
+                                    //     :
+                                    await Get.to(SubscriptionScreen());
                                   },
                                   title_text: 'Skip',
                                 ),
