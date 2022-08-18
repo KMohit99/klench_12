@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:klench_/splash_Screen.dart';
 import 'package:local_auth/local_auth.dart';
 
@@ -10,6 +11,7 @@ import 'Authentication/welcom_video/welcome_screen_tow.dart';
 import 'getx_pagination/Bindings_class.dart';
 import 'getx_pagination/binding_utils.dart';
 import 'getx_pagination/page_route.dart';
+import 'homepage/alarm_info.dart';
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
@@ -40,10 +42,20 @@ Future<void> main() async {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class MyApp extends StatefulWidget {
+   MyApp({Key? key}) : super(key: key);
 
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
 
+class _MyAppState extends State<MyApp> {
+
+  @override
+  void initState() {
+    alarm_notifications();
+    super.initState();
+  }
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -84,5 +96,77 @@ class MyApp extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  alarm_notifications() async {
+    Future.delayed(Duration(seconds: 5),() async {
+      await click_alarm(alarm_info: "It's time for kegel exercise");
+    });
+    Future.delayed(Duration(minutes: 30),() async {
+      await click_alarm(alarm_info: "It's time to Masturbate");
+    });
+    Future.delayed(Duration(minutes: 60),() async {
+      await click_alarm(alarm_info: "It's time to Pee");
+    });
+    Future.delayed(Duration(minutes: 90),() async {
+      await click_alarm(alarm_info: "It's time to Warmup");
+    });
+  }
+
+  DateTime? _alarmTime;
+
+  Future<void> click_alarm({required String alarm_info}) async {
+    _alarmTime = DateTime.now();
+    DateTime arch = DateTime.parse("2022-08-15 00:25:24");
+    print(DateFormat('EEEE').format(arch)); // Sunday
+
+    DateTime scheduleAlarmDateTime;
+    // if (_alarmTime!.isAfter(DateTime.now())) {
+    scheduleAlarmDateTime = DateTime.now().add(Duration(seconds: 3));
+    // } else {
+    //   scheduleAlarmDateTime = _alarmTime!.add(const Duration(days: 1));
+    // }
+
+    var alarmInfo = AlarmInfo(
+      alarmDateTime: scheduleAlarmDateTime,
+      gradientColorIndex: 1,
+      title: alarm_info,
+    );
+    // _alarmHelper.insertAlarm(alarmInfo);
+    await scheduleAlarm(scheduleAlarmDateTime, alarmInfo);
+    // Alarm_title.clear();
+    // Navigator.pop(context);
+    // loadAlarms();
+  }
+
+  Future<void> scheduleAlarm(
+      DateTime scheduledNotificationDateTime, AlarmInfo alarmInfo) async {
+    var androidPlatformChannelSpecifics = const AndroidNotificationDetails(
+      'alarm_notif',
+      'alarm_notif',
+      // 'Channel for Alarm notification',
+      icon: 'app_icon',
+      enableVibration: true,
+      playSound: true,
+      sound: RawResourceAndroidNotificationSound("a_long_cold_sting.wav"),
+      largeIcon: DrawableResourceAndroidBitmap('app_icon'),
+    );
+
+    var iOSPlatformChannelSpecifics = const IOSNotificationDetails(
+        sound: "a_long_cold_sting.wav",
+        presentAlert: true,
+        presentBadge: true,
+        threadIdentifier: 'thread_id',
+        presentSound: true);
+    var platformChannelSpecifics = NotificationDetails(
+        android: androidPlatformChannelSpecifics,
+        iOS: iOSPlatformChannelSpecifics);
+
+    await flutterLocalNotificationsPlugin.schedule(
+        0,
+        'Klench Exercise',
+        alarmInfo.title,
+        scheduledNotificationDateTime,
+        platformChannelSpecifics);
   }
 }

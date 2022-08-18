@@ -53,6 +53,7 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
   List method_list = [
     'Sex',
     'Hand',
+    'Dildo'
   ];
   String method_selected = '';
   List<ListMethodClass> method_time = [];
@@ -72,7 +73,7 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
     }
   }
 
-  final List<ChartData> chartData = [
+  static List<ChartData> chartData = [
     ChartData("M", 1, 5, 1),
     ChartData("T", 5, 4, 4),
     ChartData("W", 5, 2, 4),
@@ -81,7 +82,76 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
     ChartData("S", 1, 3, 4),
     ChartData("S", 1, 2, 4),
   ];
+  static List<ChartData> chartData2 = [
+    ChartData("M", 10, 8, 10),
+    ChartData("T", 8, 10, 7),
+    ChartData("W", 8, 2, 1),
+    ChartData("T", 20, 5, 9),
+    ChartData("F", 15, 9, 8),
+    ChartData("S", 16, 7, 9),
+    ChartData("S", 10, 10, 6),
+  ];
+  static List<ChartData> chartData3 = [
+    ChartData("M", 1, 5, 1),
+    ChartData("T", 5, 4, 4),
+    ChartData("W", 5, 2, 4),
+    ChartData("T", 2, 3, 4),
+    ChartData("F", 2, 5, 4),
+    ChartData("S", 1, 3, 4),
+    ChartData("S", 1, 2, 4),
+  ];
+  static List<ChartData> chartData4 = [
+    ChartData("M", 1, 5, 1),
+    ChartData("T", 5, 4, 4),
+    ChartData("W", 5, 2, 4),
+    ChartData("T", 2, 3, 4),
+    ChartData("F", 2, 5, 4),
+    ChartData("S", 1, 3, 4),
+    ChartData("S", 1, 2, 4),
+  ];
+
+  static List<ChartData2> chartData_life = [
+    ChartData2('12 AM', 2, HexColor('#75C043')),
+    ChartData2('6 AM', 5, HexColor('#75C043')),
+    ChartData2('12 PM', 3, HexColor('#75C043')),
+    ChartData2('6 PM', 5, HexColor('#75C043')),
+  ];
+  static List<ChartData2> chartData_life2 = [
+    ChartData2('M', 10, HexColor('#75C043')),
+    ChartData2('T', 14, HexColor('#75C043')),
+    ChartData2('W', 10, HexColor('#75C043')),
+    ChartData2('T', 8, HexColor('#75C043')),
+    ChartData2('F', 12, HexColor('#75C043')),
+    ChartData2('S', 9, HexColor('#75C043')),
+    ChartData2('S', 14, HexColor('#75C043'))
+  ];
+  static List<ChartData2> chartData_life3 = [
+    ChartData2('Jan', 10, HexColor('#75C043')),
+    ChartData2('Feb', 18, HexColor('#75C043')),
+    ChartData2('Mar', 40, HexColor('#75C043')),
+    ChartData2('Apr', 20, HexColor('#75C043')),
+    ChartData2('May', 24, HexColor('#75C043')),
+    ChartData2('May', 14, HexColor('#75C043'))
+  ];
+
+  List data_graph = [
+    chartData,
+    chartData2,
+    chartData3,
+    chartData4,
+  ];
+  List data_graph2 = [
+    chartData_life,
+    chartData_life2,
+    chartData_life3,
+  ];
+
+  var graph_;
+  var graph_life;
+
   TooltipBehavior? _tooltipBehavior;
+  TrackballBehavior? _trackballBehavior;
+  CrosshairBehavior? _crosshairBehavior;
 
   selectdate(BuildContext context) async {
     DateTime? selected;
@@ -236,6 +306,21 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
                               onDateTimeChanged: (DateTime value) {
                                 selected = value;
                                 print("${value.hour}:${value.minute}");
+                                var randomItem = (graph_..shuffle()).first;
+                                print("graph_[randomIndex]");
+                                // print(randomItem);
+                                print(randomItem);
+                                print(
+                                    "---------------------------------------");
+                                int randomIndex =
+                                    Random().nextInt(graph_.length);
+                                print("graph_[randomIndex]");
+                                print(randomIndex);
+                                print(graph_[randomIndex]);
+
+                                setState(() {
+                                  graph_ = data_graph[randomIndex];
+                                });
 
                                 if (selected != null) {
                                   final now = DateTime.now();
@@ -279,9 +364,39 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
   @override
   void initState() {
     getdata().then((value) => print("Success"));
+    graph_ = data_graph[0];
+    graph_life = data_graph2[0];
 
+    // _tooltipBehavior = TooltipBehavior(
+    //     enable: true, borderWidth: 5, color: Colors.transparent);
     _tooltipBehavior = TooltipBehavior(
-        enable: true, borderWidth: 5, color: Colors.transparent);
+          enable: true,
+           header: "Masturbated",
+          // Formatting the tooltip text
+          format: 'point.y times'
+    );
+    _trackballBehavior = TrackballBehavior(
+        enable: true,
+        // lineDashArray: <double>[5,5],
+        lineWidth: 2,
+        // lineColor: Colors.white,
+        lineType: TrackballLineType.vertical,
+        tooltipSettings: InteractiveTooltip(
+          // Formatting trackball tooltip text
+            format: 'point.x : point.y times'
+        ),
+        // Display mode of trackball tooltip
+        tooltipDisplayMode: TrackballDisplayMode.floatAllPoints,
+      activationMode: ActivationMode.singleTap
+    );
+    _crosshairBehavior = CrosshairBehavior(
+        enable: true,
+        lineColor: Colors.red,
+        activationMode: ActivationMode.singleTap,
+        lineDashArray: <double>[5,5],
+        lineWidth: 2,
+        lineType: CrosshairLineType.vertical
+    );
     super.initState();
   }
 
@@ -1314,8 +1429,8 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
                                                             child: Image.asset(
                                                               AssetUtils
                                                                   .plus_big,
-                                                              height: 23,
-                                                              width: 10,
+                                                              height: 30,
+                                                              width: 20,
                                                               color: HexColor(
                                                                   '#606060'),
                                                             ),
@@ -1368,7 +1483,7 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
                                                             4.0),
                                                     child: Icon(
                                                       Icons.cancel_outlined,
-                                                      size: 20,
+                                                      size: 25,
                                                       color: ColorUtils
                                                           .primary_grey,
                                                     ),
@@ -2059,6 +2174,8 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
                                           ListView.builder(
                                             shrinkWrap: true,
                                             itemCount: method_time.length,
+                                            physics:
+                                                NeverScrollableScrollPhysics(),
                                             padding: EdgeInsets.zero,
                                             itemBuilder: (BuildContext context,
                                                 int index) {
@@ -2088,13 +2205,14 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
                                                                   .all(4.5),
                                                           child: Text(
                                                             '${method_time[index].method_name}',
-                                                            style: FontStyleUtility
-                                                                .h14(
-                                                                    fontColor:
-                                                                        colors[
-                                                                            index],
-                                                                    family:
-                                                                        'PR'),
+                                                            style: FontStyleUtility.h14(
+                                                                fontColor: (index <=
+                                                                        3
+                                                                    ? colors[
+                                                                        index]
+                                                                    : Colors
+                                                                        .white),
+                                                                family: 'PR'),
                                                           ),
                                                         ),
                                                       ),
@@ -2573,6 +2691,11 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
                                           plotAreaBorderWidth: 0,
                                           plotAreaBorderColor:
                                               ColorUtils.primary_grey,
+                                          legend: Legend(
+                                              isVisible: true,
+                                            position: LegendPosition.bottom,
+                                            textStyle: FontStyleUtility.h12(fontColor: Colors.white, family: "PM")
+                                          ),
                                           primaryXAxis: CategoryAxis(
                                               majorGridLines:
                                                   MajorGridLines(width: 0),
@@ -2590,7 +2713,8 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
 
                                             ColumnSeries<ChartData, String>(
                                                 // dataSource: _masturbation_screen_controller.gst_payable_list,
-                                                dataSource: chartData,
+                                                dataSource: graph_,
+                                                legendItemText: 'Hand',
                                                 width: 0.5,
                                                 spacing: 0.6,
                                                 color: HexColor('#DD3931'),
@@ -2604,8 +2728,10 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
                                                 width: 0.5,
                                                 spacing: 0.6,
                                                 color: HexColor('#75C043'),
+                                                legendItemText: 'Sex',
+
                                                 // dataSource: _masturbation_screen_controller.gst_payable_list,
-                                                dataSource: chartData,
+                                                dataSource: graph_,
                                                 xValueMapper:
                                                     (ChartData data, _) =>
                                                         data.x,
@@ -2616,7 +2742,8 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
                                                 width: 0.5,
                                                 spacing: 0.6,
                                                 color: HexColor('#1880C3'),
-                                                dataSource: chartData,
+                                                legendItemText: 'Dildo',
+                                                dataSource: graph_,
                                                 xValueMapper:
                                                     (ChartData data, _) =>
                                                         data.x,
@@ -2838,6 +2965,7 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
                                       onTap: () {
                                         setState(() {
                                           selected_time = 'days';
+                                          graph_life = data_graph2[0];
                                         });
                                       },
                                       child: Container(
@@ -2865,6 +2993,7 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
                                       onTap: () {
                                         setState(() {
                                           selected_time = 'weeks';
+                                          graph_life = data_graph2[1];
                                         });
                                       },
                                       child: Container(
@@ -2891,6 +3020,7 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
                                       onTap: () {
                                         setState(() {
                                           selected_time = 'months';
+                                          graph_life = data_graph2[2];
                                         });
                                       },
                                       child: Container(
@@ -2956,10 +3086,16 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
                                           plotAreaBorderWidth: 0,
                                           plotAreaBorderColor:
                                               ColorUtils.primary_grey,
-                                          tooltipBehavior: _tooltipBehavior,
+                                          // tooltipBehavior: _tooltipBehavior,
+                                          // crosshairBehavior: _crosshairBehavior,
+                                          trackballBehavior: _trackballBehavior,
                                           primaryXAxis: CategoryAxis(
+                                              rangePadding:
+                                                  ChartRangePadding.auto,
                                               majorGridLines:
                                                   MajorGridLines(width: 0),
+                                              arrangeByIndex: true,
+
                                               //Hide the axis line of y-axis
                                               axisLine: AxisLine(width: 3)),
                                           primaryYAxis: NumericAxis(
@@ -2969,20 +3105,12 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
                                               //Hide the axis line of y-axis
                                               axisLine: AxisLine(width: 3)),
                                           series: <ChartSeries>[
-                                            LineSeries<ChartData2, String>(
-                                                dataSource: [
-                                                  ChartData2('Jan', 4,
-                                                      HexColor('#75C043')),
-                                                  ChartData2('Feb', 8,
-                                                      HexColor('#75C043')),
-                                                  ChartData2('Mar', 4,
-                                                      HexColor('#75C043')),
-                                                  ChartData2('Apr', 2,
-                                                      HexColor('#75C043')),
-                                                  ChartData2('May', 4,
-                                                      HexColor('#75C043'))
-                                                ],
+                                            SplineSeries<ChartData2, String>(
+                                                markerSettings: MarkerSettings(isVisible: true),
+
+                                                dataSource: graph_life,
                                                 // Bind the color for all the data points from the data source
+                                                // color: Colors.purple,
                                                 pointColorMapper:
                                                     (ChartData2 data, _) =>
                                                         data.color,
@@ -3104,13 +3232,13 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
   var x_axis = ["M", "T", "W", "T", "F", "S", "S"];
   List<ChartData> gst_payable_list = [];
 
-  List colors = [Colors.red, Colors.green, Colors.yellow,Colors.purple];
+  List colors = [Colors.red, Colors.green, Colors.yellow, Colors.purple];
   Random random = new Random();
 
   int index = 0;
 
   Future changeIndex() async {
-    setState(() => index = random.nextInt(4));
+    setState(() => index = random.nextInt(1));
   }
 
   // Future<dynamic> MasturbationWeekly_Data_get_API(BuildContext context) async {

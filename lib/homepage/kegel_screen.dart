@@ -129,7 +129,7 @@ class _KegelScreenState extends State<KegelScreen>
             });
             startWatch2();
 
-            Future.delayed(const Duration(seconds: 5), () {
+            Future.delayed(const Duration(seconds: 5), () async {
               print('indise 4 seconds');
               if (counter == 8) {
                 stopWatch_finish();
@@ -139,6 +139,8 @@ class _KegelScreenState extends State<KegelScreen>
                   counter = 0;
                 });
                 _kegel_controller.sets++;
+                await _kegel_controller.Kegel_post_API(context);
+
                 print('Sets-------$_kegel_controller.sets');
                 if (_kegel_controller.sets == 3) {
                   stopWatch_finish();
@@ -149,6 +151,7 @@ class _KegelScreenState extends State<KegelScreen>
                     counter = 0;
                   });
                   CommonWidget().showToaster(msg: "Method Complete");
+                  await click_alarm();
                   Future.delayed(const Duration(seconds: 5), () {
                     CommonWidget().showErrorToaster(
                         msg:
@@ -213,6 +216,7 @@ class _KegelScreenState extends State<KegelScreen>
                   counter = 0;
                 });
                 _kegel_controller.sets++;
+                print(_kegel_controller.sets++);
                 await _kegel_controller.Kegel_post_API(context);
                 // await _kegel_controller.Kegel_get_API(context);
 
@@ -425,25 +429,25 @@ class _KegelScreenState extends State<KegelScreen>
         vsync: this, duration: const Duration(milliseconds: 500));
     _animationController_middle!.forward();
     _animation_middle =
-        Tween(begin: 15.0, end: 80.0).animate(_animationController_middle!)
-          ..addStatusListener((status) {
-            print(status);
-            // shadow_animation1_completed = true;
-          });
-    _animation_middle2 =
         Tween(begin: 15.0, end: 100.0).animate(_animationController_middle!)
           ..addStatusListener((status) {
             print(status);
             // shadow_animation1_completed = true;
           });
+    _animation_middle2 =
+        Tween(begin: 15.0, end: 120.0).animate(_animationController_middle!)
+          ..addStatusListener((status) {
+            print(status);
+            // shadow_animation1_completed = true;
+          });
     _animation_middle3 =
-        Tween(begin: 15.0, end: 200.0).animate(_animationController_middle!)
+        Tween(begin: 15.0, end: 220.0).animate(_animationController_middle!)
           ..addStatusListener((status) {
             print(status);
             // shadow_animation1_completed = true;
           });
     _animation_middle4 =
-        Tween(begin: 15.0, end: 170.0).animate(_animationController_middle!)
+        Tween(begin: 15.0, end: 190.0).animate(_animationController_middle!)
           ..addStatusListener((status) {
             print(status);
             // shadow_animation1_completed = true;
@@ -1193,8 +1197,8 @@ class _KegelScreenState extends State<KegelScreen>
                       //     : SizedBox.shrink()),
                       (timer_started
                           ? Column(
-                            children: [
-                              Row(
+                              children: [
+                                Row(
                                   children: [
                                     Expanded(
                                       flex: 2,
@@ -1210,15 +1214,14 @@ class _KegelScreenState extends State<KegelScreen>
                                                     child: Container(
                                                       child: Padding(
                                                         padding:
-                                                            const EdgeInsets.all(
-                                                                8.0),
+                                                            const EdgeInsets
+                                                                .all(8.0),
                                                         child: Text(
                                                           'Set',
-                                                          style:
-                                                              FontStyleUtility.h18(
-                                                                  fontColor: Colors
-                                                                      .transparent,
-                                                                  family: "PR"),
+                                                          style: FontStyleUtility.h18(
+                                                              fontColor: Colors
+                                                                  .transparent,
+                                                              family: "PR"),
                                                         ),
                                                       ),
                                                     ),
@@ -1229,15 +1232,16 @@ class _KegelScreenState extends State<KegelScreen>
                                                       width: 80,
                                                       decoration: BoxDecoration(
                                                           borderRadius:
-                                                              BorderRadius.circular(
-                                                                  10),
+                                                              BorderRadius
+                                                                  .circular(10),
                                                           border: Border.all(
-                                                              color: Colors.white,
+                                                              color:
+                                                                  Colors.white,
                                                               width: 0.5)),
                                                       child: Padding(
                                                         padding:
-                                                            const EdgeInsets.all(
-                                                                8.0),
+                                                            const EdgeInsets
+                                                                .all(8.0),
                                                         child: Text(
                                                           'Ready',
                                                           textAlign:
@@ -1255,28 +1259,30 @@ class _KegelScreenState extends State<KegelScreen>
                                             : ('$seconds' == '2'
                                                 ? Row(
                                                     mainAxisAlignment:
-                                                        MainAxisAlignment.center,
+                                                        MainAxisAlignment
+                                                            .center,
                                                     children: [
                                                       Expanded(
                                                         flex: 1,
                                                         child: Row(
                                                           mainAxisAlignment:
-                                                              MainAxisAlignment.end,
+                                                              MainAxisAlignment
+                                                                  .end,
                                                           children: [
                                                             Container(
                                                               child: Padding(
                                                                 padding:
                                                                     const EdgeInsets
-                                                                        .all(8.0),
+                                                                            .all(
+                                                                        8.0),
                                                                 child: Text(
                                                                   'Ready',
-                                                                  style: FontStyleUtility
-                                                                      .h16(
-                                                                          fontColor:
-                                                                              Colors
-                                                                                  .white,
-                                                                          family:
-                                                                              "PR"),
+                                                                  style: FontStyleUtility.h16(
+                                                                      fontColor:
+                                                                          Colors
+                                                                              .white,
+                                                                      family:
+                                                                          "PR"),
                                                                 ),
                                                               ),
                                                             ),
@@ -1290,10 +1296,11 @@ class _KegelScreenState extends State<KegelScreen>
                                                           decoration: BoxDecoration(
                                                               borderRadius:
                                                                   BorderRadius
-                                                                      .circular(10),
+                                                                      .circular(
+                                                                          10),
                                                               border: Border.all(
-                                                                  color:
-                                                                      Colors.white,
+                                                                  color: Colors
+                                                                      .white,
                                                                   width: 0.5)),
                                                           child: Padding(
                                                             padding:
@@ -1302,10 +1309,12 @@ class _KegelScreenState extends State<KegelScreen>
                                                             child: Text(
                                                               'Set',
                                                               textAlign:
-                                                                  TextAlign.center,
+                                                                  TextAlign
+                                                                      .center,
                                                               style: FontStyleUtility.h22(
-                                                                  fontColor: ColorUtils
-                                                                      .primary_gold,
+                                                                  fontColor:
+                                                                      ColorUtils
+                                                                          .primary_gold,
                                                                   family: "PM"),
                                                             ),
                                                           ),
@@ -1327,17 +1336,16 @@ class _KegelScreenState extends State<KegelScreen>
                                                                       .end,
                                                               children: [
                                                                 Container(
-                                                                  child: Padding(
+                                                                  child:
+                                                                      Padding(
                                                                     padding:
-                                                                        const EdgeInsets
-                                                                                .all(
+                                                                        const EdgeInsets.all(
                                                                             8.0),
                                                                     child: Text(
                                                                       'Set',
                                                                       style: FontStyleUtility.h16(
-                                                                          fontColor:
-                                                                              Colors
-                                                                                  .white,
+                                                                          fontColor: Colors
+                                                                              .white,
                                                                           family:
                                                                               "PR"),
                                                                     ),
@@ -1358,13 +1366,15 @@ class _KegelScreenState extends State<KegelScreen>
                                                                   border: Border.all(
                                                                       color: Colors
                                                                           .white,
-                                                                      width: 0.5)),
+                                                                      width:
+                                                                          0.5)),
                                                               child: Padding(
                                                                 padding:
                                                                     const EdgeInsets
-                                                                        .all(8.0),
+                                                                            .all(
+                                                                        8.0),
                                                                 child: Text(
-                                                                  'Kegel',
+                                                                  'Squeeze',
                                                                   textAlign:
                                                                       TextAlign
                                                                           .center,
@@ -1372,7 +1382,8 @@ class _KegelScreenState extends State<KegelScreen>
                                                                       fontColor:
                                                                           ColorUtils
                                                                               .primary_gold,
-                                                                      family: "PM"),
+                                                                      family:
+                                                                          "PM"),
                                                                 ),
                                                               ),
                                                             ),
@@ -1396,15 +1407,13 @@ class _KegelScreenState extends State<KegelScreen>
                                                                       child:
                                                                           Padding(
                                                                         padding:
-                                                                            const EdgeInsets.all(
-                                                                                4.0),
-                                                                        child: Text(
+                                                                            const EdgeInsets.all(4.0),
+                                                                        child:
+                                                                            Text(
                                                                           'Set',
                                                                           style: FontStyleUtility.h14(
-                                                                              fontColor: Colors
-                                                                                  .transparent,
-                                                                              family:
-                                                                                  "PR"),
+                                                                              fontColor: Colors.transparent,
+                                                                              family: "PR"),
                                                                         ),
                                                                       ),
                                                                     ),
@@ -1412,15 +1421,13 @@ class _KegelScreenState extends State<KegelScreen>
                                                                       child:
                                                                           Padding(
                                                                         padding:
-                                                                            const EdgeInsets.all(
-                                                                                4.0),
-                                                                        child: Text(
-                                                                          'Kegel',
+                                                                            const EdgeInsets.all(4.0),
+                                                                        child:
+                                                                            Text(
+                                                                          'Squeeze',
                                                                           style: FontStyleUtility.h16(
-                                                                              fontColor: Colors
-                                                                                  .white,
-                                                                              family:
-                                                                                  "PR"),
+                                                                              fontColor: Colors.white,
+                                                                              family: "PR"),
                                                                         ),
                                                                       ),
                                                                     ),
@@ -1429,21 +1436,21 @@ class _KegelScreenState extends State<KegelScreen>
                                                               ),
                                                               Expanded(
                                                                 flex: 1,
-                                                                child: Container(
+                                                                child:
+                                                                    Container(
                                                                   decoration: BoxDecoration(
                                                                       borderRadius:
-                                                                          BorderRadius
-                                                                              .circular(
-                                                                                  10),
+                                                                          BorderRadius.circular(
+                                                                              10),
                                                                       border: Border.all(
                                                                           color: Colors
                                                                               .white,
                                                                           width:
                                                                               0.5)),
-                                                                  child: Padding(
+                                                                  child:
+                                                                      Padding(
                                                                     padding:
-                                                                        const EdgeInsets
-                                                                                .all(
+                                                                        const EdgeInsets.all(
                                                                             8.0),
                                                                     child: Text(
                                                                       'Push',
@@ -1451,9 +1458,8 @@ class _KegelScreenState extends State<KegelScreen>
                                                                           TextAlign
                                                                               .center,
                                                                       style: FontStyleUtility.h22(
-                                                                          fontColor:
-                                                                              ColorUtils
-                                                                                  .primary_gold,
+                                                                          fontColor: ColorUtils
+                                                                              .primary_gold,
                                                                           family:
                                                                               "PM"),
                                                                     ),
@@ -1478,15 +1484,13 @@ class _KegelScreenState extends State<KegelScreen>
                                                                       child:
                                                                           Padding(
                                                                         padding:
-                                                                            const EdgeInsets.all(
-                                                                                8.0),
-                                                                        child: Text(
+                                                                            const EdgeInsets.all(8.0),
+                                                                        child:
+                                                                            Text(
                                                                           'Set',
                                                                           style: FontStyleUtility.h16(
-                                                                              fontColor: Colors
-                                                                                  .white,
-                                                                              family:
-                                                                                  "PR"),
+                                                                              fontColor: Colors.white,
+                                                                              family: "PR"),
                                                                         ),
                                                                       ),
                                                                     ),
@@ -1495,32 +1499,31 @@ class _KegelScreenState extends State<KegelScreen>
                                                               ),
                                                               Expanded(
                                                                 flex: 1,
-                                                                child: Container(
+                                                                child:
+                                                                    Container(
                                                                   width: 100,
                                                                   decoration: BoxDecoration(
                                                                       borderRadius:
-                                                                          BorderRadius
-                                                                              .circular(
-                                                                                  10),
+                                                                          BorderRadius.circular(
+                                                                              10),
                                                                       border: Border.all(
                                                                           color: Colors
                                                                               .white,
                                                                           width:
                                                                               0.5)),
-                                                                  child: Padding(
+                                                                  child:
+                                                                      Padding(
                                                                     padding:
-                                                                        const EdgeInsets
-                                                                                .all(
+                                                                        const EdgeInsets.all(
                                                                             8.0),
                                                                     child: Text(
-                                                                      'Kegel',
+                                                                      'Squeeze',
                                                                       textAlign:
                                                                           TextAlign
                                                                               .center,
                                                                       style: FontStyleUtility.h22(
-                                                                          fontColor:
-                                                                              ColorUtils
-                                                                                  .primary_gold,
+                                                                          fontColor: ColorUtils
+                                                                              .primary_gold,
                                                                           family:
                                                                               "PM"),
                                                                     ),
@@ -1543,12 +1546,16 @@ class _KegelScreenState extends State<KegelScreen>
                                                   Container(
                                                     child: Padding(
                                                       padding:
-                                                          const EdgeInsets.all(8.0),
+                                                          const EdgeInsets.all(
+                                                              8.0),
                                                       child: Text(
                                                         'Set',
-                                                        style: FontStyleUtility.h16(
-                                                            fontColor: Colors.white,
-                                                            family: "PR"),
+                                                        style: FontStyleUtility
+                                                            .h16(
+                                                                fontColor:
+                                                                    Colors
+                                                                        .white,
+                                                                family: "PR"),
                                                       ),
                                                     ),
                                                   ),
@@ -1562,16 +1569,17 @@ class _KegelScreenState extends State<KegelScreen>
                                                       Container(
                                                         child: Padding(
                                                           padding:
-                                                              const EdgeInsets.all(
-                                                                  8.0),
+                                                              const EdgeInsets
+                                                                  .all(8.0),
                                                           child: Text(
-                                                            'Kegel',
+                                                            'Squeeze',
                                                             style: FontStyleUtility
                                                                 .h16(
                                                                     fontColor:
                                                                         Colors
                                                                             .white,
-                                                                    family: "PR"),
+                                                                    family:
+                                                                        "PR"),
                                                           ),
                                                         ),
                                                       ),
@@ -1580,7 +1588,8 @@ class _KegelScreenState extends State<KegelScreen>
                                                 : ('$seconds' == '1'
                                                     ? Row(
                                                         mainAxisAlignment:
-                                                            MainAxisAlignment.start,
+                                                            MainAxisAlignment
+                                                                .start,
                                                         children: [
                                                           Container(
                                                             child: Padding(
@@ -1589,13 +1598,12 @@ class _KegelScreenState extends State<KegelScreen>
                                                                       .all(8.0),
                                                               child: Text(
                                                                 'Push',
-                                                                style: FontStyleUtility
-                                                                    .h16(
-                                                                        fontColor:
-                                                                            Colors
-                                                                                .white,
-                                                                        family:
-                                                                            "PR"),
+                                                                style: FontStyleUtility.h16(
+                                                                    fontColor:
+                                                                        Colors
+                                                                            .white,
+                                                                    family:
+                                                                        "PR"),
                                                               ),
                                                             ),
                                                           ),
@@ -1611,7 +1619,8 @@ class _KegelScreenState extends State<KegelScreen>
                                                                 child: Padding(
                                                                   padding:
                                                                       const EdgeInsets
-                                                                          .all(4.0),
+                                                                              .all(
+                                                                          4.0),
                                                                   child: Text(
                                                                     'Ready',
                                                                     style: FontStyleUtility.h18(
@@ -1634,7 +1643,8 @@ class _KegelScreenState extends State<KegelScreen>
                                                                 child: Padding(
                                                                   padding:
                                                                       const EdgeInsets
-                                                                          .all(8.0),
+                                                                              .all(
+                                                                          8.0),
                                                                   child: Text(
                                                                     'Push',
                                                                     style: FontStyleUtility.h16(
@@ -1652,70 +1662,70 @@ class _KegelScreenState extends State<KegelScreen>
                                     )
                                   ],
                                 ),
-                              Container(
-                                // color: Colors.red,
-                                child: ('$seconds' == '3'
-                                    ? SizedBox(
-                                  height : 40
-                                )
-                                    : ('$seconds' == '2'
-                                    ? SizedBox(                                  height : 40
-                                )
-                                    :('$seconds' == '1'?
-                                Container(
-                                  child: Padding(
-                                    padding:
-                                    const EdgeInsets
-                                        .all(8.0),
-                                    child: Text(
-                                      'Squeeze',
-                                      textAlign:
-                                      TextAlign
-                                          .center,
-                                      style: FontStyleUtility.h16(
-                                          fontColor: Colors
-                                              .white,
-                                          family:
-                                          "PR"),
-                                    ),
-                                  ),
-                                )  : (four_started
-                                    ? Container(
-                                  height : 40,
-
-                                  child: Text(
-                                    'Push',
-                                    textAlign:
-                                    TextAlign
-                                        .center,
-                                    style: FontStyleUtility.h16(
-                                        fontColor: Colors.white,
-                                        family:
-                                        "PM"),
-                                  ),
-                                )
-                                    : Container(
-                                  height : 40,
-                                  child: Padding(
-                                    padding:
-                                    const EdgeInsets
-                                        .all(8.0),
-                                    child: Text(
-                                      'Squeeze',
-                                      textAlign:
-                                      TextAlign
-                                          .center,
-                                      style: FontStyleUtility.h16(
-                                          fontColor: Colors
-                                              .white,
-                                          family:
-                                          "PR"),
-                                    ),
-                                  ),
-                                ) )))),
-                              ),
-                            ],
-                          )
+                                // Container(
+                                //   // color: Colors.red,
+                                //   child: ('$seconds' == '3'
+                                //       ? SizedBox(
+                                //     height : 40
+                                //   )
+                                //       : ('$seconds' == '2'
+                                //       ? const SizedBox(height : 40
+                                //   )
+                                //       :('$seconds' == '1'?
+                                //   Container(
+                                //     child: Padding(
+                                //       padding:
+                                //       const EdgeInsets
+                                //           .all(8.0),
+                                //       child: Text(
+                                //         'Squeeze',
+                                //         textAlign:
+                                //         TextAlign
+                                //             .center,
+                                //         style: FontStyleUtility.h16(
+                                //             fontColor: Colors
+                                //                 .white,
+                                //             family:
+                                //             "PR"),
+                                //       ),
+                                //     ),
+                                //   )  : (four_started
+                                //       ? Container(
+                                //     height : 40,
+                                //
+                                //     child: Text(
+                                //       'Push',
+                                //       textAlign:
+                                //       TextAlign
+                                //           .center,
+                                //       style: FontStyleUtility.h16(
+                                //           fontColor: Colors.white,
+                                //           family:
+                                //           "PM"),
+                                //     ),
+                                //   )
+                                //       : Container(
+                                //     height : 40,
+                                //     child: Padding(
+                                //       padding:
+                                //       const EdgeInsets
+                                //           .all(8.0),
+                                //       child: Text(
+                                //         'Squeeze',
+                                //         textAlign:
+                                //         TextAlign
+                                //             .center,
+                                //         style: FontStyleUtility.h16(
+                                //             fontColor: Colors
+                                //                 .white,
+                                //             family:
+                                //             "PR"),
+                                //       ),
+                                //     ),
+                                //   ) )))),
+                                // ),
+                              ],
+                            )
                           : SizedBox(
                               height: 0,
                             )),
@@ -1750,14 +1760,17 @@ class _KegelScreenState extends State<KegelScreen>
                             // start_button_animation();
                             await middle_animation();
                             await text_animation();
-                            Future.delayed(const Duration(seconds: 1),
-                                () async {
-                              startTimer();
-                            });
-                            Future.delayed(const Duration(seconds: 3),
-                                () async {
-                              await startWatch();
-                            });
+                            startTimer();
+                            await startWatch();
+
+                            // Future.delayed(const Duration(seconds: 1),
+                            //     () async {
+                            //   startTimer();
+                            // });
+                            // Future.delayed(const Duration(seconds: 3),
+                            //     () async {
+                            //   await startWatch();
+                            // });
                           } else {
                             await stopWatch_finish();
                             await _animationController_middle!.reverse();
@@ -1889,11 +1902,10 @@ class _KegelScreenState extends State<KegelScreen>
                                         color: Colors.white),
                                     todayTextStyle: TextStyle(
                                         fontWeight: FontWeight.bold,
-                                        fontSize: 18.0,
-                                        color: ColorUtils.dark_grey),
+                                        fontSize: 14.0,
+                                        color: Colors.white),
                                     todayDecoration: BoxDecoration(
-                                        color:
-                                            HexColor("#ffffff").withOpacity(1),
+                                        color: Colors.transparent,
                                         borderRadius:
                                             BorderRadius.circular(100)),
                                     // todayColor: Colors.orange,
@@ -2021,8 +2033,9 @@ class _KegelScreenState extends State<KegelScreen>
                                             },
                                             child: Container(
                                               // color: Colors.white60,
-                                                alignment: Alignment.center,
-                                              padding: EdgeInsets.only(bottom: 5),
+                                              alignment: Alignment.center,
+                                              padding:
+                                                  EdgeInsets.only(bottom: 7),
                                               // margin: EdgeInsets.only(bottom: 7),
                                               // decoration: BoxDecoration(
                                               //   borderRadius:
@@ -2032,10 +2045,37 @@ class _KegelScreenState extends State<KegelScreen>
                                               //           ColorUtils.primary_gold,
                                               //       width: 2),
                                               // ),
-                                              child: Icon(
-                                                Icons.star_rounded,
-                                                color: ColorUtils.primary_gold.withOpacity(0.5),
-                                                size: 50,
+                                              child: (int.parse(
+                                                          _kegel_controller
+                                                              .kegelGetModel!
+                                                              .data![i]
+                                                              .sets!) <
+                                                      3
+                                                  ? Image.asset(
+                                                      "assets/images/white-star.png",
+                                                      color: Colors.white,
+                                                      height: 40,
+                                                    )
+                                                  // Icon(
+                                                  //         Icons
+                                                  //             .star_border_rounded,
+                                                  //         color: Colors.white
+                                                  //             .withOpacity(0.8),
+                                                  //         size: 50,
+                                                  //       )
+                                                  :
+                                              Image.asset(
+                                                "assets/images/white-star (1).png",
+                                                color: ColorUtils.primary_gold.withOpacity(0.8),
+                                                height: 40,
+                                              )
+                                              // Icon(
+                                              //         Icons.star_rounded,
+                                              //         color: ColorUtils
+                                              //             .primary_gold
+                                              //             .withOpacity(0.8),
+                                              //         size: 50,
+                                              //       )
                                               ),
                                             ),
                                           );
@@ -5097,9 +5137,8 @@ class _KegelScreenState extends State<KegelScreen>
                                           print(_currentAlarms!.length);
                                           _alarmTimeString = DateFormat('HH:mm')
                                               .format(selectedDate);
-                                          Alarm_title
-                                              .text =
-                                          "Kegel ${(_currentAlarms!.length + 1)}";
+                                          Alarm_title.text =
+                                              "Kegel ${(_currentAlarms!.length + 1)}";
                                           if (_currentAlarms!.length >= 3) {
                                             CommonWidget().showErrorToaster(
                                                 msg: "Only 3 alarams/Day");
@@ -5159,9 +5198,10 @@ class _KegelScreenState extends State<KegelScreen>
                                                                   topRight: Radius
                                                                       .circular(
                                                                           20))),
-                                                      padding:
-                                                          const EdgeInsets.symmetric(
-                                                            horizontal: 32,vertical: 10),
+                                                      padding: const EdgeInsets
+                                                              .symmetric(
+                                                          horizontal: 32,
+                                                          vertical: 10),
                                                       child:
                                                           SingleChildScrollView(
                                                         child: Column(
@@ -5321,7 +5361,10 @@ class _KegelScreenState extends State<KegelScreen>
                                                             ),
 
                                                             ListTile(
-                                                              visualDensity: VisualDensity(vertical: -4),
+                                                              visualDensity:
+                                                                  VisualDensity(
+                                                                      vertical:
+                                                                          -4),
                                                               onTap: () {
                                                                 // showDialog(
                                                                 //   context:
@@ -5529,19 +5572,26 @@ class _KegelScreenState extends State<KegelScreen>
                                                                       .white),
                                                             ),
                                                             ListTile(
-                                                              visualDensity: VisualDensity(vertical: -4),
-
+                                                              visualDensity:
+                                                                  VisualDensity(
+                                                                      vertical:
+                                                                          -4),
                                                               title: Text(
                                                                 'Repeat',
                                                                 style: FontStyleUtility.h14(
-                                                                    fontColor: ColorUtils
-                                                                        .primary_gold,
-                                                                    family: 'PR'),
+                                                                    fontColor:
+                                                                        ColorUtils
+                                                                            .primary_gold,
+                                                                    family:
+                                                                        'PR'),
                                                               ),
-                                                              trailing: const Icon(
-                                                                Icons.arrow_forward_ios,
+                                                              trailing:
+                                                                  const Icon(
+                                                                Icons
+                                                                    .arrow_forward_ios,
                                                                 size: 15,
-                                                                color: Colors.white,
+                                                                color: Colors
+                                                                    .white,
                                                               ),
                                                             ),
                                                             GestureDetector(
@@ -5682,8 +5732,10 @@ class _KegelScreenState extends State<KegelScreen>
                                                                 );
                                                               },
                                                               child: ListTile(
-                                                                visualDensity: VisualDensity(vertical: -4),
-
+                                                                visualDensity:
+                                                                    VisualDensity(
+                                                                        vertical:
+                                                                            -4),
                                                                 title: Text(
                                                                     'Sound',
                                                                     style: FontStyleUtility.h14(
@@ -5711,10 +5763,11 @@ class _KegelScreenState extends State<KegelScreen>
                                                                               "Enter Alarm title");
                                                                   return;
                                                                 } else {
-                                                                  Alarm_title_list.add(Alarm_title.text);
+                                                                  Alarm_title_list.add(
+                                                                      Alarm_title
+                                                                          .text);
 
                                                                   await onSaveAlarm();
-
                                                                 }
                                                               },
                                                               child: Container(

@@ -2,13 +2,17 @@ import 'dart:async';
 
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:intl/intl.dart';
+import 'package:klench_/main.dart';
 import 'package:klench_/utils/TexrUtils.dart';
 
 import '../utils/Asset_utils.dart';
 import '../utils/TextStyle_utils.dart';
 import '../utils/colorUtils.dart';
 import '../utils/common_widgets.dart';
+import 'alarm_info.dart';
 
 class WarmUpScreen extends StatefulWidget {
   const WarmUpScreen({Key? key}) : super(key: key);
@@ -35,7 +39,7 @@ class _WarmUpScreenState extends State<WarmUpScreen>
           print("startstop Inside=$startStop");
           elapsedTime = transformMilliSeconds(watch.elapsedMilliseconds);
 
-          if (elapsedTime == '03') {
+          if (elapsedTime == '11') {
             stopWatch_finish();
             // _animationController_shadow1!.reverse();
             setState(() {
@@ -213,25 +217,25 @@ class _WarmUpScreenState extends State<WarmUpScreen>
         vsync: this, duration: const Duration(milliseconds: 500));
     _animationController_middle!.forward();
     _animation_middle =
-        Tween(begin: 15.0, end: 80.0).animate(_animationController_middle!)
-          ..addStatusListener((status) {
-            print(status);
-            // shadow_animation1_completed = true;
-          });
-    _animation_middle2 =
         Tween(begin: 15.0, end: 100.0).animate(_animationController_middle!)
           ..addStatusListener((status) {
             print(status);
             // shadow_animation1_completed = true;
           });
+    _animation_middle2 =
+        Tween(begin: 15.0, end: 120.0).animate(_animationController_middle!)
+          ..addStatusListener((status) {
+            print(status);
+            // shadow_animation1_completed = true;
+          });
     _animation_middle3 =
-        Tween(begin: 15.0, end: 200.0).animate(_animationController_middle!)
+        Tween(begin: 15.0, end: 220.0).animate(_animationController_middle!)
           ..addStatusListener((status) {
             print(status);
             // shadow_animation1_completed = true;
           });
     _animation_middle4 =
-        Tween(begin: 15.0, end: 170.0).animate(_animationController_middle!)
+        Tween(begin: 15.0, end: 190.0).animate(_animationController_middle!)
           ..addStatusListener((status) {
             print(status);
             // shadow_animation1_completed = true;
@@ -730,7 +734,7 @@ class _WarmUpScreenState extends State<WarmUpScreen>
                                             const EdgeInsets
                                                 .all(8.0),
                                             child: Text(
-                                              'WarmUp',
+                                              'Squeeze',
                                               textAlign:
                                               TextAlign
                                                   .center,
@@ -781,7 +785,7 @@ class _WarmUpScreenState extends State<WarmUpScreen>
                                                 const EdgeInsets.all(
                                                     4.0),
                                                 child: Text(
-                                                  'Warmup',
+                                                  'Squeeze',
                                                   style: FontStyleUtility.h16(
                                                       fontColor: Colors
                                                           .white,
@@ -879,7 +883,7 @@ class _WarmUpScreenState extends State<WarmUpScreen>
                                                 .all(
                                                 8.0),
                                             child: Text(
-                                              'WarmUp',
+                                              'Squeeze',
                                               textAlign:
                                               TextAlign
                                                   .center,
@@ -931,7 +935,7 @@ class _WarmUpScreenState extends State<WarmUpScreen>
                                           const EdgeInsets.all(
                                               8.0),
                                           child: Text(
-                                            'WarmUp',
+                                            'Squeeze',
                                             style: FontStyleUtility
                                                 .h16(
                                                 fontColor:
@@ -1018,68 +1022,68 @@ class _WarmUpScreenState extends State<WarmUpScreen>
                               )
                         ],
                       ),
-                              Container(
-                                // color: Colors.red,
-                                child: ('$seconds' == '3'
-                                    ? SizedBox(
-                                    height : 40
-                                )
-                                    : ('$seconds' == '2'
-                                    ? SizedBox(                                  height : 40
-                                )
-                                    :('$seconds' == '1'?
-                                Container(
-                                  child: Padding(
-                                    padding:
-                                    const EdgeInsets
-                                        .all(8.0),
-                                    child: Text(
-                                      'Squeeze',
-                                      textAlign:
-                                      TextAlign
-                                          .center,
-                                      style: FontStyleUtility.h16(
-                                          fontColor: Colors
-                                              .white,
-                                          family:
-                                          "PR"),
-                                    ),
-                                  ),
-                                )  : (four_started
-                                    ? Container(
-                                  height : 40,
-
-                                  child: Text(
-                                    'HOLD',
-                                    textAlign:
-                                    TextAlign
-                                        .center,
-                                    style: FontStyleUtility.h16(
-                                        fontColor: Colors.white,
-                                        family:
-                                        "PM"),
-                                  ),
-                                )
-                                    : Container(
-                                  height : 40,
-                                  child: Padding(
-                                    padding:
-                                    const EdgeInsets
-                                        .all(8.0),
-                                    child: Text(
-                                      'Squeeze',
-                                      textAlign:
-                                      TextAlign
-                                          .center,
-                                      style: FontStyleUtility.h16(
-                                          fontColor: Colors
-                                              .white,
-                                          family:
-                                          "PR"),
-                                    ),
-                                  ),
-                                ) )))),
-                              ),
+                              // Container(
+                              //   // color: Colors.red,
+                              //   child: ('$seconds' == '3'
+                              //       ? SizedBox(
+                              //       height : 40
+                              //   )
+                              //       : ('$seconds' == '2'
+                              //       ? SizedBox(                                  height : 40
+                              //   )
+                              //       :('$seconds' == '1'?
+                              //   Container(
+                              //     child: Padding(
+                              //       padding:
+                              //       const EdgeInsets
+                              //           .all(8.0),
+                              //       child: Text(
+                              //         'Squeeze',
+                              //         textAlign:
+                              //         TextAlign
+                              //             .center,
+                              //         style: FontStyleUtility.h16(
+                              //             fontColor: Colors
+                              //                 .white,
+                              //             family:
+                              //             "PR"),
+                              //       ),
+                              //     ),
+                              //   )  : (four_started
+                              //       ? Container(
+                              //     height : 40,
+                              //
+                              //     child: Text(
+                              //       'HOLD',
+                              //       textAlign:
+                              //       TextAlign
+                              //           .center,
+                              //       style: FontStyleUtility.h16(
+                              //           fontColor: Colors.white,
+                              //           family:
+                              //           "PM"),
+                              //     ),
+                              //   )
+                              //       : Container(
+                              //     height : 40,
+                              //     child: Padding(
+                              //       padding:
+                              //       const EdgeInsets
+                              //           .all(8.0),
+                              //       child: Text(
+                              //         'Squeeze',
+                              //         textAlign:
+                              //         TextAlign
+                              //             .center,
+                              //         style: FontStyleUtility.h16(
+                              //             fontColor: Colors
+                              //                 .white,
+                              //             family:
+                              //             "PR"),
+                              //       ),
+                              //     ),
+                              //   ) )))),
+                              // ),
                             ],
                           )
                           : SizedBox(
@@ -1092,16 +1096,19 @@ class _WarmUpScreenState extends State<WarmUpScreen>
                         onTap: () async {
                           if (started) {
                             back_wallpaper = false;
-                            await middle_animation();
-                            Future.delayed(const Duration(seconds: 1), () {
-                              startTimer();
-                            });
-                            Future.delayed(const Duration(seconds: 4),
-                                () async {
-                              await startWatch();
-                            });
+                            startTimer();
+                            startWatch();
+                            middle_animation();
+                            // Future.delayed(const Duration(seconds: 1), () {
+                            //   startTimer();
+                            // });
+                            // Future.delayed(const Duration(seconds: 4),
+                            //     () async {
+                            //   await startWatch();
+                            // });
                           } else {
                             await stopWatch_finish();
+                            await click_alarm();
                             await _animationController_middle!.reverse();
 
                             setState(() {
@@ -1318,5 +1325,62 @@ class _WarmUpScreenState extends State<WarmUpScreen>
     String secondsStr = (seconds % 60).toString().padLeft(2, '0');
 
     return secondsStr;
+  }
+
+  DateTime? _alarmTime;
+
+  Future<void> click_alarm() async {
+    _alarmTime = DateTime.now();
+    DateTime arch = DateTime.parse("2022-08-15 00:25:24");
+    print(DateFormat('EEEE').format(arch)); // Sunday
+
+    DateTime scheduleAlarmDateTime;
+    // if (_alarmTime!.isAfter(DateTime.now())) {
+    scheduleAlarmDateTime = DateTime.now().add(Duration(seconds: 3));
+    // } else {
+    //   scheduleAlarmDateTime = _alarmTime!.add(const Duration(days: 1));
+    // }
+
+    var alarmInfo = AlarmInfo(
+      alarmDateTime: scheduleAlarmDateTime,
+      gradientColorIndex: 1,
+      title: "Would you like to do breathing exercises ?",
+    );
+    // _alarmHelper.insertAlarm(alarmInfo);
+    await scheduleAlarm(scheduleAlarmDateTime, alarmInfo);
+    // Alarm_title.clear();
+    // Navigator.pop(context);
+    // loadAlarms();
+  }
+
+  Future<void> scheduleAlarm(
+      DateTime scheduledNotificationDateTime, AlarmInfo alarmInfo) async {
+    var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+      'alarm_notif',
+      'alarm_notif',
+      // 'Channel for Alarm notification',
+      icon: 'app_icon',
+      enableVibration: true,
+      playSound: true,
+      sound: RawResourceAndroidNotificationSound("a_long_cold_sting.wav"),
+      largeIcon: DrawableResourceAndroidBitmap('app_icon'),
+    );
+
+    var iOSPlatformChannelSpecifics = const IOSNotificationDetails(
+        sound: "a_long_cold_sting.wav",
+        presentAlert: true,
+        presentBadge: true,
+        threadIdentifier: 'thread_id',
+        presentSound: true);
+    var platformChannelSpecifics = NotificationDetails(
+        android: androidPlatformChannelSpecifics,
+        iOS: iOSPlatformChannelSpecifics);
+
+    await flutterLocalNotificationsPlugin.schedule(
+        0,
+        'Klench Exercise',
+        alarmInfo.title,
+        scheduledNotificationDateTime,
+        platformChannelSpecifics);
   }
 }

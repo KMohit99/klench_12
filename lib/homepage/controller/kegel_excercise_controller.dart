@@ -123,6 +123,7 @@ class Kegel_controller extends GetxController {
       // print(kegelPostModel);
       if (data["error"] == false) {
         CommonWidget().showToaster(msg: data["message"]);
+        await Kegel_get_API(context);
 
         hideLoader(context);
 

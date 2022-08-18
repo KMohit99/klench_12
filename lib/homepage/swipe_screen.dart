@@ -54,12 +54,12 @@ class _SwipeScreenState extends State<SwipeScreen> {
   }
 
   void _goBack() {
-    // if (page_index == 0) {
-    //   _pageController_customer!.jumpToPage(3);
-    // } else {
+    if (widget.PageNo == 0) {
+      _pageController_customer!.jumpToPage(3);
+    } else {
       _pageController_customer!
           .previousPage(duration: pageTurnDuration, curve: pageTurnCurve);
-    // }
+    }
   }
 
   int page_index = 0;
