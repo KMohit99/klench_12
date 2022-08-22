@@ -700,7 +700,7 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
                       ),
 
                       AvatarGlow(
-                        endRadius: 165.0,
+                        endRadius: 170.0,
                         showTwoGlows: true,
                         animate: false,
                         // (startStop ? false : true),
@@ -745,6 +745,21 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
                                       )
                                     ]),
                               ),
+                              (animation_started
+                                  ? DottedBorder(
+                                      borderType: BorderType.Circle,
+                                      strokeWidth: 3,
+                                      dashPattern: [0, 10],
+                                      strokeCap: StrokeCap.round,
+                                      radius: Radius.circular(100),
+                                      padding: EdgeInsets.all(0),
+                                      color: Colors.black,
+                                      child: Container(
+                                        height: 340,
+                                        width: 340,
+                                      ),
+                                    )
+                                  : SizedBox.shrink()),
                               (animation_started
                                   ? DottedBorder(
                                       borderType: BorderType.Circle,
@@ -1025,26 +1040,61 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
                                 width: (animation_started
                                     ? _animation_button!.value
                                     : button_height),
-                                decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    image: const DecorationImage(
-                                        alignment: Alignment.center,
-                                        image: const AssetImage(
-                                            AssetUtils.home_button)),
-                                    // boxShadow: [
-                                    //   BoxShadow(
-                                    //     color: (animation_started
-                                    //         ? HexColor('#F5C921')
-                                    //         : Colors.transparent),
-                                    //     blurRadius: (animation_started
-                                    //         ? _animation!.value
-                                    //         : 0),
-                                    //     spreadRadius: (animation_started
-                                    //         ? _animation!.value
-                                    //         : 0),
-                                    //   )
-                                    // ]
-                                ),
+                                // decoration: BoxDecoration(
+                                //     shape: BoxShape.circle,
+                                //     image: const DecorationImage(
+                                //         alignment: Alignment.center,
+                                //         image: const AssetImage(
+                                //             AssetUtils.home_button)),
+                                //     // boxShadow: [
+                                //     //   BoxShadow(
+                                //     //     color: (animation_started
+                                //     //         ? HexColor('#F5C921')
+                                //     //         : Colors.transparent),
+                                //     //     blurRadius: (animation_started
+                                //     //         ? _animation!.value
+                                //     //         : 0),
+                                //     //     spreadRadius: (animation_started
+                                //     //         ? _animation!.value
+                                //     //         : 0),
+                                //     //   )
+                                //     // ]
+                                // ),
+                                decoration:
+                                // (animation_started ?  BoxDecoration(
+                                //   shape: BoxShape.circle,
+                                //   boxShadow: [
+                                //     BoxShadow(
+                                //       color: HexColor('#F5C921'), // darker color
+                                //     ),
+                                //     BoxShadow(
+                                //       color: HexColor('#000000'), // background color
+                                //       spreadRadius: -1.0,
+                                //       blurRadius: 10.0,
+                                //     ),
+                                //   ],
+                                // ) :
+                                BoxDecoration(
+        shape: BoxShape.circle,
+        image: const DecorationImage(
+            alignment: Alignment.center,
+            image: const AssetImage(
+                AssetUtils.home_button)),
+        // boxShadow: [
+        //   BoxShadow(
+        //     color: (animation_started
+        //         ? HexColor('#F5C921')
+        //         : Colors.transparent),
+        //     blurRadius: (animation_started
+        //         ? _animation!.value
+        //         : 0),
+        //     spreadRadius: (animation_started
+        //         ? _animation!.value
+        //         : 0),
+        //   )
+        // ]
+    ),
+                                // ),
                                 child: Stack(
                                   children: [
                                     Container(
@@ -1110,7 +1160,7 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
                             startWatch();
                             middle_animation();
                           } else {
-                            await stopWatch_finish();
+                            await stopWatch();
                             await click_alarm();
                             await _animationController_middle!.reverse();
                             _peeScreenController.sets++;
@@ -1754,17 +1804,25 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
   stopWatch() {
     setState(() {
       startStop = true;
-      started = false;
+      started = true;
+      animation_started = false;
       watch.stop();
-      setTime();
+      setTime_finish();
     });
+    Fluttertoast.showToast(
+      msg: "Plese review Performance",
+      textColor: Colors.white,
+      backgroundColor: Colors.black87,
+      toastLength: Toast.LENGTH_LONG,
+      gravity: ToastGravity.BOTTOM,
+    );
   }
 
   stopWatch_finish() {
     setState(() {
       startStop = true;
       started = true;
-      animation_started = false;
+      // animation_started = false;
       watch.stop();
       setTime_finish();
     });

@@ -38,6 +38,11 @@ class _SwipeScreenState extends State<SwipeScreen> {
 
   @override
   void initState() {
+    print("widget.PageNo");
+    print(widget.PageNo);
+    setState(() {
+      page_index = widget.PageNo ;
+    });
     _pageController_customer =
         PageController(initialPage: widget.PageNo, keepPage: false);
   }
@@ -53,10 +58,11 @@ class _SwipeScreenState extends State<SwipeScreen> {
         duration: pageTurnDuration, curve: pageTurnCurve);
   }
 
-  void _goBack() {
-    if (widget.PageNo == 0) {
+  Future _goBack() async{
+    if (page_index == 0) {
       _pageController_customer!.jumpToPage(3);
     } else {
+      print("mohitssss");
       _pageController_customer!
           .previousPage(duration: pageTurnDuration, curve: pageTurnCurve);
     }
@@ -70,7 +76,7 @@ class _SwipeScreenState extends State<SwipeScreen> {
       init: _ledgerScreenSetup_customer_Controller,
       builder: (_) {
         return GestureDetector(
-          onHorizontalDragEnd: (dragEndDetails) {
+          onHorizontalDragEnd: (dragEndDetails) async {
             if (dragEndDetails.primaryVelocity! < 0) {
               // Page forwards
               if (_ledgerScreenSetup_customer_Controller.m_running != true) {
@@ -84,7 +90,7 @@ class _SwipeScreenState extends State<SwipeScreen> {
               // Page backwards
               if (_ledgerScreenSetup_customer_Controller.m_running != true) {
                 print('Move page backwards');
-                _goBack();
+               await _goBack();
               } else {
                 CommonWidget()
                     .showErrorToaster(msg: 'Please finish the method');
@@ -93,10 +99,11 @@ class _SwipeScreenState extends State<SwipeScreen> {
           },
           child: PageView.builder(
             onPageChanged: (page) {
-              page_index = page;
+              setState(() {
+                page_index = page;
+              });
               print('PageChanged $page');
               print('PageChanged $page_index');
-
               // _pageController_customer!.dispose();
               if (_ledgerScreenSetup_customer_Controller.m_running == true) {
                 // M_ScreenMetalState().stopWatch_finish();

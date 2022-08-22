@@ -2,7 +2,9 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:klench_/Dashboard/dashboard_screen.dart';
 import 'package:klench_/front_page/FrontpageScreen.dart';
 import 'package:klench_/utils/Asset_utils.dart';
@@ -11,6 +13,8 @@ import 'package:local_auth/local_auth.dart';
 
 import 'Authentication/SignUp/local_auth_api.dart';
 import 'getx_pagination/binding_utils.dart';
+import 'homepage/alarm_info.dart';
+import 'main.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -45,6 +49,8 @@ class _SplashScreenState extends State<SplashScreen> {
       final isAuthenticated = await LocalAuthApi.authenticate();
 
       if (isAuthenticated) {
+        await alarm_notifications();
+
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (context) => DashboardScreen()),
         );
@@ -53,7 +59,9 @@ class _SplashScreenState extends State<SplashScreen> {
         SystemNavigator.pop();
       }
     }else{
-      Get.to(DashboardScreen());
+      await alarm_notifications();
+
+     await Get.to(DashboardScreen());
     }
   }
 
@@ -67,6 +75,79 @@ class _SplashScreenState extends State<SplashScreen> {
             child: Image.asset(AssetUtils.Logo_white_icon)),
       ),
     );
+  }
+
+
+  alarm_notifications() async {
+    Future.delayed(Duration(seconds: 5),() async {
+      await click_alarm(alarm_info: "It's time for kegel exercise");
+    });
+    Future.delayed(Duration(minutes: 30),() async {
+      await click_alarm(alarm_info: "It's time to Masturbate");
+    });
+    Future.delayed(Duration(minutes: 60),() async {
+      await click_alarm(alarm_info: "It's time to Pee");
+    });
+    Future.delayed(Duration(minutes: 90),() async {
+      await click_alarm(alarm_info: "It's time to Warmup");
+    });
+  }
+
+  DateTime? _alarmTime;
+
+  Future<void> click_alarm({required String alarm_info}) async {
+    _alarmTime = DateTime.now();
+    DateTime arch = DateTime.parse("2022-08-15 00:25:24");
+    print(DateFormat('EEEE').format(arch)); // Sunday
+
+    DateTime scheduleAlarmDateTime;
+    // if (_alarmTime!.isAfter(DateTime.now())) {
+    scheduleAlarmDateTime = DateTime.now().add(Duration(seconds: 3));
+    // } else {
+    //   scheduleAlarmDateTime = _alarmTime!.add(const Duration(days: 1));
+    // }
+
+    var alarmInfo = AlarmInfo(
+      alarmDateTime: scheduleAlarmDateTime,
+      gradientColorIndex: 1,
+      title: alarm_info,
+    );
+    // _alarmHelper.insertAlarm(alarmInfo);
+    await scheduleAlarm(scheduleAlarmDateTime, alarmInfo);
+    // Alarm_title.clear();
+    // Navigator.pop(context);
+    // loadAlarms();
+  }
+
+  Future<void> scheduleAlarm(
+      DateTime scheduledNotificationDateTime, AlarmInfo alarmInfo) async {
+    var androidPlatformChannelSpecifics = const AndroidNotificationDetails(
+      'alarm_notif',
+      'alarm_notif',
+      // 'Channel for Alarm notification',
+      icon: 'app_icon',
+      enableVibration: true,
+      playSound: true,
+      sound: RawResourceAndroidNotificationSound("a_long_cold_sting.wav"),
+      largeIcon: DrawableResourceAndroidBitmap('app_icon'),
+    );
+
+    var iOSPlatformChannelSpecifics = const IOSNotificationDetails(
+        sound: "a_long_cold_sting.wav",
+        presentAlert: true,
+        presentBadge: true,
+        threadIdentifier: 'thread_id',
+        presentSound: true);
+    var platformChannelSpecifics = NotificationDetails(
+        android: androidPlatformChannelSpecifics,
+        iOS: iOSPlatformChannelSpecifics);
+
+    await flutterLocalNotificationsPlugin.schedule(
+        0,
+        'Klench Exercise',
+        alarmInfo.title,
+        scheduledNotificationDateTime,
+        platformChannelSpecifics);
   }
 
   final LocalAuthentication auth = LocalAuthentication();

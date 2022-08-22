@@ -53,7 +53,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
-    alarm_notifications();
+    // alarm_notifications();
     super.initState();
   }
   // This widget is the root of your application.

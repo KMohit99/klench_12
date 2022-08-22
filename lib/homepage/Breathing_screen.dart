@@ -50,11 +50,12 @@ class _BreathingScreenState extends State<BreathingScreen>
           elapsedTime = transformMilliSeconds(watch.elapsedMilliseconds);
           print("elapsedTime $elapsedTime");
           // vibration();
-          if (elapsedTime == '12') {
+          if (elapsedTime == '15') {
             stopWatch();
             // _animationController_shadow1!.reverse();
             setState(() {
               elapsedTime = '00';
+              elapsedTime2 = '00';
               percent = 0.0;
               watch.reset();
               CommonWidget().showToaster(msg: '${9 - counter} Times left');
@@ -120,7 +121,7 @@ class _BreathingScreenState extends State<BreathingScreen>
           elapsedTime2 = transformMilliSeconds2(watch2.elapsedMilliseconds);
           // print("elapsedTime $elapsedTime");
           // vibration();
-          if (elapsedTime2 == '04') {
+          if (elapsedTime2 == '05') {
             stopWatch2();
             // _animationController_shadow1!.reverse();
             setState(() {
@@ -293,7 +294,7 @@ class _BreathingScreenState extends State<BreathingScreen>
       print(animation_started);
     });
     _animationController =
-        AnimationController(vsync: this, duration: Duration(seconds: 4));
+        AnimationController(vsync: this, duration: Duration(seconds: 5));
     _animationController!.forward();
     vibration();
     setState(() {
@@ -309,9 +310,10 @@ class _BreathingScreenState extends State<BreathingScreen>
           vibration_hold();
           setState(() {
             _status = 'Hold';
+
             shadow_animation_pause = true;
             _animationController_shadow2!.stop();
-            Future.delayed(Duration(seconds: 4), () {
+            Future.delayed(Duration(seconds: 5), () {
               _animationController_shadow2!.repeat(reverse: true);
               // vibration();
               setState(() {
@@ -322,7 +324,7 @@ class _BreathingScreenState extends State<BreathingScreen>
             // print("$_status _status");
             // print("shadow_animation_pause $shadow_animation_pause");
           });
-          Future.delayed(Duration(seconds: 4), () {
+          Future.delayed(Duration(seconds: 5), () {
             _animationController!.reverse();
             // vibration();
 
@@ -337,7 +339,7 @@ class _BreathingScreenState extends State<BreathingScreen>
             _status = 'Hold';
             // print(_status);
           });
-          Future.delayed(Duration(seconds: 4), () {
+          Future.delayed(Duration(seconds: 5), () {
             _animationController!.forward();
             vibration();
             setState(() {
@@ -709,7 +711,7 @@ class _BreathingScreenState extends State<BreathingScreen>
                                     maxRadius: 20,
                                     backgroundColor: Colors.black,
                                     child: Text(
-                                      elapsedTime,
+                                      elapsedTime2,
                                       style: TextStyle(
                                           color: Colors.white,
                                           fontSize: 20,
@@ -1012,11 +1014,13 @@ class _BreathingScreenState extends State<BreathingScreen>
       startStop = true;
       Vibration.cancel();
       animation_started = false;
-      // _animationController!.dispose();
-      // _animationController_shadow1!.dispose();
+      _animationController!.dispose();
+      _animationController_shadow1!.dispose();
       watch.stop();
+      watch2.stop();
       percent = 0.0;
       setTime();
+      setTime2();
       print("___________$counter");
     });
   }

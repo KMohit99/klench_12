@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:klench_/setting_page/notification/Display_reminder.dart';
 import 'package:klench_/setting_page/notification/reminder_notification.dart';
+import 'package:klench_/setting_page/notification/upcoming_notification.dart';
 import 'package:klench_/utils/Asset_utils.dart';
 import 'package:klench_/utils/TextStyle_utils.dart';
 import 'package:klench_/utils/colorUtils.dart';
@@ -119,7 +120,37 @@ class _NotificationSettingsState extends State<NotificationSettings> {
                           EdgeInsets.symmetric(vertical: 25, horizontal: 21),
                       child: Column(
                         children: [
+
                           GestureDetector(
+                            onTap: (){
+                              Get.to(UpcomingNotification());
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Container(
+                                  alignment: Alignment.centerLeft,
+                                  margin: EdgeInsets.only(top: 0, bottom: 0),
+                                  child: Text(
+                                    'Upcoming notification',
+                                    style: FontStyleUtility.h14(
+                                        fontColor: ColorUtils.primary_grey,
+                                        family: 'PM'),
+                                  ),
+                                ),
+                                Container(
+                                  child: Icon(
+                                    Icons.arrow_forward_ios,
+                                    size: 15,
+                                    color: ColorUtils.primary_grey,
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            height: 30,
+                          ),GestureDetector(
                             onTap: (){
                               Get.to(ReminderNotification());
                             },

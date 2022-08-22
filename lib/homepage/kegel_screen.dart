@@ -429,29 +429,30 @@ class _KegelScreenState extends State<KegelScreen>
         vsync: this, duration: const Duration(milliseconds: 500));
     _animationController_middle!.forward();
     _animation_middle =
-        Tween(begin: 15.0, end: 100.0).animate(_animationController_middle!)
-          ..addStatusListener((status) {
-            print(status);
-            // shadow_animation1_completed = true;
-          });
+    Tween(begin: 15.0, end: 50.0).animate(_animationController_middle!)
+      ..addStatusListener((status) {
+        print("status $status");
+        // shadow_animation1_completed = true;
+      });
     _animation_middle2 =
-        Tween(begin: 15.0, end: 120.0).animate(_animationController_middle!)
-          ..addStatusListener((status) {
-            print(status);
-            // shadow_animation1_completed = true;
-          });
+    Tween(begin: 15.0, end: 40.0).animate(_animationController_middle!)
+      ..addStatusListener((status) {
+        print("status $status");
+        // shadow_animation1_completed = true;
+      });
     _animation_middle3 =
-        Tween(begin: 15.0, end: 220.0).animate(_animationController_middle!)
-          ..addStatusListener((status) {
-            print(status);
-            // shadow_animation1_completed = true;
-          });
+    Tween(begin: 15.0, end: 120.0).animate(_animationController_middle!)
+      ..addStatusListener((status) {
+        print("status $status");
+        // shadow_animation1_completed = true;
+      });
     _animation_middle4 =
-        Tween(begin: 15.0, end: 190.0).animate(_animationController_middle!)
-          ..addStatusListener((status) {
-            print(status);
-            // shadow_animation1_completed = true;
-          });
+    Tween(begin: 15.0, end: 100.0).animate(_animationController_middle!)
+      ..addStatusListener((status) {
+        print("status $status");
+
+        // shadow_animation1_completed = true;
+      });
   }
 
   AnimationController? _animController;
@@ -1055,7 +1056,7 @@ class _KegelScreenState extends State<KegelScreen>
                       Container(
                           // color: Colors.white,
                           child: AvatarGlow(
-                        endRadius: 100.0,
+                        endRadius: 170.0,
                         showTwoGlows: true,
                         animate: false,
                         // (startStop ? false : true),
@@ -1066,55 +1067,400 @@ class _KegelScreenState extends State<KegelScreen>
                             print('helllllllooooooooooooooo');
                             // startOrStop();
                           },
-                          child: Container(
-                            height: (animation_started
-                                ? _animation_button!.value
-                                : button_height),
-                            width: (animation_started
-                                ? _animation_button!.value
-                                : button_height),
-                            decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                image: const DecorationImage(
-                                    alignment: Alignment.center,
-                                    image: AssetImage(AssetUtils.home_button)),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: (animation_started
-                                        ? HexColor('#E64A9B')
-                                        : Colors.transparent),
-                                    blurRadius: (animation_started
-                                        ? _animation!.value
-                                        : 0),
-                                    spreadRadius: (animation_started
-                                        ? _animation!.value
-                                        : 0),
-                                  )
-                                ]),
-                            child: Stack(
-                              children: [
-                                Container(
-                                  alignment: Alignment.center,
-                                  child: Text(
-                                    'K',
-                                    style: TextStyle(
-                                        color: HexColor('#E64A9B')
-                                            .withOpacity(0.4),
-                                        fontSize: (animation_started
-                                            ? _animation_textK!.value
-                                            : text_k_size),
-                                        fontWeight: FontWeight.w600),
-                                  ),
+                          child: Stack(
+    alignment: Alignment.center,
+                            children: [
+                              Container(
+                                height: 150,
+                                width: 150,
+                                decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Colors.black,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: (animation_started
+                                            ? HexColor('#E64A9B')
+                                            : Colors.transparent),
+                                        blurRadius: (animation_started
+                                            ? _animation!.value
+                                            : 0),
+                                        spreadRadius: (animation_started
+                                            ? _animation!.value
+                                            : 0),
+                                      )
+                                    ]),
+                              ),
+                              (animation_started
+                                  ? DottedBorder(
+                                borderType: BorderType.Circle,
+                                strokeWidth: 3,
+                                dashPattern: [0, 10],
+                                strokeCap: StrokeCap.round,
+                                radius: Radius.circular(100),
+                                padding: EdgeInsets.all(0),
+                                color: Colors.black,
+                                child: Container(
+                                  height: 340,
+                                  width: 340,
                                 ),
-                                Container(
-                                  alignment: Alignment.center,
-                                  child: (four_started
-                                      ? Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Text(
-                                              "PUSH",
+                              )
+                                  : SizedBox.shrink()),
+                              (animation_started
+                                  ? DottedBorder(
+                                borderType: BorderType.Circle,
+                                strokeWidth: 3,
+                                dashPattern: [0, 10],
+                                strokeCap: StrokeCap.round,
+                                radius: Radius.circular(100),
+                                padding: EdgeInsets.all(0),
+                                color: Colors.black,
+                                child: Container(
+                                  height: 330,
+                                  width: 330,
+                                ),
+                              )
+                                  : SizedBox.shrink()),
+                              (animation_started
+                                  ? DottedBorder(
+                                borderType: BorderType.Circle,
+                                strokeWidth: 3,
+                                dashPattern: [0, 10],
+                                strokeCap: StrokeCap.round,
+                                radius: Radius.circular(100),
+                                padding: EdgeInsets.all(0),
+                                color: Colors.black,
+                                child: Container(
+                                  height: 320,
+                                  width: 320,
+                                ),
+                              )
+                                  : SizedBox.shrink()),
+                              (animation_started
+                                  ? DottedBorder(
+                                borderType: BorderType.Circle,
+                                strokeWidth: 3,
+                                dashPattern: [0, 10],
+                                strokeCap: StrokeCap.round,
+                                radius: Radius.circular(100),
+                                padding: EdgeInsets.all(0),
+                                color: Colors.black,
+                                child: Container(
+                                  height: 310,
+                                  width: 310,
+                                ),
+                              )
+                                  : SizedBox.shrink()),
+                              (animation_started
+                                  ? DottedBorder(
+                                borderType: BorderType.Circle,
+                                strokeWidth: 3,
+                                dashPattern: [0, 10],
+                                strokeCap: StrokeCap.round,
+                                radius: Radius.circular(100),
+                                padding: EdgeInsets.all(0),
+                                color: Colors.black,
+                                child: Container(
+                                  height: 300,
+                                  width: 300,
+                                ),
+                              )
+                                  : SizedBox.shrink()),
+                              (animation_started
+                                  ? DottedBorder(
+                                borderType: BorderType.Circle,
+                                strokeWidth: 3,
+                                dashPattern: [0, 10],
+                                strokeCap: StrokeCap.round,
+                                radius: Radius.circular(100),
+                                padding: EdgeInsets.all(0),
+                                color: Colors.black,
+                                child: Container(
+                                  height: 290,
+                                  width: 290,
+                                ),
+                              )
+                                  : SizedBox.shrink()),
+                              (animation_started
+                                  ? DottedBorder(
+                                borderType: BorderType.Circle,
+                                strokeWidth: 3,
+                                dashPattern: [0, 10],
+                                strokeCap: StrokeCap.round,
+                                radius: Radius.circular(100),
+                                padding: EdgeInsets.all(0),
+                                color: Colors.black,
+                                child: Container(
+                                  height: 280,
+                                  width: 280,
+                                ),
+                              )
+                                  : SizedBox.shrink()),
+                              (animation_started
+                                  ? DottedBorder(
+                                borderType: BorderType.Circle,
+                                strokeWidth: 3,
+                                dashPattern: [0, 10],
+                                strokeCap: StrokeCap.round,
+                                radius: Radius.circular(100),
+                                padding: EdgeInsets.all(0),
+                                color: Colors.black,
+                                child: Container(
+                                  height: 270,
+                                  width: 270,
+                                ),
+                              )
+                                  : SizedBox.shrink()),
+                              (animation_started
+                                  ? DottedBorder(
+                                borderType: BorderType.Circle,
+                                strokeWidth: 3,
+                                dashPattern: [0, 10],
+                                strokeCap: StrokeCap.round,
+                                radius: Radius.circular(100),
+                                padding: EdgeInsets.all(0),
+                                color: Colors.black,
+                                child: Container(
+                                  height: 260,
+                                  width: 260,
+                                ),
+                              )
+                                  : SizedBox.shrink()),
+                              (animation_started
+                                  ? DottedBorder(
+                                borderType: BorderType.Circle,
+                                strokeWidth: 3,
+                                dashPattern: [0, 10],
+                                strokeCap: StrokeCap.round,
+                                radius: Radius.circular(100),
+                                padding: EdgeInsets.all(0),
+                                color: Colors.black,
+                                child: Container(
+                                  height: 250,
+                                  width: 250,
+                                ),
+                              )
+                                  : SizedBox.shrink()),
+                              (animation_started
+                                  ? DottedBorder(
+                                borderType: BorderType.Circle,
+                                strokeWidth: 3,
+                                dashPattern: [0, 10],
+                                strokeCap: StrokeCap.round,
+                                radius: Radius.circular(100),
+                                padding: EdgeInsets.all(0),
+                                color: Colors.black,
+                                child: Container(
+                                  height: 240,
+                                  width: 240,
+                                ),
+                              )
+                                  : SizedBox.shrink()),
+                              (animation_started
+                                  ? DottedBorder(
+                                borderType: BorderType.Circle,
+                                strokeWidth: 3,
+                                dashPattern: [0, 10],
+                                strokeCap: StrokeCap.round,
+                                radius: Radius.circular(100),
+                                padding: EdgeInsets.all(0),
+                                color: Colors.black,
+                                child: Container(
+                                  height: 230,
+                                  width: 230,
+                                ),
+                              )
+                                  : SizedBox.shrink()),
+                              (animation_started
+                                  ? DottedBorder(
+                                borderType: BorderType.Circle,
+                                strokeWidth: 3,
+                                dashPattern: [0, 10],
+                                strokeCap: StrokeCap.round,
+                                radius: Radius.circular(100),
+                                padding: EdgeInsets.all(0),
+                                color: Colors.black,
+                                child: Container(
+                                  height: 220,
+                                  width: 220,
+                                ),
+                              )
+                                  : SizedBox.shrink()),
+                              (animation_started
+                                  ? DottedBorder(
+                                borderType: BorderType.Circle,
+                                strokeWidth: 3,
+                                dashPattern: [0, 10],
+                                strokeCap: StrokeCap.round,
+                                radius: Radius.circular(100),
+                                padding: EdgeInsets.all(0),
+                                color: Colors.black,
+                                child: Container(
+                                  height: 210,
+                                  width: 210,
+                                ),
+                              )
+                                  : SizedBox.shrink()),
+                              (animation_started
+                                  ? DottedBorder(
+                                borderType: BorderType.Circle,
+                                strokeWidth: 3,
+                                dashPattern: [0, 10],
+                                strokeCap: StrokeCap.round,
+                                radius: Radius.circular(100),
+                                padding: EdgeInsets.all(0),
+                                color: Colors.black,
+                                child: Container(
+                                  height: 200,
+                                  width: 200,
+                                ),
+                              )
+                                  : SizedBox.shrink()),
+                              (animation_started
+                                  ? DottedBorder(
+                                borderType: BorderType.Circle,
+                                strokeWidth: 3,
+                                dashPattern: [0, 10],
+                                strokeCap: StrokeCap.round,
+                                radius: Radius.circular(100),
+                                padding: EdgeInsets.all(0),
+                                color: Colors.black,
+                                child: Container(
+                                  height: 190,
+                                  width: 190,
+                                ),
+                              )
+                                  : SizedBox.shrink()),
+                              (animation_started
+                                  ? DottedBorder(
+                                borderType: BorderType.Circle,
+                                strokeWidth: 3,
+                                dashPattern: [0, 10],
+                                strokeCap: StrokeCap.round,
+                                radius: Radius.circular(100),
+                                padding: EdgeInsets.all(0),
+                                color: Colors.black,
+                                child: Container(
+                                  height: 180,
+                                  width: 180,
+                                ),
+                              )
+                                  : SizedBox.shrink()),
+                              (animation_started
+                                  ? DottedBorder(
+                                borderType: BorderType.Circle,
+                                strokeWidth: 3,
+                                dashPattern: [0, 10],
+                                strokeCap: StrokeCap.round,
+                                radius: Radius.circular(100),
+                                padding: EdgeInsets.all(0),
+                                color: Colors.black,
+                                child: Container(
+                                  height: 170,
+                                  width: 170,
+                                  padding: EdgeInsets.all(5),
+                                ),
+                              )
+                                  : SizedBox.shrink()),
+                              (animation_started
+                                  ? DottedBorder(
+                                borderType: BorderType.Circle,
+                                strokeWidth: 3,
+                                dashPattern: [0, 10],
+                                strokeCap: StrokeCap.round,
+                                radius: Radius.circular(100),
+                                padding: EdgeInsets.all(0),
+                                color: Colors.black,
+                                child: Container(
+                                  height: 160,
+                                  width: 160,
+                                  padding: EdgeInsets.all(5),
+                                ),
+                              )
+                                  : SizedBox.shrink()),
+
+                              Container(
+                                height: (animation_started
+                                    ? _animation_button!.value
+                                    : button_height),
+                                width: (animation_started
+                                    ? _animation_button!.value
+                                    : button_height),
+                                decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    image: const DecorationImage(
+                                        alignment: Alignment.center,
+                                        image:
+                                            AssetImage(AssetUtils.home_button)),
+                                    // boxShadow: [
+                                    //   BoxShadow(
+                                    //     color: (animation_started
+                                    //         ? HexColor('#E64A9B')
+                                    //         : Colors.transparent),
+                                    //     blurRadius: (animation_started
+                                    //         ? _animation!.value
+                                    //         : 0),
+                                    //     spreadRadius: (animation_started
+                                    //         ? _animation!.value
+                                    //         : 0),
+                                    //   )
+                                    // ]
+                                ),
+                                child: Stack(
+                                  children: [
+                                    Container(
+                                      alignment: Alignment.center,
+                                      child: Text(
+                                        'K',
+                                        style: TextStyle(
+                                            color: HexColor('#E64A9B')
+                                                .withOpacity(0.4),
+                                            fontSize: (animation_started
+                                                ? _animation_textK!.value
+                                                : text_k_size),
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                    ),
+                                    Container(
+                                      alignment: Alignment.center,
+                                      child: (four_started
+                                          ? Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Text(
+                                                  "PUSH",
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: (animation_started
+                                                          ? _animation_textTime!
+                                                              .value
+                                                          : text_time_size),
+                                                      fontWeight:
+                                                          FontWeight.w900),
+                                                ),
+                                                Text(
+                                                  elapsedTime,
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: (animation_started
+                                                          ? _animation_textTime!
+                                                              .value
+                                                          : text_time_size),
+                                                      fontWeight:
+                                                          FontWeight.w900),
+                                                ),
+                                              ],
+                                            )
+                                          : Text(
+                                              (timer_started
+                                                  ? ('$seconds' == '3'
+                                                      ? 'Ready'
+                                                      : ('$seconds' == '2'
+                                                          ? 'Set'
+                                                          : ('$seconds' == '1'
+                                                              ? 'Kegel'
+                                                              : elapsedTime)))
+                                                  : ''),
                                               style: TextStyle(
                                                   color: Colors.white,
                                                   fontSize: (animation_started
@@ -1122,39 +1468,12 @@ class _KegelScreenState extends State<KegelScreen>
                                                           .value
                                                       : text_time_size),
                                                   fontWeight: FontWeight.w900),
-                                            ),
-                                            Text(
-                                              elapsedTime,
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: (animation_started
-                                                      ? _animation_textTime!
-                                                          .value
-                                                      : text_time_size),
-                                                  fontWeight: FontWeight.w900),
-                                            ),
-                                          ],
-                                        )
-                                      : Text(
-                                          (timer_started
-                                              ? ('$seconds' == '3'
-                                                  ? 'Ready'
-                                                  : ('$seconds' == '2'
-                                                      ? 'Set'
-                                                      : ('$seconds' == '1'
-                                                          ? 'Kegel'
-                                                          : elapsedTime)))
-                                              : ''),
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: (animation_started
-                                                  ? _animation_textTime!.value
-                                                  : text_time_size),
-                                              fontWeight: FontWeight.w900),
-                                        )),
+                                            )),
+                                    ),
+                                  ],
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
                         ),
                       )),
@@ -1760,17 +2079,17 @@ class _KegelScreenState extends State<KegelScreen>
                             // start_button_animation();
                             await middle_animation();
                             await text_animation();
-                            startTimer();
-                            await startWatch();
+                            // startTimer();
+                            // await startWatch();
 
-                            // Future.delayed(const Duration(seconds: 1),
-                            //     () async {
-                            //   startTimer();
-                            // });
-                            // Future.delayed(const Duration(seconds: 3),
-                            //     () async {
-                            //   await startWatch();
-                            // });
+                            Future.delayed(const Duration(seconds: 1),
+                                () async {
+                              startTimer();
+                            });
+                            Future.delayed(const Duration(seconds: 3),
+                                () async {
+                              await startWatch();
+                            });
                           } else {
                             await stopWatch_finish();
                             await _animationController_middle!.reverse();
@@ -2045,38 +2364,39 @@ class _KegelScreenState extends State<KegelScreen>
                                               //           ColorUtils.primary_gold,
                                               //       width: 2),
                                               // ),
-                                              child: (int.parse(
-                                                          _kegel_controller
+                                              child:
+                                                  (int.parse(_kegel_controller
                                                               .kegelGetModel!
                                                               .data![i]
                                                               .sets!) <
-                                                      3
-                                                  ? Image.asset(
-                                                      "assets/images/white-star.png",
-                                                      color: Colors.white,
-                                                      height: 40,
-                                                    )
+                                                          3
+                                                      ? Image.asset(
+                                                          "assets/images/white-star.png",
+                                                          color: Colors.white,
+                                                          height: 40,
+                                                        )
+                                                      // Icon(
+                                                      //         Icons
+                                                      //             .star_border_rounded,
+                                                      //         color: Colors.white
+                                                      //             .withOpacity(0.8),
+                                                      //         size: 50,
+                                                      //       )
+                                                      : Image.asset(
+                                                          "assets/images/white-star (1).png",
+                                                          color: ColorUtils
+                                                              .primary_gold
+                                                              .withOpacity(0.8),
+                                                          height: 40,
+                                                        )
                                                   // Icon(
-                                                  //         Icons
-                                                  //             .star_border_rounded,
-                                                  //         color: Colors.white
+                                                  //         Icons.star_rounded,
+                                                  //         color: ColorUtils
+                                                  //             .primary_gold
                                                   //             .withOpacity(0.8),
                                                   //         size: 50,
                                                   //       )
-                                                  :
-                                              Image.asset(
-                                                "assets/images/white-star (1).png",
-                                                color: ColorUtils.primary_gold.withOpacity(0.8),
-                                                height: 40,
-                                              )
-                                              // Icon(
-                                              //         Icons.star_rounded,
-                                              //         color: ColorUtils
-                                              //             .primary_gold
-                                              //             .withOpacity(0.8),
-                                              //         size: 50,
-                                              //       )
-                                              ),
+                                                  ),
                                             ),
                                           );
                                         }
@@ -2133,7 +2453,7 @@ class _KegelScreenState extends State<KegelScreen>
                                 padding: const EdgeInsets.symmetric(
                                     vertical: 8.0, horizontal: 15),
                                 child: Text(
-                                  'Exercise perormed ${selected_date_sets} times on ${selected_date}',
+                                  'Exercise performed ${selected_date_sets} times on ${selected_date}',
                                   style: FontStyleUtility.h14(
                                       fontColor: HexColor('#FFFFFF'),
                                       family: 'PM'),

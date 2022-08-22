@@ -50,11 +50,7 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
   bool button_keep = true;
 
   String elapsedTime = '00:00';
-  List method_list = [
-    'Sex',
-    'Hand',
-    'Dildo'
-  ];
+  List method_list = ['Sex', 'Hand', 'Dildo'];
   String method_selected = '';
   List<ListMethodClass> method_time = [];
 
@@ -151,6 +147,7 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
 
   TooltipBehavior? _tooltipBehavior;
   TrackballBehavior? _trackballBehavior;
+  SelectionBehavior? _selectionBehavior;
   CrosshairBehavior? _crosshairBehavior;
 
   selectdate(BuildContext context) async {
@@ -370,33 +367,33 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
     // _tooltipBehavior = TooltipBehavior(
     //     enable: true, borderWidth: 5, color: Colors.transparent);
     _tooltipBehavior = TooltipBehavior(
-          enable: true,
-           header: "Masturbated",
-          // Formatting the tooltip text
-          format: 'point.y times'
-    );
+        enable: true,
+        header: "Masturbated",
+        // Formatting the tooltip text
+        format: 'point.y times');
     _trackballBehavior = TrackballBehavior(
         enable: true,
         // lineDashArray: <double>[5,5],
-        lineWidth: 2,
+        lineWidth: 3,
+        markerSettings: TrackballMarkerSettings(color: Colors.yellow),
         // lineColor: Colors.white,
         lineType: TrackballLineType.vertical,
-        tooltipSettings: InteractiveTooltip(
-          // Formatting trackball tooltip text
-            format: 'point.x : point.y times'
-        ),
+
+        tooltipSettings: const InteractiveTooltip(
+            // Formatting trackball tooltip text
+            format: 'point.x : point.y times'),
         // Display mode of trackball tooltip
         tooltipDisplayMode: TrackballDisplayMode.floatAllPoints,
-      activationMode: ActivationMode.singleTap
-    );
+        activationMode: ActivationMode.singleTap);
+    _selectionBehavior = SelectionBehavior(enable: true);
+
     _crosshairBehavior = CrosshairBehavior(
         enable: true,
         lineColor: Colors.red,
         activationMode: ActivationMode.singleTap,
-        lineDashArray: <double>[5,5],
+        lineDashArray: <double>[5, 5],
         lineWidth: 2,
-        lineType: CrosshairLineType.vertical
-    );
+        lineType: CrosshairLineType.vertical);
     super.initState();
   }
 
@@ -1738,7 +1735,7 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
                               // width: MediaQuery.of(context).size.width / 3,
                               margin: EdgeInsets.symmetric(horizontal: 15),
                               // height: 45,
-                              // width:(width ?? 300) ,
+                              // width:(width ?? 300),
                               decoration: (started
                                   ? BoxDecoration(
                                       border: Border.all(
@@ -2693,9 +2690,10 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
                                               ColorUtils.primary_grey,
                                           legend: Legend(
                                               isVisible: true,
-                                            position: LegendPosition.bottom,
-                                            textStyle: FontStyleUtility.h12(fontColor: Colors.white, family: "PM")
-                                          ),
+                                              position: LegendPosition.bottom,
+                                              textStyle: FontStyleUtility.h12(
+                                                  fontColor: Colors.white,
+                                                  family: "PM")),
                                           primaryXAxis: CategoryAxis(
                                               majorGridLines:
                                                   MajorGridLines(width: 0),
@@ -3106,11 +3104,12 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
                                               axisLine: AxisLine(width: 3)),
                                           series: <ChartSeries>[
                                             SplineSeries<ChartData2, String>(
-                                                markerSettings: MarkerSettings(isVisible: true),
-
+                                                markerSettings: MarkerSettings(
+                                                    isVisible: true),
                                                 dataSource: graph_life,
                                                 // Bind the color for all the data points from the data source
                                                 // color: Colors.purple,
+                                                // selectionBehavior:_selectionBehavior ,
                                                 pointColorMapper:
                                                     (ChartData2 data, _) =>
                                                         data.color,
