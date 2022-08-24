@@ -8,5 +8,8 @@ class Ledger_Setup_controller extends GetxController {
   }
 
   bool m_running = false;
+  bool k_running = false;
+  bool p_running = false;
+  bool w_running = false;
 
 }

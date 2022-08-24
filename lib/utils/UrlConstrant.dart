@@ -16,6 +16,7 @@ class URLConstants {
   static const forgotPasswordApi = "forgot-password.php";
   static const resetPasswordApi = "reset-password.php";
   static const CheckUserApi = "check-user.php";
+  static const CheckPasswordApi = "check-pssword.php";
 
   ///Breathing
   static const breathing_get = "get-kegel-breathing.php";

@@ -488,6 +488,12 @@
       "languageVersion": "2.16"
     },
     {
+      "name": "pin_input_text_field",
+      "rootUri": "file:///Users/technologies/Documents/flutter/.pub-cache/hosted/pub.dartlang.org/pin_input_text_field-4.1.2",
+      "packageUri": "lib/",
+      "languageVersion": "2.13"
+    },
+    {
       "name": "pinput",
       "rootUri": "file:///Users/technologies/Documents/flutter/.pub-cache/hosted/pub.dartlang.org/pinput-1.2.2",
       "packageUri": "lib/",
@@ -622,6 +628,12 @@
     {
       "name": "sky_engine",
       "rootUri": "file:///Users/technologies/Documents/flutter/bin/cache/pkg/sky_engine",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
+      "name": "sms_autofill",
+      "rootUri": "file:///Users/technologies/Documents/flutter/.pub-cache/hosted/pub.dartlang.org/sms_autofill-2.2.0",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -842,7 +854,7 @@
       "languageVersion": "2.16"
     }
   ],
-  "generated": "2022-08-22T10:24:45.034990Z",
+  "generated": "2022-08-23T09:03:36.459769Z",
   "generator": "pub",
   "generatorVersion": "2.17.5"
 }

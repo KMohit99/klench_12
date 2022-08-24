@@ -76,8 +76,13 @@ class _FaceScanScreenState extends State<FaceScanScreen> {
             centerTitle: true,
             actions: [
               GestureDetector(
-                onTap: () {
-                  Get.to(SubscriptionScreen());
+                onTap: () async {
+                  String socail_sign = await PreferenceManager().getPref(URLConstants.socail_signup);
+
+                  // Get.to(SubscriptionScreen());
+                  (socail_sign == 'true'
+                      ? Get.to(WelcomeVideoScreen2(signup: true,))
+                      : Get.to(WelcomeVideoScreen(signup: true,)));
                   // Get.to(WelcomeVideoScreen(signup: true,));
                 },
                 child: Container(

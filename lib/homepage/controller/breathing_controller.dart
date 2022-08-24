@@ -57,7 +57,7 @@ class Breathing_controller extends GetxController {
       } else {
         hideLoader(context);
 
-        CommonWidget().showToaster(msg: breathingGetModel!.message!);
+        // CommonWidget().showToaster(msg: breathingGetModel!.message!);
         return null;
       }
     } else if (response.statusCode == 422) {
@@ -87,7 +87,7 @@ class Breathing_controller extends GetxController {
 
     Map data = {
       'userId': id_user,
-      'sets': sets.toString(),
+      'sets': "1",
       // 'type': login_type,
     };
     print(data);

@@ -360,6 +360,7 @@ class CommonTextFormField extends StatelessWidget {
           onTap: tap,
           readOnly: (readOnly ?? false),
           obscureText: isObscure ?? false,
+          scrollPhysics: ClampingScrollPhysics(),
           decoration: InputDecoration(
               contentPadding: EdgeInsets.only(left: 20, top: 14, bottom: 14),
               alignLabelWithHint: false,

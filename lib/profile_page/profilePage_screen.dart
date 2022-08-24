@@ -12,6 +12,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:klench_/Authentication/SingIn/SigIn_screen.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 
 import '../Authentication/SingIn/controller/SignIn_controller.dart';
@@ -274,6 +275,12 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
 
   init() async {
     await _signInScreenController.GetUserInfo(context);
+    if (_signInScreenController.userInfoModel!.error == true) {
+      Navigator.pushReplacement(
+          context,
+          new MaterialPageRoute(
+              builder: (BuildContext context) => SignInScreen()));
+    }
     bool auth =
         await PreferenceManager().getbool(URLConstants.authentication_enable);
     print(auth);
@@ -288,70 +295,72 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
     final screenWidth = MediaQuery.of(context).size.width;
     return Container(
         alignment: Alignment.center,
-        child: Obx(() => (_signInScreenController.isuserinfoLoading.value ==
-                true
-            ? Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Container(
-                    height: 80,
-                    width: 200,
-                    // color: ColorUtils.primary_grey,
-                    decoration: BoxDecoration(
-                        // color: Colors.black.withOpacity(0.65),
-                        gradient: LinearGradient(
-                          begin: Alignment.centerLeft,
-                          end: Alignment.centerRight,
-                          // stops: [0.1, 0.5, 0.7, 0.9],
-                          colors: [
-                            HexColor("#020204").withOpacity(1),
-                            HexColor("#36393E").withOpacity(1),
-                          ],
-                        ),
-                        borderRadius: BorderRadius.circular(10)),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          CircularProgressIndicator(
-                            color: ColorUtils.primary_gold,
-                          ),
-                          Container(
-                            child: Text(
-                              "Loading..",
-                              style: FontStyleUtility.h16(
-                                  fontColor: ColorUtils.primary_gold,
-                                  family: 'PB'),
-                            ),
-                          ),
-
-                          // Container(
-                          //   color: Colors.transparent,
-                          //   height: 60,
-                          //   width: 80,
-                          //   child:
-                          //   Material(
-                          //     color: Colors.transparent,
-                          //     child: LoadingIndicator(
-                          //       backgroundColor: Colors.transparent,
-                          //       indicatorType: Indicator.ballScale,
-                          //       colors: _kDefaultRainbowColors,
-                          //       strokeWidth: 3.0,
-                          //       pathBackgroundColor: Colors.yellow,
-                          //       // showPathBackground ? Colors.black45 : null,
-                          //     ),
-                          //   ),
-                          // ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              )
-            : GestureDetector(
+        child:
+        // Obx(() => (_signInScreenController.isuserinfoLoading.value ==
+        //         true
+        //     ? Column(
+        //         crossAxisAlignment: CrossAxisAlignment.center,
+        //         mainAxisAlignment: MainAxisAlignment.center,
+        //         children: <Widget>[
+        //           Container(
+        //             height: 80,
+        //             width: 200,
+        //             // color: ColorUtils.primary_grey,
+        //             decoration: BoxDecoration(
+        //                 // color: Colors.black.withOpacity(0.65),
+        //                 gradient: LinearGradient(
+        //                   begin: Alignment.centerLeft,
+        //                   end: Alignment.centerRight,
+        //                   // stops: [0.1, 0.5, 0.7, 0.9],
+        //                   colors: [
+        //                     HexColor("#020204").withOpacity(1),
+        //                     HexColor("#36393E").withOpacity(1),
+        //                   ],
+        //                 ),
+        //                 borderRadius: BorderRadius.circular(10)),
+        //             child: Padding(
+        //               padding: const EdgeInsets.all(8.0),
+        //               child: Row(
+        //                 mainAxisAlignment: MainAxisAlignment.spaceAround,
+        //                 mainAxisSize: MainAxisSize.min,
+        //                 children: [
+        //                   CircularProgressIndicator(
+        //                     color: ColorUtils.primary_gold,
+        //                   ),
+        //                   Container(
+        //                     child: Text(
+        //                       "Loading..",
+        //                       style: FontStyleUtility.h16(
+        //                           fontColor: ColorUtils.primary_gold,
+        //                           family: 'PB'),
+        //                     ),
+        //                   ),
+        //
+        //                   // Container(
+        //                   //   color: Colors.transparent,
+        //                   //   height: 60,
+        //                   //   width: 80,
+        //                   //   child:
+        //                   //   Material(
+        //                   //     color: Colors.transparent,
+        //                   //     child: LoadingIndicator(
+        //                   //       backgroundColor: Colors.transparent,
+        //                   //       indicatorType: Indicator.ballScale,
+        //                   //       colors: _kDefaultRainbowColors,
+        //                   //       strokeWidth: 3.0,
+        //                   //       pathBackgroundColor: Colors.yellow,
+        //                   //       // showPathBackground ? Colors.black45 : null,
+        //                   //     ),
+        //                   //   ),
+        //                   // ),
+        //                 ],
+        //               ),
+        //             ),
+        //           ),
+        //         ],
+        //       )
+        //     :
+        GestureDetector(
                 onTap: () {
                   FocusScope.of(context).requestFocus(FocusNode());
                 },
@@ -391,6 +400,7 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
                         padding: const EdgeInsets.symmetric(
                             horizontal: 8.0, vertical: 13),
                         child: ListView(
+                          physics: ClampingScrollPhysics(),
                           // crossAxisAlignment: CrossAxisAlignment.center,
                           // mainAxisSize: MainAxisSize.min,
                           children: [
@@ -414,7 +424,7 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
                                           decoration: BoxDecoration(
                                               color: Colors.white,
                                               borderRadius:
-                                              BorderRadius.circular(6),
+                                                  BorderRadius.circular(6),
                                               gradient: LinearGradient(
                                                 colors: [
                                                   HexColor('#36393E'),
@@ -423,8 +433,7 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
                                                 begin: Alignment.centerLeft,
                                                 end: Alignment.centerRight,
                                               ),
-                                              border:
-                                                   Border.all(
+                                              border: Border.all(
                                                   color: Colors.transparent,
                                                   width: 0),
                                               boxShadow: [
@@ -440,12 +449,14 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
                                               margin: EdgeInsets.only(
                                                   left: 5, right: 5),
                                               child: Text(
-                                                  _signInScreenController
-                                                      .userInfoModel!.data![0].username!,
+                                                _signInScreenController
+                                                    .userInfoModel!
+                                                    .data![0]
+                                                    .username!,
                                                 overflow: TextOverflow.ellipsis,
                                                 style: FontStyleUtility.h12(
-                                                    fontColor: ColorUtils
-                                                        .primary_gold,
+                                                    fontColor:
+                                                        ColorUtils.primary_gold,
                                                     family: 'PM'),
                                               ),
                                             ),
@@ -455,7 +466,6 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
                                     ],
                                   ),
                                 ),
-
                                 Expanded(
                                   flex: 1,
                                   child: Container(
@@ -499,14 +509,15 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
                                                     //             width: 100,
                                                     //           )
                                                     Container(
-                                                      color: Colors.black,
-                                                      child: FadeInImage(
+                                                        color: Colors.black,
+                                                        child: FadeInImage(
                                                           image: NetworkImage(
                                                               "http://foxyserver.com/klench/images/${_signInScreenController.userInfoModel!.data![0].image}"),
-                                                          // fit: BoxFit.contain,
+                                                          fit: BoxFit.cover,
                                                           height: 100,
                                                           width: 100,
-                                                          placeholder: AssetImage(
+                                                          placeholder:
+                                                              AssetImage(
                                                             AssetUtils
                                                                 .user_icon45,
                                                           ),
@@ -523,7 +534,7 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
                                                             );
                                                           },
                                                         ),
-                                                    )
+                                                      )
                                                     : Container(
                                                         height: 100,
                                                         width: 100,
@@ -558,6 +569,7 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
                                                                           GestureDetector(
                                                                         onTap:
                                                                             () {
+                                                                          Navigator.pop(context);
                                                                           openCamera();
                                                                         },
                                                                         child:
@@ -588,7 +600,9 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
                                                                           GestureDetector(
                                                                         onTap:
                                                                             () {
-                                                                          openGallery();
+                                                                              Navigator.pop(context);
+
+                                                                              openGallery();
                                                                         },
                                                                         child:
                                                                             Container(
@@ -860,6 +874,8 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
                                             .emailAddressController,
                                         labelText: Textutils.email_,
                                         readOnly: editable,
+                                        maxLines: 1,
+
                                         iconData: IconButton(
                                           visualDensity: VisualDensity(
                                               horizontal: -4, vertical: -4),
@@ -1213,7 +1229,7 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
                           ],
                         ),
                       ),
-                    ))))));
+                    ))));
   }
 
   final imgPicker = ImagePicker();

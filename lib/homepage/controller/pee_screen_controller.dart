@@ -27,11 +27,11 @@ class PeeScreenController extends GetxController {
     // }
     // isLoading(true);
     showLoader(context);
-    String id_user = await PreferenceManager().getPref(URLConstants.id);
+    String idUser = await PreferenceManager().getPref(URLConstants.id);
 
     Map data = {
-      'userId': id_user,
-      'sets': sets.toString(),
+      'userId': idUser,
+      'sets': "1",
       'createdDate' : DateFormat('yyyy-MM-dd').format(DateTime.now()),
       // 'type': login_type,
     };
@@ -115,7 +115,7 @@ class PeeScreenController extends GetxController {
 
         hideLoader(context);
 
-        CommonWidget().showToaster(msg: peeGetModel!.message!);
+        // CommonWidget().showToaster(msg: peeGetModel!.message!);
         return null;
       }
     } else if (response.statusCode == 422) {

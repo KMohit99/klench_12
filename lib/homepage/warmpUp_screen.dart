@@ -4,8 +4,10 @@ import 'package:avatar_glow/avatar_glow.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
+import 'package:klench_/homepage/swipe_controller.dart';
 import 'package:klench_/main.dart';
 import 'package:klench_/utils/TexrUtils.dart';
 
@@ -25,11 +27,14 @@ class WarmUpScreen extends StatefulWidget {
 class _WarmUpScreenState extends State<WarmUpScreen>
     with TickerProviderStateMixin {
   Stopwatch watch = Stopwatch();
+  Stopwatch watch3 = Stopwatch();
   Timer? timer;
+  Timer? timer3;
   bool startStop = true;
   bool started = true;
 
   String elapsedTime = '00';
+  String elapsedTime2 = '00';
   double percent = 0.0;
   bool four_started = false;
 
@@ -85,11 +90,36 @@ class _WarmUpScreenState extends State<WarmUpScreen>
                 watch.reset();
               });
               startTimer2();
+              start_animation();
+
               startWatch();
 
               // startWatch();
               // }
             });
+          }
+        });
+      }
+    }
+  }
+
+  updateTime3(Timer timer) {
+    if (watch3.isRunning) {
+      if (mounted) {
+        setState(() {
+          // print("startstop Inside=$startStop");
+          elapsedTime2 = transformMilliSeconds(watch3.elapsedMilliseconds);
+
+          if (elapsedTime2 == '03') {
+            // stopWatch_finish();
+            // _animationController_shadow1!.reverse();
+            setState(() {
+              // elapsedTime2 = '00';
+              percent = 0.0;
+              // watch.reset();
+              // four_started = true;
+            });
+            startWatch();
           }
         });
       }
@@ -120,15 +150,24 @@ class _WarmUpScreenState extends State<WarmUpScreen>
         final seconds = myDuration.inSeconds - reduceSecondsBy;
         if (seconds < 0) {
           countdownTimer!.cancel();
-          print('timesup');
-          startWatch();
-
+          print('timesupppppp');
+          setState(() {
+            elapsedTime = '00';
+          });
+          print('done');
+          print(elapsedTime);
+          // startWatch();
         } else {
           myDuration = Duration(seconds: seconds);
         }
       });
     }
   }
+
+  elapseMethod() {
+    setState(() {});
+  }
+
   void startTimer2() {
     setState(() {
       reverse_started = true;
@@ -185,49 +224,49 @@ class _WarmUpScreenState extends State<WarmUpScreen>
         AnimationController(vsync: this, duration: Duration(seconds: 5));
     _animationController_button!.forward();
     _animation_button =
-        Tween(begin: 200.0, end: 150.0).animate(_animationController_button!)
-          ..addStatusListener((status) {
-            // print(status);
-            // if (status == AnimationStatus.completed) {
-            //   setState(() {});
-            //   _animationController_button!.reverse();
-            // } else if (status == AnimationStatus.dismissed) {
-            //   setState(() {});
-            //   _animationController_button!.forward();
-            // }
-          });
+    Tween(begin: 200.0, end: 150.0).animate(_animationController_button!)
+      ..addStatusListener((status) {
+        // print(status);
+        // if (status == AnimationStatus.completed) {
+        //   setState(() {});
+        //   _animationController_button!.reverse();
+        // } else if (status == AnimationStatus.dismissed) {
+        //   setState(() {});
+        //   _animationController_button!.forward();
+        // }
+      });
 
     // _animationController_textK =
     //     AnimationController(vsync: this, duration: Duration(seconds: 5));
     // _animationController_textK!.forward();
     _animation_textK =
-        Tween(begin: 100.0, end: 70.0).animate(_animationController_button!)
-          ..addStatusListener((status) {
-            // print(status);
-            // if (status == AnimationStatus.completed) {
-            //   setState(() {});
-            //   _animationController_button!.reverse();
-            // } else if (status == AnimationStatus.dismissed) {
-            //   setState(() {});
-            //   _animationController_button!.forward();
-            // }
-          });
+    Tween(begin: 100.0, end: 70.0).animate(_animationController_button!)
+      ..addStatusListener((status) {
+        // print(status);
+        // if (status == AnimationStatus.completed) {
+        //   setState(() {});
+        //   _animationController_button!.reverse();
+        // } else if (status == AnimationStatus.dismissed) {
+        //   setState(() {});
+        //   _animationController_button!.forward();
+        // }
+      });
 
     // _animationController_textTime =
     //     AnimationController(vsync: this, duration: Duration(seconds: 5));
     // _animationController_textTime!.forward();
     _animation_textTime =
-        Tween(begin: 40.0, end: 25.0).animate(_animationController_button!)
-          ..addStatusListener((status) {
-            // print(status);
-            // if (status == AnimationStatus.completed) {
-            //   setState(() {});
-            //   _animationController_button!.reverse();
-            // } else if (status == AnimationStatus.dismissed) {
-            //   setState(() {});
-            //   _animationController_button!.forward();
-            // }
-          });
+    Tween(begin: 40.0, end: 25.0).animate(_animationController_button!)
+      ..addStatusListener((status) {
+        // print(status);
+        // if (status == AnimationStatus.completed) {
+        //   setState(() {});
+        //   _animationController_button!.reverse();
+        // } else if (status == AnimationStatus.dismissed) {
+        //   setState(() {});
+        //   _animationController_button!.forward();
+        // }
+      });
   }
 
   AnimationController? _animationController_middle;
@@ -245,30 +284,30 @@ class _WarmUpScreenState extends State<WarmUpScreen>
         vsync: this, duration: const Duration(milliseconds: 500));
     _animationController_middle!.forward();
     _animation_middle =
-        Tween(begin: 15.0, end: 50.0).animate(_animationController_middle!)
-          ..addStatusListener((status) {
-            print("status $status");
-            // shadow_animation1_completed = true;
-          });
+    Tween(begin: 15.0, end: 50.0).animate(_animationController_middle!)
+      ..addStatusListener((status) {
+        print("status $status");
+        // shadow_animation1_completed = true;
+      });
     _animation_middle2 =
-        Tween(begin: 15.0, end: 40.0).animate(_animationController_middle!)
-          ..addStatusListener((status) {
-            print("status $status");
-            // shadow_animation1_completed = true;
-          });
+    Tween(begin: 15.0, end: 40.0).animate(_animationController_middle!)
+      ..addStatusListener((status) {
+        print("status $status");
+        // shadow_animation1_completed = true;
+      });
     _animation_middle3 =
-        Tween(begin: 15.0, end: 120.0).animate(_animationController_middle!)
-          ..addStatusListener((status) {
-            print("status $status");
-            // shadow_animation1_completed = true;
-          });
+    Tween(begin: 15.0, end: 120.0).animate(_animationController_middle!)
+      ..addStatusListener((status) {
+        print("status $status");
+        // shadow_animation1_completed = true;
+      });
     _animation_middle4 =
-        Tween(begin: 15.0, end: 100.0).animate(_animationController_middle!)
-          ..addStatusListener((status) {
-            print("status $status");
+    Tween(begin: 15.0, end: 100.0).animate(_animationController_middle!)
+      ..addStatusListener((status) {
+        print("status $status");
 
-            // shadow_animation1_completed = true;
-          });
+        // shadow_animation1_completed = true;
+      });
   }
 
   @override
@@ -280,7 +319,7 @@ class _WarmUpScreenState extends State<WarmUpScreen>
     if (animation_started_middle == true) {
       _animationController_middle!.dispose();
     }
-// you need this
+    // you need this
     super.dispose();
   }
 
@@ -288,15 +327,24 @@ class _WarmUpScreenState extends State<WarmUpScreen>
   Widget build(BuildContext context) {
     final seconds = myDuration.inSeconds.remainder(60);
     final seconds2 = myDuration2.inSeconds.remainder(60);
-    final screenHeight = MediaQuery.of(context).size.height;
-    final screenWidth = MediaQuery.of(context).size.width;
-    print(screenHeight);
+    final screenHeight = MediaQuery
+        .of(context)
+        .size
+        .height;
+    final screenWidth = MediaQuery
+        .of(context)
+        .size
+        .width;
+    // print(screenHeight);
 
     return Stack(
       children: [
         Container(
           color: Colors.black,
-          height: MediaQuery.of(context).size.height,
+          height: MediaQuery
+              .of(context)
+              .size
+              .height,
         ),
         Container(
           // decoration: BoxDecoration(
@@ -308,25 +356,25 @@ class _WarmUpScreenState extends State<WarmUpScreen>
           // ),
           decoration: (back_wallpaper
               ? const BoxDecoration(
-                  // gradient: LinearGradient(
-                  //   begin: Alignment.topCenter,
-                  //   end: Alignment.bottomCenter,
-                  //   // stops: [0.1, 0.5, 0.7, 0.9],
-                  //   colors: [
-                  //     HexColor("#000000").withOpacity(0.86),
-                  //     HexColor("#000000").withOpacity(0.81),
-                  //     HexColor("#000000").withOpacity(0.44),
-                  //     HexColor("#000000").withOpacity(1),
-                  //
-                  //   ],
-                  // ),
-                  image: DecorationImage(
-                    fit: BoxFit.fill,
-                    image: AssetImage(
-                      AssetUtils.w_screen_back,
-                    ),
-                  ),
-                )
+            // gradient: LinearGradient(
+            //   begin: Alignment.topCenter,
+            //   end: Alignment.bottomCenter,
+            //   // stops: [0.1, 0.5, 0.7, 0.9],
+            //   colors: [
+            //     HexColor("#000000").withOpacity(0.86),
+            //     HexColor("#000000").withOpacity(0.81),
+            //     HexColor("#000000").withOpacity(0.44),
+            //     HexColor("#000000").withOpacity(1),
+            //
+            //   ],
+            // ),
+            image: DecorationImage(
+              fit: BoxFit.fill,
+              image: AssetImage(
+                AssetUtils.w_screen_back,
+              ),
+            ),
+          )
               : BoxDecoration()),
         ),
         Scaffold(
@@ -404,7 +452,7 @@ class _WarmUpScreenState extends State<WarmUpScreen>
                         (started
                             ? Navigator.pop(context)
                             : CommonWidget().showErrorToaster(
-                                msg: "Please finish the method"));
+                            msg: "Please finish the method"));
                       },
                       child: Container(
                           width: 41,
@@ -459,6 +507,9 @@ class _WarmUpScreenState extends State<WarmUpScreen>
                 ];
               },
               body: SingleChildScrollView(
+                physics: (_swipe_setup_controller.w_running
+                    ? ClampingScrollPhysics()
+                    : NeverScrollableScrollPhysics()),
                 child: Container(
                   margin: EdgeInsets.only(top: 15, left: 8, right: 8),
                   child: Column(
@@ -470,21 +521,21 @@ class _WarmUpScreenState extends State<WarmUpScreen>
                       Container(
                         height: (screenHeight >= 600 && screenHeight <= 700
                             ? (animation_started_middle
-                                ? _animation_middle2!.value
-                                : 15)
+                            ? _animation_middle2!.value
+                            : 15)
                             : (screenHeight >= 700 && screenHeight <= 800
-                                ? (animation_started_middle
-                                    ? _animation_middle!.value
-                                    : 15)
-                                : (screenHeight >= 800 && screenHeight <= 850
-                                    ? (animation_started_middle
-                                        ? _animation_middle4!.value
-                                        : 15)
-                                    : (screenHeight >= 850
-                                        ? (animation_started_middle
-                                            ? _animation_middle3!.value
-                                            : 15)
-                                        : 0)))),
+                            ? (animation_started_middle
+                            ? _animation_middle!.value
+                            : 15)
+                            : (screenHeight >= 800 && screenHeight <= 850
+                            ? (animation_started_middle
+                            ? _animation_middle4!.value
+                            : 15)
+                            : (screenHeight >= 850
+                            ? (animation_started_middle
+                            ? _animation_middle3!.value
+                            : 15)
+                            : 0)))),
                       ),
 
                       Container(
@@ -502,7 +553,6 @@ class _WarmUpScreenState extends State<WarmUpScreen>
                             },
                             child: Stack(
                               alignment: Alignment.center,
-
                               children: [
                                 Container(
                                   height: 150,
@@ -528,7 +578,7 @@ class _WarmUpScreenState extends State<WarmUpScreen>
                                     ? DottedBorder(
                                   borderType: BorderType.Circle,
                                   strokeWidth: 3,
-                                  dashPattern: [0, 10],
+                                  dashPattern: [0, 6],
                                   strokeCap: StrokeCap.round,
                                   radius: Radius.circular(100),
                                   padding: EdgeInsets.all(0),
@@ -543,7 +593,7 @@ class _WarmUpScreenState extends State<WarmUpScreen>
                                     ? DottedBorder(
                                   borderType: BorderType.Circle,
                                   strokeWidth: 3,
-                                  dashPattern: [0, 10],
+                                  dashPattern: [0, 8.5],
                                   strokeCap: StrokeCap.round,
                                   radius: Radius.circular(100),
                                   padding: EdgeInsets.all(0),
@@ -558,7 +608,7 @@ class _WarmUpScreenState extends State<WarmUpScreen>
                                     ? DottedBorder(
                                   borderType: BorderType.Circle,
                                   strokeWidth: 3,
-                                  dashPattern: [0, 10],
+                                  dashPattern: [0, 7.5],
                                   strokeCap: StrokeCap.round,
                                   radius: Radius.circular(100),
                                   padding: EdgeInsets.all(0),
@@ -573,7 +623,7 @@ class _WarmUpScreenState extends State<WarmUpScreen>
                                     ? DottedBorder(
                                   borderType: BorderType.Circle,
                                   strokeWidth: 3,
-                                  dashPattern: [0, 10],
+                                  dashPattern: [0, 7.5],
                                   strokeCap: StrokeCap.round,
                                   radius: Radius.circular(100),
                                   padding: EdgeInsets.all(0),
@@ -588,7 +638,7 @@ class _WarmUpScreenState extends State<WarmUpScreen>
                                     ? DottedBorder(
                                   borderType: BorderType.Circle,
                                   strokeWidth: 3,
-                                  dashPattern: [0, 10],
+                                  dashPattern: [0, 8],
                                   strokeCap: StrokeCap.round,
                                   radius: Radius.circular(100),
                                   padding: EdgeInsets.all(0),
@@ -603,7 +653,7 @@ class _WarmUpScreenState extends State<WarmUpScreen>
                                     ? DottedBorder(
                                   borderType: BorderType.Circle,
                                   strokeWidth: 3,
-                                  dashPattern: [0, 10],
+                                  dashPattern: [0, 8.5],
                                   strokeCap: StrokeCap.round,
                                   radius: Radius.circular(100),
                                   padding: EdgeInsets.all(0),
@@ -618,7 +668,7 @@ class _WarmUpScreenState extends State<WarmUpScreen>
                                     ? DottedBorder(
                                   borderType: BorderType.Circle,
                                   strokeWidth: 3,
-                                  dashPattern: [0, 10],
+                                  dashPattern: [0, 9],
                                   strokeCap: StrokeCap.round,
                                   radius: Radius.circular(100),
                                   padding: EdgeInsets.all(0),
@@ -633,7 +683,7 @@ class _WarmUpScreenState extends State<WarmUpScreen>
                                     ? DottedBorder(
                                   borderType: BorderType.Circle,
                                   strokeWidth: 3,
-                                  dashPattern: [0, 10],
+                                  dashPattern: [0, 8.5],
                                   strokeCap: StrokeCap.round,
                                   radius: Radius.circular(100),
                                   padding: EdgeInsets.all(0),
@@ -646,7 +696,7 @@ class _WarmUpScreenState extends State<WarmUpScreen>
                                     : SizedBox.shrink()),
                                 (animation_started
                                     ? DottedBorder(
-                                  borderType: BorderType.Circle,
+                                  borderType: BorderType.Oval,
                                   strokeWidth: 3,
                                   dashPattern: [0, 10],
                                   strokeCap: StrokeCap.round,
@@ -661,9 +711,9 @@ class _WarmUpScreenState extends State<WarmUpScreen>
                                     : SizedBox.shrink()),
                                 (animation_started
                                     ? DottedBorder(
-                                  borderType: BorderType.Circle,
+                                  borderType: BorderType.Oval,
                                   strokeWidth: 3,
-                                  dashPattern: [0, 10],
+                                  dashPattern: [0, 9.5],
                                   strokeCap: StrokeCap.round,
                                   radius: Radius.circular(100),
                                   padding: EdgeInsets.all(0),
@@ -676,9 +726,9 @@ class _WarmUpScreenState extends State<WarmUpScreen>
                                     : SizedBox.shrink()),
                                 (animation_started
                                     ? DottedBorder(
-                                  borderType: BorderType.Circle,
+                                  borderType: BorderType.Oval,
                                   strokeWidth: 3,
-                                  dashPattern: [0, 10],
+                                  dashPattern: [0, 9],
                                   strokeCap: StrokeCap.round,
                                   radius: Radius.circular(100),
                                   padding: EdgeInsets.all(0),
@@ -691,9 +741,9 @@ class _WarmUpScreenState extends State<WarmUpScreen>
                                     : SizedBox.shrink()),
                                 (animation_started
                                     ? DottedBorder(
-                                  borderType: BorderType.Circle,
+                                  borderType: BorderType.Oval,
                                   strokeWidth: 3,
-                                  dashPattern: [0, 10],
+                                  dashPattern: [0, 8.5],
                                   strokeCap: StrokeCap.round,
                                   radius: Radius.circular(100),
                                   padding: EdgeInsets.all(0),
@@ -706,9 +756,9 @@ class _WarmUpScreenState extends State<WarmUpScreen>
                                     : SizedBox.shrink()),
                                 (animation_started
                                     ? DottedBorder(
-                                  borderType: BorderType.Circle,
+                                  borderType: BorderType.Oval,
                                   strokeWidth: 3,
-                                  dashPattern: [0, 10],
+                                  dashPattern: [0, 7],
                                   strokeCap: StrokeCap.round,
                                   radius: Radius.circular(100),
                                   padding: EdgeInsets.all(0),
@@ -721,9 +771,9 @@ class _WarmUpScreenState extends State<WarmUpScreen>
                                     : SizedBox.shrink()),
                                 (animation_started
                                     ? DottedBorder(
-                                  borderType: BorderType.Circle,
+                                  borderType: BorderType.Oval,
                                   strokeWidth: 3,
-                                  dashPattern: [0, 10],
+                                  dashPattern: [0, 7.5],
                                   strokeCap: StrokeCap.round,
                                   radius: Radius.circular(100),
                                   padding: EdgeInsets.all(0),
@@ -736,9 +786,9 @@ class _WarmUpScreenState extends State<WarmUpScreen>
                                     : SizedBox.shrink()),
                                 (animation_started
                                     ? DottedBorder(
-                                  borderType: BorderType.Circle,
+                                  borderType: BorderType.Oval,
                                   strokeWidth: 3,
-                                  dashPattern: [0, 10],
+                                  dashPattern: [0, 7],
                                   strokeCap: StrokeCap.round,
                                   radius: Radius.circular(100),
                                   padding: EdgeInsets.all(0),
@@ -751,9 +801,9 @@ class _WarmUpScreenState extends State<WarmUpScreen>
                                     : SizedBox.shrink()),
                                 (animation_started
                                     ? DottedBorder(
-                                  borderType: BorderType.Circle,
+                                  borderType: BorderType.Oval,
                                   strokeWidth: 3,
-                                  dashPattern: [0, 10],
+                                  dashPattern: [0, 6.5],
                                   strokeCap: StrokeCap.round,
                                   radius: Radius.circular(100),
                                   padding: EdgeInsets.all(0),
@@ -766,9 +816,9 @@ class _WarmUpScreenState extends State<WarmUpScreen>
                                     : SizedBox.shrink()),
                                 (animation_started
                                     ? DottedBorder(
-                                  borderType: BorderType.Circle,
+                                  borderType: BorderType.Oval,
                                   strokeWidth: 3,
-                                  dashPattern: [0, 10],
+                                  dashPattern: [0, 6],
                                   strokeCap: StrokeCap.round,
                                   radius: Radius.circular(100),
                                   padding: EdgeInsets.all(0),
@@ -781,9 +831,9 @@ class _WarmUpScreenState extends State<WarmUpScreen>
                                     : SizedBox.shrink()),
                                 (animation_started
                                     ? DottedBorder(
-                                  borderType: BorderType.Circle,
+                                  borderType: BorderType.Oval,
                                   strokeWidth: 3,
-                                  dashPattern: [0, 10],
+                                  dashPattern: [0, 5.5],
                                   strokeCap: StrokeCap.round,
                                   radius: Radius.circular(100),
                                   padding: EdgeInsets.all(0),
@@ -797,9 +847,9 @@ class _WarmUpScreenState extends State<WarmUpScreen>
                                     : SizedBox.shrink()),
                                 (animation_started
                                     ? DottedBorder(
-                                  borderType: BorderType.Circle,
+                                  borderType: BorderType.Oval,
                                   strokeWidth: 3,
-                                  dashPattern: [0, 10],
+                                  dashPattern: [0, 7],
                                   strokeCap: StrokeCap.round,
                                   radius: Radius.circular(100),
                                   padding: EdgeInsets.all(0),
@@ -811,7 +861,6 @@ class _WarmUpScreenState extends State<WarmUpScreen>
                                   ),
                                 )
                                     : SizedBox.shrink()),
-
                                 Container(
                                   height: (animation_started
                                       ? _animation_button!.value
@@ -820,24 +869,24 @@ class _WarmUpScreenState extends State<WarmUpScreen>
                                       ? _animation_button!.value
                                       : button_height),
                                   decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      image: DecorationImage(
-                                          alignment: Alignment.center,
-                                          image:
-                                          AssetImage(AssetUtils.home_button)),
-                                      // boxShadow: [
-                                      //   BoxShadow(
-                                      //     color: (animation_started
-                                      //         ? HexColor('#409C46')
-                                      //         : Colors.transparent),
-                                      //     blurRadius: (animation_started
-                                      //         ? _animation!.value
-                                      //         : 0),
-                                      //     spreadRadius: (animation_started
-                                      //         ? _animation!.value
-                                      //         : 0),
-                                      //   )
-                                      // ]
+                                    shape: BoxShape.circle,
+                                    image: DecorationImage(
+                                        alignment: Alignment.center,
+                                        image:
+                                        AssetImage(AssetUtils.home_button)),
+                                    // boxShadow: [
+                                    //   BoxShadow(
+                                    //     color: (animation_started
+                                    //         ? HexColor('#409C46')
+                                    //         : Colors.transparent),
+                                    //     blurRadius: (animation_started
+                                    //         ? _animation!.value
+                                    //         : 0),
+                                    //     spreadRadius: (animation_started
+                                    //         ? _animation!.value
+                                    //         : 0),
+                                    //   )
+                                    // ]
                                   ),
                                   child: Stack(
                                     children: [
@@ -856,7 +905,7 @@ class _WarmUpScreenState extends State<WarmUpScreen>
                                       ),
                                       Container(
                                         alignment: Alignment.center,
-                                        child:(four_started
+                                        child: (four_started
                                             ? Column(
                                           mainAxisAlignment:
                                           MainAxisAlignment.center,
@@ -869,7 +918,8 @@ class _WarmUpScreenState extends State<WarmUpScreen>
                                                       ? _animation_textTime!
                                                       .value
                                                       : text_time_size),
-                                                  fontWeight: FontWeight.w900),
+                                                  fontWeight:
+                                                  FontWeight.w900),
                                             ),
                                             Text(
                                               elapsedTime,
@@ -879,27 +929,33 @@ class _WarmUpScreenState extends State<WarmUpScreen>
                                                       ? _animation_textTime!
                                                       .value
                                                       : text_time_size),
-                                                  fontWeight: FontWeight.w900),
+                                                  fontWeight:
+                                                  FontWeight.w900),
                                             ),
                                           ],
                                         )
                                             : Text(
-                                          (reverse_started ? '$seconds2' :
-                                          (timer_started
-                                              ? ('$seconds' == '3'
+                                          (reverse_started
+                                              ? '$seconds2'
+                                              : (timer_started
+                                              ? (elapsedTime2 == '00'
                                               ? 'Ready'
-                                              : ('$seconds' == '2'
+                                              : (elapsedTime2 ==
+                                              '01'
                                               ? 'Set'
-                                              : ('$seconds' == '1'
+                                              : (elapsedTime2 ==
+                                              '02'
                                               ? 'WarmUp'
                                               : elapsedTime)))
                                               : '')),
                                           style: TextStyle(
                                               color: Colors.white,
                                               fontSize: (animation_started
-                                                  ? _animation_textTime!.value
+                                                  ? _animation_textTime!
+                                                  .value
                                                   : text_time_size),
-                                              fontWeight: FontWeight.w900),
+                                              fontWeight:
+                                              FontWeight.w900),
                                         )),
                                       ),
                                     ],
@@ -917,28 +973,28 @@ class _WarmUpScreenState extends State<WarmUpScreen>
                       Container(
                         height: (screenHeight >= 600 && screenHeight <= 700
                             ? (animation_started_middle
-                                ? _animation_middle2!.value
-                                : 15)
+                            ? _animation_middle2!.value
+                            : 15)
                             : (screenHeight >= 700 && screenHeight <= 800
-                                ? (animation_started_middle
-                                    ? _animation_middle!.value
-                                    : 15)
-                                : (screenHeight >= 800 && screenHeight <= 850
-                                    ? (animation_started_middle
-                                        ? _animation_middle4!.value
-                                        : 15)
-                                    : (screenHeight >= 850
-                                        ? (animation_started_middle
-                                            ? _animation_middle3!.value
-                                            : 15)
-                                        : 0)))),
+                            ? (animation_started_middle
+                            ? _animation_middle!.value
+                            : 15)
+                            : (screenHeight >= 800 && screenHeight <= 850
+                            ? (animation_started_middle
+                            ? _animation_middle4!.value
+                            : 15)
+                            : (screenHeight >= 850
+                            ? (animation_started_middle
+                            ? _animation_middle3!.value
+                            : 15)
+                            : 0)))),
                       ),
 
                       (timer_started
                           ? Column(
-                            children: [
-                              Row(
                         children: [
+                          Row(
+                            children: [
                               Expanded(
                                 flex: 2,
                                 child: Container(
@@ -953,77 +1009,16 @@ class _WarmUpScreenState extends State<WarmUpScreen>
                                         child: Container(
                                           child: Padding(
                                             padding:
-                                            const EdgeInsets.all(
-                                                8.0),
+                                            const EdgeInsets
+                                                .all(8.0),
                                             child: Text(
                                               'Set',
-                                              style:
-                                              FontStyleUtility.h18(
+                                              style: FontStyleUtility.h18(
                                                   fontColor: Colors
                                                       .transparent,
                                                   family: "PR"),
                                             ),
                                           ),
-                                        ),
-                                      ),
-                                      Expanded(
-                                        flex: 1,
-                                        child: Container(
-                                          width: 80,
-                                          decoration: BoxDecoration(
-                                              borderRadius:
-                                              BorderRadius.circular(
-                                                  10),
-                                              border: Border.all(
-                                                  color: Colors.white,
-                                                  width: 0.5)),
-                                          child: Padding(
-                                            padding:
-                                            const EdgeInsets.all(
-                                                8.0),
-                                            child: Text(
-                                              'Ready',
-                                              textAlign:
-                                              TextAlign.center,
-                                              style: FontStyleUtility.h22(
-                                                  fontColor: ColorUtils
-                                                      .primary_gold,
-                                                  family: "PM"),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  )
-                                      : ('$seconds' == '2'
-                                      ? Row(
-                                    mainAxisAlignment:
-                                    MainAxisAlignment.center,
-                                    children: [
-                                      Expanded(
-                                        flex: 1,
-                                        child: Row(
-                                          mainAxisAlignment:
-                                          MainAxisAlignment.end,
-                                          children: [
-                                            Container(
-                                              child: Padding(
-                                                padding:
-                                                const EdgeInsets
-                                                    .all(8.0),
-                                                child: Text(
-                                                  'Ready',
-                                                  style: FontStyleUtility
-                                                      .h16(
-                                                      fontColor:
-                                                      Colors
-                                                          .white,
-                                                      family:
-                                                      "PR"),
-                                                ),
-                                              ),
-                                            ),
-                                          ],
                                         ),
                                       ),
                                       Expanded(
@@ -1043,11 +1038,77 @@ class _WarmUpScreenState extends State<WarmUpScreen>
                                             const EdgeInsets
                                                 .all(8.0),
                                             child: Text(
-                                              'Set',
+                                              'Ready',
                                               textAlign:
                                               TextAlign.center,
                                               style: FontStyleUtility.h22(
                                                   fontColor: ColorUtils
+                                                      .primary_gold,
+                                                  family: "PM"),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                      : ('$seconds' == '2'
+                                      ? Row(
+                                    mainAxisAlignment:
+                                    MainAxisAlignment
+                                        .center,
+                                    children: [
+                                      Expanded(
+                                        flex: 1,
+                                        child: Row(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment
+                                              .end,
+                                          children: [
+                                            Container(
+                                              child: Padding(
+                                                padding:
+                                                const EdgeInsets
+                                                    .all(
+                                                    8.0),
+                                                child: Text(
+                                                  'Ready',
+                                                  style: FontStyleUtility.h16(
+                                                      fontColor:
+                                                      Colors
+                                                          .white,
+                                                      family:
+                                                      "PR"),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Expanded(
+                                        flex: 1,
+                                        child: Container(
+                                          width: 80,
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                              BorderRadius
+                                                  .circular(
+                                                  10),
+                                              border: Border.all(
+                                                  color: Colors
+                                                      .white,
+                                                  width: 0.5)),
+                                          child: Padding(
+                                            padding:
+                                            const EdgeInsets
+                                                .all(8.0),
+                                            child: Text(
+                                              'Set',
+                                              textAlign:
+                                              TextAlign
+                                                  .center,
+                                              style: FontStyleUtility.h22(
+                                                  fontColor:
+                                                  ColorUtils
                                                       .primary_gold,
                                                   family: "PM"),
                                             ),
@@ -1070,16 +1131,15 @@ class _WarmUpScreenState extends State<WarmUpScreen>
                                               .end,
                                           children: [
                                             Container(
-                                              child: Padding(
+                                              child:
+                                              Padding(
                                                 padding:
-                                                const EdgeInsets
-                                                    .all(
+                                                const EdgeInsets.all(
                                                     8.0),
                                                 child: Text(
                                                   'Set',
                                                   style: FontStyleUtility.h16(
-                                                      fontColor:
-                                                      Colors
+                                                      fontColor: Colors
                                                           .white,
                                                       family:
                                                       "PR"),
@@ -1101,11 +1161,13 @@ class _WarmUpScreenState extends State<WarmUpScreen>
                                               border: Border.all(
                                                   color: Colors
                                                       .white,
-                                                  width: 0.5)),
+                                                  width:
+                                                  0.5)),
                                           child: Padding(
                                             padding:
                                             const EdgeInsets
-                                                .all(8.0),
+                                                .all(
+                                                8.0),
                                             child: Text(
                                               'Squeeze',
                                               textAlign:
@@ -1115,7 +1177,8 @@ class _WarmUpScreenState extends State<WarmUpScreen>
                                                   fontColor:
                                                   ColorUtils
                                                       .primary_gold,
-                                                  family: "PM"),
+                                                  family:
+                                                  "PM"),
                                             ),
                                           ),
                                         ),
@@ -1139,15 +1202,14 @@ class _WarmUpScreenState extends State<WarmUpScreen>
                                               child:
                                               Padding(
                                                 padding:
-                                                const EdgeInsets.all(
-                                                    4.0),
-                                                child: Text(
+                                                const EdgeInsets.all(4.0),
+                                                child:
+                                                Text(
                                                   'Set',
                                                   style: FontStyleUtility.h14(
                                                       fontColor: Colors
                                                           .transparent,
-                                                      family:
-                                                      "PR"),
+                                                      family: "PR"),
                                                 ),
                                               ),
                                             ),
@@ -1155,15 +1217,13 @@ class _WarmUpScreenState extends State<WarmUpScreen>
                                               child:
                                               Padding(
                                                 padding:
-                                                const EdgeInsets.all(
-                                                    4.0),
-                                                child: Text(
+                                                const EdgeInsets.all(4.0),
+                                                child:
+                                                Text(
                                                   'Squeeze',
                                                   style: FontStyleUtility.h16(
-                                                      fontColor: Colors
-                                                          .white,
-                                                      family:
-                                                      "PR"),
+                                                      fontColor: Colors.white,
+                                                      family: "PR"),
                                                 ),
                                               ),
                                             ),
@@ -1172,21 +1232,21 @@ class _WarmUpScreenState extends State<WarmUpScreen>
                                       ),
                                       Expanded(
                                         flex: 1,
-                                        child: Container(
+                                        child:
+                                        Container(
                                           decoration: BoxDecoration(
                                               borderRadius:
-                                              BorderRadius
-                                                  .circular(
+                                              BorderRadius.circular(
                                                   10),
                                               border: Border.all(
                                                   color: Colors
                                                       .white,
                                                   width:
                                                   0.5)),
-                                          child: Padding(
+                                          child:
+                                          Padding(
                                             padding:
-                                            const EdgeInsets
-                                                .all(
+                                            const EdgeInsets.all(
                                                 8.0),
                                             child: Text(
                                               'HOLD',
@@ -1194,8 +1254,7 @@ class _WarmUpScreenState extends State<WarmUpScreen>
                                               TextAlign
                                                   .center,
                                               style: FontStyleUtility.h22(
-                                                  fontColor:
-                                                  ColorUtils
+                                                  fontColor: ColorUtils
                                                       .primary_gold,
                                                   family:
                                                   "PM"),
@@ -1221,15 +1280,13 @@ class _WarmUpScreenState extends State<WarmUpScreen>
                                               child:
                                               Padding(
                                                 padding:
-                                                const EdgeInsets.all(
-                                                    8.0),
-                                                child: Text(
+                                                const EdgeInsets.all(8.0),
+                                                child:
+                                                Text(
                                                   'Set',
                                                   style: FontStyleUtility.h16(
-                                                      fontColor: Colors
-                                                          .white,
-                                                      family:
-                                                      "PR"),
+                                                      fontColor: Colors.white,
+                                                      family: "PR"),
                                                 ),
                                               ),
                                             ),
@@ -1238,22 +1295,22 @@ class _WarmUpScreenState extends State<WarmUpScreen>
                                       ),
                                       Expanded(
                                         flex: 1,
-                                        child: Container(
+                                        child:
+                                        Container(
                                           width: 100,
                                           decoration: BoxDecoration(
                                               borderRadius:
-                                              BorderRadius
-                                                  .circular(
+                                              BorderRadius.circular(
                                                   10),
                                               border: Border.all(
                                                   color: Colors
                                                       .white,
                                                   width:
                                                   0.5)),
-                                          child: Padding(
+                                          child:
+                                          Padding(
                                             padding:
-                                            const EdgeInsets
-                                                .all(
+                                            const EdgeInsets.all(
                                                 8.0),
                                             child: Text(
                                               'Squeeze',
@@ -1261,8 +1318,7 @@ class _WarmUpScreenState extends State<WarmUpScreen>
                                               TextAlign
                                                   .center,
                                               style: FontStyleUtility.h22(
-                                                  fontColor:
-                                                  ColorUtils
+                                                  fontColor: ColorUtils
                                                       .primary_gold,
                                                   family:
                                                   "PM"),
@@ -1286,11 +1342,15 @@ class _WarmUpScreenState extends State<WarmUpScreen>
                                       Container(
                                         child: Padding(
                                           padding:
-                                          const EdgeInsets.all(8.0),
+                                          const EdgeInsets.all(
+                                              8.0),
                                           child: Text(
                                             'Set',
-                                            style: FontStyleUtility.h16(
-                                                fontColor: Colors.white,
+                                            style: FontStyleUtility
+                                                .h16(
+                                                fontColor:
+                                                Colors
+                                                    .white,
                                                 family: "PR"),
                                           ),
                                         ),
@@ -1305,8 +1365,8 @@ class _WarmUpScreenState extends State<WarmUpScreen>
                                       Container(
                                         child: Padding(
                                           padding:
-                                          const EdgeInsets.all(
-                                              8.0),
+                                          const EdgeInsets
+                                              .all(8.0),
                                           child: Text(
                                             'Squeeze',
                                             style: FontStyleUtility
@@ -1314,7 +1374,8 @@ class _WarmUpScreenState extends State<WarmUpScreen>
                                                 fontColor:
                                                 Colors
                                                     .white,
-                                                family: "PR"),
+                                                family:
+                                                "PR"),
                                           ),
                                         ),
                                       ),
@@ -1323,7 +1384,8 @@ class _WarmUpScreenState extends State<WarmUpScreen>
                                       : ('$seconds' == '1'
                                       ? Row(
                                     mainAxisAlignment:
-                                    MainAxisAlignment.start,
+                                    MainAxisAlignment
+                                        .start,
                                     children: [
                                       Container(
                                         child: Padding(
@@ -1331,9 +1393,10 @@ class _WarmUpScreenState extends State<WarmUpScreen>
                                           const EdgeInsets
                                               .all(8.0),
                                           child: Text(
-                                            'Finish',
-                                            style: FontStyleUtility
-                                                .h16(
+                                            (reverse_started
+                                                ? 'Finish'
+                                                : 'HOLD'),
+                                            style: FontStyleUtility.h16(
                                                 fontColor:
                                                 Colors
                                                     .white,
@@ -1354,7 +1417,8 @@ class _WarmUpScreenState extends State<WarmUpScreen>
                                         child: Padding(
                                           padding:
                                           const EdgeInsets
-                                              .all(4.0),
+                                              .all(
+                                              4.0),
                                           child: Text(
                                             'Ready',
                                             style: FontStyleUtility.h18(
@@ -1377,9 +1441,12 @@ class _WarmUpScreenState extends State<WarmUpScreen>
                                         child: Padding(
                                           padding:
                                           const EdgeInsets
-                                              .all(8.0),
+                                              .all(
+                                              8.0),
                                           child: Text(
-                                            'Finish',
+                                            (reverse_started
+                                                ? 'Finish'
+                                                : 'HOLD'),
                                             style: FontStyleUtility.h16(
                                                 fontColor:
                                                 Colors
@@ -1393,72 +1460,72 @@ class _WarmUpScreenState extends State<WarmUpScreen>
                                   ))))),
                                 ),
                               )
-                        ],
-                      ),
-                              // Container(
-                              //   // color: Colors.red,
-                              //   child: ('$seconds' == '3'
-                              //       ? SizedBox(
-                              //       height : 40
-                              //   )
-                              //       : ('$seconds' == '2'
-                              //       ? SizedBox(                                  height : 40
-                              //   )
-                              //       :('$seconds' == '1'?
-                              //   Container(
-                              //     child: Padding(
-                              //       padding:
-                              //       const EdgeInsets
-                              //           .all(8.0),
-                              //       child: Text(
-                              //         'Squeeze',
-                              //         textAlign:
-                              //         TextAlign
-                              //             .center,
-                              //         style: FontStyleUtility.h16(
-                              //             fontColor: Colors
-                              //                 .white,
-                              //             family:
-                              //             "PR"),
-                              //       ),
-                              //     ),
-                              //   )  : (four_started
-                              //       ? Container(
-                              //     height : 40,
-                              //
-                              //     child: Text(
-                              //       'HOLD',
-                              //       textAlign:
-                              //       TextAlign
-                              //           .center,
-                              //       style: FontStyleUtility.h16(
-                              //           fontColor: Colors.white,
-                              //           family:
-                              //           "PM"),
-                              //     ),
-                              //   )
-                              //       : Container(
-                              //     height : 40,
-                              //     child: Padding(
-                              //       padding:
-                              //       const EdgeInsets
-                              //           .all(8.0),
-                              //       child: Text(
-                              //         'Squeeze',
-                              //         textAlign:
-                              //         TextAlign
-                              //             .center,
-                              //         style: FontStyleUtility.h16(
-                              //             fontColor: Colors
-                              //                 .white,
-                              //             family:
-                              //             "PR"),
-                              //       ),
-                              //     ),
-                              //   ) )))),
-                              // ),
                             ],
-                          )
+                          ),
+                          // Container(
+                          //   // color: Colors.red,
+                          //   child: ('$seconds' == '3'
+                          //       ? SizedBox(
+                          //       height : 40
+                          //   )
+                          //       : ('$seconds' == '2'
+                          //       ? SizedBox(                                  height : 40
+                          //   )
+                          //       :('$seconds' == '1'?
+                          //   Container(
+                          //     child: Padding(
+                          //       padding:
+                          //       const EdgeInsets
+                          //           .all(8.0),
+                          //       child: Text(
+                          //         'Squeeze',
+                          //         textAlign:
+                          //         TextAlign
+                          //             .center,
+                          //         style: FontStyleUtility.h16(
+                          //             fontColor: Colors
+                          //                 .white,
+                          //             family:
+                          //             "PR"),
+                          //       ),
+                          //     ),
+                          //   )  : (four_started
+                          //       ? Container(
+                          //     height : 40,
+                          //
+                          //     child: Text(
+                          //       'HOLD',
+                          //       textAlign:
+                          //       TextAlign
+                          //           .center,
+                          //       style: FontStyleUtility.h16(
+                          //           fontColor: Colors.white,
+                          //           family:
+                          //           "PM"),
+                          //     ),
+                          //   )
+                          //       : Container(
+                          //     height : 40,
+                          //     child: Padding(
+                          //       padding:
+                          //       const EdgeInsets
+                          //           .all(8.0),
+                          //       child: Text(
+                          //         'Squeeze',
+                          //         textAlign:
+                          //         TextAlign
+                          //             .center,
+                          //         style: FontStyleUtility.h16(
+                          //             fontColor: Colors
+                          //                 .white,
+                          //             family:
+                          //             "PR"),
+                          //       ),
+                          //     ),
+                          //   ) )))),
+                          // ),
+                        ],
+                      )
                           : SizedBox(
                         height: 0,
                       )),
@@ -1469,35 +1536,46 @@ class _WarmUpScreenState extends State<WarmUpScreen>
                         onTap: () async {
                           if (started) {
                             back_wallpaper = false;
-                            // startTimer();
-                            // startWatch();
+                            startTimer();
+                            startWatch3();
+                            start_animation();
                             middle_animation();
-                            Future.delayed(const Duration(seconds: 1), () {
-                              startTimer();
-                            });
-                            Future.delayed(const Duration(seconds: 4),
-                                () async {
-                              await startWatch();
-                            });
+                            // Future.delayed(const Duration(seconds: 1), () {
+                            //   startTimer();
+                            // });
+                            // Future.delayed(const Duration(seconds: 4),
+                            //     () async {
+                            //   startWatch();
+                            // });
                           } else {
-                            await stopWatch_finish();
-                            await click_alarm();
-                            await _animationController_middle!.reverse();
+                            if (four_started) {
+                              CommonWidget().showToaster(
+                                  msg: "Finish method first");
+                            } else {
+                              await stopWatch_finish();
+                              await click_alarm();
+                              await _animationController_middle!.reverse();
+                              setState(() {
+                                _swipe_setup_controller.w_running = false;
+                                started = true;
+                                // countdownTimer2!.cancel();
 
-                            setState(() {
-                              timer_started = false;
-                              elapsedTime = '00';
-                              percent = 0.0;
-                              back_wallpaper = true;
-                              button_height = 150;
-                              text_k_size = 70;
-                              text_time_size = 25;
-                              watch.reset();
-                              // paused_time.clear();
-                            });
-                            // print('method_time : ${method_time[0].total_time}');
-                            // print('method_name : ${method_time[0].method_name}');
-                          }
+                                // if(countdownTimer2!.isActive) {
+                                //   countdownTimer2!.cancel();
+                                // }
+                                timer_started = false;
+                                elapsedTime = '00';
+                                percent = 0.0;
+                                back_wallpaper = true;
+                                button_height = 150;
+                                text_k_size = 70;
+                                text_time_size = 25;
+                                watch.reset();
+                                // paused_time.clear();
+                              });
+                            }// print('method_time : ${method_time[0].total_time}');
+                          // print('method_name : ${method_time[0].method_name}');
+                        }
                         },
                         child: Container(
                           height: 65,
@@ -1533,9 +1611,12 @@ class _WarmUpScreenState extends State<WarmUpScreen>
                         height: 28,
                       ),
                       Container(
-                        width: MediaQuery.of(context).size.width,
+                        width: MediaQuery
+                            .of(context)
+                            .size
+                            .width,
                         decoration: BoxDecoration(
-                            // color: Colors.black.withOpacity(0.65),
+                          // color: Colors.black.withOpacity(0.65),
                             gradient: LinearGradient(
                               begin: Alignment.centerLeft,
                               end: Alignment.centerRight,
@@ -1622,6 +1703,9 @@ class _WarmUpScreenState extends State<WarmUpScreen>
                           ],
                         ),
                       ),
+                      SizedBox(
+                        height: 28,
+                      ),
                     ],
                   ),
                 ),
@@ -1640,8 +1724,11 @@ class _WarmUpScreenState extends State<WarmUpScreen>
   }
 
   startWatch() {
-    start_animation();
+    // start_animation();
+
     setState(() {
+      timer_started = true;
+      elapsedTime = "00";
       startStop = false;
       started = false;
       watch.start();
@@ -1652,7 +1739,7 @@ class _WarmUpScreenState extends State<WarmUpScreen>
   stopWatch() {
     setState(() {
       startStop = true;
-      started = false;
+      // started = false;
       animation_started = false;
 
       watch.stop();
@@ -1663,7 +1750,6 @@ class _WarmUpScreenState extends State<WarmUpScreen>
   stopWatch_finish() {
     setState(() {
       startStop = true;
-      started = true;
       animation_started = false;
       watch.stop();
       setTime_finish();
@@ -1671,18 +1757,29 @@ class _WarmUpScreenState extends State<WarmUpScreen>
   }
 
   startWatch2() {
-    // start_animation();
     setState(() {
-      startStop = false;
-      started = false;
+      // startStop = false;
+      // started = false;
       elapsedTime = "00";
       watch.start();
-      timer = Timer.periodic(
-          const Duration(milliseconds: 100),
-      updateTime);
+      timer = Timer.periodic(const Duration(milliseconds: 100), updateTime);
     });
   }
 
+  final Ledger_Setup_controller _swipe_setup_controller = Get.put(
+      Ledger_Setup_controller(),
+      tag: Ledger_Setup_controller().toString());
+
+  startWatch3() {
+    setState(() {
+      _swipe_setup_controller.w_running = true;
+      startStop = false;
+      started = false;
+      elapsedTime2 = "00";
+      watch3.start();
+      timer3 = Timer.periodic(const Duration(milliseconds: 100), updateTime3);
+    });
+  }
 
   setTime() {
     var timeSoFar = watch.elapsedMilliseconds;
@@ -1740,8 +1837,8 @@ class _WarmUpScreenState extends State<WarmUpScreen>
     // loadAlarms();
   }
 
-  Future<void> scheduleAlarm(
-      DateTime scheduledNotificationDateTime, AlarmInfo alarmInfo) async {
+  Future<void> scheduleAlarm(DateTime scheduledNotificationDateTime,
+      AlarmInfo alarmInfo) async {
     var androidPlatformChannelSpecifics = AndroidNotificationDetails(
       'alarm_notif',
       'alarm_notif',

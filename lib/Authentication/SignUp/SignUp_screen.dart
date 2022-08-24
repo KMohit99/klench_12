@@ -135,120 +135,135 @@ class _SignUpScreenState extends State<SignUpScreen> {
     //     ],
     //   ),
     // );
-    showModalBottomSheet(
-      useRootNavigator: true,
+
+    showDialog(
       context: context,
-      clipBehavior: Clip.antiAlias,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(
-          top: Radius.circular(24),
-        ),
-      ),
-      builder: (context) {
-        return StatefulBuilder(
-          builder: (context, setModalState) {
-            return Container(
-              decoration: BoxDecoration(
-                  // color: Colors.black.withOpacity(0.65),
-                  gradient: LinearGradient(
-                    begin: Alignment.centerLeft,
-                    end: Alignment.centerRight,
-                    // stops: [0.1, 0.5, 0.7, 0.9],
-                    colors: [
-                      HexColor("#020204").withOpacity(1),
-                      HexColor("#36393E").withOpacity(1),
-                    ],
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                        color: HexColor('#04060F'),
-                        offset: const Offset(-10, 10),
-                        blurRadius: 20)
-                  ],
-                  borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      topRight: Radius.circular(20))),
-              padding: const EdgeInsets.all(32),
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    Container(
-                      height: 150,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                          gradient: LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                            colors: [
-                              HexColor("#000000").withOpacity(1),
-                              HexColor("#04060F").withOpacity(1),
-                              HexColor("#000000").withOpacity(1),
-                            ],
-                          ),
-                          boxShadow: [
-                            BoxShadow(
-                                color: HexColor('#04060F'),
-                                offset: Offset(3, 3),
-                                blurRadius: 10)
-                          ]),
-                      child: Stack(
+      builder: (BuildContext context) {
+        double width = MediaQuery.of(context).size.width;
+        double height = MediaQuery.of(context).size.height;
+        return BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 0, sigmaY: 0),
+          child: AlertDialog(
+              backgroundColor: Colors.transparent,
+              contentPadding: EdgeInsets.zero,
+              elevation: 0.0,
+              // title: Center(child: Text("Evaluation our APP")),
+              content: StatefulBuilder(
+                builder: (context, setModalState) {
+                  return Container(
+                    decoration: BoxDecoration(
+                        // color: Colors.black.withOpacity(0.65),
+                        gradient: LinearGradient(
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
+                          // stops: [0.1, 0.5, 0.7, 0.9],
+                          colors: [
+                            HexColor("#020204").withOpacity(1),
+                            HexColor("#36393E").withOpacity(1),
+                          ],
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                              color: HexColor('#04060F'),
+                              offset: const Offset(-10, 10),
+                              blurRadius: 20)
+                        ],
+                        borderRadius: BorderRadius.circular(20)),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 12, vertical: 12),
+                    child: SingleChildScrollView(
+                      child: Column(
                         children: [
-                          CupertinoTheme(
-                            data: CupertinoThemeData(
-                              brightness: Brightness.dark,
-                            ),
-                            child: CupertinoDatePicker(
-                              // use24hFormat: true,
-                              mode: CupertinoDatePickerMode.date,
-                              onDateTimeChanged: (DateTime value) {
-                                selected = value;
-                                print("${value.hour}:${value.minute}");
+                          Container(
+                            height: 150,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(15),
+                                gradient: LinearGradient(
+                                  begin: Alignment.topCenter,
+                                  end: Alignment.bottomCenter,
+                                  colors: [
+                                    HexColor("#000000").withOpacity(1),
+                                    HexColor("#04060F").withOpacity(1),
+                                    HexColor("#000000").withOpacity(1),
+                                  ],
+                                ),
+                                boxShadow: [
+                                  BoxShadow(
+                                      color: HexColor('#04060F'),
+                                      offset: Offset(3, 3),
+                                      blurRadius: 10)
+                                ]),
+                            child: Stack(
+                              children: [
+                                CupertinoTheme(
+                                  data: CupertinoThemeData(
+                                    brightness: Brightness.dark,
+                                    textTheme: CupertinoTextThemeData(
+                                        dateTimePickerTextStyle:
+                                            FontStyleUtility.h16(
+                                                fontColor: Colors.white,
+                                                family: 'PM')),
+                                  ),
+                                  child: DefaultTextStyle.merge(
+                                    style: TextStyle(fontSize: 20),
+                                    child: CupertinoDatePicker(
+                                      // use24hFormat: true,
+                                      mode: CupertinoDatePickerMode.date,
 
-                                if (selected != null) {
-                                  final now = DateTime.now();
-                                  var selectedDateTime = DateTime(
-                                      now.year,
-                                      now.month,
-                                      now.day,
-                                      selected!.hour,
-                                      selected!.minute);
-                                  duration = AgeCalculator.age(selected!);
-                                  print('Your age is $duration');
+                                      onDateTimeChanged: (DateTime value) {
+                                        selected = value;
+                                        print("${value.hour}:${value.minute}");
 
-                                  setModalState(() {
-                                    (duration!.years <= 50
-                                        ? _signUpScreenController.level =
-                                            'Normal'
-                                        : _signUpScreenController.level =
-                                            'Easy');
-                                  });
+                                        if (selected != null) {
+                                          final now = DateTime.now();
+                                          var selectedDateTime = DateTime(
+                                              now.year,
+                                              now.month,
+                                              now.day,
+                                              selected!.hour,
+                                              selected!.minute);
+                                          duration =
+                                              AgeCalculator.age(selected!);
+                                          print('Your age is $duration');
 
-                                  print(_signUpScreenController.level);
+                                          setModalState(() {
+                                            (duration!.years <= 50
+                                                ? _signUpScreenController
+                                                    .level = 'Normal'
+                                                : _signUpScreenController
+                                                    .level = 'Easy');
+                                          });
 
-                                  if (selected != selectedDate) {
-                                    setModalState(() {
-                                      _signUpScreenController.date_birth =
-                                          DateFormat('MM-dd-yyyy')
-                                              .format(selected!)
-                                              .toString();
-                                      _signUpScreenController
-                                              .DoBController.text =
-                                          _signUpScreenController.date_birth
-                                              .toString();
-                                    });
-                                  }
-                                }
-                              },
+                                          print(_signUpScreenController.level);
+
+                                          if (selected != selectedDate) {
+                                            setModalState(() {
+                                              _signUpScreenController
+                                                      .date_birth =
+                                                  DateFormat('MM-dd-yyyy')
+                                                      .format(selected!)
+                                                      .toString();
+                                              _signUpScreenController
+                                                      .DoBController.text =
+                                                  _signUpScreenController
+                                                      .date_birth
+                                                      .toString();
+                                            });
+                                          }
+                                        }
+                                      },
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ],
                       ),
                     ),
-                  ],
-                ),
-              ),
-            );
-          },
+                  );
+                },
+              )),
         );
       },
     );
@@ -522,6 +537,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             controller:
                                 _signUpScreenController.fullnameController,
                             labelText: 'Enter Full name',
+                            maxLines: 1,
                             iconData: IconButton(
                               visualDensity:
                                   VisualDensity(horizontal: -4, vertical: -4),
@@ -543,6 +559,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             controller:
                                 _signUpScreenController.usernameController,
                             labelText: 'Enter Username',
+                            maxLines: 1,
                             iconData: IconButton(
                               visualDensity:
                                   VisualDensity(horizontal: -4, vertical: -4),
@@ -760,6 +777,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   controller:
                                       _signUpScreenController.phoneController,
                                   labelText: 'Enter Mobile Number',
+                                  maxLines: 1,
                                   iconData: IconButton(
                                     visualDensity: VisualDensity(
                                         horizontal: -4, vertical: -4),
@@ -809,6 +827,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           child: CommonTextFormField(
                             controller: _signUpScreenController.emailController,
                             labelText: 'Email Address',
+                            maxLines: 1,
                             iconData: IconButton(
                               visualDensity:
                                   VisualDensity(horizontal: -4, vertical: -4),
@@ -1065,7 +1084,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                       ),
                                       Row(
                                         crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                            CrossAxisAlignment.start,
                                         children: [
                                           Text(
                                             '\u2022 ',
@@ -1120,7 +1139,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                       ),
                                       Row(
                                         crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                            CrossAxisAlignment.start,
                                         children: [
                                           Text(
                                             '\u2022 ',
@@ -1328,6 +1347,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           child: CommonTextFormField(
                             controller: _signUpScreenController
                                 .confirmPasswordController,
+                            maxLines: 1,
                             labelText: 'Confirm Password',
                             iconData: IconButton(
                               visualDensity:
@@ -1439,8 +1459,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       //       .showErrorToaster(msg: "Please upload Profile image");
                       //   return;
                       // }
-                      await _signUpScreenController.SendOtpAPi(
-                          context: context);
+                      if (alpha_num) {
+                        await _signUpScreenController.SendOtpAPi(
+                            context: context);
+                      }
                     }
                   },
                   title_text: 'Next',

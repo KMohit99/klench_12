@@ -128,7 +128,7 @@ class _SplashScreenState extends State<SplashScreen> {
       icon: 'app_icon',
       enableVibration: true,
       playSound: true,
-      sound: RawResourceAndroidNotificationSound("a_long_cold_sting.wav"),
+      // sound: RawResourceAndroidNotificationSound("a_long_cold_sting.wav"),
       largeIcon: DrawableResourceAndroidBitmap('app_icon'),
     );
 

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -34,6 +36,7 @@ class _WelcomeVideoScreenState extends State<WelcomeVideoScreen> {
   void initState() {
     // video_code();
     // better_player_code();
+    startTimer();
 
     super.initState();
 
@@ -64,9 +67,33 @@ class _WelcomeVideoScreenState extends State<WelcomeVideoScreen> {
     });
     print(video_skip);
   }
+  Timer? countdownTimer;
+  Duration? myDuration;
+
+  void startTimer() {
+    myDuration = Duration(seconds: 30);
+    countdownTimer =
+        Timer.periodic(Duration(seconds: 1), (_) => setCountDown());
+  }
+
+  void setCountDown() {
+    final reduceSecondsBy = 1;
+    setState(() {
+      final seconds = myDuration!.inSeconds - reduceSecondsBy;
+      if (seconds < 0) {
+        countdownTimer!.cancel();
+        print('timesup');
+      } else {
+        myDuration = Duration(seconds: seconds);
+      }
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
+    final seconds = myDuration!.inSeconds.remainder(60);
+
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
     return Stack(children: [
@@ -270,6 +297,56 @@ class _WelcomeVideoScreenState extends State<WelcomeVideoScreen> {
                         //     ],
                         //   ),
                         // ),
+                        // Container(
+                        //     child: Row(
+                        //       mainAxisAlignment: MainAxisAlignment.end,
+                        //       children: [
+                        //         // Container(
+                        //         //   decoration: BoxDecoration(
+                        //         //       gradient: LinearGradient(
+                        //         //         begin: Alignment.bottomLeft,
+                        //         //         end: Alignment.topRight,
+                        //         //         colors: [
+                        //         //           HexColor("#020204").withOpacity(
+                        //         //               1),
+                        //         //           HexColor("#36393E").withOpacity(
+                        //         //               1),
+                        //         //         ],
+                        //         //       ),
+                        //         //       boxShadow: [
+                        //         //         BoxShadow(
+                        //         //           color: HexColor('#2E2E2D'),
+                        //         //           offset: Offset(0, 3),
+                        //         //           blurRadius: 6,
+                        //         //         ),
+                        //         //         BoxShadow(
+                        //         //           color: HexColor('#04060F'),
+                        //         //           offset: Offset(10, 10),
+                        //         //           blurRadius: 20,
+                        //         //         ),
+                        //         //       ],
+                        //         //       borderRadius: BorderRadius.circular(
+                        //         //           50)),
+                        //         //   child: IconButton(
+                        //         //     visualDensity: VisualDensity(
+                        //         //         horizontal: -4, vertical: -4),
+                        //         //     onPressed: () {},
+                        //         //     icon: Icon(Icons.access_time_rounded),
+                        //         //     color: ColorUtils.primary_grey,
+                        //         //   ),
+                        //         // ),
+                        //         SizedBox(
+                        //           width: 7,
+                        //         ),
+                        //         Text(
+                        //           '${seconds} S',
+                        //           style: TextStyle(
+                        //               fontSize: 12,
+                        //               fontFamily: 'PR',
+                        //               color: ColorUtils.primary_grey),
+                        //         ),
+                        //       ],
+                        //     )),
 
                         Container(
                           child: _controller!.value.isInitialized
@@ -293,22 +370,25 @@ class _WelcomeVideoScreenState extends State<WelcomeVideoScreen> {
                                     // (widget.signup
                                     //     ? await Get.to(SubscriptionScreen())
                                     //     : await Get.to(DashboardScreen()));
-                                    // (trial == 'true'
-                                    //     ? await Get.to(DashboardScreen())
-                                    //     :
-                                    await Get.to(SubscriptionScreen());
+                                    (trial == 'true'
+                                        ? await Get.to(DashboardScreen())
+                                        :
+                                    await Get.to(SubscriptionScreen()));
                                   },
                                   title_text: 'Skip',
                                 ),
                               )
-                            : Container(
+                            :
+                        // SizedBox.shrink()
+                        Container(
                                 margin: EdgeInsets.symmetric(vertical: 10),
                                 child: common_button_black(
                                   onTap: () async {
                                   },
-                                  title_text: 'Skip',
+                                  title_text: 'Skip (${seconds}) S',
                                 ),
-                              )),
+                              )
+                        ),
                       ],
                     ),
                   ),

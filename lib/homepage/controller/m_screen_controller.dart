@@ -208,13 +208,13 @@ class Masturbation_screen_controller {
         // CommonWidget().showToaster(msg: breathingGetModel!.message!);
         // CommonWidget().showToaster(msg: data["success"].toString());
         // await Get.to(Dashboard());
-        CommonWidget().showToaster(msg: m_screenGetModel!.message!);
+        // CommonWidget().showToaster(msg: m_screenGetModel!.message!);
 
         return m_screenGetModel;
       } else {
         hideLoader(context);
 
-        CommonWidget().showToaster(msg: m_screenGetModel!.message!);
+        // CommonWidget().showToaster(msg: m_screenGetModel!.message!);
         return null;
       }
     } else if (response.statusCode == 422) {

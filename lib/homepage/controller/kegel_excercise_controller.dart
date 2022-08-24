@@ -53,6 +53,8 @@ class Kegel_controller extends GetxController {
 
         return kegelGetModel;
       } else {
+        isuserinfoLoading(true);
+
         hideLoader(context);
 
         // CommonWidget().showToaster(msg: kegelGetModel!.message!);
@@ -86,9 +88,12 @@ class Kegel_controller extends GetxController {
     showLoader(context);
     String id_user = await PreferenceManager().getPref(URLConstants.id);
 
+    print(sets);
+    print(sets);
+    print(sets);
     Map data = {
       'userId': id_user,
-      'sets': sets.toString(),
+      'sets': '1',
       'createdDate' : DateFormat('yyyy-MM-dd').format(DateTime.now()),
       'startTime' :'',
       'finishTime' :'',
@@ -123,6 +128,7 @@ class Kegel_controller extends GetxController {
       // print(kegelPostModel);
       if (data["error"] == false) {
         CommonWidget().showToaster(msg: data["message"]);
+
         await Kegel_get_API(context);
 
         hideLoader(context);

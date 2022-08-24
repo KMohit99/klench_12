@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -12,6 +14,7 @@ import '../../utils/Asset_utils.dart';
 import '../../utils/Common_buttons.dart';
 import '../../utils/Common_container_color.dart';
 import '../../utils/TextStyle_utils.dart';
+import '../../utils/UrlConstrant.dart';
 import '../../utils/colorUtils.dart';
 
 class WelcomeVideoScreen2 extends StatefulWidget {
@@ -33,6 +36,7 @@ class _WelcomeVideoScreenState extends State<WelcomeVideoScreen2> {
   void initState() {
     // video_code();
     // better_player_code();
+    startTimer();
 
     super.initState();
     Future.delayed(Duration(seconds: 30), () {
@@ -59,10 +63,32 @@ class _WelcomeVideoScreenState extends State<WelcomeVideoScreen2> {
     });
     print(video_skip);
   }
+  Timer? countdownTimer;
+  Duration? myDuration;
+
+  void startTimer() {
+    myDuration = Duration(seconds: 30);
+    countdownTimer =
+        Timer.periodic(Duration(seconds: 1), (_) => setCountDown());
+  }
+
+  void setCountDown() {
+    final reduceSecondsBy = 1;
+    setState(() {
+      final seconds = myDuration!.inSeconds - reduceSecondsBy;
+      if (seconds < 0) {
+        countdownTimer!.cancel();
+        print('timesup');
+      } else {
+        myDuration = Duration(seconds: seconds);
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     // Future.delayed(Duration.zero, () => pop_up(context));
+    final seconds = myDuration!.inSeconds.remainder(60);
 
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
@@ -318,35 +344,69 @@ class _WelcomeVideoScreenState extends State<WelcomeVideoScreen2> {
                           )
                               : Container(),
                         ),
-
                         (video_skip
                             ? Container(
                           margin: EdgeInsets.symmetric(vertical: 10),
                           child: common_button_gold(
                             onTap: () async {
                               await _controller!.pause();
+                              // (widget.signup
+                              //     ? await Get.to(SubscriptionScreen())
+                              //     : await Get.to(DashboardScreen()));
+                              // (trial == 'true'
+                              //     ? await Get.to(DashboardScreen())
+                              //     :
+                              // await Get.to(SubscriptionScreen());
+                             final trial = await PreferenceManager().getPref(URLConstants.trial);
 
+                              // (trial == 'true'
+                              //     ?
+                              // await Get.to(DashboardScreen())
                               Navigator.push(
                                 context,
                                 PageRouteBuilder(
-                                  pageBuilder: (c, a1, a2) => DashboardScreen(),
-                                  transitionsBuilder: (c, anim, a2, child) => FadeTransition(opacity: anim, child: child),
-                                  transitionDuration: Duration(milliseconds: 1000),
+                                  pageBuilder: (c, a1, a2) =>
+                                      DashboardScreen(),
+                                  transitionsBuilder:
+                                      (c, anim, a2, child) =>
+                                      FadeTransition(
+                                          opacity: anim,
+                                          child: child),
+                                  transitionDuration:
+                                  Duration(milliseconds: 1000),
                                 ),
                               );
-
-                              // await Get.to(DashboardScreen());
+                              //     :
+                              // // await Get.to(SubscriptionScreen())
+                              // Navigator.push(
+                              //   context,
+                              //   PageRouteBuilder(
+                              //     pageBuilder: (c, a1, a2) =>
+                              //         SubscriptionScreen(),
+                              //     transitionsBuilder:
+                              //         (c, anim, a2, child) =>
+                              //         FadeTransition(
+                              //             opacity: anim,
+                              //             child: child),
+                              //     transitionDuration:
+                              //     Duration(milliseconds: 2000),
+                              //   ),
+                              // ));
                             },
                             title_text: 'Skip',
                           ),
                         )
-                            : Container(
+                            :
+                        // SizedBox.shrink()
+                        Container(
                           margin: EdgeInsets.symmetric(vertical: 10),
                           child: common_button_black(
-                            onTap: () async {},
-                            title_text: 'Skip',
+                            onTap: () async {
+                            },
+                            title_text: 'Skip (${seconds}) S',
                           ),
-                        )),
+                        )
+                        ),
                       ],
                     ),
                   ),

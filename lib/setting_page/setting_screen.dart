@@ -112,6 +112,7 @@ class _SettingScreenState extends State<SettingScreen> {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
             child: ListView.builder(
+              physics: ClampingScrollPhysics(),
               shrinkWrap: true,
               itemCount: Icon_data.length,
               scrollDirection: Axis.vertical,

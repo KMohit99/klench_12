@@ -76,7 +76,7 @@ class SignInScreenController extends GetxController {
         // await PreferenceManager()
         //     .setPref(URLConstants.type, signUpModel!.user![0].type!);
         // await CreatorgetUserInfo_Email(UserId: signUpModel!.user![0].id!);
-        await CommonWidget().showToaster(msg: 'Successfully Loggedin');
+        // await CommonWidget().showToaster(msg: 'Successfully Loggedin');
         await clear_method();
        // await Get.to(WelcomeVideoScreen(signup: false,));
         await GetUserInfo( context);
@@ -161,21 +161,21 @@ class SignInScreenController extends GetxController {
       } else {
         isuserinfoLoading(false);
 
-        hideLoader(context);
+        // hideLoader(context);
         CommonWidget().showToaster(msg: 'Error');
         return null;
       }
     } else if (response.statusCode == 422) {
       isuserinfoLoading(false);
 
-      CommonWidget().showToaster(msg: userInfoModel!.message!);
+      // CommonWidget().showToaster(msg: userInfoModel!.message!);
     } else if (response.statusCode == 401) {
       isuserinfoLoading(false);
-      CommonWidget().showToaster(msg: userInfoModel!.message!);
+      // CommonWidget().showToaster(msg: userInfoModel!.message!);
 
     } else {
       isuserinfoLoading(false);
-      CommonWidget().showToaster(msg: userInfoModel!.message!);
+      // CommonWidget().showToaster(msg: userInfoModel!.message!);
 
     }
   }

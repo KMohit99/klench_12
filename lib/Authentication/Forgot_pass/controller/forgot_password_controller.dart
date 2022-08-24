@@ -21,6 +21,7 @@ class ForgotPasswordController extends GetxController {
   final TextEditingController OtpController = TextEditingController();
 
   final TextEditingController newPasswordController = TextEditingController();
+  final TextEditingController oldPasswordController = TextEditingController();
   final TextEditingController ConfirmNewPasswordController = TextEditingController();
   String dialCodedigits = "+91";
 
@@ -164,7 +165,7 @@ class ForgotPasswordController extends GetxController {
         // await PreferenceManager()
         //     .setPref(URLConstants.type, signUpModel!.user![0].type!);
         // await CreatorgetUserInfo_Email(UserId: signUpModel!.user![0].id!);
-        await CommonWidget().showToaster(msg: passwordResetModel!.message!);
+        // await CommonWidget().showToaster(msg: passwordResetModel!.message!);
         // await Get.to(DashboardScreen());
         hideLoader(context);
       } else {

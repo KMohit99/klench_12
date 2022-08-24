@@ -306,7 +306,7 @@ class SignUpScreenController extends GetxController {
       verifyOtpModel = VerifyOtpModel.fromJson(data);
       print(verifyOtpModel);
       if (verifyOtpModel!.error == false) {
-        await CommonWidget().showToaster(msg: "Otp Verified");
+        // await CommonWidget().showToaster(msg: "Otp Verified");
         // await SignUpAPi(context: context);
         await SignUpAPi(context: context);
         // await Get.to(DashboardScreen());

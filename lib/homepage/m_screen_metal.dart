@@ -826,6 +826,8 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
                 ];
               },
               body: SingleChildScrollView(
+                physics: ClampingScrollPhysics(),
+
                 child: Container(
                   margin: EdgeInsets.only(top: 15, left: 8, right: 8),
                   child: Column(
@@ -2754,94 +2756,102 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
                             ),
                             Container(
                               margin: EdgeInsets.all(15),
+                              // decoration: BoxDecoration(
+                              //     // color: Colors.black.withOpacity(0.65),
+                              //     gradient: LinearGradient(
+                              //       begin: Alignment.centerLeft,
+                              //       end: Alignment.centerRight,
+                              //       // stops: [0.1, 0.5, 0.7, 0.9],
+                              //       colors: [
+                              //         HexColor("#020204").withOpacity(0.65),
+                              //         HexColor("#36393E").withOpacity(0.65),
+                              //       ],
+                              //     ),
+                              //     // boxShadow: [
+                              //     //   BoxShadow(
+                              //     //       color: HexColor('#04060F'),
+                              //     //       offset: Offset(10, 10),
+                              //     //       blurRadius: 10)
+                              //     // ],
+                              //     borderRadius: BorderRadius.circular(20)),
                               decoration: BoxDecoration(
-                                  // color: Colors.black.withOpacity(0.65),
-                                  gradient: LinearGradient(
-                                    begin: Alignment.centerLeft,
-                                    end: Alignment.centerRight,
-                                    // stops: [0.1, 0.5, 0.7, 0.9],
-                                    colors: [
-                                      HexColor("#020204").withOpacity(0.65),
-                                      HexColor("#36393E").withOpacity(0.65),
-                                    ],
-                                  ),
-                                  // boxShadow: [
-                                  //   BoxShadow(
-                                  //       color: HexColor('#04060F'),
-                                  //       offset: Offset(10, 10),
-                                  //       blurRadius: 10)
-                                  // ],
-                                  borderRadius: BorderRadius.circular(20)),
+                                  color: HexColor('#181A1F')
+                                      .withOpacity(0.65),
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(20),
+                                      topRight: Radius.circular(20),
+                                      bottomRight: Radius.circular(20),
+                                      bottomLeft: Radius.circular(20))),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
+                                  // Container(
+                                  //   margin: EdgeInsets.all(15),
+                                  //   child: Row(
+                                  //     children: [
+                                  //       Expanded(
+                                  //         child: Container(
+                                  //           alignment: Alignment.center,
+                                  //           child: Image.asset(
+                                  //             AssetUtils.m_screen_trophy,
+                                  //             height: 25,
+                                  //             width: 20,
+                                  //           ),
+                                  //         ),
+                                  //       ),
+                                  //       SizedBox(
+                                  //         width: 5,
+                                  //       ),
+                                  //       Expanded(
+                                  //         flex: 2,
+                                  //         child: Container(
+                                  //           child: Column(
+                                  //             crossAxisAlignment:
+                                  //                 CrossAxisAlignment.start,
+                                  //             children: [
+                                  //               Text('Best result',
+                                  //                   style: FontStyleUtility.h14(
+                                  //                       fontColor:
+                                  //                           HexColor('#A2A2A2'),
+                                  //                       family: 'PR')),
+                                  //               Text('72 sec',
+                                  //                   style: FontStyleUtility.h14(
+                                  //                       fontColor: Colors.white,
+                                  //                       family: 'PR')),
+                                  //             ],
+                                  //           ),
+                                  //         ),
+                                  //       ),
+                                  //       Expanded(
+                                  //         flex: 2,
+                                  //         child: Container(
+                                  //           child: Column(
+                                  //             crossAxisAlignment:
+                                  //                 CrossAxisAlignment.start,
+                                  //             children: [
+                                  //               Text('Last measurement',
+                                  //                   style: FontStyleUtility.h14(
+                                  //                       fontColor:
+                                  //                           HexColor('#A2A2A2'),
+                                  //                       family: 'PR')),
+                                  //               Text('26 days ago',
+                                  //                   style: FontStyleUtility.h14(
+                                  //                       fontColor: Colors.white,
+                                  //                       family: 'PR')),
+                                  //             ],
+                                  //           ),
+                                  //         ),
+                                  //       ),
+                                  //     ],
+                                  //   ),
+                                  // ),
                                   Container(
-                                    margin: EdgeInsets.all(15),
-                                    child: Row(
-                                      children: [
-                                        Expanded(
-                                          child: Container(
-                                            alignment: Alignment.center,
-                                            child: Image.asset(
-                                              AssetUtils.m_screen_trophy,
-                                              height: 25,
-                                              width: 20,
-                                            ),
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: 5,
-                                        ),
-                                        Expanded(
-                                          flex: 2,
-                                          child: Container(
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text('Best result',
-                                                    style: FontStyleUtility.h14(
-                                                        fontColor:
-                                                            HexColor('#A2A2A2'),
-                                                        family: 'PR')),
-                                                Text('72 sec',
-                                                    style: FontStyleUtility.h14(
-                                                        fontColor: Colors.white,
-                                                        family: 'PR')),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                        Expanded(
-                                          flex: 2,
-                                          child: Container(
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text('Last measurement',
-                                                    style: FontStyleUtility.h14(
-                                                        fontColor:
-                                                            HexColor('#A2A2A2'),
-                                                        family: 'PR')),
-                                                Text('26 days ago',
-                                                    style: FontStyleUtility.h14(
-                                                        fontColor: Colors.white,
-                                                        family: 'PR')),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Container(
-                                    decoration: BoxDecoration(
-                                        color: HexColor('#181A1F')
-                                            .withOpacity(0.65),
-                                        borderRadius: BorderRadius.only(
-                                            bottomRight: Radius.circular(20),
-                                            bottomLeft: Radius.circular(20))),
+                                    // decoration: BoxDecoration(
+                                    //     color: HexColor('#181A1F')
+                                    //         .withOpacity(0.65),
+                                    //     borderRadius: BorderRadius.only(
+                                    //         bottomRight: Radius.circular(20),
+                                    //         bottomLeft: Radius.circular(20))),
                                     child: Container(
                                       decoration: BoxDecoration(
                                           borderRadius:
@@ -3421,7 +3431,7 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
           // CommonWidget().showToaster(msg: breathingGetModel!.message!);
           // CommonWidget().showToaster(msg: data["success"].toString());
           // await Get.to(Dashboard());
-          CommonWidget().showToaster(msg: m_screenWeeklyDataModel!.message!);
+          // CommonWidget().showToaster(msg: m_screenWeeklyDataModel!.message!);
 
           // for (var i = 0;
           //     i < m_screenWeeklyDataModel!.data![0].methods!.length;
@@ -3447,7 +3457,7 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
         } else {
           hideLoader(context);
 
-          CommonWidget().showToaster(msg: m_screenWeeklyDataModel!.message!);
+          // CommonWidget().showToaster(msg: m_screenWeeklyDataModel!.message!);
           return null;
         }
       } else if (response.statusCode == 422) {

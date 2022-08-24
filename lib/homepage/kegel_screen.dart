@@ -40,11 +40,17 @@ class _KegelScreenState extends State<KegelScreen>
       Get.put(Kegel_controller(), tag: Kegel_controller().toString());
 
   Stopwatch watch = Stopwatch();
+  Stopwatch watch3 = Stopwatch();
+
   Timer? timer;
+  Timer? timer3;
+
   bool startStop = true;
   bool started = true;
 
   String elapsedTime = '00';
+  String elapsedTime2 = '00';
+
   TextEditingController Alarm_title = new TextEditingController();
   List Alarm_title_list = [];
 
@@ -168,6 +174,8 @@ class _KegelScreenState extends State<KegelScreen>
                   four_started = false;
                   watch.reset();
                 });
+                start_animation();
+
                 startWatch();
               }
             });
@@ -213,16 +221,35 @@ class _KegelScreenState extends State<KegelScreen>
                 setState(() {
                   elapsedTime = '00';
                   // watch.stop();
-                  counter = 0;
+                    counter = 0;
+
+                  watch.reset();
+
                 });
+                Vibration.cancel();
+                // setState(() {
+                //   _swipe_setup_controller.k_running = false;
+                //   timer_started = false;
+                //   counter = 0;
+                //
+                //   elapsedTime = '00';
+                //   percent = 0.0;
+                //   back_wallpaper = true;
+                //   button_height = 150;
+                //   text_k_size = 70;
+                //   text_time_size = 25;
+                //   watch.reset();
+                //   // paused_time.clear();
+                // });
                 _kegel_controller.sets++;
-                print(_kegel_controller.sets++);
+                // print("_kegel_controller.sets++ ${_kegel_controller.sets++}");
+                // print(_kegel_controller.sets++);
                 await _kegel_controller.Kegel_post_API(context);
                 // await _kegel_controller.Kegel_get_API(context);
 
-                if (_kegel_controller.kegelPostModel!.error == false) {
+                // if (_kegel_controller.kegelPostModel!.error == false) {
                   await getdata();
-                }
+                // }
                 print('Sets-------$_kegel_controller.sets');
                 if (_kegel_controller.sets == 3) {
                   stopWatch_finish();
@@ -247,9 +274,34 @@ class _KegelScreenState extends State<KegelScreen>
                   four_started = false;
                   watch.reset();
                 });
+                start_animation();
+
                 startWatch();
               }
             });
+          }
+        });
+      }
+    }
+  }
+
+  updateTime3(Timer timer) {
+    if (watch3.isRunning) {
+      if (mounted) {
+        setState(() {
+          // print("startstop Inside=$startStop");
+          elapsedTime2 = transformMilliSeconds(watch3.elapsedMilliseconds);
+
+          if (elapsedTime2 == '03') {
+            // stopWatch_finish();
+            // _animationController_shadow1!.reverse();
+            setState(() {
+              // elapsedTime2 = '00';
+              percent = 0.0;
+              // watch.reset();
+              // four_started = true;
+            });
+            startWatch();
           }
         });
       }
@@ -429,30 +481,30 @@ class _KegelScreenState extends State<KegelScreen>
         vsync: this, duration: const Duration(milliseconds: 500));
     _animationController_middle!.forward();
     _animation_middle =
-    Tween(begin: 15.0, end: 50.0).animate(_animationController_middle!)
-      ..addStatusListener((status) {
-        print("status $status");
-        // shadow_animation1_completed = true;
-      });
+        Tween(begin: 15.0, end: 50.0).animate(_animationController_middle!)
+          ..addStatusListener((status) {
+            print("status $status");
+            // shadow_animation1_completed = true;
+          });
     _animation_middle2 =
-    Tween(begin: 15.0, end: 40.0).animate(_animationController_middle!)
-      ..addStatusListener((status) {
-        print("status $status");
-        // shadow_animation1_completed = true;
-      });
+        Tween(begin: 15.0, end: 40.0).animate(_animationController_middle!)
+          ..addStatusListener((status) {
+            print("status $status");
+            // shadow_animation1_completed = true;
+          });
     _animation_middle3 =
-    Tween(begin: 15.0, end: 120.0).animate(_animationController_middle!)
-      ..addStatusListener((status) {
-        print("status $status");
-        // shadow_animation1_completed = true;
-      });
+        Tween(begin: 15.0, end: 120.0).animate(_animationController_middle!)
+          ..addStatusListener((status) {
+            print("status $status");
+            // shadow_animation1_completed = true;
+          });
     _animation_middle4 =
-    Tween(begin: 15.0, end: 100.0).animate(_animationController_middle!)
-      ..addStatusListener((status) {
-        print("status $status");
+        Tween(begin: 15.0, end: 100.0).animate(_animationController_middle!)
+          ..addStatusListener((status) {
+            print("status $status");
 
-        // shadow_animation1_completed = true;
-      });
+            // shadow_animation1_completed = true;
+          });
   }
 
   AnimationController? _animController;
@@ -745,42 +797,99 @@ class _KegelScreenState extends State<KegelScreen>
                       Container(
                           margin: const EdgeInsets.symmetric(horizontal: 10),
                           alignment: Alignment.center,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Image.asset(
-                                AssetUtils.star_icon,
-                                color: (_kegel_controller.sets >= 1
-                                    ? ColorUtils.primary_gold
-                                    : Colors.grey),
-                                height: 22,
-                                width: 22,
-                              ),
-                              const SizedBox(
-                                width: 7,
-                              ),
-                              Image.asset(
-                                AssetUtils.star_icon,
-                                height: 22,
-                                color: (_kegel_controller.sets >= 2
-                                    ? ColorUtils.primary_gold
-                                    : Colors.grey),
-                                width: 22,
-                              ),
-                              const SizedBox(
-                                width: 7,
-                              ),
-                              Image.asset(
-                                AssetUtils.star_icon,
-                                color: (_kegel_controller.sets >= 3
-                                    ? ColorUtils.primary_gold
-                                    : Colors.grey),
-                                height: 22,
-                                width: 22,
-                              ),
-                            ],
-                          )),
+                          child: Obx(() => (_kegel_controller
+                                      .isuserinfoLoading.value ==
+                                  true
+                              ? Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Image.asset(
+                                      AssetUtils.star_icon,
+                                      color: Colors.grey,
+                                      height: 22,
+                                      width: 22,
+                                    ),
+                                    const SizedBox(
+                                      width: 7,
+                                    ),
+                                    Image.asset(
+                                      AssetUtils.star_icon,
+                                      height: 22,
+                                      color: Colors.grey,
+                                      width: 22,
+                                    ),
+                                    const SizedBox(
+                                      width: 7,
+                                    ),
+                                    Image.asset(
+                                      AssetUtils.star_icon,
+                                      color: Colors.grey,
+                                      height: 22,
+                                      width: 22,
+                                    ),
+                                  ],
+                                )
+                              : Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Image.asset(
+                                      AssetUtils.star_icon,
+                                      color: (int.parse(_kegel_controller
+                                                  .kegelGetModel!
+                                                  .data![_kegel_controller
+                                                          .kegelGetModel!
+                                                          .data!
+                                                          .length -
+                                                      1]
+                                                  .sets!) >=
+                                              1
+                                          ? ColorUtils.primary_gold
+                                          : Colors.grey),
+                                      height: 22,
+                                      width: 22,
+                                    ),
+                                    const SizedBox(
+                                      width: 7,
+                                    ),
+                                    Image.asset(
+                                      AssetUtils.star_icon,
+                                      height: 22,
+                                      color: (int.parse(_kegel_controller
+                                                  .kegelGetModel!
+                                                  .data![_kegel_controller
+                                          .kegelGetModel!
+                                          .data!
+                                          .length -
+                                          1]
+                                                  .sets!) >=
+                                              2
+                                          ? ColorUtils.primary_gold
+                                          : Colors.grey),
+                                      width: 22,
+                                    ),
+                                    const SizedBox(
+                                      width: 7,
+                                    ),
+                                    Image.asset(
+                                      AssetUtils.star_icon,
+                                      color: (int.parse(_kegel_controller
+                                                  .kegelGetModel!
+                                                  .data![_kegel_controller
+                                          .kegelGetModel!
+                                          .data!
+                                          .length -
+                                          1]
+                                                  .sets!) >=
+                                              3
+                                          ? ColorUtils.primary_gold
+                                          : Colors.grey),
+                                      height: 22,
+                                      width: 22,
+                                    ),
+                                  ],
+                                )))),
                       // Container(
                       //     width: 41,
                       //     margin: EdgeInsets.all(8),
@@ -1022,9 +1131,10 @@ class _KegelScreenState extends State<KegelScreen>
                   ),
                 ];
               },
-              body: Container(
-                margin: const EdgeInsets.only(top: 15, left: 8, right: 8),
-                child: SingleChildScrollView(
+              body: SingleChildScrollView(
+                physics: ClampingScrollPhysics(),
+                child: Container(
+                  margin: const EdgeInsets.only(top: 15, left: 8, right: 8),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
@@ -1068,7 +1178,7 @@ class _KegelScreenState extends State<KegelScreen>
                             // startOrStop();
                           },
                           child: Stack(
-    alignment: Alignment.center,
+                            alignment: Alignment.center,
                             children: [
                               Container(
                                 height: 150,
@@ -1092,292 +1202,291 @@ class _KegelScreenState extends State<KegelScreen>
                               ),
                               (animation_started
                                   ? DottedBorder(
-                                borderType: BorderType.Circle,
-                                strokeWidth: 3,
-                                dashPattern: [0, 10],
-                                strokeCap: StrokeCap.round,
-                                radius: Radius.circular(100),
-                                padding: EdgeInsets.all(0),
-                                color: Colors.black,
-                                child: Container(
-                                  height: 340,
-                                  width: 340,
-                                ),
-                              )
+                                      borderType: BorderType.Circle,
+                                      strokeWidth: 3,
+                                      dashPattern: [0, 6],
+                                      strokeCap: StrokeCap.round,
+                                      radius: Radius.circular(100),
+                                      padding: EdgeInsets.all(0),
+                                      color: Colors.black,
+                                      child: Container(
+                                        height: 340,
+                                        width: 340,
+                                      ),
+                                    )
                                   : SizedBox.shrink()),
                               (animation_started
                                   ? DottedBorder(
-                                borderType: BorderType.Circle,
-                                strokeWidth: 3,
-                                dashPattern: [0, 10],
-                                strokeCap: StrokeCap.round,
-                                radius: Radius.circular(100),
-                                padding: EdgeInsets.all(0),
-                                color: Colors.black,
-                                child: Container(
-                                  height: 330,
-                                  width: 330,
-                                ),
-                              )
+                                      borderType: BorderType.Circle,
+                                      strokeWidth: 3,
+                                      dashPattern: [0, 8.5],
+                                      strokeCap: StrokeCap.round,
+                                      radius: Radius.circular(100),
+                                      padding: EdgeInsets.all(0),
+                                      color: Colors.black,
+                                      child: Container(
+                                        height: 330,
+                                        width: 330,
+                                      ),
+                                    )
                                   : SizedBox.shrink()),
                               (animation_started
                                   ? DottedBorder(
-                                borderType: BorderType.Circle,
-                                strokeWidth: 3,
-                                dashPattern: [0, 10],
-                                strokeCap: StrokeCap.round,
-                                radius: Radius.circular(100),
-                                padding: EdgeInsets.all(0),
-                                color: Colors.black,
-                                child: Container(
-                                  height: 320,
-                                  width: 320,
-                                ),
-                              )
+                                      borderType: BorderType.Circle,
+                                      strokeWidth: 3,
+                                      dashPattern: [0, 7.5],
+                                      strokeCap: StrokeCap.round,
+                                      radius: Radius.circular(100),
+                                      padding: EdgeInsets.all(0),
+                                      color: Colors.black,
+                                      child: Container(
+                                        height: 320,
+                                        width: 320,
+                                      ),
+                                    )
                                   : SizedBox.shrink()),
                               (animation_started
                                   ? DottedBorder(
-                                borderType: BorderType.Circle,
-                                strokeWidth: 3,
-                                dashPattern: [0, 10],
-                                strokeCap: StrokeCap.round,
-                                radius: Radius.circular(100),
-                                padding: EdgeInsets.all(0),
-                                color: Colors.black,
-                                child: Container(
-                                  height: 310,
-                                  width: 310,
-                                ),
-                              )
+                                      borderType: BorderType.Circle,
+                                      strokeWidth: 3,
+                                      dashPattern: [0, 7.5],
+                                      strokeCap: StrokeCap.round,
+                                      radius: Radius.circular(100),
+                                      padding: EdgeInsets.all(0),
+                                      color: Colors.black,
+                                      child: Container(
+                                        height: 310,
+                                        width: 310,
+                                      ),
+                                    )
                                   : SizedBox.shrink()),
                               (animation_started
                                   ? DottedBorder(
-                                borderType: BorderType.Circle,
-                                strokeWidth: 3,
-                                dashPattern: [0, 10],
-                                strokeCap: StrokeCap.round,
-                                radius: Radius.circular(100),
-                                padding: EdgeInsets.all(0),
-                                color: Colors.black,
-                                child: Container(
-                                  height: 300,
-                                  width: 300,
-                                ),
-                              )
+                                      borderType: BorderType.Circle,
+                                      strokeWidth: 3,
+                                      dashPattern: [0, 8],
+                                      strokeCap: StrokeCap.round,
+                                      radius: Radius.circular(100),
+                                      padding: EdgeInsets.all(0),
+                                      color: Colors.black,
+                                      child: Container(
+                                        height: 300,
+                                        width: 300,
+                                      ),
+                                    )
                                   : SizedBox.shrink()),
                               (animation_started
                                   ? DottedBorder(
-                                borderType: BorderType.Circle,
-                                strokeWidth: 3,
-                                dashPattern: [0, 10],
-                                strokeCap: StrokeCap.round,
-                                radius: Radius.circular(100),
-                                padding: EdgeInsets.all(0),
-                                color: Colors.black,
-                                child: Container(
-                                  height: 290,
-                                  width: 290,
-                                ),
-                              )
+                                      borderType: BorderType.Circle,
+                                      strokeWidth: 3,
+                                      dashPattern: [0, 8.5],
+                                      strokeCap: StrokeCap.round,
+                                      radius: Radius.circular(100),
+                                      padding: EdgeInsets.all(0),
+                                      color: Colors.black,
+                                      child: Container(
+                                        height: 290,
+                                        width: 290,
+                                      ),
+                                    )
                                   : SizedBox.shrink()),
                               (animation_started
                                   ? DottedBorder(
-                                borderType: BorderType.Circle,
-                                strokeWidth: 3,
-                                dashPattern: [0, 10],
-                                strokeCap: StrokeCap.round,
-                                radius: Radius.circular(100),
-                                padding: EdgeInsets.all(0),
-                                color: Colors.black,
-                                child: Container(
-                                  height: 280,
-                                  width: 280,
-                                ),
-                              )
+                                      borderType: BorderType.Circle,
+                                      strokeWidth: 3,
+                                      dashPattern: [0, 9],
+                                      strokeCap: StrokeCap.round,
+                                      radius: Radius.circular(100),
+                                      padding: EdgeInsets.all(0),
+                                      color: Colors.black,
+                                      child: Container(
+                                        height: 280,
+                                        width: 280,
+                                      ),
+                                    )
                                   : SizedBox.shrink()),
                               (animation_started
                                   ? DottedBorder(
-                                borderType: BorderType.Circle,
-                                strokeWidth: 3,
-                                dashPattern: [0, 10],
-                                strokeCap: StrokeCap.round,
-                                radius: Radius.circular(100),
-                                padding: EdgeInsets.all(0),
-                                color: Colors.black,
-                                child: Container(
-                                  height: 270,
-                                  width: 270,
-                                ),
-                              )
+                                      borderType: BorderType.Circle,
+                                      strokeWidth: 3,
+                                      dashPattern: [0, 8.5],
+                                      strokeCap: StrokeCap.round,
+                                      radius: Radius.circular(100),
+                                      padding: EdgeInsets.all(0),
+                                      color: Colors.black,
+                                      child: Container(
+                                        height: 270,
+                                        width: 270,
+                                      ),
+                                    )
                                   : SizedBox.shrink()),
                               (animation_started
                                   ? DottedBorder(
-                                borderType: BorderType.Circle,
-                                strokeWidth: 3,
-                                dashPattern: [0, 10],
-                                strokeCap: StrokeCap.round,
-                                radius: Radius.circular(100),
-                                padding: EdgeInsets.all(0),
-                                color: Colors.black,
-                                child: Container(
-                                  height: 260,
-                                  width: 260,
-                                ),
-                              )
+                                      borderType: BorderType.Oval,
+                                      strokeWidth: 3,
+                                      dashPattern: [0, 10],
+                                      strokeCap: StrokeCap.round,
+                                      radius: Radius.circular(100),
+                                      padding: EdgeInsets.all(0),
+                                      color: Colors.black,
+                                      child: Container(
+                                        height: 260,
+                                        width: 260,
+                                      ),
+                                    )
                                   : SizedBox.shrink()),
                               (animation_started
                                   ? DottedBorder(
-                                borderType: BorderType.Circle,
-                                strokeWidth: 3,
-                                dashPattern: [0, 10],
-                                strokeCap: StrokeCap.round,
-                                radius: Radius.circular(100),
-                                padding: EdgeInsets.all(0),
-                                color: Colors.black,
-                                child: Container(
-                                  height: 250,
-                                  width: 250,
-                                ),
-                              )
+                                      borderType: BorderType.Oval,
+                                      strokeWidth: 3,
+                                      dashPattern: [0, 9.5],
+                                      strokeCap: StrokeCap.round,
+                                      radius: Radius.circular(100),
+                                      padding: EdgeInsets.all(0),
+                                      color: Colors.black,
+                                      child: Container(
+                                        height: 250,
+                                        width: 250,
+                                      ),
+                                    )
                                   : SizedBox.shrink()),
                               (animation_started
                                   ? DottedBorder(
-                                borderType: BorderType.Circle,
-                                strokeWidth: 3,
-                                dashPattern: [0, 10],
-                                strokeCap: StrokeCap.round,
-                                radius: Radius.circular(100),
-                                padding: EdgeInsets.all(0),
-                                color: Colors.black,
-                                child: Container(
-                                  height: 240,
-                                  width: 240,
-                                ),
-                              )
+                                      borderType: BorderType.Oval,
+                                      strokeWidth: 3,
+                                      dashPattern: [0, 9],
+                                      strokeCap: StrokeCap.round,
+                                      radius: Radius.circular(100),
+                                      padding: EdgeInsets.all(0),
+                                      color: Colors.black,
+                                      child: Container(
+                                        height: 240,
+                                        width: 240,
+                                      ),
+                                    )
                                   : SizedBox.shrink()),
                               (animation_started
                                   ? DottedBorder(
-                                borderType: BorderType.Circle,
-                                strokeWidth: 3,
-                                dashPattern: [0, 10],
-                                strokeCap: StrokeCap.round,
-                                radius: Radius.circular(100),
-                                padding: EdgeInsets.all(0),
-                                color: Colors.black,
-                                child: Container(
-                                  height: 230,
-                                  width: 230,
-                                ),
-                              )
+                                      borderType: BorderType.Oval,
+                                      strokeWidth: 3,
+                                      dashPattern: [0, 8.5],
+                                      strokeCap: StrokeCap.round,
+                                      radius: Radius.circular(100),
+                                      padding: EdgeInsets.all(0),
+                                      color: Colors.black,
+                                      child: Container(
+                                        height: 230,
+                                        width: 230,
+                                      ),
+                                    )
                                   : SizedBox.shrink()),
                               (animation_started
                                   ? DottedBorder(
-                                borderType: BorderType.Circle,
-                                strokeWidth: 3,
-                                dashPattern: [0, 10],
-                                strokeCap: StrokeCap.round,
-                                radius: Radius.circular(100),
-                                padding: EdgeInsets.all(0),
-                                color: Colors.black,
-                                child: Container(
-                                  height: 220,
-                                  width: 220,
-                                ),
-                              )
+                                      borderType: BorderType.Oval,
+                                      strokeWidth: 3,
+                                      dashPattern: [0, 7],
+                                      strokeCap: StrokeCap.round,
+                                      radius: Radius.circular(100),
+                                      padding: EdgeInsets.all(0),
+                                      color: Colors.black,
+                                      child: Container(
+                                        height: 220,
+                                        width: 220,
+                                      ),
+                                    )
                                   : SizedBox.shrink()),
                               (animation_started
                                   ? DottedBorder(
-                                borderType: BorderType.Circle,
-                                strokeWidth: 3,
-                                dashPattern: [0, 10],
-                                strokeCap: StrokeCap.round,
-                                radius: Radius.circular(100),
-                                padding: EdgeInsets.all(0),
-                                color: Colors.black,
-                                child: Container(
-                                  height: 210,
-                                  width: 210,
-                                ),
-                              )
+                                      borderType: BorderType.Oval,
+                                      strokeWidth: 3,
+                                      dashPattern: [0, 7.5],
+                                      strokeCap: StrokeCap.round,
+                                      radius: Radius.circular(100),
+                                      padding: EdgeInsets.all(0),
+                                      color: Colors.black,
+                                      child: Container(
+                                        height: 210,
+                                        width: 210,
+                                      ),
+                                    )
                                   : SizedBox.shrink()),
                               (animation_started
                                   ? DottedBorder(
-                                borderType: BorderType.Circle,
-                                strokeWidth: 3,
-                                dashPattern: [0, 10],
-                                strokeCap: StrokeCap.round,
-                                radius: Radius.circular(100),
-                                padding: EdgeInsets.all(0),
-                                color: Colors.black,
-                                child: Container(
-                                  height: 200,
-                                  width: 200,
-                                ),
-                              )
+                                      borderType: BorderType.Oval,
+                                      strokeWidth: 3,
+                                      dashPattern: [0, 7],
+                                      strokeCap: StrokeCap.round,
+                                      radius: Radius.circular(100),
+                                      padding: EdgeInsets.all(0),
+                                      color: Colors.black,
+                                      child: Container(
+                                        height: 200,
+                                        width: 200,
+                                      ),
+                                    )
                                   : SizedBox.shrink()),
                               (animation_started
                                   ? DottedBorder(
-                                borderType: BorderType.Circle,
-                                strokeWidth: 3,
-                                dashPattern: [0, 10],
-                                strokeCap: StrokeCap.round,
-                                radius: Radius.circular(100),
-                                padding: EdgeInsets.all(0),
-                                color: Colors.black,
-                                child: Container(
-                                  height: 190,
-                                  width: 190,
-                                ),
-                              )
+                                      borderType: BorderType.Oval,
+                                      strokeWidth: 3,
+                                      dashPattern: [0, 6.5],
+                                      strokeCap: StrokeCap.round,
+                                      radius: Radius.circular(100),
+                                      padding: EdgeInsets.all(0),
+                                      color: Colors.black,
+                                      child: Container(
+                                        height: 190,
+                                        width: 190,
+                                      ),
+                                    )
                                   : SizedBox.shrink()),
                               (animation_started
                                   ? DottedBorder(
-                                borderType: BorderType.Circle,
-                                strokeWidth: 3,
-                                dashPattern: [0, 10],
-                                strokeCap: StrokeCap.round,
-                                radius: Radius.circular(100),
-                                padding: EdgeInsets.all(0),
-                                color: Colors.black,
-                                child: Container(
-                                  height: 180,
-                                  width: 180,
-                                ),
-                              )
+                                      borderType: BorderType.Oval,
+                                      strokeWidth: 3,
+                                      dashPattern: [0, 6],
+                                      strokeCap: StrokeCap.round,
+                                      radius: Radius.circular(100),
+                                      padding: EdgeInsets.all(0),
+                                      color: Colors.black,
+                                      child: Container(
+                                        height: 180,
+                                        width: 180,
+                                      ),
+                                    )
                                   : SizedBox.shrink()),
                               (animation_started
                                   ? DottedBorder(
-                                borderType: BorderType.Circle,
-                                strokeWidth: 3,
-                                dashPattern: [0, 10],
-                                strokeCap: StrokeCap.round,
-                                radius: Radius.circular(100),
-                                padding: EdgeInsets.all(0),
-                                color: Colors.black,
-                                child: Container(
-                                  height: 170,
-                                  width: 170,
-                                  padding: EdgeInsets.all(5),
-                                ),
-                              )
+                                      borderType: BorderType.Oval,
+                                      strokeWidth: 3,
+                                      dashPattern: [0, 5.5],
+                                      strokeCap: StrokeCap.round,
+                                      radius: Radius.circular(100),
+                                      padding: EdgeInsets.all(0),
+                                      color: Colors.black,
+                                      child: Container(
+                                        height: 170,
+                                        width: 170,
+                                        padding: EdgeInsets.all(5),
+                                      ),
+                                    )
                                   : SizedBox.shrink()),
                               (animation_started
                                   ? DottedBorder(
-                                borderType: BorderType.Circle,
-                                strokeWidth: 3,
-                                dashPattern: [0, 10],
-                                strokeCap: StrokeCap.round,
-                                radius: Radius.circular(100),
-                                padding: EdgeInsets.all(0),
-                                color: Colors.black,
-                                child: Container(
-                                  height: 160,
-                                  width: 160,
-                                  padding: EdgeInsets.all(5),
-                                ),
-                              )
+                                      borderType: BorderType.Oval,
+                                      strokeWidth: 3,
+                                      dashPattern: [0, 7],
+                                      strokeCap: StrokeCap.round,
+                                      radius: Radius.circular(100),
+                                      padding: EdgeInsets.all(0),
+                                      color: Colors.black,
+                                      child: Container(
+                                        height: 160,
+                                        width: 160,
+                                        padding: EdgeInsets.all(5),
+                                      ),
+                                    )
                                   : SizedBox.shrink()),
-
                               Container(
                                 height: (animation_started
                                     ? _animation_button!.value
@@ -1386,24 +1495,24 @@ class _KegelScreenState extends State<KegelScreen>
                                     ? _animation_button!.value
                                     : button_height),
                                 decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    image: const DecorationImage(
-                                        alignment: Alignment.center,
-                                        image:
-                                            AssetImage(AssetUtils.home_button)),
-                                    // boxShadow: [
-                                    //   BoxShadow(
-                                    //     color: (animation_started
-                                    //         ? HexColor('#E64A9B')
-                                    //         : Colors.transparent),
-                                    //     blurRadius: (animation_started
-                                    //         ? _animation!.value
-                                    //         : 0),
-                                    //     spreadRadius: (animation_started
-                                    //         ? _animation!.value
-                                    //         : 0),
-                                    //   )
-                                    // ]
+                                  shape: BoxShape.circle,
+                                  image: const DecorationImage(
+                                      alignment: Alignment.center,
+                                      image:
+                                          AssetImage(AssetUtils.home_button)),
+                                  // boxShadow: [
+                                  //   BoxShadow(
+                                  //     color: (animation_started
+                                  //         ? HexColor('#E64A9B')
+                                  //         : Colors.transparent),
+                                  //     blurRadius: (animation_started
+                                  //         ? _animation!.value
+                                  //         : 0),
+                                  //     spreadRadius: (animation_started
+                                  //         ? _animation!.value
+                                  //         : 0),
+                                  //   )
+                                  // ]
                                 ),
                                 child: Stack(
                                   children: [
@@ -2072,41 +2181,55 @@ class _KegelScreenState extends State<KegelScreen>
                       ),
                       GestureDetector(
                         onTap: () async {
-                          if (started) {
-                            back_wallpaper = false;
-
-                            // start_animation();
-                            // start_button_animation();
-                            await middle_animation();
-                            await text_animation();
-                            // startTimer();
-                            // await startWatch();
-
-                            Future.delayed(const Duration(seconds: 1),
-                                () async {
-                              startTimer();
-                            });
-                            Future.delayed(const Duration(seconds: 3),
-                                () async {
-                              await startWatch();
-                            });
+                          if (_kegel_controller.kegelGetModel!.error == false &&
+                              int.parse(_kegel_controller
+                                      .kegelGetModel!.data![0].sets!) >=
+                                  3) {
+                            print(int.parse(_kegel_controller
+                                .kegelGetModel!.data![0].sets!));
+                            CommonWidget().showErrorToaster(
+                                msg: "You have completed your today's sets");
                           } else {
-                            await stopWatch_finish();
-                            await _animationController_middle!.reverse();
-                            Vibration.cancel();
-                            setState(() {
-                              timer_started = false;
-                              elapsedTime = '00';
-                              percent = 0.0;
-                              back_wallpaper = true;
-                              button_height = 150;
-                              text_k_size = 70;
-                              text_time_size = 25;
-                              watch.reset();
-                              // paused_time.clear();
-                            });
-                            // print('method_time : ${method_time[0].total_time}');
-                            // print('method_name : ${method_time[0].method_name}');
+                            if (started) {
+                              back_wallpaper = false;
+
+                              // start_animation();
+                              // start_button_animation();
+                              startTimer();
+                              (counter > 0 ? startWatch() : startWatch3());
+                              start_animation();
+                              middle_animation();
+                              text_animation();
+                              // startTimer();
+                              // await startWatch();
+
+                              // Future.delayed(const Duration(seconds: 1),
+                              //     () async {
+                              //   // startTimer();
+                              // });
+                              // Future.delayed(const Duration(seconds: 3),
+                              //     () async {
+                              //   await startWatch();
+                              // });
+                            } else {
+                              await stopWatch_finish();
+                              await _animationController_middle!.reverse();
+                              Vibration.cancel();
+                              setState(() {
+                                _swipe_setup_controller.k_running = false;
+                                timer_started = false;
+                                elapsedTime = '00';
+                                percent = 0.0;
+                                back_wallpaper = true;
+                                button_height = 150;
+                                text_k_size = 70;
+                                text_time_size = 25;
+                                watch.reset();
+                                // paused_time.clear();
+                              });
+                              // print('method_time : ${method_time[0].total_time}');
+                              // print('method_name : ${method_time[0].method_name}');
+                            }
                           }
                         },
                         child: Container(
@@ -7131,7 +7254,7 @@ class _KegelScreenState extends State<KegelScreen>
   }
 
   startWatch() {
-    start_animation();
+    // start_animation();
     setState(() {
       startStop = false;
       started = false;
@@ -7148,8 +7271,8 @@ class _KegelScreenState extends State<KegelScreen>
   startWatch2() {
     // start_animation();
     setState(() {
-      startStop = false;
-      started = false;
+      // startStop = false;
+      // started = false;
       elapsedTime = "00";
       watch.start();
       timer = Timer.periodic(
@@ -7157,6 +7280,23 @@ class _KegelScreenState extends State<KegelScreen>
           (levels == 'Easy ? '
               ? updateTime_Easy
               : (levels == 'Normal' ? updateTime_Normal : updateTime_Easy)));
+    });
+  }
+
+  final Ledger_Setup_controller _swipe_setup_controller = Get.put(
+      Ledger_Setup_controller(),
+      tag: Ledger_Setup_controller().toString());
+
+  startWatch3() {
+    setState(() {
+      _swipe_setup_controller.k_running = true;
+      startStop = false;
+      started = false;
+      elapsedTime2 = "00";
+      elapsedTime = "00";
+
+      watch3.start();
+      timer3 = Timer.periodic(const Duration(milliseconds: 100), updateTime3);
     });
   }
 
@@ -7171,6 +7311,7 @@ class _KegelScreenState extends State<KegelScreen>
 
   stopWatch_finish() {
     setState(() {
+      four_started = false;
       startStop = true;
       // _animationController!.stop();
       // _animationController_button!.reverse();

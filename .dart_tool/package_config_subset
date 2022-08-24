@@ -310,6 +310,10 @@ petitparser
 2.16
 file:///Users/technologies/Documents/flutter/.pub-cache/hosted/pub.dartlang.org/petitparser-5.0.0/
 file:///Users/technologies/Documents/flutter/.pub-cache/hosted/pub.dartlang.org/petitparser-5.0.0/lib/
+pin_input_text_field
+2.13
+file:///Users/technologies/Documents/flutter/.pub-cache/hosted/pub.dartlang.org/pin_input_text_field-4.1.2/
+file:///Users/technologies/Documents/flutter/.pub-cache/hosted/pub.dartlang.org/pin_input_text_field-4.1.2/lib/
 pinput
 2.12
 file:///Users/technologies/Documents/flutter/.pub-cache/hosted/pub.dartlang.org/pinput-1.2.2/
@@ -398,6 +402,10 @@ simple_gesture_detector
 2.12
 file:///Users/technologies/Documents/flutter/.pub-cache/hosted/pub.dartlang.org/simple_gesture_detector-0.2.0/
 file:///Users/technologies/Documents/flutter/.pub-cache/hosted/pub.dartlang.org/simple_gesture_detector-0.2.0/lib/
+sms_autofill
+2.12
+file:///Users/technologies/Documents/flutter/.pub-cache/hosted/pub.dartlang.org/sms_autofill-2.2.0/
+file:///Users/technologies/Documents/flutter/.pub-cache/hosted/pub.dartlang.org/sms_autofill-2.2.0/lib/
 source_span
 2.14
 file:///Users/technologies/Documents/flutter/.pub-cache/hosted/pub.dartlang.org/source_span-1.8.2/

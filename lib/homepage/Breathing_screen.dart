@@ -69,14 +69,16 @@ class _BreathingScreenState extends State<BreathingScreen>
                 setState(() {
                   elapsedTime = '00';
                   percent = 0.0;
+                  // _animationController!.dispose();
+
                   // watch.stop();
                   counter = 0;
                 });
                 _breathing_controller.sets++;
                 await _breathing_controller.Breathing_post_API(context);
-                if (_breathing_controller.breathingPostModel!.error == false) {
+                // if (_breathing_controller.breathingPostModel!.error == false) {
                   await getdata();
-                }
+                // }
                 print('Sets-------$_breathing_controller.sets');
                 if (_breathing_controller.sets == 3) {
                   stopWatch();
@@ -190,7 +192,7 @@ class _BreathingScreenState extends State<BreathingScreen>
   String _status = 'Hold';
   bool shadow_animation1_completed = false;
   bool shadow_animation_pause = false;
-  int counter = 0;
+  int counter = 9;
   bool _canVibrate = true;
   final Iterable<Duration> pauses = [
     const Duration(milliseconds: 1),
@@ -541,42 +543,99 @@ class _BreathingScreenState extends State<BreathingScreen>
                     Container(
                         margin: EdgeInsets.symmetric(horizontal: 10),
                         alignment: Alignment.center,
-                        child: Row(
+                        child: Obx(() => (_breathing_controller
+                            .isuserinfoLoading.value ==
+                            true
+                            ? Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Image.asset(
                               AssetUtils.star_icon,
-                              color: (_breathing_controller.sets >= 1
-                                  ? ColorUtils.primary_gold
-                                  : Colors.grey),
+                              color: Colors.grey,
                               height: 22,
                               width: 22,
                             ),
-                            SizedBox(
+                            const SizedBox(
                               width: 7,
                             ),
                             Image.asset(
                               AssetUtils.star_icon,
                               height: 22,
-                              color: (_breathing_controller.sets >= 2
-                                  ? ColorUtils.primary_gold
-                                  : Colors.grey),
+                              color: Colors.grey,
                               width: 22,
                             ),
-                            SizedBox(
+                            const SizedBox(
                               width: 7,
                             ),
                             Image.asset(
                               AssetUtils.star_icon,
-                              color: (_breathing_controller.sets >= 3
+                              color: Colors.grey,
+                              height: 22,
+                              width: 22,
+                            ),
+                          ],
+                        )
+                            : Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              AssetUtils.star_icon,
+                              color: (int.parse(_breathing_controller
+                                  .breathingGetModel!
+                                  .data![_breathing_controller
+                                  .breathingGetModel!
+                                  .data!
+                                  .length -
+                                  1]
+                                  .sets!) >=
+                                  1
+                                  ? ColorUtils.primary_gold
+                                  : Colors.grey),
+                              height: 22,
+                              width: 22,
+                            ),
+                            const SizedBox(
+                              width: 7,
+                            ),
+                            Image.asset(
+                              AssetUtils.star_icon,
+                              height: 22,
+                              color: (int.parse(_breathing_controller
+                                  .breathingGetModel!
+                                  .data![_breathing_controller
+                                  .breathingGetModel!
+                                  .data!
+                                  .length -
+                                  1]
+                                  .sets!) >=
+                                  2
+                                  ? ColorUtils.primary_gold
+                                  : Colors.grey),
+                              width: 22,
+                            ),
+                            const SizedBox(
+                              width: 7,
+                            ),
+                            Image.asset(
+                              AssetUtils.star_icon,
+                              color: (int.parse(_breathing_controller
+                                  .breathingGetModel!
+                                  .data![_breathing_controller
+                                  .breathingGetModel!
+                                  .data!
+                                  .length -
+                                  1]
+                                  .sets!) >=
+                                  3
                                   ? ColorUtils.primary_gold
                                   : Colors.grey),
                               height: 22,
                               width: 22,
                             ),
                           ],
-                        )),
+                        )))),
 
                     // IconButton(
                     //     onPressed: () {},
@@ -590,6 +649,7 @@ class _BreathingScreenState extends State<BreathingScreen>
             },
             body:
             SingleChildScrollView(
+              physics: ClampingScrollPhysics(),
               child: Container(
                 margin: EdgeInsets.only(top: 15, left: 8, right: 8),
                 child: Column(
@@ -772,6 +832,7 @@ class _BreathingScreenState extends State<BreathingScreen>
                                   } else {
                                     stopWatch();
                                     setState(() {
+                                      _animationController!.dispose();
                                       elapsedTime = '00';
                                       percent = 0.0;
                                       watch.reset();
@@ -1014,8 +1075,8 @@ class _BreathingScreenState extends State<BreathingScreen>
       startStop = true;
       Vibration.cancel();
       animation_started = false;
-      _animationController!.dispose();
-      _animationController_shadow1!.dispose();
+      // _animationController!.dispose();
+      // _animationController_shadow1!.dispose();
       watch.stop();
       watch2.stop();
       percent = 0.0;

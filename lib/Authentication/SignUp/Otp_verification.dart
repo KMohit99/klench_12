@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:pinput/pin_put/pin_put.dart';
+import 'package:sms_autofill/sms_autofill.dart';
 
 import '../../front_page/FrontpageScreen.dart';
 import '../../utils/Asset_utils.dart';
@@ -80,28 +81,26 @@ class _VerifyOtpState extends State<VerifyOtp> {
   @override
   void initState() {
     startTimer();
+    _listOPT();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    SmsAutoFill().unregisterListener();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final seconds = myDuration!.inSeconds.remainder(60);
-    final screenHeight = MediaQuery
-        .of(context)
-        .size
-        .height;
-    final screenWidth = MediaQuery
-        .of(context)
-        .size
-        .width;
+    final screenHeight = MediaQuery.of(context).size.height;
+    final screenWidth = MediaQuery.of(context).size.width;
     return Stack(
       children: [
         Container(
           decoration: Common_decoration(),
-          height: MediaQuery
-              .of(context)
-              .size
-              .height,
+          height: MediaQuery.of(context).size.height,
         ),
         GestureDetector(
           onTap: () {
@@ -171,7 +170,7 @@ class _VerifyOtpState extends State<VerifyOtp> {
                     ),
                     Container(
                       decoration: BoxDecoration(
-                        // color: Colors.black.withOpacity(0.65),
+                          // color: Colors.black.withOpacity(0.65),
                           gradient: LinearGradient(
                             begin: Alignment.centerLeft,
                             end: Alignment.centerRight,
@@ -207,73 +206,88 @@ class _VerifyOtpState extends State<VerifyOtp> {
                                 eachFieldMargin: EdgeInsets.all(7),
                                 focusNode: _pinOTPFocus,
                                 controller:
-                                _signUpScreenController.OtpController,
+                                    _signUpScreenController.OtpController,
                                 submittedFieldDecoration: pinOTPDecoration,
                                 selectedFieldDecoration: pinOTPDecoration,
                                 followingFieldDecoration: pinOTPDecoration,
                                 pinAnimationType: PinAnimationType.scale,
                               ),
                             ),
+                            // Container(
+                            //   child: PinFieldAutoFill(
+                            //     decoration: UnderlineDecoration(
+                            //       textStyle: TextStyle(
+                            //           fontSize: 20, color: Colors.black),
+                            //       colorBuilder: FixedColorBuilder(
+                            //           Colors.black.withOpacity(0.3)),
+                            //     ),
+                            //     codeLength: 4,
+                            //     onCodeSubmitted: (code) {},
+                            //     onCodeChanged: (code) {
+                            //       if (code!.length == 6) {
+                            //         FocusScope.of(context)
+                            //             .requestFocus(FocusNode());
+                            //       }
+                            //     },
+                            //   ),
+                            // ),
                             SizedBox(
                               height: 28,
                             ),
                             Container(
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      decoration: BoxDecoration(
-                                          gradient: LinearGradient(
-                                            begin: Alignment.bottomLeft,
-                                            end: Alignment.topRight,
-                                            colors: [
-                                              HexColor("#020204").withOpacity(
-                                                  1),
-                                              HexColor("#36393E").withOpacity(
-                                                  1),
-                                            ],
-                                          ),
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color: HexColor('#2E2E2D'),
-                                              offset: Offset(0, 3),
-                                              blurRadius: 6,
-                                            ),
-                                            BoxShadow(
-                                              color: HexColor('#04060F'),
-                                              offset: Offset(10, 10),
-                                              blurRadius: 20,
-                                            ),
-                                          ],
-                                          borderRadius: BorderRadius.circular(
-                                              50)),
-                                      child: IconButton(
-                                        visualDensity: VisualDensity(
-                                            horizontal: -4, vertical: -4),
-                                        onPressed: () {},
-                                        icon: Icon(Icons.access_time_rounded),
-                                        color: ColorUtils.primary_grey,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                      gradient: LinearGradient(
+                                        begin: Alignment.bottomLeft,
+                                        end: Alignment.topRight,
+                                        colors: [
+                                          HexColor("#020204").withOpacity(1),
+                                          HexColor("#36393E").withOpacity(1),
+                                        ],
                                       ),
-                                    ),
-                                    SizedBox(
-                                      width: 7,
-                                    ),
-                                    Text(
-                                      '${seconds} S',
-                                      style: TextStyle(
-                                          fontSize: 12,
-                                          fontFamily: 'PR',
-                                          color: ColorUtils.primary_grey),
-                                    ),
-                                  ],
-                                )),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: HexColor('#2E2E2D'),
+                                          offset: Offset(0, 3),
+                                          blurRadius: 6,
+                                        ),
+                                        BoxShadow(
+                                          color: HexColor('#04060F'),
+                                          offset: Offset(10, 10),
+                                          blurRadius: 20,
+                                        ),
+                                      ],
+                                      borderRadius: BorderRadius.circular(50)),
+                                  child: IconButton(
+                                    visualDensity: VisualDensity(
+                                        horizontal: -4, vertical: -4),
+                                    onPressed: () {},
+                                    icon: Icon(Icons.access_time_rounded),
+                                    color: ColorUtils.primary_grey,
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 7,
+                                ),
+                                Text(
+                                  '${seconds} S',
+                                  style: TextStyle(
+                                      fontSize: 12,
+                                      fontFamily: 'PR',
+                                      color: ColorUtils.primary_grey),
+                                ),
+                              ],
+                            )),
                             GestureDetector(
                               onTap: () {
                                 if (resend_otp == false) {
                                   _signUpScreenController.ReSendOtpAPi(
                                       context: context);
                                   if (_signUpScreenController
-                                      .sendOtpModel!.error ==
+                                          .sendOtpModel!.error ==
                                       false) {
                                     resend_otp = true;
                                     startTimer();
@@ -285,12 +299,12 @@ class _VerifyOtpState extends State<VerifyOtp> {
                                     borderRadius: BorderRadius.circular(10),
                                     border: (resend_otp
                                         ? Border.all(
-                                        color: Colors.transparent, width: 1)
+                                            color: Colors.transparent, width: 1)
                                         : Border.all(
-                                        color: ColorUtils.primary_gold,
-                                        width: 1))),
+                                            color: ColorUtils.primary_gold,
+                                            width: 1))),
                                 margin:
-                                const EdgeInsets.only(top: 28, bottom: 28),
+                                    const EdgeInsets.only(top: 28, bottom: 28),
                                 child: Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: Text(
@@ -310,7 +324,7 @@ class _VerifyOtpState extends State<VerifyOtp> {
                                 await _signUpScreenController.VerifyOtpAPi(
                                     context: context);
                                 if (_signUpScreenController
-                                    .signUpModel!.error ==
+                                        .signUpModel!.error ==
                                     false) {
                                   await selectTowerBottomSheet(context);
                                   // (ontapped)
@@ -332,7 +346,7 @@ class _VerifyOtpState extends State<VerifyOtp> {
                               },
                               child: Container(
                                 decoration: BoxDecoration(
-                                  // color: Colors.black.withOpacity(0.65),
+                                    // color: Colors.black.withOpacity(0.65),
                                     gradient: LinearGradient(
                                       begin: Alignment.centerLeft,
                                       end: Alignment.centerRight,
@@ -381,16 +395,14 @@ class _VerifyOtpState extends State<VerifyOtp> {
   }
 
   bool ontapped = false;
+  _listOPT() async {
+    print("inseide sms");
+    await SmsAutoFill().listenForCode;
+  }
 
   selectTowerBottomSheet(BuildContext context) {
-    final screenheight = MediaQuery
-        .of(context)
-        .size
-        .height;
-    final screenwidth = MediaQuery
-        .of(context)
-        .size
-        .width;
+    final screenheight = MediaQuery.of(context).size.height;
+    final screenwidth = MediaQuery.of(context).size.width;
     showModalBottomSheet(
       backgroundColor: Colors.black,
       shape: RoundedRectangleBorder(
@@ -454,13 +466,12 @@ class _VerifyOtpState extends State<VerifyOtp> {
                       common_button_gold(
                         onTap: () {
                           // setState(() {
-                            ontapped = true;
-                            print(ontapped);
+                          ontapped = true;
+                          print(ontapped);
                           // });
                           // Navigator.push(context, MaterialPageRoute(builder: (context)=>FaceScanScreen()));
-                          Navigator.of(context).push(
-                              MaterialPageRoute(
-                                  builder: (context) => FaceScanScreen()));
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => FaceScanScreen()));
                           // Get.to(FaceScanScreen());
                         },
                         title_text: 'Proceed',

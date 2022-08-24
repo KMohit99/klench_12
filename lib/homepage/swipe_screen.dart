@@ -41,7 +41,7 @@ class _SwipeScreenState extends State<SwipeScreen> {
     print("widget.PageNo");
     print(widget.PageNo);
     setState(() {
-      page_index = widget.PageNo ;
+      page_index = widget.PageNo;
     });
     _pageController_customer =
         PageController(initialPage: widget.PageNo, keepPage: false);
@@ -58,7 +58,7 @@ class _SwipeScreenState extends State<SwipeScreen> {
         duration: pageTurnDuration, curve: pageTurnCurve);
   }
 
-  Future _goBack() async{
+  Future _goBack() async {
     if (page_index == 0) {
       _pageController_customer!.jumpToPage(3);
     } else {
@@ -79,7 +79,10 @@ class _SwipeScreenState extends State<SwipeScreen> {
           onHorizontalDragEnd: (dragEndDetails) async {
             if (dragEndDetails.primaryVelocity! < 0) {
               // Page forwards
-              if (_ledgerScreenSetup_customer_Controller.m_running != true) {
+              if (_ledgerScreenSetup_customer_Controller.m_running != true &&
+                  _ledgerScreenSetup_customer_Controller.k_running != true &&
+                  _ledgerScreenSetup_customer_Controller.w_running != true &&
+                  _ledgerScreenSetup_customer_Controller.p_running != true) {
                 _goForward();
                 print('Move page forwards');
               } else {
@@ -88,9 +91,12 @@ class _SwipeScreenState extends State<SwipeScreen> {
               }
             } else if (dragEndDetails.primaryVelocity! > 0) {
               // Page backwards
-              if (_ledgerScreenSetup_customer_Controller.m_running != true) {
+              if (_ledgerScreenSetup_customer_Controller.m_running != true &&
+                  _ledgerScreenSetup_customer_Controller.k_running != true &&
+                  _ledgerScreenSetup_customer_Controller.w_running != true &&
+                  _ledgerScreenSetup_customer_Controller.p_running != true) {
                 print('Move page backwards');
-               await _goBack();
+                await _goBack();
               } else {
                 CommonWidget()
                     .showErrorToaster(msg: 'Please finish the method');

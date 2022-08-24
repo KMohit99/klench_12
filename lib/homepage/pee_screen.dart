@@ -12,6 +12,7 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
 import 'package:klench_/homepage/alarm_info.dart';
 import 'package:klench_/homepage/controller/pee_screen_controller.dart';
+import 'package:klench_/homepage/swipe_controller.dart';
 import 'package:klench_/main.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -147,37 +148,33 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
   double text_time_size = 40;
   int _counter = 0;
 
-  _incrementCounter() async {
-    for (var i = 0; i < 65; i++) {
-      //Loop 100 times
-      await Future.delayed(const Duration(milliseconds: 100), () {
-        // Delay 500 milliseconds
-        setState(() {
-          _counter++; //Increment Counter
-          print("Counter $_counter");
-        });
-      });
-    }
-  }
+  // _incrementCounter() async {
+  //   for (var i = 0; i < 65; i++) {
+  //     //Loop 100 times
+  //     await Future.delayed(const Duration(milliseconds: 100), () {
+  //       // Delay 500 milliseconds
+  //       setState(() {
+  //         _counter++; //Increment Counter
+  //         print("Counter $_counter");
+  //       });
+  //     });
+  //   }
+  // }
 
   start_animation() {
     setState(() {
       animation_started = true;
       print(animation_started);
     });
-    _incrementCounter();
-    vibration();
+    // _incrementCounter();
+    // vibration();
     _animationController =
         AnimationController(vsync: this, duration: const Duration(seconds: 1));
     _animationController!.repeat(reverse: true);
     _animation = Tween(begin: 0.0, end: 65.0).animate(_animationController!)
       ..addStatusListener((status) {
-        if (status == AnimationStatus.completed) {
-          setState(() {
-            _counter = 0;
-          });
-        }
-        print(_animation!.value);
+        if (status == AnimationStatus.completed) {}
+        // print(_animation!.value);
       });
 
     _animationController_button =
@@ -262,7 +259,7 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
             // shadow_animation1_completed = true;
           });
     _animation_middle4 =
-        Tween(begin: 15.0, end: 160.0).animate(_animationController_middle!)
+        Tween(begin: 15.0, end: 140.0).animate(_animationController_middle!)
           ..addStatusListener((status) {
             // print(status);
             // shadow_animation1_completed = true;
@@ -311,7 +308,7 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
-    // print(screenHeight);
+    print(screenHeight);
 
     return Stack(
       children: [
@@ -672,6 +669,7 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
                 ];
               },
               body: SingleChildScrollView(
+                physics: ClampingScrollPhysics(),
                 child: Container(
                   margin: const EdgeInsets.only(top: 15, left: 8, right: 8),
                   child: Column(
@@ -700,7 +698,7 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
                       ),
 
                       AvatarGlow(
-                        endRadius: 170.0,
+                        endRadius: 175.0,
                         showTwoGlows: true,
                         animate: false,
                         // (startStop ? false : true),
@@ -745,41 +743,283 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
                                       )
                                     ]),
                               ),
+                              // (animation_started
+                              //     ? DottedBorder(
+                              //   borderType: BorderType.Circle,
+                              //   strokeWidth: 3,
+                              //   dashPattern: [0, 6],
+                              //   strokeCap: StrokeCap.round,
+                              //   radius: Radius.circular(100),
+                              //   padding: EdgeInsets.all(0),
+                              //   color: Colors.red,
+                              //   child: Container(
+                              //     height: 340,
+                              //     width: 340,
+                              //   ),
+                              // )
+                              //     : SizedBox.shrink()),
+                              // (animation_started
+                              //     ? DottedBorder(
+                              //   borderType: BorderType.Circle,
+                              //   strokeWidth: 3,
+                              //   dashPattern: [0, 8.5],
+                              //   strokeCap: StrokeCap.round,
+                              //   radius: Radius.circular(100),
+                              //   padding: EdgeInsets.all(0),
+                              //   color: Colors.red,
+                              //   child: Container(
+                              //     height: 330,
+                              //     width: 330,
+                              //   ),
+                              // )
+                              //     : SizedBox.shrink()),
+                              // (animation_started
+                              //     ? DottedBorder(
+                              //   borderType: BorderType.Circle,
+                              //   strokeWidth: 3,
+                              //   dashPattern: [0, 7.5],
+                              //   strokeCap: StrokeCap.round,
+                              //   radius: Radius.circular(100),
+                              //   padding: EdgeInsets.all(0),
+                              //   color: Colors.red,
+                              //   child: Container(
+                              //     height: 320,
+                              //     width: 320,
+                              //   ),
+                              // )
+                              //     : SizedBox.shrink()),
+                              // (animation_started
+                              //     ? DottedBorder(
+                              //   borderType: BorderType.Circle,
+                              //   strokeWidth: 3,
+                              //   dashPattern: [0, 7.5],
+                              //   strokeCap: StrokeCap.round,
+                              //   radius: Radius.circular(100),
+                              //   padding: EdgeInsets.all(0),
+                              //   color: Colors.red,
+                              //   child: Container(
+                              //     height: 310,
+                              //     width: 310,
+                              //   ),
+                              // )
+                              //     : SizedBox.shrink()),
+                              // (animation_started
+                              //     ? DottedBorder(
+                              //   borderType: BorderType.Circle,
+                              //   strokeWidth: 3,
+                              //   dashPattern: [0, 8],
+                              //   strokeCap: StrokeCap.round,
+                              //   radius: Radius.circular(100),
+                              //   padding: EdgeInsets.all(0),
+                              //   color: Colors.red,
+                              //   child: Container(
+                              //     height: 300,
+                              //     width: 300,
+                              //   ),
+                              // )
+                              //     : SizedBox.shrink()),
+                              // (animation_started
+                              //     ? DottedBorder(
+                              //   borderType: BorderType.Circle,
+                              //   strokeWidth: 3,
+                              //   dashPattern: [0, 8.5],
+                              //   strokeCap: StrokeCap.round,
+                              //   radius: Radius.circular(100),
+                              //   padding: EdgeInsets.all(0),
+                              //   color: Colors.red,
+                              //   child: Container(
+                              //     height: 290,
+                              //     width: 290,
+                              //   ),
+                              // )
+                              //     : SizedBox.shrink()),
+                              // (animation_started
+                              //     ? DottedBorder(
+                              //   borderType: BorderType.Circle,
+                              //   strokeWidth: 3,
+                              //   dashPattern: [0, 9],
+                              //   strokeCap: StrokeCap.round,
+                              //   radius: Radius.circular(100),
+                              //   padding: EdgeInsets.all(0),
+                              //   color: Colors.red,
+                              //   child: Container(
+                              //     height: 280,
+                              //     width: 280,
+                              //   ),
+                              // )
+                              //     : SizedBox.shrink()),
+                              // (animation_started
+                              //     ? DottedBorder(
+                              //   borderType: BorderType.Circle,
+                              //   strokeWidth: 3,
+                              //   dashPattern: [0, 8.5],
+                              //   strokeCap: StrokeCap.round,
+                              //   radius: Radius.circular(100),
+                              //   padding: EdgeInsets.all(0),
+                              //   color: Colors.red,
+                              //   child: Container(
+                              //     height: 270,
+                              //     width: 270,
+                              //   ),
+                              // )
+                              //     : SizedBox.shrink()),
+                              // (animation_started
+                              //     ? DottedBorder(
+                              //   borderType: BorderType.Oval,
+                              //   strokeWidth: 3,
+                              //   dashPattern: [0, 10],
+                              //   strokeCap: StrokeCap.round,
+                              //   radius: Radius.circular(100),
+                              //   padding: EdgeInsets.all(0),
+                              //   color: Colors.red,
+                              //   child: Container(
+                              //     height: 260,
+                              //     width: 260,
+                              //   ),
+                              // )
+                              //     : SizedBox.shrink()),
+                              // (animation_started
+                              //     ? DottedBorder(
+                              //   borderType: BorderType.Oval,
+                              //   strokeWidth: 3,
+                              //   dashPattern: [0, 9.5],
+                              //   strokeCap: StrokeCap.round,
+                              //   radius: Radius.circular(100),
+                              //   padding: EdgeInsets.all(0),
+                              //   color: Colors.red,
+                              //   child: Container(
+                              //     height: 250,
+                              //     width: 250,
+                              //   ),
+                              // )
+                              //     : SizedBox.shrink()),
+                              // (animation_started
+                              //     ? DottedBorder(
+                              //   borderType: BorderType.Oval,
+                              //   strokeWidth: 3,
+                              //   dashPattern: [0, 9],
+                              //   strokeCap: StrokeCap.round,
+                              //   radius: Radius.circular(100),
+                              //   padding: EdgeInsets.all(0),
+                              //   color: Colors.red,
+                              //   child: Container(
+                              //     height: 240,
+                              //     width: 240,
+                              //   ),
+                              // )
+                              //     : SizedBox.shrink()),
+                              // (animation_started
+                              //     ? DottedBorder(
+                              //   borderType: BorderType.Oval,
+                              //   strokeWidth: 3,
+                              //   dashPattern: [0, 8.5],
+                              //   strokeCap: StrokeCap.round,
+                              //   radius: Radius.circular(100),
+                              //   padding: EdgeInsets.all(0),
+                              //   color: Colors.red,
+                              //   child: Container(
+                              //     height: 230,
+                              //     width: 230,
+                              //   ),
+                              // )
+                              //     : SizedBox.shrink()),
+                              // (animation_started
+                              //     ? DottedBorder(
+                              //   borderType: BorderType.Oval,
+                              //   strokeWidth: 3,
+                              //   dashPattern: [0, 7],
+                              //   strokeCap: StrokeCap.round,
+                              //   radius: Radius.circular(100),
+                              //   padding: EdgeInsets.all(0),
+                              //   color: Colors.red,
+                              //   child: Container(
+                              //     height: 220,
+                              //     width: 220,
+                              //   ),
+                              // )
+                              //     : SizedBox.shrink()),
+                              // (animation_started
+                              //     ? DottedBorder(
+                              //   borderType: BorderType.Oval,
+                              //   strokeWidth: 3,
+                              //   dashPattern: [0, 7.5],
+                              //   strokeCap: StrokeCap.round,
+                              //   radius: Radius.circular(100),
+                              //   padding: EdgeInsets.all(0),
+                              //   color: Colors.red,
+                              //   child: Container(
+                              //     height: 210,
+                              //     width: 210,
+                              //   ),
+                              // )
+                              //     : SizedBox.shrink()),
+                              // (animation_started
+                              //     ? DottedBorder(
+                              //   borderType: BorderType.Oval,
+                              //   strokeWidth: 3,
+                              //   dashPattern: [0, 7],
+                              //   strokeCap: StrokeCap.round,
+                              //   radius: Radius.circular(100),
+                              //   padding: EdgeInsets.all(0),
+                              //   color: Colors.red,
+                              //   child: Container(
+                              //     height: 200,
+                              //     width: 200,
+                              //   ),
+                              // )
+                              //     : SizedBox.shrink()),
+                              // (animation_started
+                              //     ? DottedBorder(
+                              //   borderType: BorderType.Oval,
+                              //   strokeWidth: 3,
+                              //   dashPattern: [0, 6.5],
+                              //   strokeCap: StrokeCap.round,
+                              //   radius: Radius.circular(100),
+                              //   padding: EdgeInsets.all(0),
+                              //   color: Colors.red,
+                              //   child: Container(
+                              //     height: 190,
+                              //     width: 190,
+                              //   ),
+                              // )
+                              //     : SizedBox.shrink()),
+                              // (animation_started
+                              //     ? DottedBorder(
+                              //   borderType: BorderType.Oval,
+                              //   strokeWidth: 3,
+                              //   dashPattern: [0, 6],
+                              //   strokeCap: StrokeCap.round,
+                              //   radius: Radius.circular(100),
+                              //   padding: EdgeInsets.all(0),
+                              //   color: Colors.red,
+                              //   child: Container(
+                              //     height: 180,
+                              //     width: 180,
+                              //   ),
+                              // )
+                              //     : SizedBox.shrink()),
+
                               (animation_started
                                   ? DottedBorder(
-                                      borderType: BorderType.Circle,
-                                      strokeWidth: 3,
-                                      dashPattern: [0, 10],
+                                      borderType: BorderType.Oval,
+                                      strokeWidth: 7.5,
+                                      dashPattern: [0, 19],
                                       strokeCap: StrokeCap.round,
                                       radius: Radius.circular(100),
                                       padding: EdgeInsets.all(0),
                                       color: Colors.black,
                                       child: Container(
-                                        height: 340,
-                                        width: 340,
+                                        height: 350,
+                                        width: 350,
+                                        padding: EdgeInsets.all(5),
                                       ),
                                     )
                                   : SizedBox.shrink()),
                               (animation_started
                                   ? DottedBorder(
-                                      borderType: BorderType.Circle,
-                                      strokeWidth: 3,
-                                      dashPattern: [0, 10],
-                                      strokeCap: StrokeCap.round,
-                                      radius: Radius.circular(100),
-                                      padding: EdgeInsets.all(0),
-                                      color: Colors.black,
-                                      child: Container(
-                                        height: 330,
-                                        width: 330,
-                                      ),
-                                    )
-                                  : SizedBox.shrink()),
-                              (animation_started
-                                  ? DottedBorder(
-                                      borderType: BorderType.Circle,
-                                      strokeWidth: 3,
-                                      dashPattern: [0, 10],
+                                      borderType: BorderType.Oval,
+                                      strokeWidth: 7.5,
+                                      dashPattern: [0, 19],
                                       strokeCap: StrokeCap.round,
                                       radius: Radius.circular(100),
                                       padding: EdgeInsets.all(0),
@@ -787,44 +1027,15 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
                                       child: Container(
                                         height: 320,
                                         width: 320,
+                                        padding: EdgeInsets.all(5),
                                       ),
                                     )
                                   : SizedBox.shrink()),
                               (animation_started
                                   ? DottedBorder(
-                                      borderType: BorderType.Circle,
-                                      strokeWidth: 3,
-                                      dashPattern: [0, 10],
-                                      strokeCap: StrokeCap.round,
-                                      radius: Radius.circular(100),
-                                      padding: EdgeInsets.all(0),
-                                      color: Colors.black,
-                                      child: Container(
-                                        height: 310,
-                                        width: 310,
-                                      ),
-                                    )
-                                  : SizedBox.shrink()),
-                              (animation_started
-                                  ? DottedBorder(
-                                      borderType: BorderType.Circle,
-                                      strokeWidth: 3,
-                                      dashPattern: [0, 10],
-                                      strokeCap: StrokeCap.round,
-                                      radius: Radius.circular(100),
-                                      padding: EdgeInsets.all(0),
-                                      color: Colors.black,
-                                      child: Container(
-                                        height: 300,
-                                        width: 300,
-                                      ),
-                                    )
-                                  : SizedBox.shrink()),
-                              (animation_started
-                                  ? DottedBorder(
-                                      borderType: BorderType.Circle,
-                                      strokeWidth: 3,
-                                      dashPattern: [0, 10],
+                                      borderType: BorderType.Oval,
+                                      strokeWidth: 7,
+                                      dashPattern: [0, 19],
                                       strokeCap: StrokeCap.round,
                                       radius: Radius.circular(100),
                                       padding: EdgeInsets.all(0),
@@ -832,74 +1043,31 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
                                       child: Container(
                                         height: 290,
                                         width: 290,
+                                        padding: EdgeInsets.all(5),
                                       ),
                                     )
                                   : SizedBox.shrink()),
                               (animation_started
                                   ? DottedBorder(
-                                      borderType: BorderType.Circle,
-                                      strokeWidth: 3,
-                                      dashPattern: [0, 10],
+                                      borderType: BorderType.Oval,
+                                      strokeWidth: 8,
+                                      dashPattern: [0, 19],
                                       strokeCap: StrokeCap.round,
                                       radius: Radius.circular(100),
                                       padding: EdgeInsets.all(0),
                                       color: Colors.black,
                                       child: Container(
-                                        height: 280,
-                                        width: 280,
+                                        height: 265,
+                                        width: 265,
+                                        padding: EdgeInsets.all(5),
                                       ),
                                     )
                                   : SizedBox.shrink()),
                               (animation_started
                                   ? DottedBorder(
-                                      borderType: BorderType.Circle,
-                                      strokeWidth: 3,
-                                      dashPattern: [0, 10],
-                                      strokeCap: StrokeCap.round,
-                                      radius: Radius.circular(100),
-                                      padding: EdgeInsets.all(0),
-                                      color: Colors.black,
-                                      child: Container(
-                                        height: 270,
-                                        width: 270,
-                                      ),
-                                    )
-                                  : SizedBox.shrink()),
-                              (animation_started
-                                  ? DottedBorder(
-                                      borderType: BorderType.Circle,
-                                      strokeWidth: 3,
-                                      dashPattern: [0, 10],
-                                      strokeCap: StrokeCap.round,
-                                      radius: Radius.circular(100),
-                                      padding: EdgeInsets.all(0),
-                                      color: Colors.black,
-                                      child: Container(
-                                        height: 260,
-                                        width: 260,
-                                      ),
-                                    )
-                                  : SizedBox.shrink()),
-                              (animation_started
-                                  ? DottedBorder(
-                                      borderType: BorderType.Circle,
-                                      strokeWidth: 3,
-                                      dashPattern: [0, 10],
-                                      strokeCap: StrokeCap.round,
-                                      radius: Radius.circular(100),
-                                      padding: EdgeInsets.all(0),
-                                      color: Colors.black,
-                                      child: Container(
-                                        height: 250,
-                                        width: 250,
-                                      ),
-                                    )
-                                  : SizedBox.shrink()),
-                              (animation_started
-                                  ? DottedBorder(
-                                      borderType: BorderType.Circle,
-                                      strokeWidth: 3,
-                                      dashPattern: [0, 10],
+                                      borderType: BorderType.Oval,
+                                      strokeWidth: 7,
+                                      dashPattern: [0, 18],
                                       strokeCap: StrokeCap.round,
                                       radius: Radius.circular(100),
                                       padding: EdgeInsets.all(0),
@@ -907,29 +1075,15 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
                                       child: Container(
                                         height: 240,
                                         width: 240,
+                                        padding: EdgeInsets.all(5),
                                       ),
                                     )
                                   : SizedBox.shrink()),
                               (animation_started
                                   ? DottedBorder(
-                                      borderType: BorderType.Circle,
-                                      strokeWidth: 3,
-                                      dashPattern: [0, 10],
-                                      strokeCap: StrokeCap.round,
-                                      radius: Radius.circular(100),
-                                      padding: EdgeInsets.all(0),
-                                      color: Colors.black,
-                                      child: Container(
-                                        height: 230,
-                                        width: 230,
-                                      ),
-                                    )
-                                  : SizedBox.shrink()),
-                              (animation_started
-                                  ? DottedBorder(
-                                      borderType: BorderType.Circle,
-                                      strokeWidth: 3,
-                                      dashPattern: [0, 10],
+                                      borderType: BorderType.Oval,
+                                      strokeWidth: 6,
+                                      dashPattern: [0, 16],
                                       strokeCap: StrokeCap.round,
                                       radius: Radius.circular(100),
                                       padding: EdgeInsets.all(0),
@@ -937,29 +1091,15 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
                                       child: Container(
                                         height: 220,
                                         width: 220,
+                                        padding: EdgeInsets.all(5),
                                       ),
                                     )
                                   : SizedBox.shrink()),
                               (animation_started
                                   ? DottedBorder(
-                                      borderType: BorderType.Circle,
-                                      strokeWidth: 3,
-                                      dashPattern: [0, 10],
-                                      strokeCap: StrokeCap.round,
-                                      radius: Radius.circular(100),
-                                      padding: EdgeInsets.all(0),
-                                      color: Colors.black,
-                                      child: Container(
-                                        height: 210,
-                                        width: 210,
-                                      ),
-                                    )
-                                  : SizedBox.shrink()),
-                              (animation_started
-                                  ? DottedBorder(
-                                      borderType: BorderType.Circle,
-                                      strokeWidth: 3,
-                                      dashPattern: [0, 10],
+                                      borderType: BorderType.Oval,
+                                      strokeWidth: 5,
+                                      dashPattern: [0, 14],
                                       strokeCap: StrokeCap.round,
                                       radius: Radius.circular(100),
                                       padding: EdgeInsets.all(0),
@@ -967,29 +1107,15 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
                                       child: Container(
                                         height: 200,
                                         width: 200,
+                                        padding: EdgeInsets.all(5),
                                       ),
                                     )
                                   : SizedBox.shrink()),
                               (animation_started
                                   ? DottedBorder(
-                                      borderType: BorderType.Circle,
-                                      strokeWidth: 3,
-                                      dashPattern: [0, 10],
-                                      strokeCap: StrokeCap.round,
-                                      radius: Radius.circular(100),
-                                      padding: EdgeInsets.all(0),
-                                      color: Colors.black,
-                                      child: Container(
-                                        height: 190,
-                                        width: 190,
-                                      ),
-                                    )
-                                  : SizedBox.shrink()),
-                              (animation_started
-                                  ? DottedBorder(
-                                      borderType: BorderType.Circle,
-                                      strokeWidth: 3,
-                                      dashPattern: [0, 10],
+                                      borderType: BorderType.Oval,
+                                      strokeWidth: 4,
+                                      dashPattern: [0, 12],
                                       strokeCap: StrokeCap.round,
                                       radius: Radius.circular(100),
                                       padding: EdgeInsets.all(0),
@@ -997,28 +1123,13 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
                                       child: Container(
                                         height: 180,
                                         width: 180,
-                                      ),
-                                    )
-                                  : SizedBox.shrink()),
-                              (animation_started
-                                  ? DottedBorder(
-                                      borderType: BorderType.Circle,
-                                      strokeWidth: 3,
-                                      dashPattern: [0, 10],
-                                      strokeCap: StrokeCap.round,
-                                      radius: Radius.circular(100),
-                                      padding: EdgeInsets.all(0),
-                                      color: Colors.black,
-                                      child: Container(
-                                        height: 170,
-                                        width: 170,
                                         padding: EdgeInsets.all(5),
                                       ),
                                     )
                                   : SizedBox.shrink()),
                               (animation_started
                                   ? DottedBorder(
-                                      borderType: BorderType.Circle,
+                                      borderType: BorderType.Oval,
                                       strokeWidth: 3,
                                       dashPattern: [0, 10],
                                       strokeCap: StrokeCap.round,
@@ -1033,96 +1144,103 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
                                     )
                                   : SizedBox.shrink()),
 
-                              Container(
-                                height: (animation_started
-                                    ? _animation_button!.value
-                                    : button_height),
-                                width: (animation_started
-                                    ? _animation_button!.value
-                                    : button_height),
-                                // decoration: BoxDecoration(
-                                //     shape: BoxShape.circle,
-                                //     image: const DecorationImage(
-                                //         alignment: Alignment.center,
-                                //         image: const AssetImage(
-                                //             AssetUtils.home_button)),
-                                //     // boxShadow: [
-                                //     //   BoxShadow(
-                                //     //     color: (animation_started
-                                //     //         ? HexColor('#F5C921')
-                                //     //         : Colors.transparent),
-                                //     //     blurRadius: (animation_started
-                                //     //         ? _animation!.value
-                                //     //         : 0),
-                                //     //     spreadRadius: (animation_started
-                                //     //         ? _animation!.value
-                                //     //         : 0),
-                                //     //   )
-                                //     // ]
-                                // ),
-                                decoration:
-                                // (animation_started ?  BoxDecoration(
-                                //   shape: BoxShape.circle,
-                                //   boxShadow: [
-                                //     BoxShadow(
-                                //       color: HexColor('#F5C921'), // darker color
-                                //     ),
-                                //     BoxShadow(
-                                //       color: HexColor('#000000'), // background color
-                                //       spreadRadius: -1.0,
-                                //       blurRadius: 10.0,
-                                //     ),
-                                //   ],
-                                // ) :
-                                BoxDecoration(
-        shape: BoxShape.circle,
-        image: const DecorationImage(
-            alignment: Alignment.center,
-            image: const AssetImage(
-                AssetUtils.home_button)),
-        // boxShadow: [
-        //   BoxShadow(
-        //     color: (animation_started
-        //         ? HexColor('#F5C921')
-        //         : Colors.transparent),
-        //     blurRadius: (animation_started
-        //         ? _animation!.value
-        //         : 0),
-        //     spreadRadius: (animation_started
-        //         ? _animation!.value
-        //         : 0),
-        //   )
-        // ]
-    ),
-                                // ),
-                                child: Stack(
-                                  children: [
-                                    Container(
-                                      alignment: Alignment.center,
-                                      child: Text(
-                                        'P',
-                                        style: TextStyle(
-                                            color: HexColor('#F5C921')
-                                                .withOpacity(0.2),
-                                            fontSize: (animation_started
-                                                ? _animation_textK!.value
-                                                : text_k_size),
-                                            fontWeight: FontWeight.w600),
+                              Padding(
+                                padding: const EdgeInsets.all(1.0),
+                                child: Container(
+                                  height: (animation_started
+                                      ? _animation_button!.value
+                                      : button_height),
+                                  width: (animation_started
+                                      ? _animation_button!.value
+                                      : button_height),
+                                  // decoration: BoxDecoration(
+                                  //     shape: BoxShape.circle,
+                                  //     image: const DecorationImage(
+                                  //         alignment: Alignment.center,
+                                  //         image: const AssetImage(
+                                  //             AssetUtils.home_button)),
+                                  //     // boxShadow: [
+                                  //     //   BoxShadow(
+                                  //     //     color: (animation_started
+                                  //     //         ? HexColor('#F5C921')
+                                  //     //         : Colors.transparent),
+                                  //     //     blurRadius: (animation_started
+                                  //     //         ? _animation!.value
+                                  //     //         : 0),
+                                  //     //     spreadRadius: (animation_started
+                                  //     //         ? _animation!.value
+                                  //     //         : 0),
+                                  //     //   )
+                                  //     // ]
+                                  // ),
+                                  decoration: (animation_started
+                                      ? BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          border: Border.all(
+                                              color: Color(0xFFFCF483),
+                                              width: 2.5),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: HexColor(
+                                                  '#F5C921'), // darker color
+                                            ),
+                                            BoxShadow(
+                                              color: HexColor('#000000'),
+                                              // background color
+                                              spreadRadius: -7.0,
+                                              blurRadius: 10.0,
+                                            ),
+                                          ],
+                                        )
+                                      : const BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          image: DecorationImage(
+                                              alignment: Alignment.center,
+                                              image: AssetImage(
+                                                  AssetUtils.home_button)),
+                                          // boxShadow: [
+                                          //   BoxShadow(
+                                          //     color: (animation_started
+                                          //         ? HexColor('#F5C921')
+                                          //         : Colors.transparent),
+                                          //     blurRadius: (animation_started
+                                          //         ? _animation!.value
+                                          //         : 0),
+                                          //     spreadRadius: (animation_started
+                                          //         ? _animation!.value
+                                          //         : 0),
+                                          //   )
+                                          // ]
+                                        )),
+                                  child: Stack(
+                                    children: [
+                                      Container(
+                                        alignment: Alignment.center,
+                                        child: Text(
+                                          'P',
+                                          style: TextStyle(
+                                              color: HexColor('#F5C921')
+                                                  .withOpacity(0.2),
+                                              fontSize: (animation_started
+                                                  ? _animation_textK!.value
+                                                  : text_k_size),
+                                              fontWeight: FontWeight.w600),
+                                        ),
                                       ),
-                                    ),
-                                    Container(
-                                      alignment: Alignment.center,
-                                      child: Text(
-                                        elapsedTime,
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: (animation_started
-                                                ? _animation_textTime!.value
-                                                : text_time_size),
-                                            fontWeight: FontWeight.w900),
+                                      Container(
+                                        alignment: Alignment.center,
+                                        child: Text(
+                                          elapsedTime,
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: (animation_started
+                                                  ? _animation_textTime!.value
+                                                  : text_time_size),
+                                              fontWeight: FontWeight.w900),
+                                        ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
                               ),
                             ],
@@ -1163,12 +1281,14 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
                             await stopWatch();
                             await click_alarm();
                             await _animationController_middle!.reverse();
+                            _animationController!.dispose();
                             _peeScreenController.sets++;
                             await _peeScreenController.Pee_post_API(context);
                             await _peeScreenController.Pee_get_API(context);
 
                             setState(() {
                               elapsedTime = '00';
+                              _swipe_setup_controller.p_running = false;
                               percent = 0.0;
                               back_wallpaper = true;
                               button_height = 150;
@@ -1191,7 +1311,7 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
                               gradient: LinearGradient(
                                 begin: Alignment.centerLeft,
                                 end: Alignment.centerRight,
-                                // stops: [0.1, 0.5, 0.7, 0.9],
+                                // stops: [0` .1, 0.5, 0.7, 0.9],
                                 colors: [
                                   HexColor("#ECDD8F").withOpacity(0.90),
                                   HexColor("#E5CC79").withOpacity(0.90),
@@ -1771,6 +1891,9 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
                             ),
                           ],
                         ),
+                      ),
+                      SizedBox(
+                        height: 20,
                       )
                     ],
                   ),
@@ -1789,9 +1912,14 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
     }
   }
 
+  final Ledger_Setup_controller _swipe_setup_controller = Get.put(
+      Ledger_Setup_controller(),
+      tag: Ledger_Setup_controller().toString());
+
   startWatch() {
     start_animation();
     setState(() {
+      _swipe_setup_controller.p_running = true;
       elapsedTime = "00";
       startStop = false;
       started = false;
@@ -1946,7 +2074,7 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
       icon: 'app_icon',
       enableVibration: true,
       playSound: true,
-      sound: RawResourceAndroidNotificationSound("a_long_cold_sting.wav"),
+      // sound: RawResourceAndroidNotificationSound("a_long_cold_sting.wav"),
       largeIcon: DrawableResourceAndroidBitmap('app_icon'),
     );
 
