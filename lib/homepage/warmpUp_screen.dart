@@ -27,16 +27,20 @@ class WarmUpScreen extends StatefulWidget {
 class _WarmUpScreenState extends State<WarmUpScreen>
     with TickerProviderStateMixin {
   Stopwatch watch = Stopwatch();
+  Stopwatch watch2 = Stopwatch();
   Stopwatch watch3 = Stopwatch();
   Timer? timer;
+  Timer? timer2;
   Timer? timer3;
   bool startStop = true;
   bool started = true;
 
   String elapsedTime = '00';
   String elapsedTime2 = '00';
+  String elapsedTime3 = '00';
   double percent = 0.0;
   bool four_started = false;
+  int counter = 0;
 
   updateTime(Timer timer) {
     if (watch.isRunning) {
@@ -49,12 +53,14 @@ class _WarmUpScreenState extends State<WarmUpScreen>
             stopWatch_finish();
             // _animationController_shadow1!.reverse();
             setState(() {
-              elapsedTime = 'HOLD';
+              elapsedTime = '00';
               percent = 0.0;
               watch.reset();
+              counter++;
+              print(counter);
               four_started = true;
             });
-            startWatch2();
+            startWatch();
 
             Future.delayed(Duration(seconds: 11), () {
               // if (counter == 10) {
@@ -82,21 +88,91 @@ class _WarmUpScreenState extends State<WarmUpScreen>
               //   });
               // }
               // } else {
-              _animationController!.forward();
-              _animationController_button!.forward();
-              setState(() {
-                elapsedTime = '00';
-                four_started = false;
-                watch.reset();
-              });
-              startTimer2();
-              start_animation();
+              // if (counter == 3) {
+                stopWatch_finish();
+                setState(() {
+                  elapsedTime = '00';
+                  // watch.stop();
+                  counter = 0;
+                });
 
-              startWatch();
+              // }else {
+                // stopWatch_finish();
+
+                _animationController!.forward();
+                _animationController_button!.forward();
+                setState(() {
+                  elapsedTime = '00';
+                  four_started = false;
+                  // watch.reset();
+                });
+                startTimer2();
+                start_animation();
+                startWatch();
+                //
+                // _animationController!.reverse();
+                // _animationController_button!.reverse();
+                // stopWatch_finish();
+                // // _animationController_shadow1!.reverse();
+                // setState(() {
+                //   elapsedTime = '00';
+                //   four_started = false;
+                //   watch.reset();
+                // });
+                // start_animation();
+                // Future.delayed(const Duration(seconds: 3), () async {
+                //   startWatch();
+                // });
+              // }
 
               // startWatch();
               // }
             });
+          }
+        });
+      }
+    }
+  }
+  updateTime2(Timer timer) {
+    if (watch2.isRunning) {
+      if (mounted) {
+        setState(() {
+          print("startstop Inside=");
+          elapsedTime2 = transformMilliSeconds(watch2.elapsedMilliseconds);
+          print("startstop Inside= $elapsedTime2");
+
+          if (elapsedTime2 == '11') {
+            // stopWatch_finish();
+            stopWatch_finish2();
+            // _animationController_shadow1!.reverse();
+            setState(() {
+              elapsedTime2 = '00';
+              percent = 0.0;
+              watch2.reset();
+              four_started = true;
+            });
+            if (counter == 3) {
+              stopWatch_finish();
+              setState(() {
+                elapsedTime = '00';
+                // watch.stop();
+                counter = 0;
+              });
+            } else {
+              // stopWatch_finish();
+
+              _animationController!.forward();
+              _animationController_button!.forward();
+              setState(() {
+                // elapsedTime = '00';
+                four_started = false;
+                // watch.reset();
+              });
+              startTimer2();
+              start_animation();
+              // startWatch2();
+
+            }
           }
         });
       }
@@ -108,9 +184,9 @@ class _WarmUpScreenState extends State<WarmUpScreen>
       if (mounted) {
         setState(() {
           // print("startstop Inside=$startStop");
-          elapsedTime2 = transformMilliSeconds(watch3.elapsedMilliseconds);
+          elapsedTime3 = transformMilliSeconds(watch3.elapsedMilliseconds);
 
-          if (elapsedTime2 == '03') {
+          if (elapsedTime3 == '03') {
             // stopWatch_finish();
             // _animationController_shadow1!.reverse();
             setState(() {
@@ -184,6 +260,21 @@ class _WarmUpScreenState extends State<WarmUpScreen>
         if (seconds < 0) {
           countdownTimer2!.cancel();
           reverse_started = false;
+          // stopWatch_finish();
+          // if(counter == 3){
+          //   stopWatch_finish();
+          // }else{
+          //   Future.delayed(Duration(seconds: 3),(){
+          //     // startWatch();
+          //     // startTimer();
+          //     // startWatch2();
+          //     print("datatatatat");
+          //     print("datatatatat");
+          //     print("datatatatat");
+          //     // start_animation();
+          //     // middle_animation();
+          //   });
+          // }
           print('timesup');
         } else {
           myDuration2 = Duration(seconds: seconds);
@@ -574,41 +665,315 @@ class _WarmUpScreenState extends State<WarmUpScreen>
                                         )
                                       ]),
                                 ),
+                                // (animation_started
+                                //     ? DottedBorder(
+                                //   borderType: BorderType.Circle,
+                                //   strokeWidth: 3,
+                                //   dashPattern: [0, 6],
+                                //   strokeCap: StrokeCap.round,
+                                //   radius: Radius.circular(100),
+                                //   padding: EdgeInsets.all(0),
+                                //   color: Colors.black,
+                                //   child: Container(
+                                //     height: 340,
+                                //     width: 340,
+                                //   ),
+                                // )
+                                //     : SizedBox.shrink()),
+                                // (animation_started
+                                //     ? DottedBorder(
+                                //   borderType: BorderType.Circle,
+                                //   strokeWidth: 3,
+                                //   dashPattern: [0, 8.5],
+                                //   strokeCap: StrokeCap.round,
+                                //   radius: Radius.circular(100),
+                                //   padding: EdgeInsets.all(0),
+                                //   color: Colors.black,
+                                //   child: Container(
+                                //     height: 330,
+                                //     width: 330,
+                                //   ),
+                                // )
+                                //     : SizedBox.shrink()),
+                                // (animation_started
+                                //     ? DottedBorder(
+                                //   borderType: BorderType.Circle,
+                                //   strokeWidth: 3,
+                                //   dashPattern: [0, 7.5],
+                                //   strokeCap: StrokeCap.round,
+                                //   radius: Radius.circular(100),
+                                //   padding: EdgeInsets.all(0),
+                                //   color: Colors.black,
+                                //   child: Container(
+                                //     height: 320,
+                                //     width: 320,
+                                //   ),
+                                // )
+                                //     : SizedBox.shrink()),
+                                // (animation_started
+                                //     ? DottedBorder(
+                                //   borderType: BorderType.Circle,
+                                //   strokeWidth: 3,
+                                //   dashPattern: [0, 7.5],
+                                //   strokeCap: StrokeCap.round,
+                                //   radius: Radius.circular(100),
+                                //   padding: EdgeInsets.all(0),
+                                //   color: Colors.black,
+                                //   child: Container(
+                                //     height: 310,
+                                //     width: 310,
+                                //   ),
+                                // )
+                                //     : SizedBox.shrink()),
+                                // (animation_started
+                                //     ? DottedBorder(
+                                //   borderType: BorderType.Circle,
+                                //   strokeWidth: 3,
+                                //   dashPattern: [0, 8],
+                                //   strokeCap: StrokeCap.round,
+                                //   radius: Radius.circular(100),
+                                //   padding: EdgeInsets.all(0),
+                                //   color: Colors.black,
+                                //   child: Container(
+                                //     height: 300,
+                                //     width: 300,
+                                //   ),
+                                // )
+                                //     : SizedBox.shrink()),
+                                // (animation_started
+                                //     ? DottedBorder(
+                                //   borderType: BorderType.Circle,
+                                //   strokeWidth: 3,
+                                //   dashPattern: [0, 8.5],
+                                //   strokeCap: StrokeCap.round,
+                                //   radius: Radius.circular(100),
+                                //   padding: EdgeInsets.all(0),
+                                //   color: Colors.black,
+                                //   child: Container(
+                                //     height: 290,
+                                //     width: 290,
+                                //   ),
+                                // )
+                                //     : SizedBox.shrink()),
+                                // (animation_started
+                                //     ? DottedBorder(
+                                //   borderType: BorderType.Circle,
+                                //   strokeWidth: 3,
+                                //   dashPattern: [0, 9],
+                                //   strokeCap: StrokeCap.round,
+                                //   radius: Radius.circular(100),
+                                //   padding: EdgeInsets.all(0),
+                                //   color: Colors.black,
+                                //   child: Container(
+                                //     height: 280,
+                                //     width: 280,
+                                //   ),
+                                // )
+                                //     : SizedBox.shrink()),
+                                // (animation_started
+                                //     ? DottedBorder(
+                                //   borderType: BorderType.Circle,
+                                //   strokeWidth: 3,
+                                //   dashPattern: [0, 8.5],
+                                //   strokeCap: StrokeCap.round,
+                                //   radius: Radius.circular(100),
+                                //   padding: EdgeInsets.all(0),
+                                //   color: Colors.black,
+                                //   child: Container(
+                                //     height: 270,
+                                //     width: 270,
+                                //   ),
+                                // )
+                                //     : SizedBox.shrink()),
+                                // (animation_started
+                                //     ? DottedBorder(
+                                //   borderType: BorderType.Oval,
+                                //   strokeWidth: 3,
+                                //   dashPattern: [0, 10],
+                                //   strokeCap: StrokeCap.round,
+                                //   radius: Radius.circular(100),
+                                //   padding: EdgeInsets.all(0),
+                                //   color: Colors.black,
+                                //   child: Container(
+                                //     height: 260,
+                                //     width: 260,
+                                //   ),
+                                // )
+                                //     : SizedBox.shrink()),
+                                // (animation_started
+                                //     ? DottedBorder(
+                                //   borderType: BorderType.Oval,
+                                //   strokeWidth: 3,
+                                //   dashPattern: [0, 9.5],
+                                //   strokeCap: StrokeCap.round,
+                                //   radius: Radius.circular(100),
+                                //   padding: EdgeInsets.all(0),
+                                //   color: Colors.black,
+                                //   child: Container(
+                                //     height: 250,
+                                //     width: 250,
+                                //   ),
+                                // )
+                                //     : SizedBox.shrink()),
+                                // (animation_started
+                                //     ? DottedBorder(
+                                //   borderType: BorderType.Oval,
+                                //   strokeWidth: 3,
+                                //   dashPattern: [0, 9],
+                                //   strokeCap: StrokeCap.round,
+                                //   radius: Radius.circular(100),
+                                //   padding: EdgeInsets.all(0),
+                                //   color: Colors.black,
+                                //   child: Container(
+                                //     height: 240,
+                                //     width: 240,
+                                //   ),
+                                // )
+                                //     : SizedBox.shrink()),
+                                // (animation_started
+                                //     ? DottedBorder(
+                                //   borderType: BorderType.Oval,
+                                //   strokeWidth: 3,
+                                //   dashPattern: [0, 8.5],
+                                //   strokeCap: StrokeCap.round,
+                                //   radius: Radius.circular(100),
+                                //   padding: EdgeInsets.all(0),
+                                //   color: Colors.black,
+                                //   child: Container(
+                                //     height: 230,
+                                //     width: 230,
+                                //   ),
+                                // )
+                                //     : SizedBox.shrink()),
+                                // (animation_started
+                                //     ? DottedBorder(
+                                //   borderType: BorderType.Oval,
+                                //   strokeWidth: 3,
+                                //   dashPattern: [0, 7],
+                                //   strokeCap: StrokeCap.round,
+                                //   radius: Radius.circular(100),
+                                //   padding: EdgeInsets.all(0),
+                                //   color: Colors.black,
+                                //   child: Container(
+                                //     height: 220,
+                                //     width: 220,
+                                //   ),
+                                // )
+                                //     : SizedBox.shrink()),
+                                // (animation_started
+                                //     ? DottedBorder(
+                                //   borderType: BorderType.Oval,
+                                //   strokeWidth: 3,
+                                //   dashPattern: [0, 7.5],
+                                //   strokeCap: StrokeCap.round,
+                                //   radius: Radius.circular(100),
+                                //   padding: EdgeInsets.all(0),
+                                //   color: Colors.black,
+                                //   child: Container(
+                                //     height: 210,
+                                //     width: 210,
+                                //   ),
+                                // )
+                                //     : SizedBox.shrink()),
+                                // (animation_started
+                                //     ? DottedBorder(
+                                //   borderType: BorderType.Oval,
+                                //   strokeWidth: 3,
+                                //   dashPattern: [0, 7],
+                                //   strokeCap: StrokeCap.round,
+                                //   radius: Radius.circular(100),
+                                //   padding: EdgeInsets.all(0),
+                                //   color: Colors.black,
+                                //   child: Container(
+                                //     height: 200,
+                                //     width: 200,
+                                //   ),
+                                // )
+                                //     : SizedBox.shrink()),
+                                // (animation_started
+                                //     ? DottedBorder(
+                                //   borderType: BorderType.Oval,
+                                //   strokeWidth: 3,
+                                //   dashPattern: [0, 6.5],
+                                //   strokeCap: StrokeCap.round,
+                                //   radius: Radius.circular(100),
+                                //   padding: EdgeInsets.all(0),
+                                //   color: Colors.black,
+                                //   child: Container(
+                                //     height: 190,
+                                //     width: 190,
+                                //   ),
+                                // )
+                                //     : SizedBox.shrink()),
+                                // (animation_started
+                                //     ? DottedBorder(
+                                //   borderType: BorderType.Oval,
+                                //   strokeWidth: 3,
+                                //   dashPattern: [0, 6],
+                                //   strokeCap: StrokeCap.round,
+                                //   radius: Radius.circular(100),
+                                //   padding: EdgeInsets.all(0),
+                                //   color: Colors.black,
+                                //   child: Container(
+                                //     height: 180,
+                                //     width: 180,
+                                //   ),
+                                // )
+                                //     : SizedBox.shrink()),
+                                // (animation_started
+                                //     ? DottedBorder(
+                                //   borderType: BorderType.Oval,
+                                //   strokeWidth: 3,
+                                //   dashPattern: [0, 5.5],
+                                //   strokeCap: StrokeCap.round,
+                                //   radius: Radius.circular(100),
+                                //   padding: EdgeInsets.all(0),
+                                //   color: Colors.black,
+                                //   child: Container(
+                                //     height: 170,
+                                //     width: 170,
+                                //     padding: EdgeInsets.all(5),
+                                //   ),
+                                // )
+                                //     : SizedBox.shrink()),
+                                // (animation_started
+                                //     ? DottedBorder(
+                                //   borderType: BorderType.Oval,
+                                //   strokeWidth: 3,
+                                //   dashPattern: [0, 7],
+                                //   strokeCap: StrokeCap.round,
+                                //   radius: Radius.circular(100),
+                                //   padding: EdgeInsets.all(0),
+                                //   color: Colors.black,
+                                //   child: Container(
+                                //     height: 160,
+                                //     width: 160,
+                                //     padding: EdgeInsets.all(5),
+                                //   ),
+                                // )
+                                //     : SizedBox.shrink()),
+
                                 (animation_started
                                     ? DottedBorder(
-                                  borderType: BorderType.Circle,
-                                  strokeWidth: 3,
-                                  dashPattern: [0, 6],
+                                  borderType: BorderType.Oval,
+                                  strokeWidth: 7.5,
+                                  dashPattern: [0, 19],
                                   strokeCap: StrokeCap.round,
                                   radius: Radius.circular(100),
                                   padding: EdgeInsets.all(0),
                                   color: Colors.black,
                                   child: Container(
-                                    height: 340,
-                                    width: 340,
+                                    height: 350,
+                                    width: 350,
+                                    padding: EdgeInsets.all(5),
                                   ),
                                 )
                                     : SizedBox.shrink()),
                                 (animation_started
                                     ? DottedBorder(
-                                  borderType: BorderType.Circle,
-                                  strokeWidth: 3,
-                                  dashPattern: [0, 8.5],
-                                  strokeCap: StrokeCap.round,
-                                  radius: Radius.circular(100),
-                                  padding: EdgeInsets.all(0),
-                                  color: Colors.black,
-                                  child: Container(
-                                    height: 330,
-                                    width: 330,
-                                  ),
-                                )
-                                    : SizedBox.shrink()),
-                                (animation_started
-                                    ? DottedBorder(
-                                  borderType: BorderType.Circle,
-                                  strokeWidth: 3,
-                                  dashPattern: [0, 7.5],
+                                  borderType: BorderType.Oval,
+                                  strokeWidth: 7.5,
+                                  dashPattern: [0, 19],
                                   strokeCap: StrokeCap.round,
                                   radius: Radius.circular(100),
                                   padding: EdgeInsets.all(0),
@@ -616,44 +981,15 @@ class _WarmUpScreenState extends State<WarmUpScreen>
                                   child: Container(
                                     height: 320,
                                     width: 320,
+                                    padding: EdgeInsets.all(5),
                                   ),
                                 )
                                     : SizedBox.shrink()),
                                 (animation_started
                                     ? DottedBorder(
-                                  borderType: BorderType.Circle,
-                                  strokeWidth: 3,
-                                  dashPattern: [0, 7.5],
-                                  strokeCap: StrokeCap.round,
-                                  radius: Radius.circular(100),
-                                  padding: EdgeInsets.all(0),
-                                  color: Colors.black,
-                                  child: Container(
-                                    height: 310,
-                                    width: 310,
-                                  ),
-                                )
-                                    : SizedBox.shrink()),
-                                (animation_started
-                                    ? DottedBorder(
-                                  borderType: BorderType.Circle,
-                                  strokeWidth: 3,
-                                  dashPattern: [0, 8],
-                                  strokeCap: StrokeCap.round,
-                                  radius: Radius.circular(100),
-                                  padding: EdgeInsets.all(0),
-                                  color: Colors.black,
-                                  child: Container(
-                                    height: 300,
-                                    width: 300,
-                                  ),
-                                )
-                                    : SizedBox.shrink()),
-                                (animation_started
-                                    ? DottedBorder(
-                                  borderType: BorderType.Circle,
-                                  strokeWidth: 3,
-                                  dashPattern: [0, 8.5],
+                                  borderType: BorderType.Oval,
+                                  strokeWidth: 7,
+                                  dashPattern: [0, 19],
                                   strokeCap: StrokeCap.round,
                                   radius: Radius.circular(100),
                                   padding: EdgeInsets.all(0),
@@ -661,74 +997,31 @@ class _WarmUpScreenState extends State<WarmUpScreen>
                                   child: Container(
                                     height: 290,
                                     width: 290,
-                                  ),
-                                )
-                                    : SizedBox.shrink()),
-                                (animation_started
-                                    ? DottedBorder(
-                                  borderType: BorderType.Circle,
-                                  strokeWidth: 3,
-                                  dashPattern: [0, 9],
-                                  strokeCap: StrokeCap.round,
-                                  radius: Radius.circular(100),
-                                  padding: EdgeInsets.all(0),
-                                  color: Colors.black,
-                                  child: Container(
-                                    height: 280,
-                                    width: 280,
-                                  ),
-                                )
-                                    : SizedBox.shrink()),
-                                (animation_started
-                                    ? DottedBorder(
-                                  borderType: BorderType.Circle,
-                                  strokeWidth: 3,
-                                  dashPattern: [0, 8.5],
-                                  strokeCap: StrokeCap.round,
-                                  radius: Radius.circular(100),
-                                  padding: EdgeInsets.all(0),
-                                  color: Colors.black,
-                                  child: Container(
-                                    height: 270,
-                                    width: 270,
+                                    padding: EdgeInsets.all(5),
                                   ),
                                 )
                                     : SizedBox.shrink()),
                                 (animation_started
                                     ? DottedBorder(
                                   borderType: BorderType.Oval,
-                                  strokeWidth: 3,
-                                  dashPattern: [0, 10],
+                                  strokeWidth: 8,
+                                  dashPattern: [0, 19],
                                   strokeCap: StrokeCap.round,
                                   radius: Radius.circular(100),
                                   padding: EdgeInsets.all(0),
                                   color: Colors.black,
                                   child: Container(
-                                    height: 260,
-                                    width: 260,
+                                    height: 265,
+                                    width: 265,
+                                    padding: EdgeInsets.all(5),
                                   ),
                                 )
                                     : SizedBox.shrink()),
                                 (animation_started
                                     ? DottedBorder(
                                   borderType: BorderType.Oval,
-                                  strokeWidth: 3,
-                                  dashPattern: [0, 9.5],
-                                  strokeCap: StrokeCap.round,
-                                  radius: Radius.circular(100),
-                                  padding: EdgeInsets.all(0),
-                                  color: Colors.black,
-                                  child: Container(
-                                    height: 250,
-                                    width: 250,
-                                  ),
-                                )
-                                    : SizedBox.shrink()),
-                                (animation_started
-                                    ? DottedBorder(
-                                  borderType: BorderType.Oval,
-                                  strokeWidth: 3,
-                                  dashPattern: [0, 9],
+                                  strokeWidth: 7,
+                                  dashPattern: [0, 18],
                                   strokeCap: StrokeCap.round,
                                   radius: Radius.circular(100),
                                   padding: EdgeInsets.all(0),
@@ -736,29 +1029,15 @@ class _WarmUpScreenState extends State<WarmUpScreen>
                                   child: Container(
                                     height: 240,
                                     width: 240,
+                                    padding: EdgeInsets.all(5),
                                   ),
                                 )
                                     : SizedBox.shrink()),
                                 (animation_started
                                     ? DottedBorder(
                                   borderType: BorderType.Oval,
-                                  strokeWidth: 3,
-                                  dashPattern: [0, 8.5],
-                                  strokeCap: StrokeCap.round,
-                                  radius: Radius.circular(100),
-                                  padding: EdgeInsets.all(0),
-                                  color: Colors.black,
-                                  child: Container(
-                                    height: 230,
-                                    width: 230,
-                                  ),
-                                )
-                                    : SizedBox.shrink()),
-                                (animation_started
-                                    ? DottedBorder(
-                                  borderType: BorderType.Oval,
-                                  strokeWidth: 3,
-                                  dashPattern: [0, 7],
+                                  strokeWidth: 6,
+                                  dashPattern: [0, 16],
                                   strokeCap: StrokeCap.round,
                                   radius: Radius.circular(100),
                                   padding: EdgeInsets.all(0),
@@ -766,29 +1045,15 @@ class _WarmUpScreenState extends State<WarmUpScreen>
                                   child: Container(
                                     height: 220,
                                     width: 220,
+                                    padding: EdgeInsets.all(5),
                                   ),
                                 )
                                     : SizedBox.shrink()),
                                 (animation_started
                                     ? DottedBorder(
                                   borderType: BorderType.Oval,
-                                  strokeWidth: 3,
-                                  dashPattern: [0, 7.5],
-                                  strokeCap: StrokeCap.round,
-                                  radius: Radius.circular(100),
-                                  padding: EdgeInsets.all(0),
-                                  color: Colors.black,
-                                  child: Container(
-                                    height: 210,
-                                    width: 210,
-                                  ),
-                                )
-                                    : SizedBox.shrink()),
-                                (animation_started
-                                    ? DottedBorder(
-                                  borderType: BorderType.Oval,
-                                  strokeWidth: 3,
-                                  dashPattern: [0, 7],
+                                  strokeWidth: 5,
+                                  dashPattern: [0, 14],
                                   strokeCap: StrokeCap.round,
                                   radius: Radius.circular(100),
                                   padding: EdgeInsets.all(0),
@@ -796,29 +1061,15 @@ class _WarmUpScreenState extends State<WarmUpScreen>
                                   child: Container(
                                     height: 200,
                                     width: 200,
+                                    padding: EdgeInsets.all(5),
                                   ),
                                 )
                                     : SizedBox.shrink()),
                                 (animation_started
                                     ? DottedBorder(
                                   borderType: BorderType.Oval,
-                                  strokeWidth: 3,
-                                  dashPattern: [0, 6.5],
-                                  strokeCap: StrokeCap.round,
-                                  radius: Radius.circular(100),
-                                  padding: EdgeInsets.all(0),
-                                  color: Colors.black,
-                                  child: Container(
-                                    height: 190,
-                                    width: 190,
-                                  ),
-                                )
-                                    : SizedBox.shrink()),
-                                (animation_started
-                                    ? DottedBorder(
-                                  borderType: BorderType.Oval,
-                                  strokeWidth: 3,
-                                  dashPattern: [0, 6],
+                                  strokeWidth: 4,
+                                  dashPattern: [0, 12],
                                   strokeCap: StrokeCap.round,
                                   radius: Radius.circular(100),
                                   padding: EdgeInsets.all(0),
@@ -826,21 +1077,6 @@ class _WarmUpScreenState extends State<WarmUpScreen>
                                   child: Container(
                                     height: 180,
                                     width: 180,
-                                  ),
-                                )
-                                    : SizedBox.shrink()),
-                                (animation_started
-                                    ? DottedBorder(
-                                  borderType: BorderType.Oval,
-                                  strokeWidth: 3,
-                                  dashPattern: [0, 5.5],
-                                  strokeCap: StrokeCap.round,
-                                  radius: Radius.circular(100),
-                                  padding: EdgeInsets.all(0),
-                                  color: Colors.black,
-                                  child: Container(
-                                    height: 170,
-                                    width: 170,
                                     padding: EdgeInsets.all(5),
                                   ),
                                 )
@@ -849,7 +1085,7 @@ class _WarmUpScreenState extends State<WarmUpScreen>
                                     ? DottedBorder(
                                   borderType: BorderType.Oval,
                                   strokeWidth: 3,
-                                  dashPattern: [0, 7],
+                                  dashPattern: [0, 10],
                                   strokeCap: StrokeCap.round,
                                   radius: Radius.circular(100),
                                   padding: EdgeInsets.all(0),
@@ -868,16 +1104,35 @@ class _WarmUpScreenState extends State<WarmUpScreen>
                                   width: (animation_started
                                       ? _animation_button!.value
                                       : button_height),
-                                  decoration: BoxDecoration(
+                                  decoration: (animation_started
+                                      ? BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    border: Border.all(
+                                        color: Colors.greenAccent,
+                                        width: 2.5),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: HexColor(
+                                            '#409C46'), // darker color
+                                      ),
+                                      BoxShadow(
+                                        color: HexColor('#000000'),
+                                        // background color
+                                        spreadRadius: -7.0,
+                                        blurRadius: 10.0,
+                                      ),
+                                    ],
+                                  )
+                                      : const BoxDecoration(
                                     shape: BoxShape.circle,
                                     image: DecorationImage(
                                         alignment: Alignment.center,
-                                        image:
-                                        AssetImage(AssetUtils.home_button)),
+                                        image: AssetImage(
+                                            AssetUtils.home_button)),
                                     // boxShadow: [
                                     //   BoxShadow(
                                     //     color: (animation_started
-                                    //         ? HexColor('#409C46')
+                                    //         ? HexColor('#F5C921')
                                     //         : Colors.transparent),
                                     //     blurRadius: (animation_started
                                     //         ? _animation!.value
@@ -887,7 +1142,7 @@ class _WarmUpScreenState extends State<WarmUpScreen>
                                     //         : 0),
                                     //   )
                                     // ]
-                                  ),
+                                  )),
                                   child: Stack(
                                     children: [
                                       Container(
@@ -938,12 +1193,12 @@ class _WarmUpScreenState extends State<WarmUpScreen>
                                           (reverse_started
                                               ? '$seconds2'
                                               : (timer_started
-                                              ? (elapsedTime2 == '00'
+                                              ? (elapsedTime3 == '00'
                                               ? 'Ready'
-                                              : (elapsedTime2 ==
+                                              : (elapsedTime3 ==
                                               '01'
                                               ? 'Set'
-                                              : (elapsedTime2 ==
+                                              : (elapsedTime3 ==
                                               '02'
                                               ? 'WarmUp'
                                               : elapsedTime)))
@@ -1752,19 +2007,33 @@ class _WarmUpScreenState extends State<WarmUpScreen>
       startStop = true;
       animation_started = false;
       watch.stop();
+      watch3.stop();
       setTime_finish();
+    });
+  }
+  stopWatch_finish2() {
+    setState(() {
+      startStop = true;
+      animation_started = false;
+      watch2.stop();
     });
   }
 
   startWatch2() {
     setState(() {
+      // timer_started = true;
+      // elapsedTime = "00";
+      startStop = false;
+      started = false;
+      // watch.start();
       // startStop = false;
       // started = false;
-      elapsedTime = "00";
-      watch.start();
-      timer = Timer.periodic(const Duration(milliseconds: 100), updateTime);
+      elapsedTime2 = "00";
+      watch2.start();
+      timer2 = Timer.periodic(const Duration(milliseconds: 100), updateTime);
     });
   }
+
 
   final Ledger_Setup_controller _swipe_setup_controller = Get.put(
       Ledger_Setup_controller(),
@@ -1775,7 +2044,7 @@ class _WarmUpScreenState extends State<WarmUpScreen>
       _swipe_setup_controller.w_running = true;
       startStop = false;
       started = false;
-      elapsedTime2 = "00";
+      elapsedTime3 = "00";
       watch3.start();
       timer3 = Timer.periodic(const Duration(milliseconds: 100), updateTime3);
     });

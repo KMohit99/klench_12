@@ -77,6 +77,7 @@ class _VerifyOtpState extends State<VerifyOtp> {
       }
     });
   }
+  String codeValue = "";
 
   @override
   void initState() {
@@ -168,218 +169,281 @@ class _VerifyOtpState extends State<VerifyOtp> {
                             fontColor: ColorUtils.primary_grey, family: 'PM'),
                       ),
                     ),
-                    Container(
-                      decoration: BoxDecoration(
-                          // color: Colors.black.withOpacity(0.65),
-                          gradient: LinearGradient(
-                            begin: Alignment.centerLeft,
-                            end: Alignment.centerRight,
-                            // stops: [0.1, 0.5, 0.7, 0.9],
-                            colors: [
-                              HexColor("#020204").withOpacity(1),
-                              HexColor("#36393E").withOpacity(1),
-                            ],
-                          ),
-                          boxShadow: [
-                            BoxShadow(
-                              color: HexColor('#04060F'),
-                              offset: Offset(10, 10),
-                              blurRadius: 20,
-                            ),
-                          ],
-                          borderRadius: BorderRadius.circular(20)),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 15, horizontal: 30),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                              child: PinPut(
-                                fieldsCount: 4,
-                                textStyle: TextStyle(
-                                    fontFamily: 'PM',
-                                    fontSize: 25,
-                                    color: ColorUtils.primary_gold),
-                                eachFieldHeight: 45,
-                                eachFieldWidth: 45,
-                                eachFieldMargin: EdgeInsets.all(7),
-                                focusNode: _pinOTPFocus,
-                                controller:
-                                    _signUpScreenController.OtpController,
-                                submittedFieldDecoration: pinOTPDecoration,
-                                selectedFieldDecoration: pinOTPDecoration,
-                                followingFieldDecoration: pinOTPDecoration,
-                                pinAnimationType: PinAnimationType.scale,
+                    // TextField(
+                    //   autofocus: true,
+                    //   autofillHints: [AutofillHints.newPassword],
+                    // ),
+                    Stack(
+                      children: [
+                        PinFieldAutoFill(
+                          currentCode: codeValue,
+                          codeLength: 4,
+                          onCodeChanged: (code) async {
+                            print("onCodeChanged $code");
+                            setState(() {
+                              codeValue = code.toString();
+                              _signUpScreenController.OtpController.text = codeValue;
+                            });
+                            await _signUpScreenController.VerifyOtpAPi(
+                                context: context);
+                            if (_signUpScreenController
+                                .signUpModel!.error ==
+                                false) {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => FaceScanScreen()));
+                              // await selectTowerBottomSheet(context);
+                              // (ontapped)
+                              //     ? Navigator.pop(context)
+                              //     : {
+                              //   Future.delayed(
+                              //       const Duration(seconds: 5),
+                              //           () async {
+                              //         Navigator.pop(context);
+                              //         await Navigator.push(context,
+                              //             MaterialPageRoute(
+                              //                 builder: (context) =>
+                              //                     FaceScanScreen()));
+                              //         // await Get.to(FaceScanScreen());
+                              //         // setState(() {});
+                              //       })
+                              // };
+                            }
+                          },
+                          onCodeSubmitted: (val) {
+                            print("onCodeSubmitted $val");
+                          },
+                        ),
+                        Container(
+                          decoration: BoxDecoration(
+                            // color: Colors.black.withOpacity(0.65),
+                              gradient: LinearGradient(
+                                begin: Alignment.centerLeft,
+                                end: Alignment.centerRight,
+                                // stops: [0.1, 0.5, 0.7, 0.9],
+                                colors: [
+                                  HexColor("#020204").withOpacity(1),
+                                  HexColor("#36393E").withOpacity(1),
+                                ],
                               ),
-                            ),
-                            // Container(
-                            //   child: PinFieldAutoFill(
-                            //     decoration: UnderlineDecoration(
-                            //       textStyle: TextStyle(
-                            //           fontSize: 20, color: Colors.black),
-                            //       colorBuilder: FixedColorBuilder(
-                            //           Colors.black.withOpacity(0.3)),
-                            //     ),
-                            //     codeLength: 4,
-                            //     onCodeSubmitted: (code) {},
-                            //     onCodeChanged: (code) {
-                            //       if (code!.length == 6) {
-                            //         FocusScope.of(context)
-                            //             .requestFocus(FocusNode());
-                            //       }
-                            //     },
-                            //   ),
-                            // ),
-                            SizedBox(
-                              height: 28,
-                            ),
-                            Container(
-                                child: Row(
+                              boxShadow: [
+                                BoxShadow(
+                                  color: HexColor('#04060F'),
+                                  offset: Offset(10, 10),
+                                  blurRadius: 20,
+                                ),
+                              ],
+                              borderRadius: BorderRadius.circular(20)),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 15, horizontal: 30),
+                            child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Container(
-                                  decoration: BoxDecoration(
-                                      gradient: LinearGradient(
-                                        begin: Alignment.bottomLeft,
-                                        end: Alignment.topRight,
-                                        colors: [
-                                          HexColor("#020204").withOpacity(1),
-                                          HexColor("#36393E").withOpacity(1),
-                                        ],
-                                      ),
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: HexColor('#2E2E2D'),
-                                          offset: Offset(0, 3),
-                                          blurRadius: 6,
-                                        ),
-                                        BoxShadow(
-                                          color: HexColor('#04060F'),
-                                          offset: Offset(10, 10),
-                                          blurRadius: 20,
-                                        ),
-                                      ],
-                                      borderRadius: BorderRadius.circular(50)),
-                                  child: IconButton(
-                                    visualDensity: VisualDensity(
-                                        horizontal: -4, vertical: -4),
-                                    onPressed: () {},
-                                    icon: Icon(Icons.access_time_rounded),
-                                    color: ColorUtils.primary_grey,
+                                  child: PinPut(
+                                    autofocus: true,
+                                    autofillHints: [AutofillHints.newPassword],
+                                    fieldsCount: 4,
+                                    textStyle: TextStyle(
+                                        fontFamily: 'PM',
+                                        fontSize: 25,
+                                        color: ColorUtils.primary_gold),
+                                    eachFieldHeight: 45,
+                                    eachFieldWidth: 45,
+                                    eachFieldMargin: EdgeInsets.all(7),
+                                    focusNode: _pinOTPFocus,
+                                    controller:
+                                    _signUpScreenController.OtpController,
+                                    submittedFieldDecoration: pinOTPDecoration,
+                                    selectedFieldDecoration: pinOTPDecoration,
+                                    followingFieldDecoration: pinOTPDecoration,
+                                    pinAnimationType: PinAnimationType.scale,
                                   ),
                                 ),
+                                // Container(
+                                //   child: PinFieldAutoFill(
+                                //     decoration: UnderlineDecoration(
+                                //       textStyle: TextStyle(
+                                //           fontSize: 20, color: Colors.black),
+                                //       colorBuilder: FixedColorBuilder(
+                                //           Colors.black.withOpacity(0.3)),
+                                //     ),
+                                //     codeLength: 4,
+                                //     onCodeSubmitted: (code) {},
+                                //     onCodeChanged: (code) {
+                                //       if (code!.length == 6) {
+                                //         FocusScope.of(context)
+                                //             .requestFocus(FocusNode());
+                                //       }
+                                //     },
+                                //   ),
+                                // ),
                                 SizedBox(
-                                  width: 7,
+                                  height: 28,
                                 ),
-                                Text(
-                                  '${seconds} S',
-                                  style: TextStyle(
-                                      fontSize: 12,
-                                      fontFamily: 'PR',
-                                      color: ColorUtils.primary_grey),
-                                ),
-                              ],
-                            )),
-                            GestureDetector(
-                              onTap: () {
-                                if (resend_otp == false) {
-                                  _signUpScreenController.ReSendOtpAPi(
-                                      context: context);
-                                  if (_signUpScreenController
+                                // PinFieldAutoFill(
+                                //   currentCode: codeValue,
+                                //   codeLength: 4,
+                                //   onCodeChanged: (code) {
+                                //     print("onCodeChanged $code");
+                                //     setState(() {
+                                //       codeValue = code.toString();
+                                //       _signUpScreenController.OtpController.text = codeValue;
+                                //     });
+                                //   },
+                                //   onCodeSubmitted: (val) {
+                                //     print("onCodeSubmitted $val");
+                                //   },
+                                // ),
+                                Container(
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Container(
+                                          decoration: BoxDecoration(
+                                              gradient: LinearGradient(
+                                                begin: Alignment.bottomLeft,
+                                                end: Alignment.topRight,
+                                                colors: [
+                                                  HexColor("#020204").withOpacity(1),
+                                                  HexColor("#36393E").withOpacity(1),
+                                                ],
+                                              ),
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  color: HexColor('#2E2E2D'),
+                                                  offset: Offset(0, 3),
+                                                  blurRadius: 6,
+                                                ),
+                                                BoxShadow(
+                                                  color: HexColor('#04060F'),
+                                                  offset: Offset(10, 10),
+                                                  blurRadius: 20,
+                                                ),
+                                              ],
+                                              borderRadius: BorderRadius.circular(50)),
+                                          child: IconButton(
+                                            visualDensity: VisualDensity(
+                                                horizontal: -4, vertical: -4),
+                                            onPressed: () {},
+                                            icon: Icon(Icons.access_time_rounded),
+                                            color: ColorUtils.primary_grey,
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 7,
+                                        ),
+                                        Text(
+                                          '${seconds} S',
+                                          style: TextStyle(
+                                              fontSize: 12,
+                                              fontFamily: 'PR',
+                                              color: ColorUtils.primary_grey),
+                                        ),
+                                      ],
+                                    )),
+                                GestureDetector(
+                                  onTap: () {
+                                    if (resend_otp == false) {
+                                      _signUpScreenController.ReSendOtpAPi(
+                                          context: context);
+                                      if (_signUpScreenController
                                           .sendOtpModel!.error ==
-                                      false) {
-                                    resend_otp = true;
-                                    startTimer();
-                                  }
-                                }
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    border: (resend_otp
-                                        ? Border.all(
+                                          false) {
+                                        resend_otp = true;
+                                        startTimer();
+                                      }
+                                    }
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        border: (resend_otp
+                                            ? Border.all(
                                             color: Colors.transparent, width: 1)
-                                        : Border.all(
+                                            : Border.all(
                                             color: ColorUtils.primary_gold,
                                             width: 1))),
-                                margin:
+                                    margin:
                                     const EdgeInsets.only(top: 28, bottom: 28),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text(
-                                    'Resend',
-                                    style: FontStyleUtility.h12(
-                                        fontColor: HexColor('#818181'),
-                                        family: 'PM'),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text(
+                                        'Resend',
+                                        style: FontStyleUtility.h12(
+                                            fontColor: HexColor('#818181'),
+                                            family: 'PM'),
+                                      ),
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            GestureDetector(
-                              onTap: () async {
-                                await _signUpScreenController.VerifyOtpAPi(
-                                    context: context);
-                                if (_signUpScreenController
+                                const SizedBox(
+                                  height: 20,
+                                ),
+
+                                GestureDetector(
+                                  onTap: () async {
+                                    await _signUpScreenController.VerifyOtpAPi(
+                                        context: context);
+                                    if (_signUpScreenController
                                         .signUpModel!.error ==
-                                    false) {
-                                  await selectTowerBottomSheet(context);
-                                  // (ontapped)
-                                  //     ? Navigator.pop(context)
-                                  //     : {
-                                  //   Future.delayed(
-                                  //       const Duration(seconds: 5),
-                                  //           () async {
-                                  //         Navigator.pop(context);
-                                  //         await Navigator.push(context,
-                                  //             MaterialPageRoute(
-                                  //                 builder: (context) =>
-                                  //                     FaceScanScreen()));
-                                  //         // await Get.to(FaceScanScreen());
-                                  //         // setState(() {});
-                                  //       })
-                                  // };
-                                }
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    // color: Colors.black.withOpacity(0.65),
-                                    gradient: LinearGradient(
-                                      begin: Alignment.centerLeft,
-                                      end: Alignment.centerRight,
-                                      // stops: [0.1, 0.5, 0.7, 0.9],
-                                      colors: [
-                                        HexColor("#020204").withOpacity(1),
-                                        HexColor("#36393E").withOpacity(1),
-                                      ],
-                                    ),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: HexColor('#04060F'),
-                                        offset: Offset(10, 10),
-                                        blurRadius: 20,
-                                      ),
-                                    ],
-                                    borderRadius: BorderRadius.circular(10)),
-                                child: Container(
-                                    alignment: Alignment.center,
-                                    margin: EdgeInsets.symmetric(
-                                      vertical: 12,
-                                    ),
-                                    child: Text(
-                                      'Verify',
-                                      style: FontStyleUtility.h15(
-                                          fontColor: ColorUtils.primary_grey,
-                                          family: 'PM'),
-                                    )),
-                              ),
+                                        false) {
+                                      await selectTowerBottomSheet(context);
+                                      // (ontapped)
+                                      //     ? Navigator.pop(context)
+                                      //     : {
+                                      //   Future.delayed(
+                                      //       const Duration(seconds: 5),
+                                      //           () async {
+                                      //         Navigator.pop(context);
+                                      //         await Navigator.push(context,
+                                      //             MaterialPageRoute(
+                                      //                 builder: (context) =>
+                                      //                     FaceScanScreen()));
+                                      //         // await Get.to(FaceScanScreen());
+                                      //         // setState(() {});
+                                      //       })
+                                      // };
+                                    }
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      // color: Colors.black.withOpacity(0.65),
+                                        gradient: LinearGradient(
+                                          begin: Alignment.centerLeft,
+                                          end: Alignment.centerRight,
+                                          // stops: [0.1, 0.5, 0.7, 0.9],
+                                          colors: [
+                                            HexColor("#020204").withOpacity(1),
+                                            HexColor("#36393E").withOpacity(1),
+                                          ],
+                                        ),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: HexColor('#04060F'),
+                                            offset: Offset(10, 10),
+                                            blurRadius: 20,
+                                          ),
+                                        ],
+                                        borderRadius: BorderRadius.circular(10)),
+                                    child: Container(
+                                        alignment: Alignment.center,
+                                        margin: EdgeInsets.symmetric(
+                                          vertical: 12,
+                                        ),
+                                        child: Text(
+                                          'Verify',
+                                          style: FontStyleUtility.h15(
+                                              fontColor: ColorUtils.primary_grey,
+                                              family: 'PM'),
+                                        )),
+                                  ),
+                                ),
+                              ],
                             ),
-                          ],
+                          ),
                         ),
-                      ),
+                      ],
                     ),
                     SizedBox(
                       height: 20,
@@ -397,6 +461,7 @@ class _VerifyOtpState extends State<VerifyOtp> {
   bool ontapped = false;
   _listOPT() async {
     print("inseide sms");
+    print(codeValue);
     await SmsAutoFill().listenForCode;
   }
 

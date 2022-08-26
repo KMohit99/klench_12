@@ -192,7 +192,7 @@ class _BreathingScreenState extends State<BreathingScreen>
   String _status = 'Hold';
   bool shadow_animation1_completed = false;
   bool shadow_animation_pause = false;
-  int counter = 9;
+  int counter = 0;
   bool _canVibrate = true;
   final Iterable<Duration> pauses = [
     const Duration(milliseconds: 1),

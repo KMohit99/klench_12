@@ -1,5 +1,5 @@
 class M_ScreenWeeklyDataModel {
-  List<Data>? data;
+  List<Data_weekly>? data;
   bool? error;
   String? statusCode;
   String? message;
@@ -9,9 +9,9 @@ class M_ScreenWeeklyDataModel {
 
   M_ScreenWeeklyDataModel.fromJson(Map<String, dynamic> json) {
     if (json['data'] != null) {
-      data = <Data>[];
+      data = <Data_weekly>[];
       json['data'].forEach((v) {
-        data!.add(new Data.fromJson(v));
+        data!.add(new Data_weekly.fromJson(v));
       });
     }
     error = json['error'];
@@ -31,32 +31,32 @@ class M_ScreenWeeklyDataModel {
   }
 }
 
-class Data {
+class Data_weekly {
   String? id;
   String? fullName;
   String? username;
   String? image;
   User? user;
-  List<Methods>? methods;
+  List<Days_weekly>? days;
 
-  Data(
+  Data_weekly(
       {this.id,
         this.fullName,
         this.username,
         this.image,
         this.user,
-        this.methods});
+        this.days});
 
-  Data.fromJson(Map<String, dynamic> json) {
+  Data_weekly.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     fullName = json['fullName'];
     username = json['username'];
     image = json['image'];
     user = json['user'] != null ? new User.fromJson(json['user']) : null;
-    if (json['methods'] != null) {
-      methods = <Methods>[];
-      json['methods'].forEach((v) {
-        methods!.add(new Methods.fromJson(v));
+    if (json['days'] != null) {
+      days = <Days_weekly>[];
+      json['days'].forEach((v) {
+        days!.add(new Days_weekly.fromJson(v));
       });
     }
   }
@@ -70,8 +70,8 @@ class Data {
     if (this.user != null) {
       data['user'] = this.user!.toJson();
     }
-    if (this.methods != null) {
-      data['methods'] = this.methods!.map((v) => v.toJson()).toList();
+    if (this.days != null) {
+      data['days'] = this.days!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -130,7 +130,7 @@ class User {
   }
 }
 
-class Methods {
+class Days_weekly {
   String? id;
   String? userId;
   String? mbId;
@@ -138,10 +138,15 @@ class Methods {
   String? pauses;
   String? totalPauses;
   String? totalTime;
+  String? sets;
+  String? numberOfSets;
   String? createdDate;
   String? updatedDate;
+  String? pausesSum;
+  String? totalPausesSum;
+  String? totalTimeSum;
 
-  Methods(
+  Days_weekly(
       {this.id,
         this.userId,
         this.mbId,
@@ -149,10 +154,15 @@ class Methods {
         this.pauses,
         this.totalPauses,
         this.totalTime,
+        this.sets,
+        this.numberOfSets,
         this.createdDate,
-        this.updatedDate});
+        this.updatedDate,
+        this.pausesSum,
+        this.totalPausesSum,
+        this.totalTimeSum});
 
-  Methods.fromJson(Map<String, dynamic> json) {
+  Days_weekly.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     userId = json['userId'];
     mbId = json['mbId'];
@@ -160,8 +170,13 @@ class Methods {
     pauses = json['pauses'];
     totalPauses = json['totalPauses'];
     totalTime = json['totalTime'];
+    sets = json['sets'];
+    numberOfSets = json['numberOf_sets'];
     createdDate = json['createdDate'];
     updatedDate = json['updatedDate'];
+    pausesSum = json['pauses_sum'];
+    totalPausesSum = json['totalPauses_sum'];
+    totalTimeSum = json['totalTime_sum'];
   }
 
   Map<String, dynamic> toJson() {
@@ -173,8 +188,13 @@ class Methods {
     data['pauses'] = this.pauses;
     data['totalPauses'] = this.totalPauses;
     data['totalTime'] = this.totalTime;
+    data['sets'] = this.sets;
+    data['numberOf_sets'] = this.numberOfSets;
     data['createdDate'] = this.createdDate;
     data['updatedDate'] = this.updatedDate;
+    data['pauses_sum'] = this.pausesSum;
+    data['totalPauses_sum'] = this.totalPausesSum;
+    data['totalTime_sum'] = this.totalTimeSum;
     return data;
   }
 }

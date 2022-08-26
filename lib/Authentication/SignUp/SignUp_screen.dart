@@ -11,6 +11,7 @@ import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
+import 'package:sms_autofill/sms_autofill.dart';
 
 import '../../front_page/FrontpageScreen.dart';
 import '../../setting_page/terms_conditions.dart';
@@ -49,6 +50,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   DateTime selectedDate = DateTime.now();
   DateDuration? duration;
+  FocusNode Fullname_Focus = new FocusNode();
+  FocusNode Username_Focus = new FocusNode();
+  FocusNode Mobile_Focus = new FocusNode();
+  FocusNode Email_Focus = new FocusNode();
+  FocusNode Password_Focus = new FocusNode();
+  FocusNode Confirm_Password_Focus = new FocusNode();
+
 
   selectDoB(BuildContext context) async {
     DateTime? selected;
@@ -538,6 +546,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 _signUpScreenController.fullnameController,
                             labelText: 'Enter Full name',
                             maxLines: 1,
+                            textFocusNode: Fullname_Focus,
+                            onFieldSubmitted: (value){
+                              FocusScope.of(context).requestFocus(Username_Focus);
+                            },
                             iconData: IconButton(
                               visualDensity:
                                   VisualDensity(horizontal: -4, vertical: -4),
@@ -559,7 +571,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             controller:
                                 _signUpScreenController.usernameController,
                             labelText: 'Enter Username',
+                            textFocusNode: Username_Focus,
+                            onFieldSubmitted: (value){
+                              FocusScope.of(context).requestFocus(Mobile_Focus);
+                            },
                             maxLines: 1,
+
                             iconData: IconButton(
                               visualDensity:
                                   VisualDensity(horizontal: -4, vertical: -4),
@@ -778,6 +795,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                       _signUpScreenController.phoneController,
                                   labelText: 'Enter Mobile Number',
                                   maxLines: 1,
+                                  textFocusNode: Mobile_Focus,
+                                  onFieldSubmitted: (value){
+                                    FocusScope.of(context).requestFocus(Email_Focus);
+                                  },
+                                  // keyboardType: TextInputType.number,
                                   iconData: IconButton(
                                     visualDensity: VisualDensity(
                                         horizontal: -4, vertical: -4),
@@ -828,6 +850,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             controller: _signUpScreenController.emailController,
                             labelText: 'Email Address',
                             maxLines: 1,
+                            textFocusNode: Email_Focus,
+                            onFieldSubmitted: (value){
+                              FocusScope.of(context).requestFocus(Password_Focus);
+                            },
                             iconData: IconButton(
                               visualDensity:
                                   VisualDensity(horizontal: -4, vertical: -4),
@@ -1050,6 +1076,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             controller:
                                 _signUpScreenController.passwordController,
                             labelText: 'Password',
+                            textFocusNode: Password_Focus,
+                            maxLines: 1,
+                            onFieldSubmitted: (value){
+                              FocusScope.of(context).requestFocus(Confirm_Password_Focus);
+                            },
                             onChanged: (value) {
                               print(value);
                               checkPassword();
@@ -1349,6 +1380,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 .confirmPasswordController,
                             maxLines: 1,
                             labelText: 'Confirm Password',
+                            textFocusNode: Confirm_Password_Focus,
+                            onFieldSubmitted: (value){
+                              FocusScope.of(context).unfocus();
+                            },
                             iconData: IconButton(
                               visualDensity:
                                   VisualDensity(horizontal: -4, vertical: -4),
@@ -1460,6 +1495,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       //   return;
                       // }
                       if (alpha_num) {
+                        await submit();
                         await _signUpScreenController.SendOtpAPi(
                             context: context);
                       }
@@ -1467,7 +1503,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   },
                   title_text: 'Next',
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
               ],
@@ -1476,6 +1512,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
         ),
       ),
     );
+  }
+
+  Future submit() async {
+    _signUpScreenController.appSignatureId = await SmsAutoFill().getAppSignature;
+    print("_signUpScreenController.appSignatureId ${_signUpScreenController.appSignatureId}");
+
   }
 
   final imgPicker = ImagePicker();

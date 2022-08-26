@@ -15,6 +15,7 @@ import 'package:klench_/homepage/controller/pee_screen_controller.dart';
 import 'package:klench_/homepage/swipe_controller.dart';
 import 'package:klench_/main.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
+// import 'package:pimp_my_button/pimp_my_button.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:vibration/vibration.dart';
 
@@ -1249,6 +1250,14 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
                         ),
                         glowColor: Colors.white,
                       ),
+                      // PimpedButton(
+                      //   particle: DemoParticle(),
+                      //   pimpedWidgetBuilder: (context, controller) {
+                      //     return FloatingActionButton(onPressed: () {
+                      //       controller.forward(from: 0.0);
+                      //     },);
+                      //   },
+                      // ),
 
                       Container(
                         height: (screenHeight >= 600 && screenHeight <= 700
@@ -1287,6 +1296,8 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
                             await _peeScreenController.Pee_get_API(context);
 
                             setState(() {
+                              started = true;
+
                               elapsedTime = '00';
                               _swipe_setup_controller.p_running = false;
                               percent = 0.0;
@@ -1932,7 +1943,7 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
   stopWatch() {
     setState(() {
       startStop = true;
-      started = true;
+      // started = true;
       animation_started = false;
       watch.stop();
       setTime_finish();
@@ -1949,7 +1960,7 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
   stopWatch_finish() {
     setState(() {
       startStop = true;
-      started = true;
+      // started = true;
       // animation_started = false;
       watch.stop();
       setTime_finish();

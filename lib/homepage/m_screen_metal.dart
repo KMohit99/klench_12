@@ -26,6 +26,8 @@ import '../utils/colorUtils.dart';
 import '../utils/common_widgets.dart';
 import '../utils/page_loader.dart';
 import 'm_screen.dart';
+import 'model/m_screen_dailyData_model.dart';
+import 'model/m_screen_lifetimeData_model.dart';
 import 'model/m_screen_weekly_data_model.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
@@ -50,7 +52,7 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
   bool button_keep = true;
 
   String elapsedTime = '00:00';
-  List method_list = ['Sex', 'Hand', 'Dildo'];
+  List method_list = ['Hand', 'Dildo', 'Sex', 'Fleshlight'];
   String method_selected = '';
   List<ListMethodClass> method_time = [];
 
@@ -107,27 +109,62 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
   ];
 
   static List<ChartData2> chartData_life = [
-    ChartData2('12 AM', 2, HexColor('#75C043')),
-    ChartData2('6 AM', 5, HexColor('#75C043')),
-    ChartData2('12 PM', 3, HexColor('#75C043')),
-    ChartData2('6 PM', 5, HexColor('#75C043')),
+    ChartData2('12 AM', 'sex', 2, HexColor('#75C043')),
+    ChartData2('1 AM', 'sex', 1, HexColor('#75C043')),
+    ChartData2('2 AM', 'sex', 3, HexColor('#75C043')),
+    ChartData2('2:30 AM', 'sex', 5, HexColor('#75C043')),
+    ChartData2('2:45 AM', 'sex', 7, HexColor('#75C043')),
+    ChartData2('3 AM', 'sex', 9, HexColor('#75C043')),
+    ChartData2('3:15 AM', 'sex', 5, HexColor('#75C043')),
+    ChartData2('4 AM', 'sex', 8, HexColor('#75C043')),
+    ChartData2('5 AM', 'sex', 9, HexColor('#75C043')),
+    ChartData2('6 AM', 'sex', 4, HexColor('#75C043')),
+    ChartData2('7 AM', 'sex', 3, HexColor('#75C043')),
+    ChartData2('7:15 AM', 'sex', 2, HexColor('#75C043')),
+    ChartData2('7:30 AM', 'sex', 9, HexColor('#75C043')),
+    ChartData2('8 AM', 'sex', 4, HexColor('#75C043')),
+    ChartData2('8:05 AM', 'sex', 2, HexColor('#75C043')),
+    ChartData2('8:30 AM', 'sex', 5, HexColor('#75C043')),
+    ChartData2('8:40 AM', 'sex', 8, HexColor('#75C043')),
+    ChartData2('9 AM', 'sex', 6, HexColor('#75C043')),
+    ChartData2('10 AM', 'sex', 8, HexColor('#75C043')),
+    ChartData2('11 AM', 'sex', 4, HexColor('#75C043')),
+    ChartData2('12 PM', 'sex', 5, HexColor('#75C043')),
+    ChartData2('6 PM', 'sex', 2, HexColor('#75C043')),
+    ChartData2('7 PM', 'sex', 2, HexColor('#75C043')),
+    ChartData2('8 PM', 'sex', 1, HexColor('#75C043')),
+    ChartData2('8:15 PM', 'sex', 3, HexColor('#75C043')),
+    ChartData2('8:30 PM', 'sex', 5, HexColor('#75C043')),
+    ChartData2('8:45 PM', 'sex', 7, HexColor('#75C043')),
+    ChartData2('9 PM', 'sex', 9, HexColor('#75C043')),
+    ChartData2('9:15 PM', 'sex', 5, HexColor('#75C043')),
+    ChartData2('10 PM', 'sex', 8, HexColor('#75C043')),
+    ChartData2('10:15 PM', 'sex', 9, HexColor('#75C043')),
+    ChartData2('10:20 PM', 'sex', 4, HexColor('#75C043')),
+    ChartData2('11 PM', 'sex', 3, HexColor('#75C043')),
+    ChartData2('11:30 PM', 'sex', 2, HexColor('#75C043')),
+    ChartData2('11:35 PM', 'sex', 6, HexColor('#75C043')),
+    ChartData2('11:40 PM', 'sex', 8, HexColor('#75C043')),
+    ChartData2('11:45 PM', 'sex', 4, HexColor('#75C043')),
+    ChartData2('11:50 PM', 'sex', 5, HexColor('#75C043')),
+    ChartData2('11:55 PM', 'sex', 2, HexColor('#75C043')),
   ];
   static List<ChartData2> chartData_life2 = [
-    ChartData2('M', 10, HexColor('#75C043')),
-    ChartData2('T', 14, HexColor('#75C043')),
-    ChartData2('W', 10, HexColor('#75C043')),
-    ChartData2('T', 8, HexColor('#75C043')),
-    ChartData2('F', 12, HexColor('#75C043')),
-    ChartData2('S', 9, HexColor('#75C043')),
-    ChartData2('S', 14, HexColor('#75C043'))
+    ChartData2('M', 'sex', 10, HexColor('#75C043')),
+    ChartData2('T', 'sex', 14, HexColor('#75C043')),
+    ChartData2('W', 'sex', 10, HexColor('#75C043')),
+    ChartData2('T', 'sex', 8, HexColor('#75C043')),
+    ChartData2('F', 'sex', 12, HexColor('#75C043')),
+    ChartData2('S', 'sex', 9, HexColor('#75C043')),
+    ChartData2('S', 'sex', 14, HexColor('#75C043'))
   ];
   static List<ChartData2> chartData_life3 = [
-    ChartData2('Jan', 10, HexColor('#75C043')),
-    ChartData2('Feb', 18, HexColor('#75C043')),
-    ChartData2('Mar', 40, HexColor('#75C043')),
-    ChartData2('Apr', 20, HexColor('#75C043')),
-    ChartData2('May', 24, HexColor('#75C043')),
-    ChartData2('May', 14, HexColor('#75C043'))
+    ChartData2('Jan', 'sex', 10, HexColor('#75C043')),
+    ChartData2('Feb', 'sex', 18, HexColor('#75C043')),
+    ChartData2('Mar', 'sex', 40, HexColor('#75C043')),
+    ChartData2('Apr', 'sex', 20, HexColor('#75C043')),
+    ChartData2('May', 'sex', 24, HexColor('#75C043')),
+    ChartData2('May', 'sex', 14, HexColor('#75C043'))
   ];
 
   List data_graph = [
@@ -362,7 +399,7 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
   void initState() {
     getdata().then((value) => print("Success"));
     graph_ = data_graph[0];
-    graph_life = data_graph2[0];
+    graph_life = daily_data_list;
 
     // _tooltipBehavior = TooltipBehavior(
     //     enable: true, borderWidth: 5, color: Colors.transparent);
@@ -378,7 +415,12 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
         markerSettings: TrackballMarkerSettings(color: Colors.yellow),
         // lineColor: Colors.white,
         lineType: TrackballLineType.vertical,
-
+        tooltipAlignment: ChartAlignment.far,
+        // builder: (BuildContext ,TrackballDetails) {
+        //   return Container(
+        //     child: Text('data'),
+        //   );
+        // },
         tooltipSettings: const InteractiveTooltip(
             // Formatting trackball tooltip text
             format: 'point.x : point.y times'),
@@ -386,7 +428,6 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
         tooltipDisplayMode: TrackballDisplayMode.floatAllPoints,
         activationMode: ActivationMode.singleTap);
     _selectionBehavior = SelectionBehavior(enable: true);
-
     _crosshairBehavior = CrosshairBehavior(
         enable: true,
         lineColor: Colors.red,
@@ -401,7 +442,10 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
     print("insssiiiiiii");
     // WidgetsBinding.instance.addPostFrameCallback((_) async {
     // await _masturbation_screen_controller.MasturbationData_get_API(context);
+    await Masturbation_LifeTime_Data_get_API();
+    await Masturbation_Daily_Data_get_API();
     await MasturbationWeekly_Data_get_API();
+
     // });
   }
 
@@ -827,7 +871,6 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
               },
               body: SingleChildScrollView(
                 physics: ClampingScrollPhysics(),
-
                 child: Container(
                   margin: EdgeInsets.only(top: 15, left: 8, right: 8),
                   child: Column(
@@ -1159,9 +1202,18 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
                                                               method_list[
                                                                   index],
                                                               style: FontStyleUtility.h15(
-                                                                  fontColor:
-                                                                      ColorUtils
-                                                                          .primary_grey,
+                                                                  fontColor: (method_list[
+                                                                              index] ==
+                                                                          'Hand'
+                                                                      ? Colors
+                                                                          .red
+                                                                      : (method_list[index] ==
+                                                                              'Dildo'
+                                                                          ? Colors
+                                                                              .blue
+                                                                          : (method_list[index] == 'Sex'
+                                                                              ? Colors.green
+                                                                              : (method_list[index] == 'Fleshlight' ? Colors.purple : Colors.white)))),
                                                                   family: 'PM'),
                                                             ),
                                                           ),
@@ -2204,14 +2256,26 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
                                                                   .all(4.5),
                                                           child: Text(
                                                             '${method_time[index].method_name}',
-                                                            style: FontStyleUtility.h14(
-                                                                fontColor: (index <=
-                                                                        3
-                                                                    ? colors[
-                                                                        index]
-                                                                    : Colors
-                                                                        .white),
-                                                                family: 'PR'),
+                                                            style: FontStyleUtility
+                                                                .h14(
+                                                                    fontColor: (method_time[index].method_name ==
+                                                                            'Hand'
+                                                                        ? Colors
+                                                                            .red
+                                                                        : (method_time[index].method_name ==
+                                                                                'Dildo'
+                                                                            ? Colors
+                                                                                .blue
+                                                                            : (method_time[index].method_name == 'Sex'
+                                                                                ? Colors.green
+                                                                                : (method_time[index].method_name == 'Fleshlight' ? Colors.purple : Colors.white)))),
+                                                                    // (index <=
+                                                                    //         3
+                                                                    //     ? colors[
+                                                                    //         index]
+                                                                    //     : Colors
+                                                                    //         .white),
+                                                                    family: 'PR'),
                                                           ),
                                                         ),
                                                       ),
@@ -2620,142 +2684,6 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
                           children: [
                             Container(
                               margin: EdgeInsets.all(15),
-                              decoration: BoxDecoration(
-                                  gradient: LinearGradient(
-                                    begin: Alignment.centerLeft,
-                                    end: Alignment.centerRight,
-                                    // stops: [0.1, 0.5, 0.7, 0.9],
-                                    colors: [
-                                      HexColor("#020204").withOpacity(0.65),
-                                      HexColor("#36393E").withOpacity(0.65),
-                                    ],
-                                  ),
-                                  borderRadius: BorderRadius.circular(20)),
-                              child: Column(
-                                children: [
-                                  Container(
-                                    margin: EdgeInsets.symmetric(
-                                        vertical: 15, horizontal: 20),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          'History',
-                                          style: FontStyleUtility.h14(
-                                              fontColor:
-                                                  ColorUtils.primary_gold,
-                                              family: 'PR'),
-                                        ),
-                                        Container(
-                                          decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(50),
-                                              gradient: LinearGradient(
-                                                begin: Alignment.centerLeft,
-                                                end: Alignment.centerRight,
-                                                // stops: [0.1, 0.5, 0.7, 0.9],
-                                                colors: [
-                                                  HexColor("#020204")
-                                                      .withOpacity(1),
-                                                  HexColor("#36393E")
-                                                      .withOpacity(1),
-                                                ],
-                                              ),
-                                              boxShadow: [
-                                                BoxShadow(
-                                                    color: HexColor('#04060F'),
-                                                    offset: Offset(3, 3),
-                                                    blurRadius: 10)
-                                              ]),
-                                          child: IconButton(
-                                            visualDensity: VisualDensity(
-                                                vertical: -2, horizontal: -2),
-                                            onPressed: () {
-                                              selectdate(context);
-                                            },
-                                            iconSize: 15,
-                                            icon: Icon(
-                                              Icons.calendar_today,
-                                              color: ColorUtils.primary_grey,
-                                            ),
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                  Container(
-                                      height: 250,
-                                      child: SfCartesianChart(
-                                          plotAreaBorderWidth: 0,
-                                          plotAreaBorderColor:
-                                              ColorUtils.primary_grey,
-                                          legend: Legend(
-                                              isVisible: true,
-                                              position: LegendPosition.bottom,
-                                              textStyle: FontStyleUtility.h12(
-                                                  fontColor: Colors.white,
-                                                  family: "PM")),
-                                          primaryXAxis: CategoryAxis(
-                                              majorGridLines:
-                                                  MajorGridLines(width: 0),
-                                              //Hide the axis line of y-axis
-                                              axisLine: AxisLine(width: 3)),
-                                          primaryYAxis: NumericAxis(
-                                              //Hide the gridlines of y-axis
-                                              majorGridLines:
-                                                  MajorGridLines(width: 0),
-                                              //Hide the axis line of y-axis
-                                              axisLine: AxisLine(width: 3)),
-                                          series: <
-                                              ChartSeries<ChartData, String>>[
-                                            // Renders column chart
-
-                                            ColumnSeries<ChartData, String>(
-                                                // dataSource: _masturbation_screen_controller.gst_payable_list,
-                                                dataSource: graph_,
-                                                legendItemText: 'Hand',
-                                                width: 0.5,
-                                                spacing: 0.6,
-                                                color: HexColor('#DD3931'),
-                                                xValueMapper:
-                                                    (ChartData data, _) =>
-                                                        data.x,
-                                                yValueMapper:
-                                                    (ChartData data, _) =>
-                                                        data.y),
-                                            ColumnSeries<ChartData, String>(
-                                                width: 0.5,
-                                                spacing: 0.6,
-                                                color: HexColor('#75C043'),
-                                                legendItemText: 'Sex',
-
-                                                // dataSource: _masturbation_screen_controller.gst_payable_list,
-                                                dataSource: graph_,
-                                                xValueMapper:
-                                                    (ChartData data, _) =>
-                                                        data.x,
-                                                yValueMapper:
-                                                    (ChartData data, _) =>
-                                                        data.y1),
-                                            ColumnSeries<ChartData, String>(
-                                                width: 0.5,
-                                                spacing: 0.6,
-                                                color: HexColor('#1880C3'),
-                                                legendItemText: 'Dildo',
-                                                dataSource: graph_,
-                                                xValueMapper:
-                                                    (ChartData data, _) =>
-                                                        data.x,
-                                                yValueMapper:
-                                                    (ChartData data, _) =>
-                                                        data.y2),
-                                          ])),
-                                ],
-                              ),
-                            ),
-                            Container(
-                              margin: EdgeInsets.all(15),
                               // decoration: BoxDecoration(
                               //     // color: Colors.black.withOpacity(0.65),
                               //     gradient: LinearGradient(
@@ -2775,10 +2703,9 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
                               //     // ],
                               //     borderRadius: BorderRadius.circular(20)),
                               decoration: BoxDecoration(
-                                  color: HexColor('#181A1F')
-                                      .withOpacity(0.65),
+                                  color: HexColor('#181A1F').withOpacity(0.65),
                                   borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(20),
+                                      topLeft: Radius.circular(20),
                                       topRight: Radius.circular(20),
                                       bottomRight: Radius.circular(20),
                                       bottomLeft: Radius.circular(20))),
@@ -2865,26 +2792,79 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
                                             CrossAxisAlignment.start,
                                         children: [
                                           Container(
-                                            margin: EdgeInsets.only(
-                                                left: 12, top: 17, bottom: 17),
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
+                                            margin: EdgeInsets.symmetric(
+                                                vertical: 15, horizontal: 20),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
                                               children: [
-                                                Text(
-                                                  '01 Jan - 31 Dec 2021',
-                                                  style: FontStyleUtility.h14(
-                                                      fontColor:
-                                                          HexColor('#D5D5D5'),
-                                                      family: 'PR'),
+                                                Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      '01 Jan - 31 Dec 2021',
+                                                      style:
+                                                          FontStyleUtility.h14(
+                                                              fontColor:
+                                                                  HexColor(
+                                                                      '#D5D5D5'),
+                                                              family: 'PR'),
+                                                    ),
+                                                    Text(
+                                                      'Top result: 40 sec',
+                                                      style:
+                                                          FontStyleUtility.h14(
+                                                              fontColor:
+                                                                  HexColor(
+                                                                      "#66686B"),
+                                                              family: 'PR'),
+                                                    ),
+                                                  ],
                                                 ),
-                                                Text(
-                                                  'Top result: 40 sec',
-                                                  style: FontStyleUtility.h14(
-                                                      fontColor:
-                                                          HexColor("#66686B"),
-                                                      family: 'PR'),
-                                                ),
+                                                Container(
+                                                  decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              50),
+                                                      gradient: LinearGradient(
+                                                        begin: Alignment
+                                                            .centerLeft,
+                                                        end: Alignment
+                                                            .centerRight,
+                                                        // stops: [0.1, 0.5, 0.7, 0.9],
+                                                        colors: [
+                                                          HexColor("#020204")
+                                                              .withOpacity(1),
+                                                          HexColor("#36393E")
+                                                              .withOpacity(1),
+                                                        ],
+                                                      ),
+                                                      boxShadow: [
+                                                        BoxShadow(
+                                                            color: HexColor(
+                                                                '#04060F'),
+                                                            offset:
+                                                                Offset(3, 3),
+                                                            blurRadius: 10)
+                                                      ]),
+                                                  child: IconButton(
+                                                    visualDensity:
+                                                        VisualDensity(
+                                                            vertical: -2,
+                                                            horizontal: -2),
+                                                    onPressed: () {
+                                                      selectdate(context);
+                                                    },
+                                                    iconSize: 15,
+                                                    icon: Icon(
+                                                      Icons.calendar_today,
+                                                      color: ColorUtils
+                                                          .primary_grey,
+                                                    ),
+                                                  ),
+                                                )
                                               ],
                                             ),
                                           ),
@@ -2905,7 +2885,7 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
                                                           AxisLine(width: 0)),
                                                   primaryYAxis: NumericAxis(
                                                       //Hide the gridlines of y-axis
-                                                      opposedPosition: true,
+                                                      // opposedPosition: true,
                                                       majorGridLines:
                                                           MajorGridLines(
                                                               width: 1,
@@ -2915,12 +2895,14 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
                                                       axisLine:
                                                           AxisLine(width: 0)),
                                                   series: <
-                                                      ChartSeries<ChartData,
+                                                      ChartSeries<ChartData2,
                                                           String>>[
                                                     // Renders column chart
-                                                    ColumnSeries<ChartData,
+
+                                                    ColumnSeries<ChartData2,
                                                             String>(
-                                                        dataSource: chartData,
+                                                        dataSource:
+                                                            daily_data_list,
                                                         width: 0.5,
                                                         // spacing: 0.6,
                                                         color:
@@ -2935,11 +2917,11 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
                                                                   5),
                                                         ),
                                                         xValueMapper:
-                                                            (ChartData data,
+                                                            (ChartData2 data,
                                                                     _) =>
                                                                 data.x,
                                                         yValueMapper:
-                                                            (ChartData data,
+                                                            (ChartData2 data,
                                                                     _) =>
                                                                 data.y),
                                                   ])),
@@ -2947,6 +2929,142 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
                                       ),
                                     ),
                                   ),
+                                ],
+                              ),
+                            ),
+                            Container(
+                              margin: EdgeInsets.all(15),
+                              decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    begin: Alignment.centerLeft,
+                                    end: Alignment.centerRight,
+                                    // stops: [0.1, 0.5, 0.7, 0.9],
+                                    colors: [
+                                      HexColor("#020204").withOpacity(0.65),
+                                      HexColor("#36393E").withOpacity(0.65),
+                                    ],
+                                  ),
+                                  borderRadius: BorderRadius.circular(20)),
+                              child: Column(
+                                children: [
+                                  Container(
+                                    margin: EdgeInsets.symmetric(
+                                        vertical: 15, horizontal: 20),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          'History',
+                                          style: FontStyleUtility.h14(
+                                              fontColor:
+                                                  ColorUtils.primary_gold,
+                                              family: 'PR'),
+                                        ),
+                                        // Container(
+                                        //   decoration: BoxDecoration(
+                                        //       borderRadius:
+                                        //           BorderRadius.circular(50),
+                                        //       gradient: LinearGradient(
+                                        //         begin: Alignment.centerLeft,
+                                        //         end: Alignment.centerRight,
+                                        //         // stops: [0.1, 0.5, 0.7, 0.9],
+                                        //         colors: [
+                                        //           HexColor("#020204")
+                                        //               .withOpacity(1),
+                                        //           HexColor("#36393E")
+                                        //               .withOpacity(1),
+                                        //         ],
+                                        //       ),
+                                        //       boxShadow: [
+                                        //         BoxShadow(
+                                        //             color: HexColor('#04060F'),
+                                        //             offset: Offset(3, 3),
+                                        //             blurRadius: 10)
+                                        //       ]),
+                                        //   child: IconButton(
+                                        //     visualDensity: VisualDensity(
+                                        //         vertical: -2, horizontal: -2),
+                                        //     onPressed: () {
+                                        //       selectdate(context);
+                                        //     },
+                                        //     iconSize: 15,
+                                        //     icon: Icon(
+                                        //       Icons.calendar_today,
+                                        //       color: ColorUtils.primary_grey,
+                                        //     ),
+                                        //   ),
+                                        // )
+                                      ],
+                                    ),
+                                  ),
+                                  Container(
+                                      height: 250,
+                                      child: SfCartesianChart(
+                                          plotAreaBorderWidth: 0,
+                                          plotAreaBorderColor:
+                                              ColorUtils.primary_grey,
+                                          legend: Legend(
+                                              isVisible: true,
+                                              position: LegendPosition.bottom,
+                                              textStyle: FontStyleUtility.h12(
+                                                  fontColor: Colors.white,
+                                                  family: "PM")),
+                                          primaryXAxis: CategoryAxis(
+                                              majorGridLines:
+                                                  MajorGridLines(width: 0),
+                                              //Hide the axis line of y-axis
+                                              axisLine: AxisLine(width: 3)),
+                                          primaryYAxis: NumericAxis(
+                                              //Hide the gridlines of y-axis
+                                              majorGridLines:
+                                                  MajorGridLines(width: 0),
+                                              //Hide the axis line of y-axis
+                                              axisLine: AxisLine(width: 3)),
+                                          series: <
+                                              ChartSeries<ChartData, String>>[
+                                            // Renders column chart
+
+                                            ColumnSeries<ChartData, String>(
+                                                // dataSource: _masturbation_screen_controller.gst_payable_list,
+                                                dataSource: graph_,
+                                                legendItemText: 'Hand',
+                                                width: 0.5,
+                                                spacing: 0.6,
+                                                color: HexColor('#DD3931'),
+                                                xValueMapper:
+                                                    (ChartData data, _) =>
+                                                        data.x,
+                                                yValueMapper:
+                                                    (ChartData data, _) =>
+                                                        data.y),
+                                            ColumnSeries<ChartData, String>(
+                                                width: 0.5,
+                                                spacing: 0.6,
+                                                color: HexColor('#75C043'),
+                                                legendItemText: 'Sex',
+
+                                                // dataSource: _masturbation_screen_controller.gst_payable_list,
+                                                dataSource: graph_,
+                                                xValueMapper:
+                                                    (ChartData data, _) =>
+                                                        data.x,
+                                                yValueMapper:
+                                                    (ChartData data, _) =>
+                                                        data.y1),
+                                            ColumnSeries<ChartData, String>(
+                                                width: 0.5,
+                                                spacing: 0.6,
+                                                color: HexColor('#1880C3'),
+                                                legendItemText: 'Dildo',
+                                                dataSource: graph_,
+                                                xValueMapper:
+                                                    (ChartData data, _) =>
+                                                        data.x,
+                                                yValueMapper:
+                                                    (ChartData data, _) =>
+                                                        data.y2),
+                                          ])),
                                 ],
                               ),
                             ),
@@ -2973,7 +3091,7 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
                                       onTap: () {
                                         setState(() {
                                           selected_time = 'days';
-                                          graph_life = data_graph2[0];
+                                          graph_life = daily_data_list;
                                         });
                                       },
                                       child: Container(
@@ -3028,7 +3146,7 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
                                       onTap: () {
                                         setState(() {
                                           selected_time = 'months';
-                                          graph_life = data_graph2[2];
+                                          graph_life = lifetime_data_list;
                                         });
                                       },
                                       child: Container(
@@ -3114,9 +3232,14 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
                                               axisLine: AxisLine(width: 3)),
                                           series: <ChartSeries>[
                                             SplineSeries<ChartData2, String>(
-                                                markerSettings: MarkerSettings(
-                                                    isVisible: true),
+                                                markerSettings:
+                                                    const MarkerSettings(
+                                                        isVisible: true,
+                                                        borderWidth: 1,
+                                                        height: 6,
+                                                        width: 6),
                                                 dataSource: graph_life,
+                                                // gst_payable_list,
                                                 // Bind the color for all the data points from the data source
                                                 // color: Colors.purple,
                                                 // selectionBehavior:_selectionBehavior ,
@@ -3239,9 +3362,10 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
 
   // var getUSerModelList = M_ScreenGetModel().obs;
   var x_axis = ["M", "T", "W", "T", "F", "S", "S"];
-  List<ChartData> gst_payable_list = [];
+  List<ChartData2> lifetime_data_list = [];
+  List<ChartData2> daily_data_list = [];
 
-  List colors = [Colors.red, Colors.green, Colors.yellow, Colors.purple];
+  List colors = [Colors.red, Colors.blue, Colors.green, Colors.purple];
   Random random = new Random();
 
   int index = 0;
@@ -3405,6 +3529,8 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
   }
 
   M_ScreenWeeklyDataModel? m_screenWeeklyDataModel;
+  M_ScreenLifeTimeDataModel? m_screenLifeTimeDataModel;
+  M_ScreenDailyDataModel? m_screenDailyDataModel;
 
   Future MasturbationWeekly_Data_get_API() async {
     String id_user = await PreferenceManager().getPref(URLConstants.id);
@@ -3433,24 +3559,182 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
           // await Get.to(Dashboard());
           // CommonWidget().showToaster(msg: m_screenWeeklyDataModel!.message!);
 
-          // for (var i = 0;
-          //     i < m_screenWeeklyDataModel!.data![0].methods!.length;
-          //     i++) {
-          //   // x_axis = data_sales[i]["month"];
-          //   var y1 = double.parse(
-          //       m_screenWeeklyDataModel!.data![0].methods![i].totalPauses!);
-          //   // var y2 = data_gst_receivable[i]['value'];
-          //   // var y3 =
-          //   setState(() {
-          //     gst_payable_list.add(ChartData(
-          //       x_axis[i],
-          //       y1,
-          //       y1,
-          //       y1,
-          //     ));
-          //   });
-          //   print(gst_payable_list[i].y);
-          // }
+          for (var i = 0;
+              i < m_screenWeeklyDataModel!.data![0].days!.length;
+              i++) {
+            // x_axis = data_sales[i]["month"];
+            var y1 = m_screenWeeklyDataModel!.data![0].days![i].createdDate!;
+
+            DateTime tempDate = new DateFormat("yyyy-MM-dd hh:mm:ss").parse(y1);
+            var date_day = DateFormat('EEEE').format(tempDate);
+            // print(DateFormat('EEEE').format(tempDate)); // prints Tuesday
+            Days_weekly data_n = m_screenWeeklyDataModel!.data![0].days!.firstWhere(
+                (element) =>
+                    DateFormat('EEEE').format(DateFormat("yyyy-MM-dd hh:mm:ss")
+                        .parse(element.createdDate!)) ==
+                    'Sunday');
+            // print('i did it');
+            print(data_n.methodName);
+            print(data_n.id);
+            // var y2 = data_gst_receivable[i]['value'];
+            // var y3 =
+            // setState(() {
+            //   gst_payable_list.add(ChartData3(
+            //     x_axis[i],
+            //     y1,
+            //     y1,
+            //     y1,
+            //   ));
+            // });
+            // print(gst_payable_list[i].y);
+          }
+          print("gst_payable_list");
+
+          return m_screenWeeklyDataModel;
+        } else {
+          hideLoader(context);
+
+          // CommonWidget().showToaster(msg: m_screenWeeklyDataModel!.message!);
+          return null;
+        }
+      } else if (response.statusCode == 422) {
+        hideLoader(context);
+        CommonWidget().showToaster(msg: m_screenWeeklyDataModel!.message!);
+      } else if (response.statusCode == 401) {
+        hideLoader(context);
+        CommonWidget().showToaster(msg: m_screenWeeklyDataModel!.message!);
+      } else {
+        // CommonWidget().showToaster(msg: msg.toString());
+      }
+    } on Exception catch (e) {
+      print(e.toString());
+      // TODO
+    }
+  }
+
+  Future Masturbation_LifeTime_Data_get_API() async {
+    String id_user = await PreferenceManager().getPref(URLConstants.id);
+    var url =
+        "${URLConstants.base_url}${URLConstants.masturbation_get_lifetime_data}?userId=$id_user";
+
+    try {
+      showLoader(context);
+      var response = await http.get(Uri.parse(url));
+      print(response.body);
+      print(response.request);
+      print(response.statusCode);
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        // var data = convert.jsonDecode(response.body);
+        Map<String, dynamic> data =
+            json.decode(response.body.replaceAll('}[]', '}'));
+        print("Data :${data}");
+        m_screenLifeTimeDataModel = M_ScreenLifeTimeDataModel.fromJson(data);
+        // getUSerModelList(userInfoModel_email);
+        if (m_screenLifeTimeDataModel!.error == false) {
+          hideLoader(context);
+          debugPrint(
+              '2-2-2-2-2-2 Inside the Get UserInfo Controller Details ${m_screenLifeTimeDataModel!.data!.length}');
+          // CommonWidget().showToaster(msg: breathingGetModel!.message!);
+          // CommonWidget().showToaster(msg: data["success"].toString());
+          // await Get.to(Dashboard());
+          // CommonWidget().showToaster(msg: m_screenWeeklyDataModel!.message!);
+
+          for (var i = 0;
+              i < m_screenLifeTimeDataModel!.data![0].methods!.length;
+              i++) {
+            // x_axis = data_sales[i]["month"];
+            var x =
+                m_screenLifeTimeDataModel!.data![0].methods![i].createdDate!;
+            var x1 = m_screenLifeTimeDataModel!.data![0].methods![i].methodName;
+            var y = double.parse(
+                m_screenLifeTimeDataModel!.data![0].methods![i].totalPauses!);
+            // var inputFormat = DateFormat.jm().format(DateFormat("hh:mm:ss").parse("14:15:00"));
+            DateTime tempDate = new DateFormat("yyyy-MM-dd hh:mm:ss").parse(x);
+
+            String formattedTime = DateFormat.jm().format(tempDate);
+            // print(formattedTime);//5:08 PM
+
+            // var y2 = data_gst_receivable[i]['value'];
+            // var y3 =
+            setState(() {
+              lifetime_data_list
+                  .add(ChartData2(formattedTime, x1!, y, HexColor('#75C043')));
+            });
+            // print(lifetime_data_list[i].x1);
+          }
+          print("gst_payable_list");
+
+          return m_screenWeeklyDataModel;
+        } else {
+          hideLoader(context);
+
+          // CommonWidget().showToaster(msg: m_screenWeeklyDataModel!.message!);
+          return null;
+        }
+      } else if (response.statusCode == 422) {
+        hideLoader(context);
+        CommonWidget().showToaster(msg: m_screenWeeklyDataModel!.message!);
+      } else if (response.statusCode == 401) {
+        hideLoader(context);
+        CommonWidget().showToaster(msg: m_screenWeeklyDataModel!.message!);
+      } else {
+        // CommonWidget().showToaster(msg: msg.toString());
+      }
+    } on Exception catch (e) {
+      print(e.toString());
+      // TODO
+    }
+  }
+
+  Future Masturbation_Daily_Data_get_API() async {
+    String id_user = await PreferenceManager().getPref(URLConstants.id);
+    var url =
+        "${URLConstants.base_url}${URLConstants.masturbation_get_daily_data}?userId=$id_user";
+
+    try {
+      showLoader(context);
+      var response = await http.get(Uri.parse(url));
+      print(response.body);
+      print(response.request);
+      print(response.statusCode);
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        // var data = convert.jsonDecode(response.body);
+        Map<String, dynamic> data =
+            json.decode(response.body.replaceAll('}[]', '}'));
+        print("Data :${data}");
+        m_screenDailyDataModel = M_ScreenDailyDataModel.fromJson(data);
+        // getUSerModelList(userInfoModel_email);
+        if (m_screenDailyDataModel!.error == false) {
+          hideLoader(context);
+          debugPrint(
+              '2-2-2-2-2-2 Inside the Get UserInfo Controller Details ${m_screenDailyDataModel!.data!.length}');
+          // CommonWidget().showToaster(msg: breathingGetModel!.message!);
+          // CommonWidget().showToaster(msg: data["success"].toString());
+          // await Get.to(Dashboard());
+          // CommonWidget().showToaster(msg: m_screenWeeklyDataModel!.message!);
+
+          for (var i = 0;
+              i < m_screenDailyDataModel!.data![0].days!.length;
+              i++) {
+            // x_axis = data_sales[i]["month"];
+            var x = m_screenDailyDataModel!.data![0].days![i].createdDate!;
+            var x1 = m_screenDailyDataModel!.data![0].days![i].methodName;
+            var y = double.parse(
+                m_screenDailyDataModel!.data![0].days![i].totalPauses!);
+            // var inputFormat = DateFormat.jm().format(DateFormat("hh:mm:ss").parse("14:15:00"));
+            DateTime tempDate = new DateFormat("yyyy-MM-dd hh:mm:ss").parse(x);
+
+            String formattedTime = DateFormat.jm().format(tempDate);
+            // print(formattedTime);//5:08 PM
+
+            // var y2 = data_gst_receivable[i]['value'];
+            // var y3 =
+            setState(() {
+              daily_data_list
+                  .add(ChartData2(formattedTime, x1!, y, HexColor('#75C043')));
+            });
+            // print("${daily_data_list[i].x} :${daily_data_list[i].x1} :${daily_data_list[i].y}");
+          }
           print("gst_payable_list");
 
           return m_screenWeeklyDataModel;

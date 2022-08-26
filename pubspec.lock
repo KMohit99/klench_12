@@ -202,6 +202,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_alarm_clock:
+    dependency: "direct main"
+    description:
+      name: flutter_alarm_clock
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.2"
   flutter_facebook_auth:
     dependency: "direct main"
     description:
@@ -475,6 +482,13 @@ packages:
     dependency: transitive
     description:
       name: modal_bottom_sheet
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.1.0"
+  otp_autofill:
+    dependency: "direct main"
+    description:
+      name: otp_autofill
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.0"

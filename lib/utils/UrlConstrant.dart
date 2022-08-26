@@ -29,6 +29,8 @@ class URLConstants {
   ///masturbation
   static const masturbation_get = "get-masturbation.php";
   static const masturbation_get_weekly_data = "weekly-mMehod.php";
+  static const masturbation_get_lifetime_data = "lifetime-mMethod.php";
+  static const masturbation_get_daily_data = "daily-mMethod.php";
   static const masturbation_post = "masturbation.php";
 
   ///Pee

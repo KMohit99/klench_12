@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:klench_/Authentication/SignUp/model/verifyOtpModel.dart';
 import 'package:klench_/Dashboard/dashboard_screen.dart';
+import 'package:sms_autofill/sms_autofill.dart';
 
 import '../../../utils/UrlConstrant.dart';
 import '../../../utils/common_widgets.dart';
@@ -28,6 +29,7 @@ class SignUpScreenController extends GetxController {
   final TextEditingController DoBController = TextEditingController();
   final TextEditingController genderController = TextEditingController();
   final TextEditingController OtpController = TextEditingController();
+  var appSignatureId ;
   String dialCodedigits = "+91";
 
   String? date_birth;
@@ -173,10 +175,13 @@ class SignUpScreenController extends GetxController {
     sendOtpLoading(true);
     showLoader(context);
     // username,phone,email,dob,gender,password,image
+    appSignatureId = await SmsAutoFill().getAppSignature;
+    print("appSignatureId $appSignatureId");
     Map data = {
       'email': emailController.text,
       'phone':phoneController.text,
-      'countryCode': dialCodedigits
+      'countryCode': dialCodedigits,
+      'sigID' : appSignatureId,
     };
     print(data);
     // String body = json.encode(data);
