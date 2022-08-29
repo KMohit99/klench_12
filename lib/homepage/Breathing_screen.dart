@@ -1075,8 +1075,8 @@ class _BreathingScreenState extends State<BreathingScreen>
       startStop = true;
       Vibration.cancel();
       animation_started = false;
-      // _animationController!.dispose();
-      // _animationController_shadow1!.dispose();
+      _animationController!.stop();
+      _animationController_shadow1!.stop();
       watch.stop();
       watch2.stop();
       percent = 0.0;

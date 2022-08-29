@@ -1107,3 +1107,47 @@ class ChartData2 {
   final double y;
   final Color color;
 }
+
+class ChartData0 {
+  ChartData0(this.x,  this.x1,this.y, this.color);
+
+  final String x;
+  final String x1;
+  final double y;
+  final Color color;
+}
+
+class methodData {
+  methodData(this.x,  this.x1,this.y, this.color);
+  final String x;
+  final String x1;
+  final double y;
+  final Color color;
+}
+
+class ChartDataS {
+  ChartDataS(this.x,  this.x1,this.y, this.color, );
+
+  final String x;
+  final String x1;
+  final double y;
+  final Color color;
+}
+
+class ChartDataM {
+  ChartDataM(this.x,  this.x1,this.y, this.color);
+
+  final String x;
+  final String x1;
+  final double y;
+  final Color color;
+}
+
+class ChartDataT {
+  ChartDataT(this.x,  this.x1,this.y, this.color);
+
+  final String x;
+  final String x1;
+  final double y;
+  final Color color;
+}

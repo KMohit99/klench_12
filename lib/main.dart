@@ -1,9 +1,11 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:klench_/homepage/kegel_screen.dart';
 import 'package:klench_/splash_Screen.dart';
 import 'package:local_auth/local_auth.dart';
 
@@ -21,41 +23,23 @@ Future<void> main() async {
 
   await Firebase.initializeApp();
 
-  AndroidInitializationSettings initializationSettingsAndroid =
-      const AndroidInitializationSettings('app_icon');
-  IOSInitializationSettings initializationSettingsIOS =
-      IOSInitializationSettings(
-          requestAlertPermission: true,
-          requestBadgePermission: true,
-          requestSoundPermission: true,
-          onDidReceiveLocalNotification:
-              (int? id, String? title, String? body, String? payload) async {});
-  InitializationSettings initializationSettings = InitializationSettings(
-      android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
-  await flutterLocalNotificationsPlugin.initialize(initializationSettings,
-      onSelectNotification: (String? payload) async {
-    if (payload != null) {
-      debugPrint('notification payload: ' + payload);
-    }
-  });
-
   runApp(MyApp());
 }
 
 class MyApp extends StatefulWidget {
-   MyApp({Key? key}) : super(key: key);
+  MyApp({Key? key}) : super(key: key);
 
   @override
   State<MyApp> createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
-
   @override
   void initState() {
     // alarm_notifications();
     super.initState();
   }
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -99,16 +83,16 @@ class _MyAppState extends State<MyApp> {
   }
 
   alarm_notifications() async {
-    Future.delayed(Duration(seconds: 5),() async {
+    Future.delayed(Duration(seconds: 5), () async {
       await click_alarm(alarm_info: "It's time for kegel exercise");
     });
-    Future.delayed(Duration(minutes: 30),() async {
+    Future.delayed(Duration(minutes: 30), () async {
       await click_alarm(alarm_info: "It's time to Masturbate");
     });
-    Future.delayed(Duration(minutes: 60),() async {
+    Future.delayed(Duration(minutes: 60), () async {
       await click_alarm(alarm_info: "It's time to Pee");
     });
-    Future.delayed(Duration(minutes: 90),() async {
+    Future.delayed(Duration(minutes: 90), () async {
       await click_alarm(alarm_info: "It's time to Warmup");
     });
   }
@@ -168,5 +152,35 @@ class _MyAppState extends State<MyApp> {
         alarmInfo.title,
         scheduledNotificationDateTime,
         platformChannelSpecifics);
+
+    AndroidInitializationSettings initializationSettingsAndroid =
+        const AndroidInitializationSettings('app_icon');
+    IOSInitializationSettings initializationSettingsIOS =
+        IOSInitializationSettings(
+            requestAlertPermission: true,
+            requestBadgePermission: true,
+            requestSoundPermission: true,
+            onDidReceiveLocalNotification: onDidReceiveLocalNotification);
+    InitializationSettings initializationSettings = InitializationSettings(
+        android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
+    await flutterLocalNotificationsPlugin.initialize(initializationSettings,
+        onSelectNotification: (String? payload) async {
+      if (payload != null) {
+        debugPrint('notification payload: ' + payload);
+      }
+    });
+  }
+
+  void onDidReceiveLocalNotification(
+      int id, String? title, String? body, String? payload) {
+    print('id $id');
+  }
+
+  Future<dynamic> selectNotification(String? payload) async {
+    print("indise navigationn");
+    await Navigator.push(
+      context,
+      MaterialPageRoute<void>(builder: (context) => KegelScreen()),
+    );
   }
 }

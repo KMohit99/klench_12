@@ -30,7 +30,8 @@ import 'alarm_helper.dart';
 import 'alarm_info.dart';
 
 class KegelScreen extends StatefulWidget {
-  const KegelScreen({Key? key}) : super(key: key);
+
+   KegelScreen({Key? key,}) : super(key: key);
 
   @override
   State<KegelScreen> createState() => _KegelScreenState();
@@ -146,6 +147,8 @@ class _KegelScreenState extends State<KegelScreen>
               if (counter == 8) {
                 stopWatch_finish();
                 setState(() {
+                  started = true;
+
                   elapsedTime = '00';
                   // watch.stop();
                   counter = 0;
@@ -159,6 +162,7 @@ class _KegelScreenState extends State<KegelScreen>
                   setState(() {
                     elapsedTime = '00';
                     percent = 0.0;
+                    started = true;
                     // watch.stop();
                     counter = 0;
                   });
@@ -226,9 +230,9 @@ class _KegelScreenState extends State<KegelScreen>
                 stopWatch_finish();
                 setState(() {
                   elapsedTime = '00';
+                  started = true;
                   // watch.stop();
                   counter = 0;
-
                   watch.reset();
                 });
                 Vibration.cancel();
@@ -251,7 +255,6 @@ class _KegelScreenState extends State<KegelScreen>
                 // print(_kegel_controller.sets++);
                 await _kegel_controller.Kegel_post_API(context);
                 // await _kegel_controller.Kegel_get_API(context);
-
                 // if (_kegel_controller.kegelPostModel!.error == false) {
                 await getdata();
                 // }
@@ -259,6 +262,8 @@ class _KegelScreenState extends State<KegelScreen>
                 if (_kegel_controller.sets == 3) {
                   stopWatch_finish();
                   setState(() {
+                    started = true;
+
                     elapsedTime = '00';
                     percent = 0.0;
                     // watch.stop();
@@ -2386,6 +2391,7 @@ class _KegelScreenState extends State<KegelScreen>
                               await _animationController_middle!.reverse();
                               Vibration.cancel();
                               setState(() {
+                                started = true;
                                 _swipe_setup_controller.k_running = false;
                                 timer_started = false;
                                 elapsedTime = '00';
@@ -7527,9 +7533,10 @@ class _KegelScreenState extends State<KegelScreen>
       startStop = true;
       // _animationController!.stop();
       // _animationController_button!.reverse();
-      started = true;
+      // started = true;
       animation_started = false;
       watch.stop();
+      watch3.stop();
       setTime_finish();
     });
   }
