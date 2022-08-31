@@ -41,6 +41,7 @@ class Data {
   String? label;
   String? sound;
   String? kegelInfo;
+  String? numberOfSets;
   String? createdDate;
 
   Data(
@@ -54,6 +55,7 @@ class Data {
         this.label,
         this.sound,
         this.kegelInfo,
+        this.numberOfSets,
         this.createdDate});
 
   Data.fromJson(Map<String, dynamic> json) {
@@ -67,6 +69,7 @@ class Data {
     label = json['label'];
     sound = json['sound'];
     kegelInfo = json['kegel_info'];
+    numberOfSets = json['numberOf_sets'];
     createdDate = json['createdDate'];
   }
 
@@ -82,6 +85,7 @@ class Data {
     data['label'] = this.label;
     data['sound'] = this.sound;
     data['kegel_info'] = this.kegelInfo;
+    data['numberOf_sets'] = this.numberOfSets;
     data['createdDate'] = this.createdDate;
     return data;
   }

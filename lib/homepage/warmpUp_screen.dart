@@ -61,7 +61,6 @@ class _WarmUpScreenState extends State<WarmUpScreen>
               four_started = true;
             });
             startWatch();
-
             Future.delayed(Duration(seconds: 11), () {
               // if (counter == 10) {
               //   stopWatch_finish();
@@ -89,8 +88,10 @@ class _WarmUpScreenState extends State<WarmUpScreen>
               // }
               // } else {
               // if (counter == 3) {
-                stopWatch_finish();
-                setState(() {
+
+              stopWatch_finish();
+
+              setState(() {
                   elapsedTime = '00';
                   // watch.stop();
                   counter = 0;
@@ -98,17 +99,23 @@ class _WarmUpScreenState extends State<WarmUpScreen>
 
               // }else {
                 // stopWatch_finish();
-
                 _animationController!.forward();
                 _animationController_button!.forward();
                 setState(() {
                   elapsedTime = '00';
+                  elapsedTime2 = '00';
                   four_started = false;
                   // watch.reset();
                 });
                 startTimer2();
-                start_animation();
-                startWatch();
+              // start_animation();
+
+
+              Future.delayed(Duration(seconds: 14), () {
+                  startWatch();
+                  start_animation();
+            }
+                );
                 //
                 // _animationController!.reverse();
                 // _animationController_button!.reverse();
@@ -264,8 +271,8 @@ class _WarmUpScreenState extends State<WarmUpScreen>
           // if(counter == 3){
           //   stopWatch_finish();
           // }else{
-          //   Future.delayed(Duration(seconds: 3),(){
-          //     // startWatch();
+            Future.delayed(Duration(seconds: 3),(){
+              // startWatch();
           //     // startTimer();
           //     // startWatch2();
           //     print("datatatatat");
@@ -273,7 +280,7 @@ class _WarmUpScreenState extends State<WarmUpScreen>
           //     print("datatatatat");
           //     // start_animation();
           //     // middle_animation();
-          //   });
+            });
           // }
           print('timesup');
         } else {
@@ -1980,7 +1987,6 @@ class _WarmUpScreenState extends State<WarmUpScreen>
 
   startWatch() {
     // start_animation();
-
     setState(() {
       timer_started = true;
       elapsedTime = "00";

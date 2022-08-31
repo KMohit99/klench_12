@@ -242,7 +242,8 @@ class _VerifyOtpState extends State<VerifyOtp> {
                                 Container(
                                   child: PinPut(
                                     autofocus: true,
-                                    autofillHints: [AutofillHints.newPassword],
+                                    autofillHints: const [AutofillHints.oneTimeCode],
+
                                     fieldsCount: 4,
                                     textStyle: TextStyle(
                                         fontFamily: 'PM',

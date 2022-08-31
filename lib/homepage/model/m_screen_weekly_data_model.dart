@@ -32,14 +32,12 @@ class M_ScreenWeeklyDataModel {
 }
 
 class Data {
-  String? id;
   String? createdDate;
   List<Days>? days;
 
-  Data({this.id, this.createdDate, this.days});
+  Data({this.createdDate, this.days});
 
   Data.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
     createdDate = json['createdDate'];
     if (json['days'] != null) {
       days = <Days>[];
@@ -51,7 +49,6 @@ class Data {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
     data['createdDate'] = this.createdDate;
     if (this.days != null) {
       data['days'] = this.days!.map((v) => v.toJson()).toList();
@@ -69,6 +66,7 @@ class Days {
   String? totalTime;
   String? sets;
   String? numberOfSets;
+  String? colorCode;
   String? createdDate;
 
   Days(
@@ -80,6 +78,7 @@ class Days {
         this.totalTime,
         this.sets,
         this.numberOfSets,
+        this.colorCode,
         this.createdDate});
 
   Days.fromJson(Map<String, dynamic> json) {
@@ -91,6 +90,7 @@ class Days {
     totalTime = json['totalTime'];
     sets = json['sets'];
     numberOfSets = json['numberOf_sets'];
+    colorCode = json['colorCode'];
     createdDate = json['createdDate'];
   }
 
@@ -104,6 +104,7 @@ class Days {
     data['totalTime'] = this.totalTime;
     data['sets'] = this.sets;
     data['numberOf_sets'] = this.numberOfSets;
+    data['colorCode'] = this.colorCode;
     data['createdDate'] = this.createdDate;
     return data;
   }

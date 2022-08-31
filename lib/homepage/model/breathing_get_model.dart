@@ -34,13 +34,15 @@ class Data {
   String? id;
   String? levels;
   String? sets;
+  String? numberOfSets;
 
-  Data({this.id, this.levels, this.sets});
+  Data({this.id, this.levels, this.sets, this.numberOfSets});
 
   Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     levels = json['levels'];
     sets = json['sets'];
+    numberOfSets = json['numberOf_sets'];
   }
 
   Map<String, dynamic> toJson() {
@@ -48,6 +50,7 @@ class Data {
     data['id'] = this.id;
     data['levels'] = this.levels;
     data['sets'] = this.sets;
+    data['numberOf_sets'] = this.numberOfSets;
     return data;
   }
 }

@@ -51,11 +51,13 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
   bool startStop = true;
   bool started = true;
   bool button_keep = true;
+  Color? method_color;
 
   String elapsedTime = '00:00';
   List method_list = ['Hand', 'Dildo', 'Sex', 'Fleshlight'];
   String method_selected = '';
   List<ListMethodClass> method_time = [];
+  List<ListMethodClass> method_data = [];
 
   final _random = Random();
 
@@ -111,64 +113,64 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
     ChartData("S", 1, 2, 4),
   ];
 
-  static List<ChartData2> chartData_life = [
-    ChartData2('12 AM', 'sex', 2, HexColor('#75C043')),
-    ChartData2('1 AM', 'sex', 1, HexColor('#75C043')),
-    ChartData2('2 AM', 'sex', 3, HexColor('#75C043')),
-    ChartData2('2:30 AM', 'sex', 5, HexColor('#75C043')),
-    ChartData2('2:45 AM', 'sex', 7, HexColor('#75C043')),
-    ChartData2('3 AM', 'sex', 9, HexColor('#75C043')),
-    ChartData2('3:15 AM', 'sex', 5, HexColor('#75C043')),
-    ChartData2('4 AM', 'sex', 8, HexColor('#75C043')),
-    ChartData2('5 AM', 'sex', 9, HexColor('#75C043')),
-    ChartData2('6 AM', 'sex', 4, HexColor('#75C043')),
-    ChartData2('7 AM', 'sex', 3, HexColor('#75C043')),
-    ChartData2('7:15 AM', 'sex', 2, HexColor('#75C043')),
-    ChartData2('7:30 AM', 'sex', 9, HexColor('#75C043')),
-    ChartData2('8 AM', 'sex', 4, HexColor('#75C043')),
-    ChartData2('8:05 AM', 'sex', 2, HexColor('#75C043')),
-    ChartData2('8:30 AM', 'sex', 5, HexColor('#75C043')),
-    ChartData2('8:40 AM', 'sex', 8, HexColor('#75C043')),
-    ChartData2('9 AM', 'sex', 6, HexColor('#75C043')),
-    ChartData2('10 AM', 'sex', 8, HexColor('#75C043')),
-    ChartData2('11 AM', 'sex', 4, HexColor('#75C043')),
-    ChartData2('12 PM', 'sex', 5, HexColor('#75C043')),
-    ChartData2('6 PM', 'sex', 2, HexColor('#75C043')),
-    ChartData2('7 PM', 'sex', 2, HexColor('#75C043')),
-    ChartData2('8 PM', 'sex', 1, HexColor('#75C043')),
-    ChartData2('8:15 PM', 'sex', 3, HexColor('#75C043')),
-    ChartData2('8:30 PM', 'sex', 5, HexColor('#75C043')),
-    ChartData2('8:45 PM', 'sex', 7, HexColor('#75C043')),
-    ChartData2('9 PM', 'sex', 9, HexColor('#75C043')),
-    ChartData2('9:15 PM', 'sex', 5, HexColor('#75C043')),
-    ChartData2('10 PM', 'sex', 8, HexColor('#75C043')),
-    ChartData2('10:15 PM', 'sex', 9, HexColor('#75C043')),
-    ChartData2('10:20 PM', 'sex', 4, HexColor('#75C043')),
-    ChartData2('11 PM', 'sex', 3, HexColor('#75C043')),
-    ChartData2('11:30 PM', 'sex', 2, HexColor('#75C043')),
-    ChartData2('11:35 PM', 'sex', 6, HexColor('#75C043')),
-    ChartData2('11:40 PM', 'sex', 8, HexColor('#75C043')),
-    ChartData2('11:45 PM', 'sex', 4, HexColor('#75C043')),
-    ChartData2('11:50 PM', 'sex', 5, HexColor('#75C043')),
-    ChartData2('11:55 PM', 'sex', 2, HexColor('#75C043')),
-  ];
-  static List<ChartData2> chartData_life2 = [
-    ChartData2('M', 'sex', 10, HexColor('#75C043')),
-    ChartData2('T', 'sex', 14, HexColor('#75C043')),
-    ChartData2('W', 'sex', 10, HexColor('#75C043')),
-    ChartData2('T', 'sex', 8, HexColor('#75C043')),
-    ChartData2('F', 'sex', 12, HexColor('#75C043')),
-    ChartData2('S', 'sex', 9, HexColor('#75C043')),
-    ChartData2('S', 'sex', 14, HexColor('#75C043'))
-  ];
-  static List<ChartData2> chartData_life3 = [
-    ChartData2('Jan', 'sex', 10, HexColor('#75C043')),
-    ChartData2('Feb', 'sex', 18, HexColor('#75C043')),
-    ChartData2('Mar', 'sex', 40, HexColor('#75C043')),
-    ChartData2('Apr', 'sex', 20, HexColor('#75C043')),
-    ChartData2('May', 'sex', 24, HexColor('#75C043')),
-    ChartData2('May', 'sex', 14, HexColor('#75C043'))
-  ];
+  // static List<ChartData2> chartData_life = [
+  //   ChartData2('12 AM', 'sex', 2, HexColor('#75C043')),
+  //   ChartData2('1 AM', 'sex', 1, HexColor('#75C043')),
+  //   ChartData2('2 AM', 'sex', 3, HexColor('#75C043')),
+  //   ChartData2('2:30 AM', 'sex', 5, HexColor('#75C043')),
+  //   ChartData2('2:45 AM', 'sex', 7, HexColor('#75C043')),
+  //   ChartData2('3 AM', 'sex', 9, HexColor('#75C043')),
+  //   ChartData2('3:15 AM', 'sex', 5, HexColor('#75C043')),
+  //   ChartData2('4 AM', 'sex', 8, HexColor('#75C043')),
+  //   ChartData2('5 AM', 'sex', 9, HexColor('#75C043')),
+  //   ChartData2('6 AM', 'sex', 4, HexColor('#75C043')),
+  //   ChartData2('7 AM', 'sex', 3, HexColor('#75C043')),
+  //   ChartData2('7:15 AM', 'sex', 2, HexColor('#75C043')),
+  //   ChartData2('7:30 AM', 'sex', 9, HexColor('#75C043')),
+  //   ChartData2('8 AM', 'sex', 4, HexColor('#75C043')),
+  //   ChartData2('8:05 AM', 'sex', 2, HexColor('#75C043')),
+  //   ChartData2('8:30 AM', 'sex', 5, HexColor('#75C043')),
+  //   ChartData2('8:40 AM', 'sex', 8, HexColor('#75C043')),
+  //   ChartData2('9 AM', 'sex', 6, HexColor('#75C043')),
+  //   ChartData2('10 AM', 'sex', 8, HexColor('#75C043')),
+  //   ChartData2('11 AM', 'sex', 4, HexColor('#75C043')),
+  //   ChartData2('12 PM', 'sex', 5, HexColor('#75C043')),
+  //   ChartData2('6 PM', 'sex', 2, HexColor('#75C043')),
+  //   ChartData2('7 PM', 'sex', 2, HexColor('#75C043')),
+  //   ChartData2('8 PM', 'sex', 1, HexColor('#75C043')),
+  //   ChartData2('8:15 PM', 'sex', 3, HexColor('#75C043')),
+  //   ChartData2('8:30 PM', 'sex', 5, HexColor('#75C043')),
+  //   ChartData2('8:45 PM', 'sex', 7, HexColor('#75C043')),
+  //   ChartData2('9 PM', 'sex', 9, HexColor('#75C043')),
+  //   ChartData2('9:15 PM', 'sex', 5, HexColor('#75C043')),
+  //   ChartData2('10 PM', 'sex', 8, HexColor('#75C043')),
+  //   ChartData2('10:15 PM', 'sex', 9, HexColor('#75C043')),
+  //   ChartData2('10:20 PM', 'sex', 4, HexColor('#75C043')),
+  //   ChartData2('11 PM', 'sex', 3, HexColor('#75C043')),
+  //   ChartData2('11:30 PM', 'sex', 2, HexColor('#75C043')),
+  //   ChartData2('11:35 PM', 'sex', 6, HexColor('#75C043')),
+  //   ChartData2('11:40 PM', 'sex', 8, HexColor('#75C043')),
+  //   ChartData2('11:45 PM', 'sex', 4, HexColor('#75C043')),
+  //   ChartData2('11:50 PM', 'sex', 5, HexColor('#75C043')),
+  //   ChartData2('11:55 PM', 'sex', 2, HexColor('#75C043')),
+  // ];
+  // static List<ChartData2> chartData_life2 = [
+  //   ChartData2('M', 'sex', 10, HexColor('#75C043')),
+  //   ChartData2('T', 'sex', 14, HexColor('#75C043')),
+  //   ChartData2('W', 'sex', 10, HexColor('#75C043')),
+  //   ChartData2('T', 'sex', 8, HexColor('#75C043')),
+  //   ChartData2('F', 'sex', 12, HexColor('#75C043')),
+  //   ChartData2('S', 'sex', 9, HexColor('#75C043')),
+  //   ChartData2('S', 'sex', 14, HexColor('#75C043'))
+  // ];
+  // static List<ChartData2> chartData_life3 = [
+  //   ChartData2('Jan', 'sex', 10, HexColor('#75C043')),
+  //   ChartData2('Feb', 'sex', 18, HexColor('#75C043')),
+  //   ChartData2('Mar', 'sex', 40, HexColor('#75C043')),
+  //   ChartData2('Apr', 'sex', 20, HexColor('#75C043')),
+  //   ChartData2('May', 'sex', 24, HexColor('#75C043')),
+  //   ChartData2('May', 'sex', 14, HexColor('#75C043'))
+  // ];
 
   List data_graph = [
     chartData,
@@ -177,9 +179,9 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
     chartData4,
   ];
   List data_graph2 = [
-    chartData_life,
-    chartData_life2,
-    chartData_life3,
+    // chartData_life,
+    // chartData_life2,
+    // chartData_life3,
   ];
 
   var graph_;
@@ -391,6 +393,600 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
       },
     );
   }
+
+  methodPopUp(
+      {required BuildContext context, required String method_id}) async {
+    DateTime? selected;
+    showDialog(
+      context: context,
+      builder: (BuildContext
+      context) {
+        double width =
+            MediaQuery
+                .of(
+                context)
+                .size
+                .width;
+        double height =
+            MediaQuery
+                .of(
+                context)
+                .size
+                .height;
+        return BackdropFilter(
+          filter: ImageFilter
+              .blur(
+              sigmaX: 10,
+              sigmaY: 10),
+          child: AlertDialog(
+              backgroundColor:
+              Colors
+                  .transparent,
+              contentPadding:
+              EdgeInsets
+                  .zero,
+              elevation: 0.0,
+              // title: Center(child: Text("Evaluation our APP")),
+              content: Column(
+                mainAxisAlignment:
+                MainAxisAlignment
+                    .center,
+                children: [
+                  Stack(
+                    children: [
+                      Padding(
+                        padding:
+                        const EdgeInsets
+                            .all(
+                            8.0),
+                        child:
+                        Container(
+                          decoration:
+                          BoxDecoration(
+                            // color: Colors.black.withOpacity(0.65),
+                              gradient:
+                              LinearGradient(
+                                begin: Alignment
+                                    .centerLeft,
+                                end: Alignment
+                                    .centerRight,
+                                // stops: [0.1, 0.5, 0.7, 0.9],
+                                colors: [
+                                  HexColor(
+                                      "#020204")
+                                      .withOpacity(
+                                      1),
+                                  HexColor(
+                                      "#36393E")
+                                      .withOpacity(
+                                      1),
+                                ],
+                              ),
+                              boxShadow: [
+                                BoxShadow(
+                                    color: HexColor(
+                                        '#04060F'),
+                                    offset: Offset(
+                                        10,
+                                        10),
+                                    blurRadius: 10)
+                              ],
+                              borderRadius: BorderRadius
+                                  .circular(
+                                  15)),
+                          child: Align(
+                              alignment: Alignment
+                                  .center,
+                              child: Padding(
+                                padding: const EdgeInsets
+                                    .all(
+                                    8.0),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment
+                                      .start,
+                                  children: [
+                                    GestureDetector(
+                                      onTap: () async {
+                                        Navigator.pop(context);
+                                        print('Hellooo');
+                                        await EditPopUp(context: context,
+                                            method_id: method_id);
+                                      },
+                                      child: Container(
+                                        width: 100,
+                                        margin: EdgeInsets
+                                            .all(
+                                            10),
+                                        // width: 300,
+                                        decoration: BoxDecoration(
+                                          // color: Colors.black.withOpacity(0.65),
+                                            gradient: LinearGradient(
+                                              begin: Alignment
+                                                  .centerLeft,
+                                              end: Alignment
+                                                  .centerRight,
+                                              // stops: [0.1, 0.5, 0.7, 0.9],
+                                              colors: [
+                                                HexColor(
+                                                    "#36393E")
+                                                    .withOpacity(
+                                                    1),
+                                                HexColor(
+                                                    "#020204")
+                                                    .withOpacity(
+                                                    1),
+                                              ],
+                                            ),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                  color: HexColor(
+                                                      '#04060F'),
+                                                  offset: Offset(
+                                                      10,
+                                                      10),
+                                                  blurRadius: 10)
+                                            ],
+                                            borderRadius: BorderRadius
+                                                .circular(
+                                                10)),
+
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 8.0, horizontal: 15),
+                                          child: Text('Edit',
+                                            textAlign: TextAlign.center,
+                                            style: FontStyleUtility.h16(
+                                                fontColor: ColorUtils
+                                                    .primary_grey,
+                                                family: 'PM'),),
+                                        ),
+                                      ),
+                                    ),
+                                    GestureDetector(
+                                      onTap: () async {
+                                        Navigator.pop(context);
+
+                                        await _masturbation_screen_controller
+                                            .MasturbationData_delete_API(
+                                            context: context,
+                                            methodId: method_id);
+                                        if (_masturbation_screen_controller
+                                            .m_screenDeleteModel!.error ==
+                                            false) {
+                                          method_time.clear();
+
+                                          await Masturbation_Daily_Data_get_API();
+                                        }
+                                      },
+
+                                      child: Container(
+                                        width: 100,
+                                        margin: EdgeInsets
+                                            .all(10),
+                                        // width: 300,
+                                        decoration: BoxDecoration(
+                                          // color: Colors.black.withOpacity(0.65),
+                                            gradient: LinearGradient(
+                                              begin: Alignment
+                                                  .centerLeft,
+                                              end: Alignment
+                                                  .centerRight,
+                                              // stops: [0.1, 0.5, 0.7, 0.9],
+                                              colors: [
+                                                HexColor(
+                                                    "#36393E")
+                                                    .withOpacity(
+                                                    1),
+                                                HexColor(
+                                                    "#020204")
+                                                    .withOpacity(
+                                                    1),
+                                              ],
+                                            ),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                  color: HexColor(
+                                                      '#04060F'),
+                                                  offset: Offset(
+                                                      10,
+                                                      10),
+                                                  blurRadius: 10)
+                                            ],
+
+                                            borderRadius: BorderRadius
+                                                .circular(
+                                                10)),
+
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 8.0, horizontal: 15),
+                                          child: Text('Delete',
+                                            textAlign: TextAlign.center,
+                                            style: FontStyleUtility.h16(
+                                                fontColor: ColorUtils
+                                                    .primary_grey,
+                                                family: 'PM'),),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              )),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap:
+                            () {
+                          Navigator
+                              .pop(
+                              context);
+                        },
+                        child:
+                        Container(
+                          margin:
+                          EdgeInsets
+                              .only(
+                              right: 5),
+                          alignment:
+                          Alignment
+                              .topRight,
+                          child: Container(
+                              decoration: BoxDecoration(
+                                // color: Colors.black.withOpacity(0.65),
+                                  gradient: LinearGradient(
+                                    begin: Alignment
+                                        .centerLeft,
+                                    end: Alignment
+                                        .centerRight,
+                                    // stops: [0.1, 0.5, 0.7, 0.9],
+                                    colors: [
+                                      HexColor(
+                                          "#36393E")
+                                          .withOpacity(
+                                          1),
+                                      HexColor(
+                                          "#020204")
+                                          .withOpacity(
+                                          1),
+                                    ],
+                                  ),
+                                  boxShadow: [
+                                    BoxShadow(
+                                        color: HexColor(
+                                            '#04060F'),
+                                        offset: Offset(
+                                            0,
+                                            3),
+                                        blurRadius: 5)
+                                  ],
+                                  borderRadius: BorderRadius
+                                      .circular(
+                                      20)),
+                              child: Padding(
+                                padding: const EdgeInsets
+                                    .all(
+                                    4.0),
+                                child: Icon(
+                                  Icons
+                                      .cancel_outlined,
+                                  size: 18,
+                                  color: ColorUtils
+                                      .primary_grey,
+                                ),
+                              )),
+                        ),
+                      )
+                    ],
+                  ),
+                ],
+              )),
+        );
+      },
+    );
+  }
+
+  EditPopUp({required BuildContext context, required String method_id}) async {
+    DateTime? selected;
+    showDialog(
+      context: context,
+      builder: (BuildContext
+      context) {
+        double width =
+            MediaQuery
+                .of(
+                context)
+                .size
+                .width;
+        double height =
+            MediaQuery
+                .of(
+                context)
+                .size
+                .height;
+        return BackdropFilter(
+          filter: ImageFilter
+              .blur(
+              sigmaX: 10,
+              sigmaY: 10),
+          child: AlertDialog(
+              backgroundColor:
+              Colors
+                  .transparent,
+              contentPadding:
+              EdgeInsets
+                  .zero,
+              elevation: 0.0,
+              // title: Center(child: Text("Evaluation our APP")),
+              content: Column(
+                mainAxisAlignment:
+                MainAxisAlignment
+                    .center,
+                children: [
+                  Stack(
+                    children: [
+                      Padding(
+                        padding:
+                        const EdgeInsets
+                            .all(
+                            8.0),
+                        child:
+                        Container(
+                          decoration:
+                          BoxDecoration(
+                            // color: Colors.black.withOpacity(0.65),
+                              gradient:
+                              LinearGradient(
+                                begin: Alignment
+                                    .centerLeft,
+                                end: Alignment
+                                    .centerRight,
+                                // stops: [0.1, 0.5, 0.7, 0.9],
+                                colors: [
+                                  HexColor(
+                                      "#020204")
+                                      .withOpacity(
+                                      1),
+                                  HexColor(
+                                      "#36393E")
+                                      .withOpacity(
+                                      1),
+                                ],
+                              ),
+                              boxShadow: [
+                                BoxShadow(
+                                    color: HexColor(
+                                        '#04060F'),
+                                    offset: Offset(
+                                        10,
+                                        10),
+                                    blurRadius: 10)
+                              ],
+                              borderRadius: BorderRadius
+                                  .circular(
+                                  15)),
+                          child: Align(
+                              alignment: Alignment
+                                  .center,
+                              child: Padding(
+                                padding: const EdgeInsets
+                                    .all(
+                                    8.0),
+                                child: Column(
+                                  children: [
+
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment
+                                          .start,
+                                      children: [
+                                        SizedBox(
+                                          height: 11,
+                                        ),
+                                        Container(
+                                          margin: EdgeInsets
+                                              .symmetric(
+                                              horizontal: 10),
+                                          // width: 300,
+                                          decoration: BoxDecoration(
+                                            // color: Colors.black.withOpacity(0.65),
+                                              gradient: LinearGradient(
+                                                begin: Alignment
+                                                    .centerLeft,
+                                                end: Alignment
+                                                    .centerRight,
+                                                // stops: [0.1, 0.5, 0.7, 0.9],
+                                                colors: [
+                                                  HexColor(
+                                                      "#36393E")
+                                                      .withOpacity(
+                                                      1),
+                                                  HexColor(
+                                                      "#020204")
+                                                      .withOpacity(
+                                                      1),
+                                                ],
+                                              ),
+                                              boxShadow: [
+                                                BoxShadow(
+                                                    color: HexColor(
+                                                        '#04060F'),
+                                                    offset: Offset(
+                                                        10,
+                                                        10),
+                                                    blurRadius: 10)
+                                              ],
+                                              borderRadius: BorderRadius
+                                                  .circular(
+                                                  20)),
+
+                                          child: TextFormField(
+                                            maxLength: 150,
+                                            decoration: InputDecoration(
+                                              contentPadding: EdgeInsets
+                                                  .only(
+                                                  left: 20,
+                                                  top: 14,
+                                                  bottom: 14),
+                                              alignLabelWithHint: false,
+                                              isDense: true,
+                                              hintText: 'Edit method name',
+                                              counterStyle: TextStyle(
+                                                height: double
+                                                    .minPositive,
+                                              ),
+                                              counterText: "",
+                                              filled: true,
+                                              border: InputBorder
+                                                  .none,
+                                              enabledBorder: const OutlineInputBorder(
+                                                borderSide: BorderSide(
+                                                    color: Colors
+                                                        .transparent,
+                                                    width: 1),
+                                                borderRadius: BorderRadius
+                                                    .all(
+                                                    Radius
+                                                        .circular(
+                                                        10)),
+                                              ),
+                                              hintStyle: FontStyleUtility
+                                                  .h14(
+                                                  fontColor: HexColor(
+                                                      '#CBCBCB'),
+                                                  family: 'PR'),
+                                            ),
+                                            style: FontStyleUtility
+                                                .h14(
+                                                fontColor: ColorUtils
+                                                    .primary_grey,
+                                                family: 'PR'),
+                                            controller: _masturbation_screen_controller.method_new_name,
+                                            keyboardType: TextInputType
+                                                .text,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    GestureDetector(
+                                      onTap: () async {
+
+                                        Navigator.pop(context);
+
+                                        if(_masturbation_screen_controller.method_new_name.text.isNotEmpty) {
+                                          await _masturbation_screen_controller
+                                              .MasturbationData_edit_API(
+                                            context: context,
+                                            methodId: method_id,
+                                          );
+                                          if (_masturbation_screen_controller
+                                              .m_screenEditModel!.error ==
+                                              false) {
+                                            method_time.clear();
+
+                                            await Masturbation_Daily_Data_get_API();
+                                          }
+                                        }
+
+                                      },
+                                      child: Container(
+                                        alignment: Alignment
+                                            .topRight,
+                                        child: Text(
+                                          'Add',
+                                          style: FontStyleUtility
+                                              .h14(
+                                              fontColor: ColorUtils
+                                                  .primary_grey,
+                                              family: 'PR'),
+                                        ),
+                                      ),
+                                    )
+                                    // common_button_gold(
+                                    //   onTap: () {
+                                    //     Get
+                                    //         .to(
+                                    //         DashboardScreen());
+                                    //   },
+                                    //   title_text: 'Go to Dashboard',
+                                    // ),
+                                  ],
+                                ),
+                              )),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap:
+                            () {
+                          Navigator
+                              .pop(
+                              context);
+                        },
+                        child:
+                        Container(
+                          margin:
+                          EdgeInsets
+                              .only(
+                              right: 5),
+                          alignment:
+                          Alignment
+                              .topRight,
+                          child: Container(
+                              decoration: BoxDecoration(
+                                // color: Colors.black.withOpacity(0.65),
+                                  gradient: LinearGradient(
+                                    begin: Alignment
+                                        .centerLeft,
+                                    end: Alignment
+                                        .centerRight,
+                                    // stops: [0.1, 0.5, 0.7, 0.9],
+                                    colors: [
+                                      HexColor(
+                                          "#36393E")
+                                          .withOpacity(
+                                          1),
+                                      HexColor(
+                                          "#020204")
+                                          .withOpacity(
+                                          1),
+                                    ],
+                                  ),
+                                  boxShadow: [
+                                    BoxShadow(
+                                        color: HexColor(
+                                            '#04060F'),
+                                        offset: Offset(
+                                            0,
+                                            3),
+                                        blurRadius: 5)
+                                  ],
+                                  borderRadius: BorderRadius
+                                      .circular(
+                                      20)),
+                              child: Padding(
+                                padding: const EdgeInsets
+                                    .all(
+                                    4.0),
+                                child: Icon(
+                                  Icons
+                                      .cancel_outlined,
+                                  size: 18,
+                                  color: ColorUtils
+                                      .primary_grey,
+                                ),
+                              )),
+                        ),
+                      )
+                    ],
+                  ),
+                ],
+              )),
+        );
+      },
+    );
+  }
+
 
   DateTime selectedDate = DateTime.now();
   String showInvoiceDate = '';
@@ -1007,7 +1603,7 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
                               width: 20,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(50),
-                                gradient: (paused_time.length >= 1
+                                gradient: (paused_time.isNotEmpty
                                     ? LinearGradient(
                                   begin: Alignment.bottomLeft,
                                   end: Alignment.topRight,
@@ -1912,10 +2508,43 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
                               if (started == false) {
                                 await stopWatch_finish();
                                 await changeIndex();
-                                method_time.add(ListMethodClass(
+                                setState(() {
+                                  method_color =
+                                  (method_selected ==
+                                      'Hand'
+                                      ? Colors
+                                      .red
+                                      : (method_selected ==
+                                      'Dildo'
+                                      ? Colors
+                                      .blue
+                                      : (method_selected ==
+                                      'Sex'
+                                      ? Colors
+                                      .green
+                                      : (method_selected ==
+                                      'Fleshlight'
+                                      ? Colors
+                                      .purple
+                                      : Colors
+                                      .primaries[_random
+                                      .nextInt(
+                                      Colors
+                                          .primaries
+                                          .length)][_random
+                                      .nextInt(
+                                      9) *
+                                      100]))));
+                                });
+
+                                print('Method colorrr : ${method_color!.value
+                                    .toRadixString(16) }');
+                                method_data.add(ListMethodClass(
                                     method_name: method_selected,
                                     pauses: paused_time.length.toString(),
-                                    total_time: elapsedTime));
+                                    total_time: elapsedTime,
+                                    color: method_color!.value.toRadixString(
+                                        16)));
                                 setState(() {
                                   elapsedTime = '00:00';
                                   percent = 0.0;
@@ -1923,12 +2552,16 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
                                   watch.reset();
                                   paused_time.clear();
                                 });
-                                print(method_time.length);
+                                print(method_data.length);
 
+                                ///
                                 await _masturbation_screen_controller
                                     .m_method_post_API(
                                     context: context,
-                                    method_data: method_time);
+                                    method_data: method_data);
+                                method_time.clear();
+
+                                ///
                                 await Masturbation_LifeTime_Data_get_API();
                                 await Masturbation_Daily_Data_get_API();
                                 await MasturbationWeekly_Data_get_API();
@@ -2159,12 +2792,14 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
                       SizedBox(
                         height: 21,
                       ),
+
+                      ///
                       Container(
-                          child: (paused_time.length > 0
+                          child: (paused_time.isNotEmpty
                               ? Column(
                             children: [
                               Container(
-                                margin: EdgeInsets.only(
+                                margin: const EdgeInsets.only(
                                     bottom: 0,
                                     top: 0,
                                     left: 15,
@@ -2231,7 +2866,7 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
                       SizedBox(
                         height: 21,
                       ),
-                      (method_time.length > 0
+                      (method_time.isNotEmpty
                           ? Container(
                         decoration: BoxDecoration(
                             gradient: LinearGradient(
@@ -2383,7 +3018,15 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
                                       padding: EdgeInsets.zero,
                                       itemBuilder: (BuildContext context,
                                           int index) {
-                                        return Container(
+                                        return GestureDetector(
+                                          onLongPress: () {
+                                            print(
+                                                "Method ID : ${method_time[index]
+                                                    .id}");
+                                            methodPopUp(context: context,
+                                                method_id: method_time[index]
+                                                    .id!);
+                                          },
                                           child: Row(
                                             children: [
                                               Expanded(
@@ -2412,26 +3055,35 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
                                                           .method_name}',
                                                       style: FontStyleUtility
                                                           .h14(
-                                                          fontColor: (method_time[index]
-                                                              .method_name ==
-                                                              'Hand'
-                                                              ? Colors
-                                                              .red
-                                                              : (method_time[index]
-                                                              .method_name ==
-                                                              'Dildo'
-                                                              ? Colors
-                                                              .blue
-                                                              : (method_time[index]
-                                                              .method_name ==
-                                                              'Sex'
-                                                              ? Colors.green
-                                                              : (method_time[index]
-                                                              .method_name ==
-                                                              'Fleshlight'
-                                                              ? Colors.purple
-                                                              : Colors
-                                                              .white)))),
+                                                          fontColor: HexColor(method_time[index]
+                                                              .color!),
+                                                          // (method_time[index]
+                                                          //     .method_name ==!
+                                                          //     'Hand'
+                                                          //     ? Colors
+                                                          //     .red
+                                                          //     : (method_time[index]
+                                                          //     .method_name ==
+                                                          //     'Dildo'
+                                                          //     ? Colors
+                                                          //     .blue
+                                                          //     : (method_time[index]
+                                                          //     .method_name ==
+                                                          //     'Sex'
+                                                          //     ? Colors.green
+                                                          //     : (method_time[index]
+                                                          //     .method_name ==
+                                                          //     'Fleshlight'
+                                                          //     ? Colors.purple
+                                                          //     : Colors
+                                                          //     .primaries[_random
+                                                          //     .nextInt(
+                                                          //     Colors
+                                                          //         .primaries
+                                                          //         .length)][_random
+                                                          //     .nextInt(
+                                                          //     9) *
+                                                          //     100])))),
                                                           // (index <=
                                                           //         3
                                                           //     ? colors[
@@ -2448,7 +3100,7 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
                                                   alignment:
                                                   Alignment.center,
                                                   decoration:
-                                                  BoxDecoration(
+                                                  const BoxDecoration(
                                                       border: Border(
                                                         right: BorderSide(
                                                             color:
@@ -2947,6 +3599,12 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
                         ),
                       )
                           : SizedBox.shrink()),
+
+                      SizedBox(
+                        height: 21,
+                      ),
+
+                      ///
                       Container(
                         decoration: BoxDecoration(
                             gradient: LinearGradient(
@@ -3224,23 +3882,8 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
                                                         pointColorMapper:
                                                             (ChartData2 data,
                                                             _) =>
-                                                        (data.x1 == 'Hand'
-                                                            ? Colors.red
-                                                            : (data.x1 ==
-                                                            'Dildo'
-                                                            ? Colors.blue
-                                                            : (data.x1 == 'Sex'
-                                                            ? Colors.green
-                                                            : (data.x1 ==
-                                                            'Fleshlight'
-                                                            ? Colors.purple
-                                                            : Colors
-                                                            .primaries[_random
-                                                            .nextInt(
-                                                            Colors.primaries
-                                                                .length)][_random
-                                                            .nextInt(9) *
-                                                            100])))),
+                                                            HexColor(
+                                                                data.color),
                                                         xValueMapper:
                                                             (ChartData2 data,
                                                             _) =>
@@ -4059,7 +4702,7 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
                       .parse(weeklyData!.data![i].days![j].createdDate!)),
                   weeklyData!.data![i].days![j].methodName!,
                   double.parse(weeklyData!.data![i].days![j].totalPauses!),
-                  Colors.white,
+                  weeklyData!.data![i].days![j].totalPauses!,
                 ));
               });
             }
@@ -4070,7 +4713,7 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
                   m_screenWeeklyDataModel!.data![i].days![1].methodName!,
                   double.parse(
                       m_screenWeeklyDataModel!.data![i].days![1].totalPauses!),
-                  Colors.white,
+                  m_screenWeeklyDataModel!.data![i].days![0].colorCode!,
                 ));
               });
             }
@@ -4081,7 +4724,7 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
                   m_screenWeeklyDataModel!.data![i].days![2].methodName!,
                   double.parse(
                       m_screenWeeklyDataModel!.data![i].days![2].totalPauses!),
-                  Colors.white,
+                  m_screenWeeklyDataModel!.data![i].days![0].colorCode!,
                 ));
               });
             }
@@ -4092,7 +4735,7 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
                   m_screenWeeklyDataModel!.data![i].days![3].methodName!,
                   double.parse(
                       m_screenWeeklyDataModel!.data![i].days![3].totalPauses!),
-                  Colors.white,
+                  m_screenWeeklyDataModel!.data![i].days![0].colorCode!,
                 ));
               });
             }
@@ -4103,7 +4746,7 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
                 m_screenWeeklyDataModel!.data![i].days![0].methodName!,
                 double.parse(
                     m_screenWeeklyDataModel!.data![i].days![0].totalPauses!),
-                Colors.white,
+                m_screenWeeklyDataModel!.data![i].days![0].colorCode!,
               ));
             });
           }
@@ -4320,7 +4963,7 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
             // var y3 =
             setState(() {
               lifetime_data_list
-                  .add(ChartData2(formattedTime, x1!, y, HexColor('#75C043')));
+                  .add(ChartData2(formattedTime, x1!, y, '#75C043'));
             });
             // print(lifetime_data_list[i].x1);
           }
@@ -4349,6 +4992,7 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
   }
 
   bool loading = true;
+  List temp =[];
 
   Future Masturbation_Daily_Data_get_API() async {
     String id_user = await PreferenceManager().getPref(URLConstants.id);
@@ -4396,6 +5040,7 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
 
             String formattedTime = DateFormat.jm().format(tempDate);
             // print(formattedTime);//5:08 PM
+            temp.add(m_screenDailyDataModel!.data![0].days![i].methodName);
             var color = (x1 == 'Hand'
                 ? Colors.red
                 : (x1 == 'Dildo'
@@ -4409,14 +5054,36 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
             print("Color $color");
             // var y2 = data_gst_receivable[i]['value'];
             // var y3 =
+            // method_time.clear()
             setState(() {
               daily_data_list.add(
-                  ChartData2(formattedTime, x1!, y, Colors.white));
+                  ChartData2(formattedTime, x1!, y,
+                      m_screenDailyDataModel!.data![0].days![i].colorCode!));
+
+              method_time.add(ListMethodClass(
+                method_name: m_screenDailyDataModel!.data![0].days![i]
+                    .methodName!,
+                pauses: m_screenDailyDataModel!.data![0].days![i].totalPauses!,
+                total_time: m_screenDailyDataModel!.data![0].days![i]
+                    .totalTime!,
+                color: m_screenDailyDataModel!.data![0].days![i].colorCode!,
+                id: m_screenDailyDataModel!.data![0].days![i].id!,
+              ));
             });
             // print("${daily_data_list[i].x} :${daily_data_list[i].x1} :${daily_data_list[i].y}");
           }
           print("gst_payable_list");
+          print("gst_payable_list");
+          print(temp);
 
+          // var unique = List.from(method_list)..addAll(temp);
+          setState(() {
+            method_list = <dynamic>{...method_list, ...temp}.toList();
+          });
+
+          print("unique");
+          print("unique");
+          print(method_list);
           return m_screenWeeklyDataModel;
         } else {
           hideLoader(context);

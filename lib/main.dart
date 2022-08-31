@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -82,8 +84,11 @@ class _MyAppState extends State<MyApp> {
     );
   }
 
-  alarm_notifications() async {
-    Future.delayed(Duration(seconds: 5), () async {
+  Future<void> alarm_notifications() async {
+    // Timer.periodic(Duration(minutes: 30), () {
+    //   click_alarm(alarm_info: "It's time for kegel exercise");
+    // });
+      Future.delayed(Duration(seconds: 5), () async {
       await click_alarm(alarm_info: "It's time for kegel exercise");
     });
     Future.delayed(Duration(minutes: 30), () async {
@@ -164,11 +169,7 @@ class _MyAppState extends State<MyApp> {
     InitializationSettings initializationSettings = InitializationSettings(
         android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
     await flutterLocalNotificationsPlugin.initialize(initializationSettings,
-        onSelectNotification: (String? payload) async {
-      if (payload != null) {
-        debugPrint('notification payload: ' + payload);
-      }
-    });
+        onSelectNotification: selectNotification);
   }
 
   void onDidReceiveLocalNotification(

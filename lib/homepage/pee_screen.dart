@@ -19,6 +19,7 @@ import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:vibration/vibration.dart';
 
+import '../Authentication/SingIn/controller/SignIn_controller.dart';
 import '../utils/Asset_utils.dart';
 import '../utils/TexrUtils.dart';
 import '../utils/TextStyle_utils.dart';
@@ -281,11 +282,20 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
   @override
   void initState() {
     // get_saved_data();
-    getdata();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      // executes after build
+      getdata();
+
+    });
     super.initState();
   }
-
+  final SignInScreenController _signInScreenController = Get.put(
+      SignInScreenController(),
+      tag: SignInScreenController().toString());
   getdata() async {
+    await _signInScreenController.GetUserInfo(
+        context);
+
     // await _masturbation_screen_controller.MasturbationData_get_API(context);
     levels = await PreferenceManager().getPref(URLConstants.levels);
     print('Inside');

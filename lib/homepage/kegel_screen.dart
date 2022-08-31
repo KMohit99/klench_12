@@ -19,6 +19,7 @@ import 'package:klench_/utils/TexrUtils.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:vibration/vibration.dart';
 
+import '../Authentication/SingIn/controller/SignIn_controller.dart';
 import '../main.dart';
 import '../utils/Asset_utils.dart';
 import '../utils/TextStyle_utils.dart';
@@ -557,7 +558,11 @@ class _KegelScreenState extends State<KegelScreen>
   void initState() {
     // getdata();
     //
-    init();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      // executes after build
+      init();
+
+    });
     // _alarmTime = DateTime.now();
     // _alarmHelper.initializeDatabase().then((value) {
     //   print('------database intialized');
@@ -593,7 +598,13 @@ class _KegelScreenState extends State<KegelScreen>
     // setState(() {});
   }
 
+  final SignInScreenController _signInScreenController = Get.put(
+      SignInScreenController(),
+      tag: SignInScreenController().toString());
   Future getdata() async {
+    await _signInScreenController.GetUserInfo(
+        context);
+
     levels = await PreferenceManager().getPref(URLConstants.levels);
     setState(() {});
     await _kegel_controller.Kegel_get_API(context);
@@ -2672,7 +2683,7 @@ class _KegelScreenState extends State<KegelScreen>
                                                     _kegel_controller
                                                         .kegelGetModel!
                                                         .data![i]
-                                                        .sets!;
+                                                        .numberOfSets!;
                                                 selected_date =
                                                     _kegel_controller
                                                         .kegelGetModel!
@@ -6418,15 +6429,15 @@ class _KegelScreenState extends State<KegelScreen>
                                                                   Alarm_title_list.add(
                                                                       Alarm_title
                                                                           .text);
-                                                                  if (Platform.isAndroid) {
-                                                                    FlutterAlarmClock.createAlarm(
-                                                                        selected_time
-                                                                            .hour,
-                                                                        selected_time
-                                                                            .minute,
-                                                                        title:
-                                                                        'Kegel ${(_currentAlarms!.length + 1)}');
-                                                                  }
+                                                                  // if (Platform.isAndroid) {
+                                                                  //   FlutterAlarmClock.createAlarm(
+                                                                  //       selected_time
+                                                                  //           .hour,
+                                                                  //       selected_time
+                                                                  //           .minute,
+                                                                  //       title:
+                                                                  //       'Kegel ${(_currentAlarms!.length + 1)}');
+                                                                  // }
 
                                                                   await onSaveAlarm();
                                                                 }

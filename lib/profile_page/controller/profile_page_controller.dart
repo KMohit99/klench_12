@@ -29,6 +29,7 @@ class Profile_page_controller extends GetxController {
   EditProfile? editProfile;
   RxBool isLoading = false.obs;
   File? imgFile;
+  String? selected_difficulty;
 
   Future<dynamic> Editprofile({required BuildContext context}) async {
     String id_user = await PreferenceManager().getPref(URLConstants.id);
@@ -53,6 +54,7 @@ class Profile_page_controller extends GetxController {
     request.fields['email'] = emailAddressController.text;
     request.fields['dob'] = dateOfbirthController.text;
     request.fields['gender'] = genderController.text;
+    request.fields['levels'] = selected_difficulty!;
 
     var response = await request.send();
     var responsed = await http.Response.fromStream(response);

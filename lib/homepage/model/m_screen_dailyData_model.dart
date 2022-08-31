@@ -140,6 +140,7 @@ class Days {
   String? totalTime;
   String? sets;
   String? numberOfSets;
+  String? colorCode;
   String? createdDate;
   String? updatedDate;
 
@@ -153,6 +154,7 @@ class Days {
         this.totalTime,
         this.sets,
         this.numberOfSets,
+        this.colorCode,
         this.createdDate,
         this.updatedDate});
 
@@ -166,6 +168,7 @@ class Days {
     totalTime = json['totalTime'];
     sets = json['sets'];
     numberOfSets = json['numberOf_sets'];
+    colorCode = json['colorCode'];
     createdDate = json['createdDate'];
     updatedDate = json['updatedDate'];
   }
@@ -181,6 +184,7 @@ class Days {
     data['totalTime'] = this.totalTime;
     data['sets'] = this.sets;
     data['numberOf_sets'] = this.numberOfSets;
+    data['colorCode'] = this.colorCode;
     data['createdDate'] = this.createdDate;
     data['updatedDate'] = this.updatedDate;
     return data;

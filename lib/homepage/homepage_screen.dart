@@ -8,6 +8,8 @@ import 'package:klench_/homepage/swipe_screen.dart';
 import 'package:video_player/video_player.dart';
 
 import '../utils/Asset_utils.dart';
+import '../utils/colorUtils.dart';
+import 'controller/kegel_excercise_controller.dart';
 
 class HomepageScreen extends StatefulWidget {
   const HomepageScreen({Key? key}) : super(key: key);
@@ -37,6 +39,18 @@ class _HomepageScreenState extends State<HomepageScreen> {
   //       _controller!.play();
   //     });
   // }
+
+  @override
+  void initState() {
+    init();
+    super.initState();
+  }
+  final Kegel_controller _kegel_controller =
+  Get.put(Kegel_controller(), tag: Kegel_controller().toString());
+
+  init() async {
+    await _kegel_controller.Kegel_get_API(context);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -132,34 +146,101 @@ class _HomepageScreenState extends State<HomepageScreen> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Container(
-                        margin: EdgeInsets.symmetric(horizontal: 10),
-                        alignment: Alignment.topCenter,
-                        child: Row(
+                        margin: const EdgeInsets.symmetric(horizontal: 10),
+                        alignment: Alignment.center,
+                        child: Obx(() => (_kegel_controller
+                            .isuserinfoLoading.value ==
+                            true
+                            ? Row(
                           mainAxisAlignment: MainAxisAlignment.end,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Image.asset(
                               AssetUtils.star_icon,
+                              color: Colors.grey,
                               height: 22,
                               width: 22,
                             ),
-                            SizedBox(
+                            const SizedBox(
                               width: 7,
                             ),
                             Image.asset(
                               AssetUtils.star_icon,
                               height: 22,
+                              color: Colors.grey,
                               width: 22,
                             ),
-                            SizedBox(
+                            const SizedBox(
                               width: 7,
                             ),
                             Image.asset(
                               AssetUtils.star_icon,
+                              color: Colors.grey,
                               height: 22,
                               width: 22,
                             ),
                           ],
-                        )),
+                        )
+                            : Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              AssetUtils.star_icon,
+                              color: (int.parse(_kegel_controller
+                                  .kegelGetModel!
+                                  .data![_kegel_controller
+                                  .kegelGetModel!
+                                  .data!
+                                  .length -
+                                  1]
+                                  .sets!) >=
+                                  1
+                                  ? ColorUtils.primary_gold
+                                  : Colors.grey),
+                              height: 22,
+                              width: 22,
+                            ),
+                            const SizedBox(
+                              width: 7,
+                            ),
+                            Image.asset(
+                              AssetUtils.star_icon,
+                              height: 22,
+                              color: (int.parse(_kegel_controller
+                                  .kegelGetModel!
+                                  .data![_kegel_controller
+                                  .kegelGetModel!
+                                  .data!
+                                  .length -
+                                  1]
+                                  .sets!) >=
+                                  2
+                                  ? ColorUtils.primary_gold
+                                  : Colors.grey),
+                              width: 22,
+                            ),
+                            const SizedBox(
+                              width: 7,
+                            ),
+                            Image.asset(
+                              AssetUtils.star_icon,
+                              color: (int.parse(_kegel_controller
+                                  .kegelGetModel!
+                                  .data![_kegel_controller
+                                  .kegelGetModel!
+                                  .data!
+                                  .length -
+                                  1]
+                                  .sets!) >=
+                                  3
+                                  ? ColorUtils.primary_gold
+                                  : Colors.grey),
+                              height: 22,
+                              width: 22,
+                            ),
+                          ],
+                        )))),
                     Container(
                       margin: EdgeInsets.symmetric(
                           vertical: (screenHeight >= 600 && screenHeight <= 700

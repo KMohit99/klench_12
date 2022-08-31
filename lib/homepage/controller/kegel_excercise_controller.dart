@@ -94,6 +94,7 @@ class Kegel_controller extends GetxController {
     Map data = {
       'userId': id_user,
       'sets': '1',
+      'numberOf_sets': '1',
       'createdDate' : DateFormat('yyyy-MM-dd').format(DateTime.now()),
       'startTime' :'',
       'finishTime' :'',
@@ -128,9 +129,7 @@ class Kegel_controller extends GetxController {
       // print(kegelPostModel);
       if (data["error"] == false) {
         CommonWidget().showToaster(msg: data["message"]);
-
         await Kegel_get_API(context);
-
         hideLoader(context);
 
       } else {

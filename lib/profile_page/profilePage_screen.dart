@@ -268,7 +268,11 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
 
   @override
   void initState() {
-    init();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      // executes after build
+      init();
+
+    });
 
     super.initState();
   }
@@ -280,6 +284,11 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
           context,
           new MaterialPageRoute(
               builder: (BuildContext context) => SignInScreen()));
+    } else {
+        _profile_page_controller.selected_difficulty =
+            _signInScreenController.userInfoModel!.data![0].levels!;
+      print(
+          "_profile_page_controller.selected_difficulty ${_profile_page_controller.selected_difficulty}");
     }
     bool auth =
         await PreferenceManager().getbool(URLConstants.authentication_enable);
@@ -295,8 +304,7 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
     final screenWidth = MediaQuery.of(context).size.width;
     return Container(
         alignment: Alignment.center,
-        child:
-        Obx(() => (_signInScreenController.isuserinfoLoading.value ==
+        child: Obx(() => (_signInScreenController.isuserinfoLoading.value ==
                 true
             ? Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -359,8 +367,7 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
                   ),
                 ],
               )
-            :
-        GestureDetector(
+            : GestureDetector(
                 onTap: () {
                   FocusScope.of(context).requestFocus(FocusNode());
                 },
@@ -569,7 +576,8 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
                                                                           GestureDetector(
                                                                         onTap:
                                                                             () {
-                                                                          Navigator.pop(context);
+                                                                          Navigator.pop(
+                                                                              context);
                                                                           openCamera();
                                                                         },
                                                                         child:
@@ -600,9 +608,10 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
                                                                           GestureDetector(
                                                                         onTap:
                                                                             () {
-                                                                              Navigator.pop(context);
+                                                                          Navigator.pop(
+                                                                              context);
 
-                                                                              openGallery();
+                                                                          openGallery();
                                                                         },
                                                                         child:
                                                                             Container(
@@ -875,7 +884,6 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
                                         labelText: Textutils.email_,
                                         readOnly: editable,
                                         maxLines: 1,
-
                                         iconData: IconButton(
                                           visualDensity: VisualDensity(
                                               horizontal: -4, vertical: -4),
@@ -1132,11 +1140,18 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
                                               (BuildContext ctx, index) {
                                             return GestureDetector(
                                               onTap: () {
-                                                setState(() {
-                                                  // ontap of each card, set the defined int to the grid view index
-                                                  _signInScreenController
-                                                      .selectedCard = index;
-                                                });
+                                                if (editable == false) {
+                                                  setState(() {
+                                                    // ontap of each card, set the defined int to the grid view index
+                                                    _profile_page_controller
+                                                            .selected_difficulty =
+                                                        difficulty[index];
+                                                    _signInScreenController
+                                                        .selectedCard = index;
+                                                  });
+                                                  print(_profile_page_controller
+                                                      .selected_difficulty);
+                                                }
                                               },
                                               child: SizedBox(
                                                 child: Container(
@@ -1217,9 +1232,15 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
                             (editable
                                 ? SizedBox.shrink()
                                 : common_button_gold(
-                                    onTap: () {
-                                      _profile_page_controller.Editprofile(
+                                    onTap: () async {
+                                     await  _profile_page_controller.Editprofile(
                                           context: context);
+                                      // if (_profile_page_controller
+                                      //         .editProfile!.error ==
+                                      //     false) {
+                                      //  await _signInScreenController.GetUserInfo(
+                                      //       context);
+                                      // }
                                     },
                                     title_text: 'Save Details',
                                   )),

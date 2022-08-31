@@ -13,6 +13,8 @@ import '../../utils/common_widgets.dart';
 import '../../utils/page_loader.dart';
 import '../m_screen.dart';
 import '../model/breathing_post_model.dart';
+import '../model/m_Screen_data_delete_Model.dart';
+import '../model/m_Screen_data_edit_Model.dart';
 import '../model/m_screen_get_model.dart';
 import '../model/m_screen_post_model.dart';
 
@@ -22,6 +24,8 @@ import 'dart:convert' as convert;
 class Masturbation_screen_controller {
   M_ScreenPostModel? masturbationPostModel;
   final Dio _dio = Dio();
+
+  TextEditingController method_new_name = new TextEditingController();
 
   Future<dynamic> m_method_post_API({
     required BuildContext context,
@@ -63,6 +67,7 @@ class Masturbation_screen_controller {
       // .map((item) => MultipartFile.fromString(item.pauses!))
       // .toList(),
       'totalTime[]': method_data[method_data.length - 1].total_time,
+      'colorCode[]': method_data[method_data.length - 1].color,
       // .map((item) => MultipartFile.fromString(item.total_time!))
       // .toList(),
     });
@@ -236,7 +241,8 @@ class Masturbation_screen_controller {
 
   Future MasturbationWeekly_Data_get_API(BuildContext context) async {
     String id_user = await PreferenceManager().getPref(URLConstants.id);
-    var url = "${URLConstants.base_url}${URLConstants.masturbation_get_weekly_data}?userId=$id_user";
+    var url =
+        "${URLConstants.base_url}${URLConstants.masturbation_get_weekly_data}?userId=$id_user";
 
     try {
       showLoader(context);
@@ -244,7 +250,8 @@ class Masturbation_screen_controller {
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         // var data = convert.jsonDecode(response.body);
-        Map<String, dynamic> data = json.decode(response.body.replaceAll('}[]', '}'));
+        Map<String, dynamic> data =
+            json.decode(response.body.replaceAll('}[]', '}'));
         print("Data: ${data['data']}");
         m_screenWeeklyDataModel = M_ScreenWeeklyDataModel.fromJson(data);
         // getUSerModelList(userInfoModel_email);
@@ -294,4 +301,89 @@ class Masturbation_screen_controller {
       // TODO
     }
   }
+
+  M_ScreenDeleteModel? m_screenDeleteModel;
+
+  Future<dynamic> MasturbationData_delete_API(
+      {required BuildContext context, required String methodId}) async {
+    debugPrint('0-0-0-0-0-0-0 username');
+    showLoader(context);
+    // username,phone,email,dob,gender,password,image
+    Map data = {
+      'id': methodId,
+    };
+    print(data);
+    // String body = json.encode(data);
+
+    var url = (URLConstants.base_url + URLConstants.masturbation_method_delete);
+    print("url : $url");
+    print("body : $data");
+
+    var response = await http.post(Uri.parse(url), body: data);
+    print(response.body);
+    print(response.request);
+    print(response.statusCode);
+    // var final_data = jsonDecode(response.body);
+
+    // print('final data $final_data');
+
+    if (response.statusCode == 200) {
+      var data = jsonDecode(response.body);
+      m_screenDeleteModel = M_ScreenDeleteModel.fromJson(data);
+      print(m_screenDeleteModel);
+      if (m_screenDeleteModel!.error == false) {
+        CommonWidget().showToaster(msg: m_screenDeleteModel!.message!);
+        hideLoader(context);
+      } else {
+        hideLoader(context);
+        CommonWidget().showErrorToaster(msg: m_screenDeleteModel!.message!);
+        print('Please try again');
+        print('Please try again');
+      }
+    } else {}
+  }
+
+  M_ScreenEditModel? m_screenEditModel;
+  Future<dynamic> MasturbationData_edit_API(
+      {required BuildContext context, required String methodId}) async {
+    debugPrint('0-0-0-0-0-0-0 username');
+    showLoader(context);
+    // username,phone,email,dob,gender,password,image
+    Map data = {
+      'id': methodId,
+      'methodName' : method_new_name.text
+    };
+    print(data);
+    // String body = json.encode(data);
+
+    var url = (URLConstants.base_url + URLConstants.masturbation_method_edit);
+    print("url : $url");
+    print("body : $data");
+
+    var response = await http.post(Uri.parse(url), body: data);
+    print(response.body);
+    print(response.request);
+    print(response.statusCode);
+    // var final_data = jsonDecode(response.body);
+
+    // print('final data $final_data');
+
+    if (response.statusCode == 200) {
+      var data = jsonDecode(response.body);
+      m_screenEditModel = M_ScreenEditModel.fromJson(data);
+      print(m_screenEditModel);
+      if (m_screenEditModel!.error == false) {
+        CommonWidget().showToaster(msg: m_screenEditModel!.message!);
+        hideLoader(context);
+      } else {
+        hideLoader(context);
+        CommonWidget().showErrorToaster(msg: m_screenEditModel!.message!);
+        print('Please try again');
+        print('Please try again');
+      }
+    } else {}
+  }
+
+
+
 }

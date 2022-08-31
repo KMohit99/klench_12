@@ -1077,9 +1077,11 @@ class ListMethodClass {
   String? method_name;
   String? pauses;
   String? total_time;
+  String? color;
+  String? id;
 
 // added '?'
-  ListMethodClass({this.method_name, this.pauses, this.total_time});
+  ListMethodClass({this.method_name, this.pauses, this.total_time,this.color,this.id});
 // can also add 'required' keyword
 }
 
@@ -1105,7 +1107,7 @@ class ChartData2 {
   final String x;
   final String x1;
   final double y;
-  final Color color;
+  final String color;
 }
 
 class ChartData0 {
@@ -1114,7 +1116,7 @@ class ChartData0 {
   final String x;
   final String x1;
   final double y;
-  final Color color;
+  final String color;
 }
 
 class methodData {
