@@ -16,6 +16,7 @@ import 'getx_pagination/Bindings_class.dart';
 import 'getx_pagination/binding_utils.dart';
 import 'getx_pagination/page_route.dart';
 import 'homepage/alarm_info.dart';
+import 'homepage/controller/kegel_excercise_controller.dart';
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
@@ -36,9 +37,9 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+
   @override
   void initState() {
-    // alarm_notifications();
     super.initState();
   }
 
@@ -84,104 +85,5 @@ class _MyAppState extends State<MyApp> {
     );
   }
 
-  Future<void> alarm_notifications() async {
-    // Timer.periodic(Duration(minutes: 30), () {
-    //   click_alarm(alarm_info: "It's time for kegel exercise");
-    // });
-      Future.delayed(Duration(seconds: 5), () async {
-      await click_alarm(alarm_info: "It's time for kegel exercise");
-    });
-    Future.delayed(Duration(minutes: 30), () async {
-      await click_alarm(alarm_info: "It's time to Masturbate");
-    });
-    Future.delayed(Duration(minutes: 60), () async {
-      await click_alarm(alarm_info: "It's time to Pee");
-    });
-    Future.delayed(Duration(minutes: 90), () async {
-      await click_alarm(alarm_info: "It's time to Warmup");
-    });
-  }
 
-  DateTime? _alarmTime;
-
-  Future<void> click_alarm({required String alarm_info}) async {
-    _alarmTime = DateTime.now();
-    DateTime arch = DateTime.parse("2022-08-15 00:25:24");
-    print(DateFormat('EEEE').format(arch)); // Sunday
-
-    DateTime scheduleAlarmDateTime;
-    // if (_alarmTime!.isAfter(DateTime.now())) {
-    scheduleAlarmDateTime = DateTime.now().add(Duration(seconds: 3));
-    // } else {
-    //   scheduleAlarmDateTime = _alarmTime!.add(const Duration(days: 1));
-    // }
-
-    var alarmInfo = AlarmInfo(
-      alarmDateTime: scheduleAlarmDateTime,
-      gradientColorIndex: 1,
-      title: alarm_info,
-    );
-    // _alarmHelper.insertAlarm(alarmInfo);
-    await scheduleAlarm(scheduleAlarmDateTime, alarmInfo);
-    // Alarm_title.clear();
-    // Navigator.pop(context);
-    // loadAlarms();
-  }
-
-  Future<void> scheduleAlarm(
-      DateTime scheduledNotificationDateTime, AlarmInfo alarmInfo) async {
-    var androidPlatformChannelSpecifics = const AndroidNotificationDetails(
-      'alarm_notif',
-      'alarm_notif',
-      // 'Channel for Alarm notification',
-      icon: 'app_icon',
-      enableVibration: true,
-      playSound: true,
-      sound: RawResourceAndroidNotificationSound("a_long_cold_sting.wav"),
-      largeIcon: DrawableResourceAndroidBitmap('app_icon'),
-    );
-
-    var iOSPlatformChannelSpecifics = const IOSNotificationDetails(
-        sound: "a_long_cold_sting.wav",
-        presentAlert: true,
-        presentBadge: true,
-        threadIdentifier: 'thread_id',
-        presentSound: true);
-    var platformChannelSpecifics = NotificationDetails(
-        android: androidPlatformChannelSpecifics,
-        iOS: iOSPlatformChannelSpecifics);
-
-    await flutterLocalNotificationsPlugin.schedule(
-        0,
-        'Klench Exercise',
-        alarmInfo.title,
-        scheduledNotificationDateTime,
-        platformChannelSpecifics);
-
-    AndroidInitializationSettings initializationSettingsAndroid =
-        const AndroidInitializationSettings('app_icon');
-    IOSInitializationSettings initializationSettingsIOS =
-        IOSInitializationSettings(
-            requestAlertPermission: true,
-            requestBadgePermission: true,
-            requestSoundPermission: true,
-            onDidReceiveLocalNotification: onDidReceiveLocalNotification);
-    InitializationSettings initializationSettings = InitializationSettings(
-        android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
-    await flutterLocalNotificationsPlugin.initialize(initializationSettings,
-        onSelectNotification: selectNotification);
-  }
-
-  void onDidReceiveLocalNotification(
-      int id, String? title, String? body, String? payload) {
-    print('id $id');
-  }
-
-  Future<dynamic> selectNotification(String? payload) async {
-    print("indise navigationn");
-    await Navigator.push(
-      context,
-      MaterialPageRoute<void>(builder: (context) => KegelScreen()),
-    );
-  }
 }

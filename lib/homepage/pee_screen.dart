@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'dart:math';
 
 import 'package:avatar_glow/avatar_glow.dart';
@@ -1307,7 +1308,7 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
 
                             setState(() {
                               started = true;
-
+                              Vibration.cancel();
                               elapsedTime = '00';
                               _swipe_setup_controller.p_running = false;
                               percent = 0.0;
@@ -1939,6 +1940,7 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
 
   startWatch() {
     start_animation();
+    vibration();
     setState(() {
       _swipe_setup_controller.p_running = true;
       elapsedTime = "00";
@@ -2006,21 +2008,37 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
       //     "Vibration.hasCustomVibrationsSupport() ${Vibration.hasCustomVibrationsSupport()}");
       if (await Vibration.hasCustomVibrationsSupport() == true) {
         print("has support");
-        Vibration.vibrate(
+        if (Platform.isAndroid) {
+          // Android-specific code
+
+          Vibration.vibrate(
             // pattern: [100, 100,100, 100,100, 100,100, 100,],
-            duration: (levels == 'Easy'
-                ? 4000
-                : levels == 'Normal'
-                    ? 5000
-                    : 5000),
-            amplitude: 50
+              duration: (levels == 'Easy'
+                  ? 4000
+                  : levels == 'Normal'
+                  ? 5000
+                  : 5000),
+              amplitude: 50
             // intensities: [1, 255]
-            );
+          );
+        } else if (Platform.isIOS) {
+          // iOS-specific code
+          for (var i = 0; i <= 7; i++) {
+            await Future.delayed(const Duration(seconds: 1), () {
+              Vibration.vibrate();
+            });
+          }
+        }
       } else {
         print("haddddd support");
         Vibration.vibrate();
-        await Future.delayed(const Duration(milliseconds: 500));
-        Vibration.vibrate();
+        // await Future.delayed(const Duration(milliseconds: 500));
+        for (var i = 0; i <= 7; i++) {
+          await Future.delayed(const Duration(seconds: 1), () {
+            Vibration.vibrate();
+          });
+        }
+        // Vibration.vibrate();
       }
       // Vibrate.defaultVibrationDuration;
       // Vibrate.defaultVibrationDuration;

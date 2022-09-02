@@ -12,7 +12,7 @@ import '../setting_page/setting_screen.dart';
 import '../utils/colorUtils.dart';
 
 class DashboardScreen extends StatefulWidget {
-  const DashboardScreen({Key? key}) : super(key: key);
+  const DashboardScreen({Key? key,}) : super(key: key);
 
   @override
   State<DashboardScreen> createState() => _DashboardScreenState();
@@ -49,7 +49,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Widget? get getPage {
     if (_page == 0) {
       return const ProfilePageScreen();
-    } else if (_page == 1) {
+    } else if (_page== 1) {
       return const HomepageScreen();
       // return const SwipeScreen();
     } else if (_page == 2) {
@@ -61,6 +61,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   GlobalKey<ScaffoldState>? _globalKey = GlobalKey<ScaffoldState>();
 
+  @override
+  void initState() {
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     screenWidth = MediaQuery

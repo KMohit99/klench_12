@@ -1,11 +1,12 @@
 import 'dart:async';
 import 'dart:ui';
-import 'dart:io' show Platform;
+import 'dart:io' show Platform, sleep;
 
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_alarm_clock/flutter_alarm_clock.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
@@ -31,8 +32,9 @@ import 'alarm_helper.dart';
 import 'alarm_info.dart';
 
 class KegelScreen extends StatefulWidget {
-
-   KegelScreen({Key? key,}) : super(key: key);
+  KegelScreen({
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<KegelScreen> createState() => _KegelScreenState();
@@ -149,14 +151,16 @@ class _KegelScreenState extends State<KegelScreen>
                 stopWatch_finish();
                 setState(() {
                   started = true;
-
                   elapsedTime = '00';
                   // watch.stop();
                   counter = 0;
+                  _kegel_controller.kegel_performed = true;
                 });
                 _kegel_controller.sets++;
+                print("_kegel_controller.kegel_performed");
+                print(_kegel_controller.kegel_performed);
                 await _kegel_controller.Kegel_post_API(context);
-
+                await _kegel_controller.alarm_notifications(context);
                 print('Sets-------$_kegel_controller.sets');
                 if (_kegel_controller.sets == 3) {
                   stopWatch_finish();
@@ -235,6 +239,7 @@ class _KegelScreenState extends State<KegelScreen>
                   // watch.stop();
                   counter = 0;
                   watch.reset();
+                  _kegel_controller.kegel_performed = true;
                 });
                 Vibration.cancel();
                 // setState(() {
@@ -255,6 +260,9 @@ class _KegelScreenState extends State<KegelScreen>
                 // print("_kegel_controller.sets++ ${_kegel_controller.sets++}");
                 // print(_kegel_controller.sets++);
                 await _kegel_controller.Kegel_post_API(context);
+                Future.delayed(Duration(hours: 2), () {
+                  _kegel_controller.alarm_notifications(context);
+                });
                 // await _kegel_controller.Kegel_get_API(context);
                 // if (_kegel_controller.kegelPostModel!.error == false) {
                 await getdata();
@@ -407,7 +415,9 @@ class _KegelScreenState extends State<KegelScreen>
       animation_started = true;
       print(animation_started);
     });
-    vibration();
+    // vibration();
+    (counter > 0 ? vibration(12) : vibration(15));
+
     _animationController =
         AnimationController(vsync: this, duration: const Duration(seconds: 1));
     _animationController!.repeat(reverse: true);
@@ -558,10 +568,11 @@ class _KegelScreenState extends State<KegelScreen>
   void initState() {
     // getdata();
     //
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       // executes after build
       init();
-
+      _init();
     });
     // _alarmTime = DateTime.now();
     // _alarmHelper.initializeDatabase().then((value) {
@@ -601,9 +612,9 @@ class _KegelScreenState extends State<KegelScreen>
   final SignInScreenController _signInScreenController = Get.put(
       SignInScreenController(),
       tag: SignInScreenController().toString());
+
   Future getdata() async {
-    await _signInScreenController.GetUserInfo(
-        context);
+    await _signInScreenController.GetUserInfo(context);
 
     levels = await PreferenceManager().getPref(URLConstants.levels);
     setState(() {});
@@ -2711,7 +2722,7 @@ class _KegelScreenState extends State<KegelScreen>
                                                   (int.parse(_kegel_controller
                                                               .kegelGetModel!
                                                               .data![i]
-                                                              .sets!) <
+                                                              .numberOfSets!) <
                                                           3
                                                       ? Image.asset(
                                                           "assets/images/white-star.png",
@@ -7484,6 +7495,7 @@ class _KegelScreenState extends State<KegelScreen>
 
   startWatch() {
     // start_animation();
+
     setState(() {
       startStop = false;
       started = false;
@@ -7539,11 +7551,13 @@ class _KegelScreenState extends State<KegelScreen>
   }
 
   stopWatch_finish() {
+    Vibration.cancel();
+
     setState(() {
       four_started = false;
       startStop = true;
-      // _animationController!.stop();
-      // _animationController_button!.reverse();
+      _animationController!.stop();
+      _animationController_button!.stop();
       // started = true;
       animation_started = false;
       watch.stop();
@@ -7595,7 +7609,7 @@ class _KegelScreenState extends State<KegelScreen>
     });
   }
 
-  vibration() async {
+  vibration(int number) async {
     if (_canVibrate) {
       // Vibration.vibrate(
       //     // pattern: [100, 100,100, 100,100, 100,100, 100,],
@@ -7605,20 +7619,38 @@ class _KegelScreenState extends State<KegelScreen>
       //     "Vibration.hasCustomVibrationsSupport() ${Vibration.hasCustomVibrationsSupport()}");
       if (await Vibration.hasCustomVibrationsSupport() == true) {
         print("has support");
-        Vibration.vibrate(
+
+        if (Platform.isAndroid) {
+          // Android-specific code
+          Vibration.vibrate(
             // pattern: [100, 100,100, 100,100, 100,100, 100,],
-            duration: (levels == 'Easy'
-                ? 9000
-                : levels == 'Normal'
-                    ? 10000
-                    : 9000),
-            amplitude: 50
+              duration: (levels == 'Easy'
+                  ? 9000
+                  : levels == 'Normal'
+                  ? 10000
+                  : 9000),
+              amplitude: 50
             // intensities: [1, 255]
-            );
+          );
+        } else if (Platform.isIOS) {
+          // iOS-specific code
+          for (var i = 0; i <= number; i++) {
+            await Future.delayed(const Duration(seconds: 1), () {
+              Vibration.vibrate();
+            });
+          }
+        }
+
       } else {
         print("haddddd support");
-        Vibration.vibrate();
-        await Future.delayed(const Duration(milliseconds: 500));
+        print("doesnt support haddddd support");
+        for (var i = 0; i <= number; i++) {
+          await Future.delayed(const Duration(seconds: 1), () {
+            Vibration.vibrate();
+          });
+        }
+        // _PatternVibrate();
+
         Vibration.vibrate();
       }
       // Vibrate.defaultVibrationDuration;
@@ -7627,6 +7659,46 @@ class _KegelScreenState extends State<KegelScreen>
     } else {
       CommonWidget().showErrorToaster(msg: 'Device Cannot vibrate');
     }
+  }
+
+  _PatternVibrate() {
+    HapticFeedback.heavyImpact();
+    sleep(
+      const Duration(milliseconds: 200),
+    );
+    HapticFeedback.heavyImpact();
+    sleep(
+      const Duration(milliseconds: 500),
+    );
+    HapticFeedback.heavyImpact();
+    sleep(
+      const Duration(milliseconds: 200),
+    );
+    HapticFeedback.heavyImpact();
+    sleep(
+      const Duration(milliseconds: 200),
+    );
+    HapticFeedback.heavyImpact();
+    sleep(
+      const Duration(milliseconds: 500),
+    );
+    HapticFeedback.heavyImpact();
+    sleep(
+      const Duration(milliseconds: 200),
+    );
+    HapticFeedback.heavyImpact();
+    sleep(
+      const Duration(milliseconds: 200),
+    );
+    HapticFeedback.heavyImpact();
+    sleep(
+      const Duration(milliseconds: 500),
+    );
+    HapticFeedback.heavyImpact();
+    sleep(
+      const Duration(milliseconds: 200),
+    );
+    HapticFeedback.heavyImpact();
   }
 
   List<String> list_alarm = [
@@ -7645,9 +7717,9 @@ class _KegelScreenState extends State<KegelScreen>
       icon: 'app_icon',
       enableVibration: true,
       fullScreenIntent: true,
-ledOffMs: 10,
-ledOnMs: 10,
-ledColor: Colors.pinkAccent,
+      ledOffMs: 10,
+      ledOnMs: 10,
+      ledColor: Colors.pinkAccent,
       playSound: true,
       sound: RawResourceAndroidNotificationSound(Selected_sound),
       largeIcon: DrawableResourceAndroidBitmap('app_icon'),

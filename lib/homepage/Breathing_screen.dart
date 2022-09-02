@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
@@ -224,15 +226,32 @@ class _BreathingScreenState extends State<BreathingScreen>
 
       if (await Vibration.hasCustomVibrationsSupport() == true) {
         // print("has support");
-        Vibration.vibrate(
+
+        if (Platform.isAndroid) {
+          // Android-specific code
+          Vibration.vibrate(
             // pattern: [100, 100,100, 100,100, 100,100, 100,],
-            duration: 5000,
-            intensities: [1, 255]);
+              duration: 5000,
+              intensities: [1, 255]);
+        } else if (Platform.isIOS) {
+          // iOS-specific code
+          for (var i = 0; i <= 4; i++) {
+            await Future.delayed(const Duration(seconds: 1), () {
+              Vibration.vibrate();
+            });
+          }
+        }
+
       } else {
         print("haddddd support");
         Vibration.vibrate();
-        await Future.delayed(Duration(milliseconds: 500));
-        Vibration.vibrate();
+        for (var i = 0; i <= 4; i++) {
+          await Future.delayed(const Duration(seconds: 1), () {
+            Vibration.vibrate();
+          });
+        }
+        // await Future.delayed(Duration(milliseconds: 500));
+        // Vibration.vibrate();
       }
       // Vibrate.defaultVibrationDuration;
       // Vibrate.defaultVibrationDuration;
@@ -328,7 +347,7 @@ class _BreathingScreenState extends State<BreathingScreen>
           });
           Future.delayed(Duration(seconds: 5), () {
             _animationController!.reverse();
-            // vibration();
+            vibration();
 
             setState(() {
               _status = 'Exhale';

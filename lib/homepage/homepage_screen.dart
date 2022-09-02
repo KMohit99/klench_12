@@ -247,7 +247,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
                               ? 10
                               : (screenHeight >= 700 && screenHeight <= 800
                                   ? 75
-                                  : (screenHeight >= 800 ? 100 : 0)))),
+                                  : (screenHeight >= 800 ? 90 : 0)))),
                       child: Column(
                         children: [
                           GestureDetector(

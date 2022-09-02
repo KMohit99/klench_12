@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:dotted_border/dotted_border.dart';
@@ -10,6 +11,7 @@ import 'package:intl/intl.dart';
 import 'package:klench_/homepage/swipe_controller.dart';
 import 'package:klench_/main.dart';
 import 'package:klench_/utils/TexrUtils.dart';
+import 'package:vibration/vibration.dart';
 
 import '../utils/Asset_utils.dart';
 import '../utils/TextStyle_utils.dart';
@@ -90,7 +92,6 @@ class _WarmUpScreenState extends State<WarmUpScreen>
               // if (counter == 3) {
 
               stopWatch_finish();
-
               setState(() {
                   elapsedTime = '00';
                   // watch.stop();
@@ -99,17 +100,20 @@ class _WarmUpScreenState extends State<WarmUpScreen>
 
               // }else {
                 // stopWatch_finish();
-                _animationController!.forward();
-                _animationController_button!.forward();
+                // _animationController!.forward();
+                // _animationController_button!.forward();
                 setState(() {
                   elapsedTime = '00';
                   elapsedTime2 = '00';
                   four_started = false;
+                  animation_started = false;
                   // watch.reset();
                 });
                 startTimer2();
+              vibration();
+              // startWatch();
+              // startWatch2();
               // start_animation();
-
 
               Future.delayed(Duration(seconds: 14), () {
                   startWatch();
@@ -152,34 +156,39 @@ class _WarmUpScreenState extends State<WarmUpScreen>
             // stopWatch_finish();
             stopWatch_finish2();
             // _animationController_shadow1!.reverse();
+
             setState(() {
               elapsedTime2 = '00';
               percent = 0.0;
               watch2.reset();
               four_started = true;
+              reverse_started = true;
+              counter++;
+              print(counter);
             });
-            if (counter == 3) {
-              stopWatch_finish();
-              setState(() {
-                elapsedTime = '00';
-                // watch.stop();
-                counter = 0;
-              });
-            } else {
-              // stopWatch_finish();
-
-              _animationController!.forward();
-              _animationController_button!.forward();
-              setState(() {
-                // elapsedTime = '00';
-                four_started = false;
-                // watch.reset();
-              });
-              startTimer2();
-              start_animation();
-              // startWatch2();
-
-            }
+            print("setsss doneeeeee");
+            // if (counter == 3) {
+            //   stopWatch_finish();
+            //   setState(() {
+            //     elapsedTime = '00';
+            //     // watch.stop();
+            //     counter = 0;
+            //   });
+            // } else {
+            //   // stopWatch_finish();
+            //
+            //   _animationController!.forward();
+            //   _animationController_button!.forward();
+            //   setState(() {
+            //     // elapsedTime = '00';
+            //     four_started = false;
+            //     // watch.reset();
+            //   });
+            //   startTimer2();
+            //   start_animation();
+            //   // startWatch2();
+            //
+            // }
           }
         });
       }
@@ -256,33 +265,24 @@ class _WarmUpScreenState extends State<WarmUpScreen>
       reverse_started = true;
     });
     countdownTimer2 =
-        Timer.periodic(Duration(seconds: 1), (_) => setCountDown2());
+        Timer.periodic(const Duration(seconds: 1), (_) => setCountDown2());
   }
 
   void setCountDown2() {
-    final reduceSecondsBy = 1;
+    const reduceSecondsBy = 1;
     if (mounted) {
       setState(() {
         final seconds = myDuration2.inSeconds - reduceSecondsBy;
         if (seconds < 0) {
           countdownTimer2!.cancel();
           reverse_started = false;
-          // stopWatch_finish();
-          // if(counter == 3){
-          //   stopWatch_finish();
-          // }else{
-            Future.delayed(Duration(seconds: 3),(){
-              // startWatch();
-          //     // startTimer();
-          //     // startWatch2();
-          //     print("datatatatat");
-          //     print("datatatatat");
-          //     print("datatatatat");
-          //     // start_animation();
-          //     // middle_animation();
-            });
-          // }
           print('timesup');
+          counter++;
+          Future.delayed(Duration(seconds: 5),(){
+            print("counter");
+
+            // middle_animation();
+          });
         } else {
           myDuration2 = Duration(seconds: seconds);
         }
@@ -1820,8 +1820,10 @@ class _WarmUpScreenState extends State<WarmUpScreen>
                               setState(() {
                                 _swipe_setup_controller.w_running = false;
                                 started = true;
-                                // countdownTimer2!.cancel();
+                                countdownTimer2!.cancel();
 
+                                // countdownTimer2!.cancel();
+                                animation_started = false;
                                 // if(countdownTimer2!.isActive) {
                                 //   countdownTimer2!.cancel();
                                 // }
@@ -1986,6 +1988,7 @@ class _WarmUpScreenState extends State<WarmUpScreen>
   }
 
   startWatch() {
+    vibration();
     // start_animation();
     setState(() {
       timer_started = true;
@@ -2001,7 +2004,7 @@ class _WarmUpScreenState extends State<WarmUpScreen>
     setState(() {
       startStop = true;
       // started = false;
-      animation_started = false;
+      // animation_started = false;
 
       watch.stop();
       setTime();
@@ -2011,7 +2014,7 @@ class _WarmUpScreenState extends State<WarmUpScreen>
   stopWatch_finish() {
     setState(() {
       startStop = true;
-      animation_started = false;
+      // animation_started = false;
       watch.stop();
       watch3.stop();
       setTime_finish();
@@ -2020,7 +2023,7 @@ class _WarmUpScreenState extends State<WarmUpScreen>
   stopWatch_finish2() {
     setState(() {
       startStop = true;
-      animation_started = false;
+      // animation_started = false;
       watch2.stop();
     });
   }
@@ -2031,12 +2034,14 @@ class _WarmUpScreenState extends State<WarmUpScreen>
       // elapsedTime = "00";
       startStop = false;
       started = false;
+      reverse_started = true;
+
       // watch.start();
       // startStop = false;
       // started = false;
       elapsedTime2 = "00";
       watch2.start();
-      timer2 = Timer.periodic(const Duration(milliseconds: 100), updateTime);
+      timer2 = Timer.periodic(const Duration(milliseconds: 100), updateTime2);
     });
   }
 
@@ -2046,6 +2051,8 @@ class _WarmUpScreenState extends State<WarmUpScreen>
       tag: Ledger_Setup_controller().toString());
 
   startWatch3() {
+    vibration();
+
     setState(() {
       _swipe_setup_controller.w_running = true;
       startStop = false;
@@ -2085,6 +2092,66 @@ class _WarmUpScreenState extends State<WarmUpScreen>
 
     return secondsStr;
   }
+
+  bool _canVibrate = true;
+
+  Future<void> _init() async {
+    bool? canVibrate = await Vibration.hasVibrator();
+    setState(() {
+      _canVibrate = canVibrate!;
+      _canVibrate
+          ? debugPrint('This device can vibrate')
+          : debugPrint('This device cannot vibrate');
+    });
+  }
+
+  vibration() async {
+    if (_canVibrate) {
+      // Vibration.vibrate(
+      //     // pattern: [100, 100,100, 100,100, 100,100, 100,],
+      //     duration: 4000,
+      //     intensities: [1, 255]);
+      // print(
+      //     "Vibration.hasCustomVibrationsSupport() ${Vibration.hasCustomVibrationsSupport()}");
+      if (await Vibration.hasCustomVibrationsSupport() == true) {
+        print("has support");
+
+        if (Platform.isAndroid) {
+          // Android-specific code
+
+          Vibration.vibrate(
+            // pattern: [100, 100,100, 100,100, 100,100, 100,],
+              duration: 9000,
+              amplitude: 50
+            // intensities: [1, 255]
+          );
+        } else if (Platform.isIOS) {
+          // iOS-specific code
+          for (var i = 0; i <= 13; i++) {
+            await Future.delayed(const Duration(seconds: 1), () {
+              Vibration.vibrate();
+            });
+          }
+        }
+      } else {
+        print("haddddd support");
+        Vibration.vibrate();
+        // await Future.delayed(const Duration(milliseconds: 500));
+        for (var i = 0; i <= 13; i++) {
+          await Future.delayed(const Duration(seconds: 1), () {
+            Vibration.vibrate();
+          });
+        }
+        // Vibration.vibrate();
+      }
+      // Vibrate.defaultVibrationDuration;
+      // Vibrate.defaultVibrationDuration;
+      // Vibrate.vibrateWithPauses(pauses);
+    } else {
+      CommonWidget().showErrorToaster(msg: 'Device Cannot vibrate');
+    }
+  }
+
 
   DateTime? _alarmTime;
 
