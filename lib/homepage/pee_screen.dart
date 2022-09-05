@@ -16,6 +16,7 @@ import 'package:klench_/homepage/controller/pee_screen_controller.dart';
 import 'package:klench_/homepage/swipe_controller.dart';
 import 'package:klench_/main.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
+
 // import 'package:pimp_my_button/pimp_my_button.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:vibration/vibration.dart';
@@ -72,6 +73,10 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
           // print("startstop Inside=$startStop");
           elapsedTime = transformMilliSeconds(watch.elapsedMilliseconds);
           // percent += 1;
+          Future.delayed(Duration(seconds: 1),(){
+            Vibration.vibrate();
+          });
+
           // if (percent >= 100) {
           //   percent = 0.0;
           // }
@@ -286,16 +291,16 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       // executes after build
       getdata();
-
     });
     super.initState();
   }
+
   final SignInScreenController _signInScreenController = Get.put(
       SignInScreenController(),
       tag: SignInScreenController().toString());
+
   getdata() async {
-    await _signInScreenController.GetUserInfo(
-        context);
+    await _signInScreenController.GetUserInfo(context);
 
     // await _masturbation_screen_controller.MasturbationData_get_API(context);
     levels = await PreferenceManager().getPref(URLConstants.levels);
@@ -1300,6 +1305,8 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
                           } else {
                             await stopWatch();
                             await click_alarm();
+                            await Vibration.cancel();
+
                             await _animationController_middle!.reverse();
                             _animationController!.dispose();
                             _peeScreenController.sets++;
@@ -1308,7 +1315,8 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
 
                             setState(() {
                               started = true;
-                              Vibration.cancel();
+                              num = 0;
+
                               elapsedTime = '00';
                               _swipe_setup_controller.p_running = false;
                               percent = 0.0;
@@ -1940,8 +1948,9 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
 
   startWatch() {
     start_animation();
-    vibration();
+    // vibration();
     setState(() {
+      num = 7;
       _swipe_setup_controller.p_running = true;
       elapsedTime = "00";
       startStop = false;
@@ -1997,6 +2006,7 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
           : debugPrint('This device cannot vibrate');
     });
   }
+  var num;
 
   vibration() async {
     if (_canVibrate) {
@@ -2012,18 +2022,18 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
           // Android-specific code
 
           Vibration.vibrate(
-            // pattern: [100, 100,100, 100,100, 100,100, 100,],
+              // pattern: [100, 100,100, 100,100, 100,100, 100,],
               duration: (levels == 'Easy'
                   ? 4000
                   : levels == 'Normal'
-                  ? 5000
-                  : 5000),
+                      ? 5000
+                      : 5000),
               amplitude: 50
-            // intensities: [1, 255]
-          );
+              // intensities: [1, 255]
+              );
         } else if (Platform.isIOS) {
           // iOS-specific code
-          for (var i = 0; i <= 7; i++) {
+          for (var i = 0; i <= num; i++) {
             await Future.delayed(const Duration(seconds: 1), () {
               Vibration.vibrate();
             });

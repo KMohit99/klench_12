@@ -212,6 +212,8 @@ class _KegelScreenState extends State<KegelScreen>
           // if (percent >= 100) {
           //   percent = 0.0;
           // }
+          Vibration.vibrate();
+
           print(elapsedTime);
 
           if (elapsedTime == '13') {
@@ -416,7 +418,7 @@ class _KegelScreenState extends State<KegelScreen>
       print(animation_started);
     });
     // vibration();
-    (counter > 0 ? vibration(12) : vibration(15));
+    // (counter > 0 ? vibration(12) : vibration(15));
 
     _animationController =
         AnimationController(vsync: this, duration: const Duration(seconds: 1));

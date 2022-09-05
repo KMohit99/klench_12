@@ -272,35 +272,49 @@ class _BreathingScreenState extends State<BreathingScreen>
 
       if (await Vibration.hasCustomVibrationsSupport() == true) {
         // print("has support");
-        Vibration.vibrate(pattern: [
-          900,
-          100,
-          900,
-          100,
-          900,
-          100,
-          900,
-          100,
-          // 400,
-          // 100,
-          // 400,
-          // 100,
-          // 400,
-          // 100,
-          // 400,
-          // 100,
-          // 400,
-          // 100,
-        ], intensities: [
-          5,
-          255
-        ]);
+        if (Platform.isAndroid) {
+          // Android-specific code
+          Vibration.vibrate(pattern: [
+            900,
+            100,
+            900,
+            100,
+            900,
+            100,
+            900,
+            100,
+            // 400,
+            // 100,
+            // 400,
+            // 100,
+            // 400,
+            // 100,
+            // 400,
+            // 100,
+            // 400,
+            // 100,
+          ], intensities: [
+            5,
+            255
+          ]);
+
+        } else if (Platform.isIOS) {
+          // iOS-specific code
+          for (var i = 0; i <= 4; i++) {
+            await Future.delayed(const Duration(seconds: 1), () {
+              Vibration.vibrate();
+            });
+          }
+        }
       } else {
         print("haddddd support");
         Vibration.vibrate();
-        await Future.delayed(Duration(milliseconds: 500));
-        Vibration.vibrate();
-      }
+        // await Future.delayed(Duration(milliseconds: 500));
+        for (var i = 0; i <= 4; i++) {
+          await Future.delayed(const Duration(seconds: 1), () {
+            Vibration.vibrate();
+          });
+        }      }
       // Vibrate.defaultVibrationDuration;
       // Vibrate.defaultVibrationDuration;
       // Vibrate.vibrateWithPauses(pauses);
@@ -347,7 +361,7 @@ class _BreathingScreenState extends State<BreathingScreen>
           });
           Future.delayed(Duration(seconds: 5), () {
             _animationController!.reverse();
-            vibration();
+            // vibration();
 
             setState(() {
               _status = 'Exhale';

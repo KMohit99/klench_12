@@ -48,7 +48,12 @@ dependencies:
   share_plus: ^2.1.2
 
   firebase_auth: ^3.1.4
+  #///FCM
   firebase_core: ^1.8.0
+  firebase_messaging: ^11.2.0
+  overlay_support: ^2.0.1
+  cloud_firestore: ^3.1.4
+
   flutter_facebook_auth: ^4.1.2
   flutter_webview_plugin: ^0.4.0
   dio: ^4.0.0

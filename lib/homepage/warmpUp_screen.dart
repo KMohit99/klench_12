@@ -45,11 +45,12 @@ class _WarmUpScreenState extends State<WarmUpScreen>
   int counter = 0;
 
   updateTime(Timer timer) {
-    if (watch.isRunning) {
+    if (watch.isRunning){
       if (mounted) {
         setState(() {
           // print("startstop Inside=$startStop");
           elapsedTime = transformMilliSeconds(watch.elapsedMilliseconds);
+          // Vibration.vibrate();
 
           if (elapsedTime == '11') {
             stopWatch_finish();
@@ -110,7 +111,7 @@ class _WarmUpScreenState extends State<WarmUpScreen>
                   // watch.reset();
                 });
                 startTimer2();
-              vibration();
+              // vibration();
               // startWatch();
               // startWatch2();
               // start_animation();
@@ -1815,13 +1816,15 @@ class _WarmUpScreenState extends State<WarmUpScreen>
                                   msg: "Finish method first");
                             } else {
                               await stopWatch_finish();
+                              await Vibration.cancel();
                               await click_alarm();
                               await _animationController_middle!.reverse();
                               setState(() {
                                 _swipe_setup_controller.w_running = false;
                                 started = true;
-                                countdownTimer2!.cancel();
-
+                                if(reverse_started){
+                                  countdownTimer2!.cancel();
+                                }
                                 // countdownTimer2!.cancel();
                                 animation_started = false;
                                 // if(countdownTimer2!.isActive) {
@@ -1988,7 +1991,7 @@ class _WarmUpScreenState extends State<WarmUpScreen>
   }
 
   startWatch() {
-    vibration();
+    // vibration();
     // start_animation();
     setState(() {
       timer_started = true;
@@ -2051,7 +2054,7 @@ class _WarmUpScreenState extends State<WarmUpScreen>
       tag: Ledger_Setup_controller().toString());
 
   startWatch3() {
-    vibration();
+    // vibration();
 
     setState(() {
       _swipe_setup_controller.w_running = true;
@@ -2188,7 +2191,7 @@ class _WarmUpScreenState extends State<WarmUpScreen>
       icon: 'app_icon',
       enableVibration: true,
       playSound: true,
-      sound: RawResourceAndroidNotificationSound("a_long_cold_sting.wav"),
+      sound: RawResourceAndroidNotificationSound("a_long_cold_sting"),
       largeIcon: DrawableResourceAndroidBitmap('app_icon'),
     );
 

@@ -1,33 +1,40 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/foundation.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
-import 'package:klench_/homepage/kegel_screen.dart';
 import 'package:klench_/splash_Screen.dart';
-import 'package:local_auth/local_auth.dart';
 
-import 'Authentication/welcom_video/welcome_screen_tow.dart';
 import 'getx_pagination/Bindings_class.dart';
 import 'getx_pagination/binding_utils.dart';
 import 'getx_pagination/page_route.dart';
-import 'homepage/alarm_info.dart';
-import 'homepage/controller/kegel_excercise_controller.dart';
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
   await Firebase.initializeApp();
-
   runApp(MyApp());
 }
+
+Future<void> saveTokenToDatabase(String token) async {
+  // Assume user is logged in for this example
+  String userId = FirebaseAuth.instance.currentUser!.uid;
+
+  await FirebaseFirestore.instance
+      .collection('users')
+      .doc(userId)
+      .update({
+    'tokens': FieldValue.arrayUnion([token]),
+  });
+}
+
 
 class MyApp extends StatefulWidget {
   MyApp({Key? key}) : super(key: key);
@@ -38,15 +45,33 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
 
+  var token;
   @override
   void initState() {
+    // FirebaseMessaging.instance.getToken().then((token) {
+    //   print('This is Token: ' '${token}');
+    // });
+    // setupToken();
+
     super.initState();
+  }
+  String? _token;
+
+  Future<void> setupToken() async {
+    // Get the token each time the application loads
+    String? token = await FirebaseMessaging.instance.getToken();
+
+    // Save the initial token to the database
+    await saveTokenToDatabase(token!);
+
+    // Any time the token refreshes, store this in the database too.
+    FirebaseMessaging.instance.onTokenRefresh.listen(saveTokenToDatabase);
   }
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    final style = SystemUiOverlayStyle(
+    const style = SystemUiOverlayStyle(
         systemNavigationBarDividerColor: Colors.black,
         systemNavigationBarColor: Colors.black,
         systemNavigationBarIconBrightness: Brightness.light);
