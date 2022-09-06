@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:avatar_glow/avatar_glow.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +23,7 @@ import 'package:table_calendar/table_calendar.dart';
 import 'package:vibration/vibration.dart';
 
 import '../Authentication/SingIn/controller/SignIn_controller.dart';
+import '../databse.dart';
 import '../utils/Asset_utils.dart';
 import '../utils/TexrUtils.dart';
 import '../utils/TextStyle_utils.dart';
@@ -73,7 +75,7 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
           // print("startstop Inside=$startStop");
           elapsedTime = transformMilliSeconds(watch.elapsedMilliseconds);
           // percent += 1;
-          Future.delayed(Duration(seconds: 1),(){
+          Future.delayed(Duration(seconds: 1), () {
             Vibration.vibrate();
           });
 
@@ -319,6 +321,89 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
 
   pop() {
     print("no data found");
+  }
+
+  // Future _sendMessage() async {
+  //   var func = FirebaseFunctions.instance.httpsCallable("notifySubscribers");
+  //   var res = await func.call(<String, dynamic>{
+  //     "targetDevices": [_msgService.token],
+  //     "messageTitle": "Test title",
+  //     "messageBody": ctrl.text
+  //   });
+  //
+  //   print("message was ${res.data as bool ? "sent!" : "not sent!"}");
+  // }
+
+  DateTime selectedDate = DateTime.now();
+  TimeOfDay selectedTime = TimeOfDay.now();
+  DateTime dateTime = DateTime.now();
+  DateTime? final_time;
+  // Future<void> _selectDate(BuildContext context) async {
+  //   final DateTime picked = await Datepick.showDateTimePicker(context, showTitleActions: true);
+  //   if (picked != null && picked != _selectedDate) {
+  //     setState(() {
+  //       _selectedDate = picked;
+  //     });
+  //   }
+  // }
+  // Select for Date
+  Future<DateTime> _selectDate(BuildContext context) async {
+    final selected = await showDatePicker(
+      context: context,
+      initialDate: selectedDate,
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2025),
+    );
+    if (selected != null && selected != selectedDate) {
+      setState(() {
+        selectedDate = selected;
+      });
+    }
+    return selectedDate;
+  }
+
+// Select for Time
+  Future<TimeOfDay> _selectTime(BuildContext context) async {
+    final selected = await showTimePicker(
+      context: context,
+      initialTime: selectedTime,
+    );
+    if (selected != null && selected != selectedTime) {
+      setState(() {
+        selectedTime = selected;
+      });
+    }
+    return selectedTime;
+  }
+  // select date time picker
+  String getDateTime() {
+    // ignore: unnecessary_null_comparison
+    if (dateTime == null) {
+      return 'select date timer';
+    } else {
+      return DateFormat('yyyy-MM-dd HH: ss a').format(dateTime);
+    }
+  }
+
+  Future _selectDateTime(BuildContext context) async {
+    final date = await _selectDate(context);
+    if (date == null) return;
+
+    final time = await _selectTime(context);
+
+    if (time == null) return;
+    setState(() {
+      dateTime = DateTime(
+        date.year,
+        date.month,
+        date.day,
+        time.hour,
+        time.minute,
+      );
+      final_time= dateTime;
+
+    });
+   print(DateFormat('yyyy-MM-dd HH: mm').format(dateTime));
   }
 
   @override
@@ -1361,7 +1446,21 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
                               )),
                         ),
                       ),
+                      FlatButton(
+                        child: Text("Change Date"),
+                        onPressed: () {
+                          _selectDateTime(context);
+                          },
+                      ),
 
+                      Container(
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Database().createNotification(whenToNotify: Timestamp.fromDate(final_time!));
+                          },
+                          child: Text('Notification button'),
+                        ),
+                      ),
                       const SizedBox(
                         height: 28,
                       ),
@@ -2006,6 +2105,7 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
           : debugPrint('This device cannot vibrate');
     });
   }
+
   var num;
 
   vibration() async {
