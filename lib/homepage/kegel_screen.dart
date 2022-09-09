@@ -27,6 +27,7 @@ import '../utils/TextStyle_utils.dart';
 import '../utils/UrlConstrant.dart';
 import '../utils/colorUtils.dart';
 import '../utils/common_widgets.dart';
+import 'Breathing_screen.dart';
 import 'TESTALARMPAGE.dart';
 import 'alarm_helper.dart';
 import 'alarm_info.dart';
@@ -6439,19 +6440,19 @@ class _KegelScreenState extends State<KegelScreen>
                                                                               "Enter Alarm title");
                                                                   return;
                                                                 } else {
+
                                                                   Alarm_title_list.add(
                                                                       Alarm_title
                                                                           .text);
-                                                                  // if (Platform.isAndroid) {
-                                                                  //   FlutterAlarmClock.createAlarm(
-                                                                  //       selected_time
-                                                                  //           .hour,
-                                                                  //       selected_time
-                                                                  //           .minute,
-                                                                  //       title:
-                                                                  //       'Kegel ${(_currentAlarms!.length + 1)}');
-                                                                  // }
-
+                                                                  if (Platform.isAndroid) {
+                                                                    FlutterAlarmClock.createAlarm(
+                                                                        selected_time
+                                                                            .hour,
+                                                                        selected_time
+                                                                            .minute,
+                                                                        title:
+                                                                        'Kegel ${(_currentAlarms!.length + 1)}');
+                                                                  }
                                                                   await onSaveAlarm();
                                                                 }
                                                               },
@@ -7743,6 +7744,39 @@ class _KegelScreenState extends State<KegelScreen>
         alarmInfo.title,
         scheduledNotificationDateTime,
         platformChannelSpecifics);
+
+    await flutterLocalNotificationsPlugin.schedule(
+        0,
+        'Klench Exercise',
+        alarmInfo.title,
+        scheduledNotificationDateTime,
+        platformChannelSpecifics);
+    AndroidInitializationSettings initializationSettingsAndroid =
+    const AndroidInitializationSettings('app_icon');
+    IOSInitializationSettings initializationSettingsIOS =
+    IOSInitializationSettings(
+        requestAlertPermission: true,
+        requestBadgePermission: true,
+        requestSoundPermission: true,
+        onDidReceiveLocalNotification: onDidReceiveLocalNotification);
+    InitializationSettings initializationSettings = InitializationSettings(
+        android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
+    await flutterLocalNotificationsPlugin.initialize(initializationSettings,
+        onSelectNotification: KegelRoute);
+
+  }
+  void onDidReceiveLocalNotification(
+      int id, String? title, String? body, String? payload) {
+    print('id $id');
+  }
+
+  Future<dynamic> KegelRoute(String? payload) async {
+    print("indise navigationn");
+    // await Navigator.push(
+    //   context,
+    //   MaterialPageRoute<void>(builder: (context) => KegelScreen()),
+    // );
+    Get.to(BreathingScreen());
   }
 
   Future<void> onSaveAlarm() async {

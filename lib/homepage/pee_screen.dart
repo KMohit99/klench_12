@@ -1446,25 +1446,24 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
                               )),
                         ),
                       ),
-                      FlatButton(
-                        child: Text("Change Date"),
-                        onPressed: () {
-                          _selectDateTime(context);
-                          },
-                      ),
-
-                      Container(
-                        child: ElevatedButton(
-                          onPressed: () {
-                            Database().createNotification(whenToNotify: Timestamp.fromDate(final_time!));
-                          },
-                          child: Text('Notification button'),
-                        ),
-                      ),
+                      // FlatButton(
+                      //   child: Text("Change Date"),
+                      //   onPressed: () {
+                      //     _selectDateTime(context);
+                      //     },
+                      // ),
+                      //
+                      // Container(
+                      //   child: ElevatedButton(
+                      //     onPressed: () {
+                      //       Database().createNotification(whenToNotify: Timestamp.fromDate(final_time!));
+                      //     },
+                      //     child: Text('Notification button'),
+                      //   ),
+                      // ),
                       const SizedBox(
                         height: 28,
                       ),
-
                       Obx(() => _peeScreenController.isLoading.value == false
                           ? Container(
                               margin: const EdgeInsets.symmetric(horizontal: 0),

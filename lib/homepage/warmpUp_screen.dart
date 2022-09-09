@@ -8,6 +8,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
+import 'package:klench_/homepage/Breathing_screen.dart';
 import 'package:klench_/homepage/swipe_controller.dart';
 import 'package:klench_/main.dart';
 import 'package:klench_/utils/TexrUtils.dart';
@@ -1812,8 +1813,8 @@ class _WarmUpScreenState extends State<WarmUpScreen>
                             // });
                           } else {
                             if (four_started) {
-                              CommonWidget().showToaster(
-                                  msg: "Finish method first");
+                              // CommonWidget().showToaster(
+                              //     msg: "Finish method first");
                             } else {
                               await stopWatch_finish();
                               await Vibration.cancel();
@@ -2173,7 +2174,7 @@ class _WarmUpScreenState extends State<WarmUpScreen>
     var alarmInfo = AlarmInfo(
       alarmDateTime: scheduleAlarmDateTime,
       gradientColorIndex: 1,
-      title: "Would you like to do breathing exercises ?",
+      title: "Would you like to do breathing Exercise ?",
     );
     // _alarmHelper.insertAlarm(alarmInfo);
     await scheduleAlarm(scheduleAlarmDateTime, alarmInfo);
@@ -2211,5 +2212,32 @@ class _WarmUpScreenState extends State<WarmUpScreen>
         alarmInfo.title,
         scheduledNotificationDateTime,
         platformChannelSpecifics);
+    AndroidInitializationSettings initializationSettingsAndroid =
+    const AndroidInitializationSettings('app_icon');
+    IOSInitializationSettings initializationSettingsIOS =
+    IOSInitializationSettings(
+        requestAlertPermission: true,
+        requestBadgePermission: true,
+        requestSoundPermission: true,
+        onDidReceiveLocalNotification: onDidReceiveLocalNotification);
+    InitializationSettings initializationSettings = InitializationSettings(
+        android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
+    await flutterLocalNotificationsPlugin.initialize(initializationSettings,
+        onSelectNotification: KegelRoute);
+
   }
+  void onDidReceiveLocalNotification(
+      int id, String? title, String? body, String? payload) {
+    print('id $id');
+  }
+
+  Future<dynamic> KegelRoute(String? payload) async {
+    print("indise navigationn");
+    // await Navigator.push(
+    //   context,
+    //   MaterialPageRoute<void>(builder: (context) => KegelScreen()),
+    // );
+    Get.to(BreathingScreen());
+  }
+
 }
