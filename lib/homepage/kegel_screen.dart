@@ -7621,7 +7621,7 @@ class _KegelScreenState extends State<KegelScreen>
       // print(
       //     "Vibration.hasCustomVibrationsSupport() ${Vibration.hasCustomVibrationsSupport()}");
       if (await Vibration.hasCustomVibrationsSupport() == true) {
-        print("has support");
+        print("Device Support Custom Vibration");
 
         if (Platform.isAndroid) {
           // Android-specific code
@@ -7645,8 +7645,7 @@ class _KegelScreenState extends State<KegelScreen>
         }
 
       } else {
-        print("haddddd support");
-        print("doesnt support haddddd support");
+        print("Device doesn't Support Custom Vibration");
         for (var i = 0; i <= number; i++) {
           await Future.delayed(const Duration(seconds: 1), () {
             Vibration.vibrate();

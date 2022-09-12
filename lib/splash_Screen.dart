@@ -12,6 +12,8 @@ import 'package:klench_/utils/UrlConstrant.dart';
 import 'package:local_auth/local_auth.dart';
 
 import 'Authentication/SignUp/local_auth_api.dart';
+import 'Authentication/SingIn/SigIn_screen.dart';
+import 'Authentication/SingIn/controller/SignIn_controller.dart';
 import 'getx_pagination/binding_utils.dart';
 import 'homepage/alarm_info.dart';
 import 'homepage/controller/kegel_excercise_controller.dart';
@@ -35,11 +37,23 @@ class _SplashScreenState extends State<SplashScreen> {
       init();
     });
   }
+  final SignInScreenController _signInScreenController = Get.put(
+      SignInScreenController(),
+      tag: SignInScreenController().toString());
 
   init() async {
 
-    String id_user = await PreferenceManager().getPref(URLConstants.id);
-    (id_user == 'id' || id_user.isEmpty)
+    String idUser = await PreferenceManager().getPref(URLConstants.id);
+    print("idUser $idUser");
+    await _signInScreenController.GetUserInfo(context);
+    if (_signInScreenController.userInfoModel!.error == true) {
+      print("nno user founddddd");
+      await Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (BuildContext context) => SignInScreen()));
+    }
+    (idUser == 'id' || idUser.isEmpty)
         ? Get.to(FrontScreen())
         : method();
   }

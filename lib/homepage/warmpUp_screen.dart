@@ -2118,11 +2118,10 @@ class _WarmUpScreenState extends State<WarmUpScreen>
       // print(
       //     "Vibration.hasCustomVibrationsSupport() ${Vibration.hasCustomVibrationsSupport()}");
       if (await Vibration.hasCustomVibrationsSupport() == true) {
-        print("has support");
+        print("Device Support Custom Vibration");
 
         if (Platform.isAndroid) {
           // Android-specific code
-
           Vibration.vibrate(
             // pattern: [100, 100,100, 100,100, 100,100, 100,],
               duration: 9000,
@@ -2138,7 +2137,7 @@ class _WarmUpScreenState extends State<WarmUpScreen>
           }
         }
       } else {
-        print("haddddd support");
+        print("Device Doesn't Support Vibration");
         Vibration.vibrate();
         // await Future.delayed(const Duration(milliseconds: 500));
         for (var i = 0; i <= 13; i++) {

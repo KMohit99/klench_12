@@ -1109,6 +1109,14 @@ class ChartData2 {
   final double y;
   final String color;
 }
+class ChartDataD {
+  ChartDataD(this.x,  this.x1,this.y, this.color);
+
+  final String x;
+  final String x1;
+  final String y;
+  final String color;
+}
 
 class ChartData0 {
   ChartData0(this.x,  this.x1,this.y, this.color);
