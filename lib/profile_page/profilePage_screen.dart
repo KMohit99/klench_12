@@ -43,7 +43,7 @@ class ProfilePageScreen extends StatefulWidget {
 class _ProfilePageScreenState extends State<ProfilePageScreen> {
   int infin = 0x221E;
 
-  List difficulty = ['Very Easy', 'Easy', 'Normal', 'Hard', 'ထ'];
+  List difficulty = ['Super Easy', 'Easy', 'Normal', 'Hard', 'ထ'];
   List<String> gender_list = <String>['Male', 'Female', 'Prefer not say'];
   String? selected_gender;
 

@@ -123,6 +123,7 @@ class SignUpScreenController extends GetxController {
     request.fields['gender'] = selected_gender!;
     request.fields['password'] = passwordController.text;
     request.fields['levels'] = level.toString();
+    request.fields['stage'] = 1.toString();
     request.fields['type'] = 'normal';
 
     //userId,tagLine,description,address,postImage,uploadVideo,isVideo

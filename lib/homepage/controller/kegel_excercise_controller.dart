@@ -227,7 +227,7 @@ class Kegel_controller extends GetxController {
       icon: 'app_icon',
       enableVibration: true,
       playSound: true,
-      sound: RawResourceAndroidNotificationSound("a_long_cold_sting"),
+      // sound: RawResourceAndroidNotificationSound("a_long_cold_sting"),
       largeIcon: DrawableResourceAndroidBitmap('app_icon'),
     );
 

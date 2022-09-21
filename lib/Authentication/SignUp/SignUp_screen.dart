@@ -57,7 +57,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
   FocusNode Password_Focus = new FocusNode();
   FocusNode Confirm_Password_Focus = new FocusNode();
 
-
   selectDoB(BuildContext context) async {
     DateTime? selected;
     // await showDatePicker(
@@ -234,12 +233,25 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                               AgeCalculator.age(selected!);
                                           print('Your age is $duration');
 
+
                                           setModalState(() {
+                                            // (duration!.years <= 50
+                                            //     ? _signUpScreenController
+                                            //         .level = 'Normal'
+                                            //     : _signUpScreenController
+                                            //         .level = 'Easy');
                                             (duration!.years <= 50
+                                                ? _signUpScreenController.level =
+                                            'Normal'
+                                                : (duration!.years >= 50 &&
+                                                duration!.years <= 60
                                                 ? _signUpScreenController
-                                                    .level = 'Normal'
+                                                .level = 'Easy'
+                                                : (duration!.years >= 60
+                                                ? _signUpScreenController
+                                                .level = 'Super Easy'
                                                 : _signUpScreenController
-                                                    .level = 'Easy');
+                                                .level = 'Normal')));
                                           });
 
                                           print(_signUpScreenController.level);
@@ -547,8 +559,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             labelText: 'Enter Full name',
                             maxLines: 1,
                             textFocusNode: Fullname_Focus,
-                            onFieldSubmitted: (value){
-                              FocusScope.of(context).requestFocus(Username_Focus);
+                            onFieldSubmitted: (value) {
+                              FocusScope.of(context)
+                                  .requestFocus(Username_Focus);
                             },
                             iconData: IconButton(
                               visualDensity:
@@ -572,7 +585,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 _signUpScreenController.usernameController,
                             labelText: 'Enter Username',
                             textFocusNode: Username_Focus,
-                            onFieldSubmitted: (value){
+                            onFieldSubmitted: (value) {
                               FocusScope.of(context).requestFocus(Mobile_Focus);
                             },
                             maxLines: 1,
@@ -796,8 +809,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   labelText: 'Enter Mobile Number',
                                   maxLines: 1,
                                   textFocusNode: Mobile_Focus,
-                                  onFieldSubmitted: (value){
-                                    FocusScope.of(context).requestFocus(Email_Focus);
+                                  onFieldSubmitted: (value) {
+                                    FocusScope.of(context)
+                                        .requestFocus(Email_Focus);
                                   },
                                   // keyboardType: TextInputType.number,
                                   iconData: IconButton(
@@ -851,8 +865,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             labelText: 'Email Address',
                             maxLines: 1,
                             textFocusNode: Email_Focus,
-                            onFieldSubmitted: (value){
-                              FocusScope.of(context).requestFocus(Password_Focus);
+                            onFieldSubmitted: (value) {
+                              FocusScope.of(context)
+                                  .requestFocus(Password_Focus);
                             },
                             iconData: IconButton(
                               visualDensity:
@@ -1078,8 +1093,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             labelText: 'Password',
                             textFocusNode: Password_Focus,
                             maxLines: 1,
-                            onFieldSubmitted: (value){
-                              FocusScope.of(context).requestFocus(Confirm_Password_Focus);
+                            onFieldSubmitted: (value) {
+                              FocusScope.of(context)
+                                  .requestFocus(Confirm_Password_Focus);
                             },
                             onChanged: (value) {
                               print(value);
@@ -1381,7 +1397,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             maxLines: 1,
                             labelText: 'Confirm Password',
                             textFocusNode: Confirm_Password_Focus,
-                            onFieldSubmitted: (value){
+                            onFieldSubmitted: (value) {
                               FocusScope.of(context).unfocus();
                             },
                             iconData: IconButton(
@@ -1515,9 +1531,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 
   Future submit() async {
-    _signUpScreenController.appSignatureId = await SmsAutoFill().getAppSignature;
-    print("_signUpScreenController.appSignatureId ${_signUpScreenController.appSignatureId}");
-
+    _signUpScreenController.appSignatureId =
+        await SmsAutoFill().getAppSignature;
+    print(
+        "_signUpScreenController.appSignatureId ${_signUpScreenController.appSignatureId}");
   }
 
   final imgPicker = ImagePicker();

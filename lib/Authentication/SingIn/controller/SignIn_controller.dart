@@ -121,6 +121,8 @@ class SignInScreenController extends GetxController {
             '2-2-2-2-2-2 Inside the Get UserInfo Controller Details ${userInfoModel!.data!.length}');
         await PreferenceManager()
             .setPref(URLConstants.levels, userInfoModel!.data![0].levels!);
+        await PreferenceManager()
+            .setPref(URLConstants.stages, userInfoModel!.data![0].stage!);
 
         _profile_page_controller.nameController.text =
             userInfoModel!.data![0].username!;

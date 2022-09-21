@@ -90,7 +90,7 @@ class _BreathingScreenState extends State<BreathingScreen>
                     // watch.stop();
                     counter = 0;
                   });
-                  CommonWidget().showToaster(msg: "Method Complete");
+                  CommonWidget().showToaster(msg: "You have completed 3 sets for today");
                 }
               } else {
                 startWatch();

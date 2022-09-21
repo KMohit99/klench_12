@@ -1,5 +1,8 @@
 {
   "projects": {
-    "default": "klench-12"
-  }
+    "default": "klench12",
+    "functions": "klench12"
+  },
+  "targets": {},
+  "etags": {}
 }

@@ -37,48 +37,62 @@ class _SplashScreenState extends State<SplashScreen> {
       init();
     });
   }
+
   final SignInScreenController _signInScreenController = Get.put(
       SignInScreenController(),
       tag: SignInScreenController().toString());
 
   init() async {
-
     String idUser = await PreferenceManager().getPref(URLConstants.id);
     print("idUser $idUser");
-    await _signInScreenController.GetUserInfo(context);
-    if (_signInScreenController.userInfoModel!.error == true) {
-      print("nno user founddddd");
-      await Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-              builder: (BuildContext context) => SignInScreen()));
-    }
-    (idUser == 'id' || idUser.isEmpty)
-        ? Get.to(FrontScreen())
-        : method();
+    // await _signInScreenController.GetUserInfo(context);
+    // if (_signInScreenController.userInfoModel!.error == true) {
+    //   print("nno user founddddd");
+    //   await Navigator.pushReplacement(
+    //       context,
+    //       MaterialPageRoute(
+    //           builder: (BuildContext context) => SignInScreen()));
+    // }
+    (idUser == 'id' || idUser.isEmpty) ? Get.to(FrontScreen()) : method();
   }
 
   method() async {
-    bool auth = await PreferenceManager().getbool(URLConstants.authentication_enable);
+    bool auth =
+        await PreferenceManager().getbool(URLConstants.authentication_enable);
     print(auth);
 
-    if (auth== true) {
+    if (auth == true) {
       final isAuthenticated = await LocalAuthApi.authenticate();
 
       if (isAuthenticated) {
         await _kegel_controller.alarm_notifications(context);
-
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => DashboardScreen()),
-        );
-      }
-      else{
+        await _signInScreenController.GetUserInfo(context);
+        if (_signInScreenController.userInfoModel!.error == true) {
+          print("nno user founddddd");
+          await Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (BuildContext context) => SignInScreen()));
+        } else {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => DashboardScreen()),
+          );
+        }
+      } else {
         SystemNavigator.pop();
       }
-    }else{
+    } else {
       await _kegel_controller.alarm_notifications(context);
-
-     await Get.to(DashboardScreen());
+      await _signInScreenController.GetUserInfo(context);
+      if (_signInScreenController.userInfoModel!.error == true) {
+        print("nno user founddddd");
+        await Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (BuildContext context) => SignInScreen()));
+      } else {
+        await Get.to(DashboardScreen());
+      }
     }
   }
 
@@ -95,8 +109,7 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   final Kegel_controller _kegel_controller =
-  Get.put(Kegel_controller(), tag: Kegel_controller().toString());
-
+      Get.put(Kegel_controller(), tag: Kegel_controller().toString());
 
   final LocalAuthentication auth = LocalAuthentication();
   String _authorized = 'Not Authorized';
@@ -132,6 +145,6 @@ class _SplashScreenState extends State<SplashScreen> {
     }
 
     setState(
-            () => _authorized = authenticated ? 'Authorized' : 'Not Authorized');
+        () => _authorized = authenticated ? 'Authorized' : 'Not Authorized');
   }
 }

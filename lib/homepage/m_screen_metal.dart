@@ -4723,7 +4723,7 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
             var x = m_screenDailyDataModel!.data![0].days![i].createdDate!;
             var x1 = m_screenDailyDataModel!.data![0].days![i].methodName;
             var y = double.parse(
-                m_screenDailyDataModel!.data![0].days![i].totalTime!);
+                m_screenDailyDataModel!.data![0].days![i].pauses!);
             // var inputFormat = DateFormat.jm().format(DateFormat("hh:mm:ss").parse("14:15:00"));
             DateTime tempDate = new DateFormat("yyyy-MM-dd hh:mm:ss").parse(x);
 

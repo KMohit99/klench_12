@@ -75,14 +75,78 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
           // print("startstop Inside=$startStop");
           elapsedTime = transformMilliSeconds(watch.elapsedMilliseconds);
           // percent += 1;
-          Future.delayed(Duration(seconds: 1), () {
+          // if ( Vibration.hasCustomVibrationsSupport() ==true) {
+          // Vibration.vibrate(duration: 1000);
+          // } else {
+          Vibration.vibrate();
+          // }
+          // if (percent >= 100) {
+          //   percent = 0.0;
+          // }
+          if (elapsedTime == '05') {
+            stopWatch_finish();
+            // _animationController_shadow1!.reverse();
+            setState(() {
+              elapsedTime = 'PUSH';
+              percent = 0.0;
+              watch.reset();
+              // CommonWidget().showToaster(msg: '${7 - counter} Times left');
+              counter++;
+              // print(counter);
+              // paused_time.clear();
+            });
+            Future.delayed(const Duration(seconds: 3), () {
+              // if (counter == 10) {
+              //   stopWatch_finish();
+              //   setState(() {
+              //     elapsedTime = '00';
+              //     // watch.stop();
+              //     counter = 0;
+              //   });
+              // sets++;
+              // print('Sets-------$sets');
+              // if (sets == 3) {
+              //   stopWatch_finish();
+              //   setState(() {
+              //     elapsedTime = '00';
+              //     percent = 0.0;
+              //     // watch.stop();
+              //     counter = 0;
+              //   });
+              //   CommonWidget().showToaster(msg: "Method Complete");
+              //   Future.delayed(Duration(seconds: 5), () {
+              //     CommonWidget().showErrorToaster(
+              //         msg:
+              //         "After one month it will automatically switch to Hard");
+              //   });
+              // }
+              // } else {
+              _animationController!.reverse();
+              _animationController_button!.reverse();
+              startWatch();
+              // }
+            });
+          }
+        });
+      }
+    }
+  }
+
+  updateTime_easy(Timer timer) {
+    if (watch.isRunning) {
+      if (mounted) {
+        setState(() {
+          // print("startstop Inside=$startStop");
+          elapsedTime = transformMilliSeconds(watch.elapsedMilliseconds);
+          // percent += 1;
+          // Future.delayed(Duration(seconds: 1), () {
             Vibration.vibrate();
-          });
+          // });
 
           // if (percent >= 100) {
           //   percent = 0.0;
           // }
-          if (elapsedTime == '08') {
+          if (elapsedTime == '04') {
             stopWatch_finish();
             // _animationController_shadow1!.reverse();
             setState(() {
@@ -95,6 +159,69 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
               // paused_time.clear();
             });
             Future.delayed(const Duration(seconds: 4), () {
+              // if (counter == 10) {
+              //   stopWatch_finish();
+              //   setState(() {
+              //     elapsedTime = '00';
+              //     // watch.stop();
+              //     counter = 0;
+              //   });
+              // sets++;
+              // print('Sets-------$sets');
+              // if (sets == 3) {
+              //   stopWatch_finish();
+              //   setState(() {
+              //     elapsedTime = '00';
+              //     percent = 0.0;
+              //     // watch.stop();
+              //     counter = 0;
+              //   });
+              //   CommonWidget().showToaster(msg: "Method Complete");
+              //   Future.delayed(Duration(seconds: 5), () {
+              //     CommonWidget().showErrorToaster(
+              //         msg:
+              //         "After one month it will automatically switch to Hard");
+              //   });
+              // }
+              // } else {
+              _animationController!.reverse();
+              _animationController_button!.reverse();
+              startWatch();
+              // }
+            });
+          }
+        });
+      }
+    }
+  }
+
+  updateTime_super_easy(Timer timer) {
+    if (watch.isRunning) {
+      if (mounted) {
+        setState(() {
+          // print("startstop Inside=$startStop");
+          elapsedTime = transformMilliSeconds(watch.elapsedMilliseconds);
+          // percent += 1;
+          // Future.delayed(Duration(microseconds: 500), () {
+            Vibration.vibrate();
+          // });
+
+          // if (percent >= 100) {
+          //   percent = 0.0;
+          // }
+          if (elapsedTime == '03') {
+            stopWatch_finish();
+            // _animationController_shadow1!.reverse();
+            setState(() {
+              elapsedTime = 'PUSH';
+              percent = 0.0;
+              watch.reset();
+              // CommonWidget().showToaster(msg: '${7 - counter} Times left');
+              counter++;
+              // print(counter);
+              // paused_time.clear();
+            });
+            Future.delayed(const Duration(seconds: 5), () {
               // if (counter == 10) {
               //   stopWatch_finish();
               //   setState(() {
@@ -338,6 +465,7 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
   TimeOfDay selectedTime = TimeOfDay.now();
   DateTime dateTime = DateTime.now();
   DateTime? final_time;
+
   // Future<void> _selectDate(BuildContext context) async {
   //   final DateTime picked = await Datepick.showDateTimePicker(context, showTitleActions: true);
   //   if (picked != null && picked != _selectedDate) {
@@ -375,6 +503,7 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
     }
     return selectedTime;
   }
+
   // select date time picker
   String getDateTime() {
     // ignore: unnecessary_null_comparison
@@ -400,10 +529,9 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
         time.hour,
         time.minute,
       );
-      final_time= dateTime;
-
+      final_time = dateTime;
     });
-   print(DateFormat('yyyy-MM-dd HH: mm').format(dateTime));
+    print(DateFormat('yyyy-MM-dd HH: mm').format(dateTime));
   }
 
   @override
@@ -1384,16 +1512,16 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
                         onTap: () async {
                           if (started) {
                             back_wallpaper = false;
-
                             startWatch();
                             middle_animation();
                           } else {
                             await stopWatch();
                             await click_alarm();
                             await Vibration.cancel();
-
-                            await _animationController_middle!.reverse();
+                            _animationController_middle!.reverse();
+                            // middle_animation2();
                             _animationController!.dispose();
+
                             _peeScreenController.sets++;
                             await _peeScreenController.Pee_post_API(context);
                             await _peeScreenController.Pee_get_API(context);
@@ -1401,7 +1529,6 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
                             setState(() {
                               started = true;
                               num = 0;
-
                               elapsedTime = '00';
                               _swipe_setup_controller.p_running = false;
                               percent = 0.0;
@@ -1485,12 +1612,12 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
                                 padding: const EdgeInsets.all(8.0),
                                 child: TableCalendar(
                                   // initialCalendarFormat: CalendarFormat.week,
+                                  availableGestures: AvailableGestures.none,
                                   calendarStyle: CalendarStyle(
                                     defaultTextStyle: const TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 14.0,
                                         color: Colors.white),
-
                                     todayTextStyle: const TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 14.0,
@@ -1655,7 +1782,196 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
                                 ),
                               ),
                             )
-                          : SizedBox.shrink()),
+                          : Container(
+                              margin: const EdgeInsets.symmetric(horizontal: 0),
+                              // height: 45,
+                              // width:(width ?? 300) ,
+                              decoration: BoxDecoration(
+                                  // color: Colors.black.withOpacity(0.65),
+                                  gradient: LinearGradient(
+                                    begin: Alignment.centerLeft,
+                                    end: Alignment.centerRight,
+                                    // stops: [0.1, 0.5, 0.7, 0.9],
+                                    colors: [
+                                      HexColor("#36393E").withOpacity(0.9),
+                                      HexColor("#020204").withOpacity(0.9),
+                                    ],
+                                  ),
+                                  borderRadius: BorderRadius.circular(20)),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: TableCalendar(
+                                  // initialCalendarFormat: CalendarFormat.week,
+                                  calendarStyle: CalendarStyle(
+                                    defaultTextStyle: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 14.0,
+                                        color: Colors.white),
+
+                                    todayTextStyle: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 14.0,
+                                        color: Colors.white),
+                                    todayDecoration: BoxDecoration(
+                                        color: Colors.transparent,
+                                        borderRadius:
+                                            BorderRadius.circular(100)),
+                                    // todayColor: Colors.orange,
+                                    selectedTextStyle: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16.0,
+                                        color: Colors.green),
+                                    weekendTextStyle: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 14.0,
+                                        color: Colors.white),
+                                    isTodayHighlighted: true,
+                                    selectedDecoration: BoxDecoration(
+                                      color: Colors.blue,
+                                      shape: BoxShape.rectangle,
+                                      borderRadius: BorderRadius.circular(5.0),
+                                    ),
+                                  ),
+
+                                  headerStyle: HeaderStyle(
+                                    leftChevronIcon: Icon(
+                                      Icons.arrow_back_ios,
+                                      color: ColorUtils.primary_gold,
+                                      size: 15,
+                                    ),
+                                    rightChevronIcon: Icon(
+                                      Icons.arrow_forward_ios,
+                                      color: ColorUtils.primary_gold,
+                                      size: 15,
+                                    ),
+                                    formatButtonVisible: false,
+                                    titleTextStyle: const TextStyle(
+                                        // fontWeight: FontWeight.normal,
+                                        fontSize: 16.0,
+                                        fontFamily: 'PM',
+                                        color: Colors.white),
+                                    // centerHeaderTitle: true,
+                                    formatButtonDecoration: BoxDecoration(
+                                      color: ColorUtils.primary_gold,
+                                      borderRadius: BorderRadius.circular(20.0),
+                                    ),
+                                    formatButtonTextStyle:
+                                        const TextStyle(color: Colors.black),
+                                    formatButtonShowsNext: false,
+                                  ),
+                                  daysOfWeekStyle: DaysOfWeekStyle(
+                                      weekdayStyle: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 14.0,
+                                          color: Colors.white),
+                                      weekendStyle: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 14.0,
+                                          color: Colors.white)),
+                                  startingDayOfWeek: StartingDayOfWeek.monday,
+                                  onDaySelected: (date, events) async {
+                                    // print(date);
+                                    // print(DateFormat('yyyy-MM-dd').format(date));
+                                    //
+                                    // Data? person = await _peeScreenController
+                                    //     .peeGetModel!.data!
+                                    //     .firstWhereOrNull(
+                                    //   (element) =>
+                                    //       element.createdDate ==
+                                    //       DateFormat('yyyy-MM-dd').format(date),
+                                    // );
+                                    // // print("person  $person");
+                                    // if (person != null) {
+                                    //   print("person ${person.sets}");
+                                    //   print(
+                                    //       "User peed ${person.sets} on ${person.createdDate}");
+                                    // } else {
+                                    //   print("no data found");
+                                    // }
+                                  },
+
+                                  // calendarBuilders: CalendarBuilders(
+                                  //   markerBuilder:
+                                  //       (BuildContext context, date, events) {
+                                  //     for (var i = 0;
+                                  //     i <
+                                  //         _peeScreenController
+                                  //             .peeGetModel!.data!.length;
+                                  //     i++) {
+                                  //       if (DateFormat('yyyy-MM-dd')
+                                  //           .format(date) ==
+                                  //           _peeScreenController.peeGetModel!
+                                  //               .data![i].createdDate) {
+                                  //         return GestureDetector(
+                                  //           onTap: () {
+                                  //             setState(() {
+                                  //               selected_date_sets =
+                                  //               _peeScreenController
+                                  //                   .peeGetModel!
+                                  //                   .data![i]
+                                  //                   .sets!;
+                                  //               selected_date =
+                                  //               _peeScreenController
+                                  //                   .peeGetModel!
+                                  //                   .data![i]
+                                  //                   .createdDate!;
+                                  //             });
+                                  //             print(selected_date_sets);
+                                  //             print(selected_date);
+                                  //           },
+                                  //           child: Container(
+                                  //             // color: Colors.white60,
+                                  //               alignment: Alignment.center,
+                                  //               padding:
+                                  //               EdgeInsets.only(bottom: 5),
+                                  //               // margin: EdgeInsets.only(bottom: 7),
+                                  //               // decoration: BoxDecoration(
+                                  //               //   borderRadius:
+                                  //               //       BorderRadius.circular(100),
+                                  //               //   border: Border.all(
+                                  //               //       color:
+                                  //               //           ColorUtils.primary_gold,
+                                  //               //       width: 2),
+                                  //               // ),
+                                  //               child: Image.asset(
+                                  //                 "assets/images/white-star (1).png",
+                                  //                 color: ColorUtils.primary_gold
+                                  //                     .withOpacity(0.8),
+                                  //                 height: 40,
+                                  //               )),
+                                  //         );
+                                  //       }
+                                  //     }
+                                  //
+                                  //     // return ListView.builder(
+                                  //     //     shrinkWrap: true,
+                                  //     //     scrollDirection: Axis.horizontal,
+                                  //     //     itemCount: events.length,
+                                  //     //     itemBuilder: (context, index) {
+                                  //     //       return Container(
+                                  //     //         margin: const EdgeInsets.only(top: 20),
+                                  //     //         padding: const EdgeInsets.all(1),
+                                  //     //         child: Container(
+                                  //     //           // height: 7,
+                                  //     //           width: 5,
+                                  //     //           decoration: BoxDecoration(
+                                  //     //               shape: BoxShape.circle,
+                                  //     //               color: Colors.primaries[Random()
+                                  //     //                   .nextInt(Colors.primaries.length)]),
+                                  //     //         ),
+                                  //     //       );
+                                  //     //     });
+                                  //   },
+                                  // ),
+
+                                  calendarFormat: CalendarFormat.month,
+                                  // calendarController: _controller,
+                                  firstDay: DateTime.utc(2010, 10, 16),
+                                  lastDay: DateTime.utc(2030, 3, 14),
+                                  focusedDay: DateTime.now(),
+                                ),
+                              ),
+                            )),
                       const SizedBox(
                         height: 10,
                       ),
@@ -1760,7 +2076,9 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
                                           ? "The device will vibrate for 3 seconds and stop for 4 seconds, \ncontinuing the same process until user presses the finish button."
                                           : (levels == 'Normal'
                                               ? "The device will vibrate for 4 seconds and stop for 3 seconds, \ncontinuing the same process until user presses the finish button."
-                                              : "kegel info")),
+                                              : (levels == 'Super Easy'
+                                                  ? "The device will vibrate for 2 seconds and stop for 5 seconds, \ncontinuing the same process until user presses the finish button."
+                                                  : "kegel info"))),
                                       textAlign: TextAlign.justify,
                                       style: FontStyleUtility.h16(
                                           fontColor: ColorUtils.primary_grey,
@@ -2054,8 +2372,15 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
       startStop = false;
       started = false;
       watch.start();
-      timer =
-          Timer.periodic(const Duration(milliseconds: 100), updateTime_normal);
+      timer = Timer.periodic(
+          const Duration(milliseconds: 100),
+          (levels == 'Easy ? '
+              ? updateTime_easy
+              : (levels == 'Normal'
+                  ? updateTime_normal
+                  : (levels == 'Super Easy'
+                      ? updateTime_super_easy
+                      : updateTime_easy))));
     });
   }
 
@@ -2122,18 +2447,25 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
 
           Vibration.vibrate(
               // pattern: [100, 100,100, 100,100, 100,100, 100,],
-              duration: (levels == 'Easy'
-                  ? 4000
-                  : levels == 'Normal'
-                      ? 5000
-                      : 5000),
+              duration: (levels == 'Easy ? '
+                  ? 3000
+                  : (levels == 'Normal'
+                      ? 4000
+                      : (levels == 'Super Easy' ? 2000 : 3000))),
               amplitude: 50
               // intensities: [1, 255]
               );
         } else if (Platform.isIOS) {
           // iOS-specific code
-          for (var i = 0; i <= num; i++) {
-            await Future.delayed(const Duration(seconds: 1), () {
+          for (var i = 0;
+          i <=
+              (levels == 'Easy ? '
+                  ? 5
+                  : (levels == 'Normal'
+                  ? 6
+                  : (levels == 'Super Easy' ? 4 : 5)));
+          i++) {
+            await Future.delayed(const Duration(milliseconds: 600), () {
               Vibration.vibrate();
             });
           }
@@ -2142,8 +2474,17 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
         print("haddddd support");
         Vibration.vibrate();
         // await Future.delayed(const Duration(milliseconds: 500));
-        for (var i = 0; i <= 7; i++) {
-          await Future.delayed(const Duration(seconds: 1), () {
+        var num_;
+
+        for (var i = 0;
+            i <=
+                (levels == 'Easy ? '
+                    ? 5
+                    : (levels == 'Normal'
+                        ? 6
+                        : (levels == 'Super Easy' ? 4 : 5)));
+            i++) {
+          await Future.delayed(const Duration(milliseconds: 600), () {
             Vibration.vibrate();
           });
         }
@@ -2222,12 +2563,12 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
       icon: 'app_icon',
       enableVibration: true,
       playSound: true,
-      // sound: RawResourceAndroidNotificationSound("a_long_cold_sting.wav"),
+      // sound: RawResourceAndroidNotificationSound("alarm"),
       largeIcon: DrawableResourceAndroidBitmap('app_icon'),
     );
 
     var iOSPlatformChannelSpecifics = const IOSNotificationDetails(
-        sound: "a_long_cold_sting.wav",
+        // sound: "alarm.mp3",
         presentAlert: true,
         presentBadge: true,
         threadIdentifier: 'thread_id',

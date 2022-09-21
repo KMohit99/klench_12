@@ -44,6 +44,7 @@ class URLConstants {
   static String trial = 'false';
   static String socail_signup = 'false';
   static String levels = "level";
+  static String stages = "0";
   static String username = "username";
   static String authentication_enable = 'Authentication';
 }

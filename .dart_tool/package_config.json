@@ -765,7 +765,7 @@
     },
     {
       "name": "table_calendar",
-      "rootUri": "file:///Users/technologies/Documents/flutter/.pub-cache/hosted/pub.dartlang.org/table_calendar-3.0.6",
+      "rootUri": "file:///Users/technologies/Documents/flutter/.pub-cache/hosted/pub.dartlang.org/table_calendar-3.0.7",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -926,7 +926,7 @@
       "languageVersion": "2.16"
     }
   ],
-  "generated": "2022-09-06T06:17:41.026661Z",
+  "generated": "2022-09-21T05:26:42.883150Z",
   "generator": "pub",
   "generatorVersion": "2.17.5"
 }

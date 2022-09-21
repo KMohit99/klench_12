@@ -9,7 +9,7 @@ const database = admin.firestore();
 //     return console.log('successful timer update');
 // });
 
-exports.sendNotification = functions.pubsub.schedule('* * * * *').onRun(async (context) => {
+exports.sendNotification = functions.pubs.schedule('* * * * *').onRun(async (context) => {
     //check whether notification should be sent
     //send it if yes
 
