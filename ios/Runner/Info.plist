@@ -7,7 +7,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>Klench </string>
+	<string>Klench</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -29,6 +29,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
+				<string>com.googleusercontent.apps.92734214065-0kif88celn3i3uei8l433bn81aqolijt</string>
 				<string>fb1449299275412063</string>
 			</array>
 		</dict>
@@ -46,7 +47,7 @@
 	<key>FacebookDisplayName</key>
 	<string>Klench_iOS</string>
 	<key>FirebaseAppDelegateProxyEnabled</key>
-	<false/>
+    <string>0</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>fbapi</string>
@@ -117,6 +118,8 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
+	<false/>
+	<key>UIStatusBarHidden</key>
 	<false/>
 </dict>
 </plist>

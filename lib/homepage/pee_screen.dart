@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
 import 'package:klench_/homepage/alarm_info.dart';
@@ -78,7 +79,9 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
           // if ( Vibration.hasCustomVibrationsSupport() ==true) {
           // Vibration.vibrate(duration: 1000);
           // } else {
-          Vibration.vibrate();
+          // Future.delayed(Duration(microseconds: 500),(){
+            Vibration.vibrate();
+          // });
           // }
           // if (percent >= 100) {
           //   percent = 0.0;
@@ -197,7 +200,7 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
 
   updateTime_super_easy(Timer timer) {
     if (watch.isRunning) {
-      if (mounted) {
+      if (mounted)  {
         setState(() {
           // print("startstop Inside=$startStop");
           elapsedTime = transformMilliSeconds(watch.elapsedMilliseconds);
@@ -298,6 +301,15 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
   //   }
   // }
 
+  bool shadow_animation1_completed = false;
+  bool shadow_animation_pause = false;
+
+  AnimationController? _animationController_shadow1;
+  Animation? _animation_shadow1;
+  Animation? _animation_shadow1_reverse;
+  AnimationController? _animationController_shadow2;
+  Animation? _animation_shadow2;
+
   start_animation() {
     setState(() {
       animation_started = true;
@@ -306,20 +318,68 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
     // _incrementCounter();
     // vibration();
     _animationController =
-        AnimationController(vsync: this, duration: const Duration(seconds: 1));
-    _animationController!.repeat(reverse: true);
+        AnimationController(vsync: this, duration: const Duration(seconds: 5));
+    // _animationController!.repeat(reverse: true);
+    _animationController!.forward();
+
     _animation = Tween(begin: 0.0, end: 65.0).animate(_animationController!)
       ..addStatusListener((status) {
         if (status == AnimationStatus.completed) {}
         // print(_animation!.value);
       });
-
+    setState(() {
+      // _status = 'Inhale';
+      // print(_status);
+    });
     _animationController_button =
         AnimationController(vsync: this, duration: const Duration(seconds: 5));
     _animationController_button!.forward();
     _animation_button =
         Tween(begin: 200.0, end: 150.0).animate(_animationController_button!)
           ..addStatusListener((status) {
+            print(status);
+            if (status == AnimationStatus.completed) {
+              // vibration_hold();
+              setState(() {
+                // _status = 'Hold';
+
+                shadow_animation_pause = true;
+                _animationController_shadow2!.stop();
+                Future.delayed(Duration(seconds: 5), () {
+                  _animationController_shadow2!.repeat(reverse: true);
+                  // vibration();
+                  setState(() {
+                    // print(_status);
+                    shadow_animation_pause = false;
+                  });
+                });
+                // print("$_status _status");
+                // print("shadow_animation_pause $shadow_animation_pause");
+              });
+              Future.delayed(Duration(seconds: 5), () {
+                _animationController!.reverse();
+                // vibration();
+
+                setState(() {
+                  // _status = 'Exhale';
+                  // print(_status);
+                });
+              });
+            } else if (status == AnimationStatus.dismissed) {
+              // vibration_hold();
+              setState(() {
+                // _status = 'Hold';
+                // print(_status);
+              });
+              Future.delayed(Duration(seconds: 5), () {
+                _animationController!.forward();
+                vibration();
+                setState(() {
+                  // _status = 'Inhale';
+                  // print(_status);
+                });
+              });
+            }
             // print(status);
             // if (status == AnimationStatus.completed) {
             //   setState(() {});
@@ -329,6 +389,34 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
             //   _animationController_button!.forward();
             // }
           });
+    _animationController_shadow1 =
+        AnimationController(vsync: this, duration: Duration(seconds: 1));
+    _animationController_shadow1!.forward();
+    _animation_shadow1 =
+    Tween(begin: 0.0, end: 65.0).animate(_animationController_shadow1!)
+      ..addStatusListener((status) {
+        print(status);
+        if (status == AnimationStatus.completed) {
+          // print("elapsedTime");
+          setState(() {
+            shadow_animation1_completed = true;
+            // print(shadow_animation1_completed);
+          });
+        }
+        // shadow_animation1_completed = true;
+      });
+
+    _animationController_shadow2 =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 100));
+    _animationController_shadow2!.repeat(reverse: true);
+    _animation_shadow2 =
+    Tween(begin: 65.0, end: 70.0).animate(_animationController_shadow2!)
+      ..addStatusListener((status) {
+        if (shadow_animation_pause == true) {}
+        // print(status);
+        // if (status == AnimationStatus.completed) {}
+        // shadow_animation1_completed = true;
+      });
 
     // _animationController_textK =
     //     AnimationController(vsync: this, duration: Duration(seconds: 5));
@@ -362,6 +450,71 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
             // }
           });
   }
+
+  // start_animation() {
+  //   setState(() {
+  //     animation_started = true;
+  //     print(animation_started);
+  //   });
+  //   // _incrementCounter();
+  //   // vibration();
+  //   _animationController =
+  //       AnimationController(vsync: this, duration: const Duration(seconds: 1));
+  //   _animationController!.repeat(reverse: true);
+  //   _animation = Tween(begin: 0.0, end: 65.0).animate(_animationController!)
+  //     ..addStatusListener((status) {
+  //       if (status == AnimationStatus.completed) {}
+  //       // print(_animation!.value);
+  //     });
+  //
+  //   _animationController_button =
+  //       AnimationController(vsync: this, duration: const Duration(seconds: 5));
+  //   _animationController_button!.forward();
+  //   _animation_button =
+  //   Tween(begin: 200.0, end: 150.0).animate(_animationController_button!)
+  //     ..addStatusListener((status) {
+  //       // print(status);
+  //       // if (status == AnimationStatus.completed) {
+  //       //   setState(() {});
+  //       //   _animationController_button!.reverse();
+  //       // } else if (status == AnimationStatus.dismissed) {
+  //       //   setState(() {});
+  //       //   _animationController_button!.forward();
+  //       // }
+  //     });
+  //
+  //   // _animationController_textK =
+  //   //     AnimationController(vsync: this, duration: Duration(seconds: 5));
+  //   // _animationController_textK!.forward();
+  //   _animation_textK =
+  //   Tween(begin: 100.0, end: 70.0).animate(_animationController_button!)
+  //     ..addStatusListener((status) {
+  //       // print(status);
+  //       // if (status == AnimationStatus.completed) {
+  //       //   setState(() {});
+  //       //   _animationController_button!.reverse();
+  //       // } else if (status == AnimationStatus.dismissed) {
+  //       //   setState(() {});
+  //       //   _animationController_button!.forward();
+  //       // }
+  //     });
+  //
+  //   // _animationController_textTime =
+  //   //     AnimationController(vsync: this, duration: Duration(seconds: 5));
+  //   // _animationController_textTime!.forward();
+  //   _animation_textTime =
+  //   Tween(begin: 40.0, end: 25.0).animate(_animationController_button!)
+  //     ..addStatusListener((status) {
+  //       // print(status);
+  //       // if (status == AnimationStatus.completed) {
+  //       //   setState(() {});
+  //       //   _animationController_button!.reverse();
+  //       // } else if (status == AnimationStatus.dismissed) {
+  //       //   setState(() {});
+  //       //   _animationController_button!.forward();
+  //       // }
+  //     });
+  // }
 
   AnimationController? _animationController_middle;
   Animation? _animation_middle;
@@ -959,19 +1112,32 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
                                 decoration: BoxDecoration(
                                     shape: BoxShape.circle,
                                     color: Colors.black,
-                                    boxShadow: [
-                                      BoxShadow(
+                                    // boxShadow: [
+                                    //   BoxShadow(
+                                    //     color: (animation_started
+                                    //         ? HexColor('#F5C921')
+                                    //         : Colors.transparent),
+                                    //     blurRadius: (animation_started
+                                    //         ? _animation!.value
+                                    //         : 0),
+                                    //     spreadRadius: (animation_started
+                                    //         ? _animation!.value
+                                    //         : 0),
+                                    //   )
+                                    // ]
+                                  boxShadow: [
+                                    BoxShadow(
                                         color: (animation_started
                                             ? HexColor('#F5C921')
                                             : Colors.transparent),
-                                        blurRadius: (animation_started
-                                            ? _animation!.value
-                                            : 0),
                                         spreadRadius: (animation_started
-                                            ? _animation!.value
+                                            ? (shadow_animation1_completed
+                                            ? _animation_shadow2!.value
+                                            : _animation_shadow1!.value)
                                             : 0),
-                                      )
-                                    ]),
+                                      blurRadius: 35,)
+                                  ],
+                                ),
                               ),
                               // (animation_started
                               //     ? DottedBorder(
@@ -1421,6 +1587,17 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
                                               blurRadius: 10.0,
                                             ),
                                           ],
+                                    // boxShadow: [
+                                    //   BoxShadow(
+                                    //       color:
+                                    //       ColorUtils.primary_gold.withOpacity(0.5),
+                                    //       spreadRadius: (animation_started
+                                    //           ? (shadow_animation1_completed
+                                    //           ? _animation_shadow2!.value
+                                    //           : _animation_shadow1!.value)
+                                    //           : 0),
+                                    //       blurRadius: 0)
+                                    // ],
                                         )
                                       : const BoxDecoration(
                                           shape: BoxShape.circle,
@@ -1448,19 +1625,24 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
                                         alignment: Alignment.center,
                                         child: Text(
                                           'P',
-                                          style: TextStyle(
-                                              color: HexColor('#F5C921')
-                                                  .withOpacity(0.2),
-                                              fontSize: (animation_started
-                                                  ? _animation_textK!.value
-                                                  : text_k_size),
-                                              fontWeight: FontWeight.w600),
+                                          style: GoogleFonts.sourceSerifPro(
+                                            textStyle:  TextStyle(
+                                                color: HexColor('#F5C921')
+                                                    .withOpacity(0.2),
+                                                fontSize: (animation_started
+                                                    ? _animation_textK!.value
+                                                    : text_k_size),
+                                                fontWeight: FontWeight.w600),
+                                          )
+
                                         ),
                                       ),
                                       Container(
                                         alignment: Alignment.center,
                                         child: Text(
-                                          elapsedTime,
+                                          (timer_started
+                                              ?elapsedTime
+                                              : ''),
                                           style: TextStyle(
                                               color: Colors.white,
                                               fontSize: (animation_started
@@ -1527,6 +1709,7 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
                             await _peeScreenController.Pee_get_API(context);
 
                             setState(() {
+                              timer_started = false;
                               started = true;
                               num = 0;
                               elapsedTime = '00';
@@ -1573,7 +1756,7 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
                               )),
                         ),
                       ),
-                      // FlatButton(
+                      // ElevatedButton(
                       //   child: Text("Change Date"),
                       //   onPressed: () {
                       //     _selectDateTime(context);
@@ -1583,7 +1766,22 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
                       // Container(
                       //   child: ElevatedButton(
                       //     onPressed: () {
-                      //       Database().createNotification(whenToNotify: Timestamp.fromDate(final_time!));
+                      //       Duration offset = final_time!.timeZoneOffset;
+                      //
+                      //       // ----------
+                      //       String dateTime = final_time!.toIso8601String();
+                      //       // - or -
+                      //       // String dateTime = intl.DateFormat("yyyy-MM-dd'T'HH:mm:ss").format(now);
+                      //       // ----------
+                      //       String utcHourOffset = (offset.isNegative ? '-' : '+') +
+                      //           offset.inHours.abs().toString().padLeft(2, '0');
+                      //       String utcMinuteOffset = (offset.inMinutes - offset.inHours * 60)
+                      //           .toString().padLeft(2, '0');
+                      //
+                      //       String dateTimeWithOffset = '$dateTime$utcHourOffset:$utcMinuteOffset';
+                      //       print(dateTimeWithOffset);
+                      //
+                      //       Database().createNotification(whenToNotify: dateTimeWithOffset);
                       //     },
                       //     child: Text('Notification button'),
                       //   ),
@@ -2361,11 +2559,14 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
   final Ledger_Setup_controller _swipe_setup_controller = Get.put(
       Ledger_Setup_controller(),
       tag: Ledger_Setup_controller().toString());
+  bool timer_started = false;
 
   startWatch() {
     start_animation();
     // vibration();
     setState(() {
+      timer_started = true;
+
       num = 7;
       _swipe_setup_controller.p_running = true;
       elapsedTime = "00";
@@ -2374,7 +2575,7 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
       watch.start();
       timer = Timer.periodic(
           const Duration(milliseconds: 100),
-          (levels == 'Easy ? '
+          (levels == 'Easy ?'
               ? updateTime_easy
               : (levels == 'Normal'
                   ? updateTime_normal
@@ -2447,7 +2648,7 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
 
           Vibration.vibrate(
               // pattern: [100, 100,100, 100,100, 100,100, 100,],
-              duration: (levels == 'Easy ? '
+              duration: (levels == 'Easy'
                   ? 3000
                   : (levels == 'Normal'
                       ? 4000
@@ -2457,9 +2658,9 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
               );
         } else if (Platform.isIOS) {
           // iOS-specific code
-          for (var i = 0;
+          for (var   i = 0;
           i <=
-              (levels == 'Easy ? '
+              (levels == 'Easy'
                   ? 5
                   : (levels == 'Normal'
                   ? 6
@@ -2478,7 +2679,7 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
 
         for (var i = 0;
             i <=
-                (levels == 'Easy ? '
+                (levels == 'Easy'
                     ? 5
                     : (levels == 'Normal'
                         ? 6

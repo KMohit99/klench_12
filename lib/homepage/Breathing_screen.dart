@@ -824,6 +824,79 @@ class _BreathingScreenState extends State<BreathingScreen>
                     SizedBox(
                       height: 12,
                     ),
+                    GestureDetector(
+                      onTap: () {
+                        if (_breathing_controller
+                            .breathingGetModel!.error ==
+                            false &&
+                            int.parse(_breathing_controller
+                                .breathingGetModel!.data![0].sets!) >=
+                                3) {
+                          print(int.parse(_breathing_controller
+                              .breathingGetModel!.data![0].sets!));
+                          CommonWidget().showErrorToaster(
+                              msg: "You completed your today's sets");
+                        } else {
+                          if (startStop) {
+                            (_breathing_controller.sets <= 3
+                                ? startWatch()
+                                : CommonWidget().showErrorToaster(
+                                msg:
+                                "You have completed your today's sets, comback tommorow"));
+                          } else {
+                            stopWatch();
+                            setState(() {
+                              _animationController!.dispose();
+                              elapsedTime = '00';
+                              percent = 0.0;
+                              watch.reset();
+                              counter == 0;
+                              // paused_time.clear();
+                            });
+                          }
+                        }
+
+                        // startOrStop();
+                      },
+                      child: Container(
+                        height: 65,
+                        // height: 45,
+                        // width:(width ?? 300) ,
+                        decoration: BoxDecoration(
+                            color: ColorUtils.primary_gold,
+                            gradient: LinearGradient(
+                              begin: Alignment.centerLeft,
+                              end: Alignment.centerRight,
+                              // stops: [0.1, 0.5, 0.7, 0.9],
+                              colors: [
+                                HexColor("#ECDD8F").withOpacity(0.90),
+                                HexColor("#E5CC79").withOpacity(0.90),
+                                HexColor("#CE952F").withOpacity(0.90),
+                              ],
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                color: HexColor('#04060F'),
+                                offset: Offset(10, 10),
+                                blurRadius: 20,
+                              ),
+                            ],
+                            borderRadius: BorderRadius.circular(15)),
+                        child: Container(
+                            alignment: Alignment.center,
+                            margin: EdgeInsets.symmetric(
+                              vertical: 12,
+                            ),
+                            child: Text(
+                              (startStop ? 'Start' : 'Finish'),
+                              style: FontStyleUtility.h16(
+                                  fontColor: Colors.black, family: 'PM'),
+                            )),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
                     Container(
                       decoration: BoxDecoration(
                           color: Colors.black.withOpacity(0.58),
@@ -843,79 +916,7 @@ class _BreathingScreenState extends State<BreathingScreen>
                             vertical: 15, horizontal: 8),
                         child: Column(
                           children: [
-                            GestureDetector(
-                              onTap: () {
-                                if (_breathing_controller
-                                            .breathingGetModel!.error ==
-                                        false &&
-                                    int.parse(_breathing_controller
-                                            .breathingGetModel!.data![0].sets!) >=
-                                        3) {
-                                  print(int.parse(_breathing_controller
-                                      .breathingGetModel!.data![0].sets!));
-                                  CommonWidget().showErrorToaster(
-                                      msg: "You completed your today's sets");
-                                } else {
-                                  if (startStop) {
-                                    (_breathing_controller.sets <= 3
-                                        ? startWatch()
-                                        : CommonWidget().showErrorToaster(
-                                            msg:
-                                                "You have completed your today's sets, comback tommorow"));
-                                  } else {
-                                    stopWatch();
-                                    setState(() {
-                                      _animationController!.dispose();
-                                      elapsedTime = '00';
-                                      percent = 0.0;
-                                      watch.reset();
-                                      counter == 0;
-                                      // paused_time.clear();
-                                    });
-                                  }
-                                }
 
-                                // startOrStop();
-                              },
-                              child: Container(
-                                height: 65,
-                                // height: 45,
-                                // width:(width ?? 300) ,
-                                decoration: BoxDecoration(
-                                    color: ColorUtils.primary_gold,
-                                    gradient: LinearGradient(
-                                      begin: Alignment.centerLeft,
-                                      end: Alignment.centerRight,
-                                      // stops: [0.1, 0.5, 0.7, 0.9],
-                                      colors: [
-                                        HexColor("#ECDD8F").withOpacity(0.90),
-                                        HexColor("#E5CC79").withOpacity(0.90),
-                                        HexColor("#CE952F").withOpacity(0.90),
-                                      ],
-                                    ),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: HexColor('#04060F'),
-                                        offset: Offset(10, 10),
-                                        blurRadius: 20,
-                                      ),
-                                    ],
-                                    borderRadius: BorderRadius.circular(15)),
-                                child: Container(
-                                    alignment: Alignment.center,
-                                    margin: EdgeInsets.symmetric(
-                                      vertical: 12,
-                                    ),
-                                    child: Text(
-                                      (startStop ? 'Start' : 'Finish'),
-                                      style: FontStyleUtility.h16(
-                                          fontColor: Colors.black, family: 'PM'),
-                                    )),
-                              ),
-                            ),
-                            SizedBox(
-                              height: 20,
-                            ),
                             Column(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [

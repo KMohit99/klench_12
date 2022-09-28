@@ -1,14 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:klench_/homepage/homepage_screen.dart';
 import 'package:klench_/utils/Asset_utils.dart';
 import 'package:klench_/utils/TextStyle_utils.dart';
 
+import '../Authentication/SignUp/local_auth_api.dart';
+import '../Authentication/SingIn/SigIn_screen.dart';
+import '../Authentication/SingIn/controller/SignIn_controller.dart';
+import '../front_page/FrontpageScreen.dart';
 import '../homepage/Breathing_screen.dart';
+import '../homepage/controller/kegel_excercise_controller.dart';
 import '../homepage/swipe_screen.dart';
 import '../profile_page/profilePage_screen.dart';
 import '../setting_page/setting_screen.dart';
+import '../utils/UrlConstrant.dart';
 import '../utils/colorUtils.dart';
 
 class DashboardScreen extends StatefulWidget {
@@ -30,11 +37,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
             title: const Text('Are you sure?'),
             content: const Text('Do you want to exit an App'),
             actions: <Widget>[
-              FlatButton(
+              ElevatedButton(
                 onPressed: () => Navigator.of(context).pop(false),
                 child: const Text('No'),
               ),
-              FlatButton(
+              ElevatedButton(
                 onPressed: () {
                   SystemNavigator.pop();
                 },
@@ -64,7 +71,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_){
+      // Add Your Code here.
+      // init();
+    });
   }
+
   @override
   Widget build(BuildContext context) {
     screenWidth = MediaQuery

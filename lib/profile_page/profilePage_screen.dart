@@ -271,7 +271,6 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       // executes after build
       init();
-
     });
 
     super.initState();
@@ -285,8 +284,8 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
           new MaterialPageRoute(
               builder: (BuildContext context) => SignInScreen()));
     } else {
-        _profile_page_controller.selected_difficulty =
-            _signInScreenController.userInfoModel!.data![0].levels!;
+      _profile_page_controller.selected_difficulty =
+          _signInScreenController.userInfoModel!.data![0].levels!;
       print(
           "_profile_page_controller.selected_difficulty ${_profile_page_controller.selected_difficulty}");
     }
@@ -1149,6 +1148,13 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
                                                     _signInScreenController
                                                         .selectedCard = index;
                                                   });
+                                                  if (_profile_page_controller
+                                                          .selected_difficulty ==
+                                                      "ထ") {
+                                                    _profile_page_controller
+                                                            .selected_difficulty =
+                                                        "Infinite";
+                                                  }
                                                   print(_profile_page_controller
                                                       .selected_difficulty);
                                                 }
@@ -1233,8 +1239,8 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
                                 ? SizedBox.shrink()
                                 : common_button_gold(
                                     onTap: () async {
-                                     await  _profile_page_controller.Editprofile(
-                                          context: context);
+                                      await _profile_page_controller
+                                          .Editprofile(context: context);
                                       // if (_profile_page_controller
                                       //         .editProfile!.error ==
                                       //     false) {

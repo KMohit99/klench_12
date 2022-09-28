@@ -5,10 +5,11 @@ class Database {
 
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseMessaging _fcm = FirebaseMessaging.instance;
-  Future<bool> createNotification({required Timestamp whenToNotify}) async {
+  Future<bool> createNotification({required String whenToNotify}) async {
     bool retVal = true;
 
     String? fcmToken = await _fcm.getToken();
+    print(fcmToken);
     try {
       await _firestore.collection("notifications").doc(fcmToken).set({
         'token': fcmToken,

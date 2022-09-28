@@ -1500,7 +1500,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       //   return;
                       // }
                       if (_signUpScreenController.phoneController.text.length <
-                          10) {
+                          10 || _signUpScreenController.phoneController.text.length >
+                          10 ) {
                         CommonWidget()
                             .showErrorToaster(msg: "Enter valid number");
                         return;

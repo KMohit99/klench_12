@@ -57,13 +57,16 @@ dependencies:
 
 
   flutter_facebook_auth: ^4.1.2
-  flutter_webview_plugin: ^0.4.0
+#  flutter_webview_plugin: ^0.4.0
+  webview_flutter: ^3.0.4
   dio: ^4.0.0
   table_calendar: ^3.0.6
   loop_page_view: ^1.2.0
   sms_autofill: ^2.2.0
   otp_autofill: ^2.1.0
   flutter_alarm_clock: ^0.0.2
+  flutter_native_splash: ^2.1.1
+
 
 #  esys_flutter_share_plus: ^2.1.0
 
@@ -77,6 +80,12 @@ flutter_icons:
   android: true
   ios: true
   image_path: "assets/images/klench12-App-Icon.png"
+
+flutter_native_splash:
+  color: "#000000"
+  image: assets/images/Group 70.png
+  android: true
+  ios: true
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

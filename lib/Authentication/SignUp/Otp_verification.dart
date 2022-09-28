@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:ui';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
@@ -30,6 +31,42 @@ class _VerifyOtpState extends State<VerifyOtp> {
   final SignUpScreenController _signUpScreenController = Get.put(
       SignUpScreenController(),
       tag: SignUpScreenController().toString());
+
+  // verifyPhonenumber() async {
+  //   await FirebaseAuth.instance.verifyPhoneNumber(
+  //       phoneNumber: _signUpScreenController.dialCodedigits + _signUpScreenController.phoneController.text,
+  //       verificationCompleted: (PhoneAuthCredential credential) async {
+  //         await FirebaseAuth.instance.signInWithCredential(credential)
+  //             .then((value) {
+  //           if (value.user != null) {
+  //             // Navigator.push(context,
+  //             //     MaterialPageRoute(builder: (context) => createUser()));
+  //             print("Otp verifiredddddddd");
+  //           }
+  //         });
+  //       },
+  //       verificationFailed: (FirebaseAuthException e) {
+  //         print(e.message);
+  //         // ScaffoldMessenger.of(context).showSnackBar(
+  //         //     SnackBar(content: Text(e.message.toString()),
+  //         //       duration: const Duration(seconds: 10),)
+  //         // );
+  //       },
+  //       codeSent: (String verificationId, int? resendToken) {
+  //         setState(() {
+  //           varification= verificationId;
+  //         });
+  //       },
+  //       codeAutoRetrievalTimeout: (String verificationId) {
+  //         setState(() {
+  //           varification = verificationId;
+  //         });
+  //       },
+  //       timeout: Duration(seconds: 60)
+  //
+  //   );
+  // }
+
 
   final BoxDecoration pinOTPDecoration = BoxDecoration(
 // color: Colors.black.withOpacity(0.65),
@@ -83,6 +120,7 @@ class _VerifyOtpState extends State<VerifyOtp> {
   void initState() {
     startTimer();
     _listOPT();
+    // verifyPhonenumber();
     super.initState();
   }
 
@@ -243,7 +281,6 @@ class _VerifyOtpState extends State<VerifyOtp> {
                                   child: PinPut(
                                     autofocus: true,
                                     autofillHints: const [AutofillHints.oneTimeCode],
-
                                     fieldsCount: 4,
                                     textStyle: TextStyle(
                                         fontFamily: 'PM',
@@ -259,6 +296,25 @@ class _VerifyOtpState extends State<VerifyOtp> {
                                     selectedFieldDecoration: pinOTPDecoration,
                                     followingFieldDecoration: pinOTPDecoration,
                                     pinAnimationType: PinAnimationType.scale,
+                                    onSubmit: (pin) async {
+                                      try {
+                                        await FirebaseAuth.instance.signInWithCredential(
+                                            PhoneAuthProvider.credential(
+                                                verificationId: varification!, smsCode: pin))
+                                            .then((value) {
+                                          if (value.user != null) {
+                                            print("Otp verifiredddddddd");
+                                          }
+                                        });
+                                      }
+                                      catch (e) {
+                                        FocusScope.of(context).unfocus();
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                            SnackBar(content: Text('invalid otp'),
+                                              duration: Duration(seconds: 3),)
+                                        );
+                                      }
+                                    },
                                   ),
                                 ),
                                 // Container(
@@ -471,7 +527,7 @@ class _VerifyOtpState extends State<VerifyOtp> {
     final screenwidth = MediaQuery.of(context).size.width;
     showModalBottomSheet(
       backgroundColor: Colors.black,
-      shape: RoundedRectangleBorder(
+      shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(30.0),
           topRight: Radius.circular(30.0),

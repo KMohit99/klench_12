@@ -9,6 +9,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
 import 'package:klench_/homepage/controller/m_screen_controller.dart';
@@ -58,6 +59,7 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
   String method_selected = '';
   List<ListMethodClass> method_time = [];
   List<ListMethodClass> method_data = [];
+  bool timer_started = false;
 
   final _random = Random();
 
@@ -1507,17 +1509,22 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
                                     alignment: Alignment.center,
                                     child: Text(
                                       'M',
-                                      style: TextStyle(
-                                          color: HexColor('#DD3931')
-                                              .withOpacity(0.2),
-                                          fontSize: 70,
-                                          fontWeight: FontWeight.w600),
+                                      style:GoogleFonts.sourceSerifPro(
+                                          textStyle: TextStyle(
+                                              color: HexColor('#DD3931')
+                                                  .withOpacity(0.2),
+                                              fontSize: 70,
+                                              fontWeight: FontWeight.w600),
+                                      )
+
                                     ),
                                   ),
                                   Container(
                                     alignment: Alignment.center,
                                     child: Text(
-                                      elapsedTime,
+                                      (timer_started
+                                          ?elapsedTime
+                                          : ''),
                                       style: TextStyle(
                                           color: Colors.white,
                                           fontSize: 25,
@@ -2363,6 +2370,8 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
                                     color:
                                         method_color!.value.toRadixString(16)));
                                 setState(() {
+                                  timer_started = false;
+
                                   elapsedTime = '00:00';
                                   percent = 0.0;
                                   // method_selected = '';
@@ -4271,6 +4280,8 @@ class M_ScreenMetalState extends State<M_ScreenMetal>
 
   startWatch() {
     setState(() {
+      timer_started = true;
+
       _swipe_setup_controller.m_running = true;
       startStop = false;
       paused = false;

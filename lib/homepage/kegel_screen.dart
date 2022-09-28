@@ -10,6 +10,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_alarm_clock/flutter_alarm_clock.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
 import 'package:klench_/Dashboard/dashboard_screen.dart';
@@ -377,7 +378,7 @@ class _KegelScreenState extends State<KegelScreen>
           print("startstop Inside=$startStop");
           elapsedTime = transformMilliSeconds(watch.elapsedMilliseconds);
           // Future.delayed(Duration(microseconds: 500), () {
-            Vibration.vibrate();
+          Vibration.vibrate();
           // });
           // percent += 1;
           // if (percent >= 100) {
@@ -466,7 +467,7 @@ class _KegelScreenState extends State<KegelScreen>
           elapsedTime = transformMilliSeconds(watch.elapsedMilliseconds);
           // percent += 1;
           // Future.delayed(Duration(microseconds: 500), () {
-            Vibration.vibrate();
+          Vibration.vibrate();
           // });
           // if (percent >= 100) {
           //   percent = 0.0;
@@ -575,7 +576,114 @@ class _KegelScreenState extends State<KegelScreen>
           elapsedTime = transformMilliSeconds(watch.elapsedMilliseconds);
           // percent += 1;
           // Future.delayed(Duration(microseconds: 500), () {
-            Vibration.vibrate();
+          Vibration.vibrate();
+          // });
+          // if (percent >= 100) {
+          //   percent = 0.0;
+          // }
+          // Vibration.vibrate();
+
+          print(elapsedTime);
+
+          if (elapsedTime == '13') {
+            _animationController!.reverse();
+            _animationController_button!.reverse();
+            stopWatch_finish();
+            setState(() {
+              elapsedTime = '00';
+              percent = 0.0;
+              watch.reset();
+              CommonWidget().showToaster(msg: '${11 - counter} Times left');
+              counter++;
+              print(counter);
+              four_started = true;
+              // paused_time.clear();
+            });
+            startWatch2();
+
+            Future.delayed(const Duration(seconds: 3), () async {
+              if (counter == 12) {
+                stopWatch_finish();
+                setState(() {
+                  elapsedTime = '00';
+                  started = true;
+                  // watch.stop();
+                  counter = 0;
+                  watch.reset();
+                  _kegel_controller.kegel_performed = true;
+                });
+                Vibration.cancel();
+                // setState(() {
+                //   _swipe_setup_controller.k_running = false;
+                //   timer_started = false;
+                //   counter = 0;
+                //
+                //   elapsedTime = '00';
+                //   percent = 0.0;
+                //   back_wallpaper = true;
+                //   button_height = 150;
+                //   text_k_size = 70;
+                //   text_time_size = 25;
+                //   watch.reset();
+                //   // paused_time.clear();
+                // });
+                _kegel_controller.sets++;
+                // print("_kegel_controller.sets++ ${_kegel_controller.sets++}");
+                // print(_kegel_controller.sets++);
+                await _kegel_controller.Kegel_post_API(context);
+                Future.delayed(Duration(hours: 2), () {
+                  _kegel_controller.alarm_notifications(context);
+                });
+                // await _kegel_controller.Kegel_get_API(context);
+                // if (_kegel_controller.kegelPostModel!.error == false) {
+                await getdata();
+                // }
+                print('Sets-------$_kegel_controller.sets');
+                if (_kegel_controller.sets == 3) {
+                  stopWatch_finish();
+                  setState(() {
+                    started = true;
+
+                    elapsedTime = '00';
+                    percent = 0.0;
+                    // watch.stop();
+                    counter = 0;
+                  });
+                  CommonWidget().showToaster(msg: "Method Complete");
+                  Future.delayed(const Duration(seconds: 5), () {
+                    CommonWidget().showErrorToaster(
+                        msg:
+                            "After one month it will automatically switch to Hard");
+                  });
+                }
+              } else {
+                stopWatch_finish();
+                // _animationController_shadow1!.reverse();
+                setState(() {
+                  elapsedTime = '00';
+                  four_started = false;
+                  watch.reset();
+                });
+                start_animation();
+
+                startWatch();
+              }
+            });
+          }
+        });
+      }
+    }
+  }
+
+  updateTime_Infinite(Timer timer) {
+    if (watch.isRunning) {
+      if (mounted) {
+        setState(() {
+          print("startstop Inside=$startStop");
+          elapsedTime = transformMilliSeconds(watch.elapsedMilliseconds);
+          // percent += 1;
+          // Future.delayed(Duration(microseconds: 500), () {
+          Vibration.vibrate();
           // });
           // if (percent >= 100) {
           //   percent = 0.0;
@@ -780,41 +888,162 @@ class _KegelScreenState extends State<KegelScreen>
 
   bool get wantKeepAlive => true;
 
+  // start_animation() {
+  //   setState(() {
+  //     animation_started = true;
+  //     print(animation_started);
+  //   });
+  //   // vibration();
+  //   // (counter > 0 ? vibration(12) : vibration(15));
+  //
+  //   _animationController =
+  //       AnimationController(vsync: this, duration: const Duration(seconds: 1));
+  //   _animationController!.repeat(reverse: true);
+  //   _animation = Tween(begin: 0.0, end: 65.0).animate(_animationController!)
+  //     ..addStatusListener((status) {
+  //       print(status);
+  //
+  //       // shadow_animation1_completed = true;
+  //     });
+  //
+  //   // _animationController_vibrate =
+  //   //     AnimationController(vsync: this, duration: Duration(milliseconds: 100));
+  //   // _animationController_vibrate!.repeat(reverse: true);
+  //   // _animation_vibrate =
+  //   //     Tween(begin: 25.0, end: 28.0).animate(_animationController_vibrate!)
+  //   //       ..addListener(() {
+  //   //         // print(status);
+  //   //         // if (status == AnimationStatus.completed) {}
+  //   //         // shadow_animation1_completed = true;
+  //   //       });aa
+  //
+  //   _animationController_button =
+  //       AnimationController(vsync: this, duration: const Duration(seconds: 5));
+  //   _animationController_button!.forward();
+  //   _animation_button =
+  //       Tween(begin: 200.0, end: 150.0).animate(_animationController_button!)
+  //         ..addStatusListener((status) {
+  //           // print(status);
+  //           // if (status == AnimationStatus.completed) {
+  //           //   setState(() {});
+  //           //   _animationController_button!.reverse();
+  //           // } else if (status == AnimationStatus.dismissed) {
+  //           //   setState(() {});
+  //           //   _animationController_button!.forward();
+  //           // }
+  //         });
+  //
+  //   // _animationController_textK =
+  //   //     AnimationController(vsync: this, duration: Duration(seconds: 5));
+  //   // _animationController_textK!.forward();
+  //   _animation_textK =
+  //       Tween(begin: 100.0, end: 70.0).animate(_animationController_button!)
+  //         ..addStatusListener((status) {
+  //           // print(status);
+  //           // if (status == AnimationStatus.completed) {
+  //           //   setState(() {});
+  //           //   _animationController_button!.reverse();
+  //           // } else if (status == AnimationStatus.dismissed) {
+  //           //   setState(() {});
+  //           //   _animationController_button!.forward();
+  //           // }
+  //         });
+  //
+  //   // _animationController_textTime =
+  //   //     AnimationController(vsync: this, duration: Duration(seconds: 5));
+  //   // _animationController_textTime!.forward();
+  //   _animation_textTime =
+  //       Tween(begin: 40.0, end: 25.0).animate(_animationController_button!)
+  //         ..addStatusListener((status) {
+  //           // print(status);
+  //           // if (status == AnimationStatus.completed) {
+  //           //   setState(() {});
+  //           //   _animationController_button!.reverse();
+  //           // } else if (status == AnimationStatus.dismissed) {
+  //           //   setState(() {});
+  //           //   _animationController_button!.forward();
+  //           // }
+  //         });
+  // }
+
+  bool shadow_animation_pause = false;
+
+  AnimationController? _animationController_shadow1;
+  Animation? _animation_shadow1;
+  Animation? _animation_shadow1_reverse;
+  AnimationController? _animationController_shadow2;
+  Animation? _animation_shadow2;
+
   start_animation() {
     setState(() {
       animation_started = true;
       print(animation_started);
     });
+    // _incrementCounter();
     // vibration();
-    // (counter > 0 ? vibration(12) : vibration(15));
-
     _animationController =
-        AnimationController(vsync: this, duration: const Duration(seconds: 1));
-    _animationController!.repeat(reverse: true);
+        AnimationController(vsync: this, duration: const Duration(seconds: 5));
+    // _animationController!.repeat(reverse: true);
+    _animationController!.forward();
+
     _animation = Tween(begin: 0.0, end: 65.0).animate(_animationController!)
       ..addStatusListener((status) {
-        print(status);
-
-        // shadow_animation1_completed = true;
+        if (status == AnimationStatus.completed) {}
+        // print(_animation!.value);
       });
-
-    // _animationController_vibrate =
-    //     AnimationController(vsync: this, duration: Duration(milliseconds: 100));
-    // _animationController_vibrate!.repeat(reverse: true);
-    // _animation_vibrate =
-    //     Tween(begin: 25.0, end: 28.0).animate(_animationController_vibrate!)
-    //       ..addListener(() {
-    //         // print(status);
-    //         // if (status == AnimationStatus.completed) {}
-    //         // shadow_animation1_completed = true;
-    //       });aa
-
+    setState(() {
+      // _status = 'Inhale';
+      // print(_status);
+    });
     _animationController_button =
         AnimationController(vsync: this, duration: const Duration(seconds: 5));
     _animationController_button!.forward();
     _animation_button =
         Tween(begin: 200.0, end: 150.0).animate(_animationController_button!)
           ..addStatusListener((status) {
+            print(status);
+            if (status == AnimationStatus.completed) {
+              // vibration_hold();
+              setState(() {
+                // _status = 'Hold';
+
+                shadow_animation_pause = true;
+                _animationController_shadow2!.stop();
+                Future.delayed(Duration(seconds: 5), () {
+                  _animationController_shadow2!.repeat(reverse: true);
+                  // vibration();
+                  setState(() {
+                    // print(_status);
+                    shadow_animation_pause = false;
+                  });
+                });
+                // print("$_status _status");
+                // print("shadow_animation_pause $shadow_animation_pause");
+              });
+              Future.delayed(Duration(seconds: 5), () {
+                _animationController!.reverse();
+                // vibration();
+
+                setState(() {
+                  // _status = 'Exhale';
+                  // print(_status);
+                });
+              });
+            } else if (status == AnimationStatus.dismissed) {
+              // vibration_hold();
+              setState(() {
+                // _status = 'Hold';
+                // print(_status);
+              });
+              Future.delayed(Duration(seconds: 5), () {
+                _animationController!.forward();
+                vibration();
+                setState(() {
+                  // _status = 'Inhale';
+                  // print(_status);
+                });
+              });
+            }
             // print(status);
             // if (status == AnimationStatus.completed) {
             //   setState(() {});
@@ -823,6 +1052,34 @@ class _KegelScreenState extends State<KegelScreen>
             //   setState(() {});
             //   _animationController_button!.forward();
             // }
+          });
+    _animationController_shadow1 =
+        AnimationController(vsync: this, duration: Duration(seconds: 1));
+    _animationController_shadow1!.forward();
+    _animation_shadow1 =
+        Tween(begin: 0.0, end: 65.0).animate(_animationController_shadow1!)
+          ..addStatusListener((status) {
+            print(status);
+            if (status == AnimationStatus.completed) {
+              // print("elapsedTime");
+              setState(() {
+                shadow_animation1_completed = true;
+                // print(shadow_animation1_completed);
+              });
+            }
+            // shadow_animation1_completed = true;
+          });
+
+    _animationController_shadow2 =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 100));
+    _animationController_shadow2!.repeat(reverse: true);
+    _animation_shadow2 =
+        Tween(begin: 65.0, end: 70.0).animate(_animationController_shadow2!)
+          ..addStatusListener((status) {
+            if (shadow_animation_pause == true) {}
+            // print(status);
+            // if (status == AnimationStatus.completed) {}
+            // shadow_animation1_completed = true;
           });
 
     // _animationController_textK =
@@ -988,6 +1245,7 @@ class _KegelScreenState extends State<KegelScreen>
     await _signInScreenController.GetUserInfo(context);
 
     levels = await PreferenceManager().getPref(URLConstants.levels);
+    print("LEvelsssssssssssssssss $levels");
     stages = await PreferenceManager().getPref(URLConstants.stages);
     setState(() {});
     await _kegel_controller.Kegel_get_API(context);
@@ -1588,21 +1846,35 @@ class _KegelScreenState extends State<KegelScreen>
                                 height: 150,
                                 width: 150,
                                 decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: Colors.black,
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: (animation_started
-                                            ? HexColor('#E64A9B')
-                                            : Colors.transparent),
-                                        blurRadius: (animation_started
-                                            ? _animation!.value
-                                            : 0),
-                                        spreadRadius: (animation_started
-                                            ? _animation!.value
-                                            : 0),
-                                      )
-                                    ]),
+                                  shape: BoxShape.circle,
+                                  color: Colors.black,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: (animation_started
+                                          ? HexColor('#E64A9B')
+                                          : Colors.transparent),
+                                      spreadRadius: (animation_started
+                                          ? (shadow_animation1_completed
+                                              ? _animation_shadow2!.value
+                                              : _animation_shadow1!.value)
+                                          : 0),
+                                      blurRadius: 35,
+                                    )
+                                  ],
+                                  // boxShadow: [
+                                  //   BoxShadow(
+                                  //     color: (animation_started
+                                  //         ? HexColor('#E64A9B')
+                                  //         : Colors.transparent),
+                                  //     blurRadius: (animation_started
+                                  //         ? _animation!.value
+                                  //         : 0),
+                                  //     spreadRadius: (animation_started
+                                  //         ? _animation!.value
+                                  //         : 0),
+                                  //   )
+                                  // ]
+                                ),
                               ),
                               // (animation_started
                               //     ? DottedBorder(
@@ -2087,16 +2359,24 @@ class _KegelScreenState extends State<KegelScreen>
                                   children: [
                                     Container(
                                       alignment: Alignment.center,
-                                      child: Text(
-                                        'K',
-                                        style: TextStyle(
+                                      child: Text('K',
+                                          style: GoogleFonts.sourceSerifPro(
+                                              textStyle: TextStyle(
                                             color: HexColor('#E64A9B')
                                                 .withOpacity(0.4),
                                             fontSize: (animation_started
                                                 ? _animation_textK!.value
                                                 : text_k_size),
-                                            fontWeight: FontWeight.w600),
-                                      ),
+                                            fontWeight: FontWeight.w600,
+                                          ))
+                                          // style: TextStyle(
+                                          //     color: HexColor('#E64A9B')
+                                          //         .withOpacity(0.4),
+                                          //     fontSize: (animation_started
+                                          //         ? _animation_textK!.value
+                                          //         : text_k_size),
+                                          //     fontWeight: FontWeight.w600),
+                                          ),
                                     ),
                                     Container(
                                       alignment: Alignment.center,
@@ -2971,6 +3251,8 @@ class _KegelScreenState extends State<KegelScreen>
                                 await _animationController_middle!.reverse();
                                 Vibration.cancel();
                                 setState(() {
+                                  animation_started = false;
+
                                   started = true;
                                   _swipe_setup_controller.k_running = false;
                                   timer_started = false;
@@ -3099,7 +3381,7 @@ class _KegelScreenState extends State<KegelScreen>
                           //     : (levels == 'Normal'
                           //         ? ('$counter/10')
                           //         : ('$counter/10'))),
-                          (levels == 'Easy ? '
+                          (levels == 'Easy'
                               ? '$counter/8'
                               : (levels == 'Normal'
                                   ? '$counter/10'
@@ -3111,7 +3393,11 @@ class _KegelScreenState extends State<KegelScreen>
                                               : (stages == '3'
                                                   ? '$counter/8'
                                                   : '$counter/10')))
-                                      : '$counter/10'))),
+                                      : (levels == 'Hard'
+                                          ? '$counter/12'
+                                          : (levels == 'Infinite'
+                                              ? '$counter/12'
+                                              : '$counter/10'))))),
                           style: FontStyleUtility.h25(
                               fontColor: ColorUtils.primary_gold,
                               family: 'PM')),
@@ -3139,7 +3425,7 @@ class _KegelScreenState extends State<KegelScreen>
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: TableCalendar(
-                                    availableGestures: AvailableGestures.none,
+                                  availableGestures: AvailableGestures.none,
 
                                   // initialCalendarFormat: CalendarFormat.week,
                                   calendarStyle: CalendarStyle(
@@ -8022,7 +8308,13 @@ class _KegelScreenState extends State<KegelScreen>
                                           ? "Each exercise has a duration of 8 seconds and stop for 2 seconds (repeating the process 8 times is considered 1 set). \nUser needs to complete 3 sets per day"
                                           : (levels == 'Normal'
                                               ? "Each exercise has a duration of 10 seconds and stop for 2 seconds, repeating the process 10 times is considered 1 set. \nUser needs to complete 3 sets per day"
-                                              : "kegel info")),
+                                              : (levels == 'Super Easy'
+                                                  ? "Each exercise has a duration of 6 seconds and stop for 2 seconds, repeating the process 10 times is considered 1 set. \nUser needs to complete 3 sets per day"
+                                                  : (levels == 'Hard'
+                                                      ? "Each exercise has a duration of 12 seconds and stop for 2 seconds, repeating the process 10 times is considered 1 set. \nUser needs to complete 3 sets per day"
+                                                      : (levels == 'Infinite'
+                                                          ? "Each exercise has a duration of 12 seconds and stop for 2 seconds, repeating the process 10 times is considered 1 set. \nUser needs to complete 3 sets per day"
+                                                          : "kegel info"))))),
                                       textAlign: TextAlign.justify,
                                       style: FontStyleUtility.h16(
                                           fontColor: ColorUtils.primary_grey,
@@ -8090,7 +8382,9 @@ class _KegelScreenState extends State<KegelScreen>
                               : (stages == '3'
                                   ? updateTime_Super_Easy_stage3
                                   : updateTime_Easy)))
-                      : updateTime_Easy))));
+                      : (levels == 'Hard'
+                          ? updateTime_Hard
+                          : updateTime_Easy)))));
     });
   }
 
@@ -8115,7 +8409,11 @@ class _KegelScreenState extends State<KegelScreen>
                               : (stages == '3'
                                   ? updateTime_Super_Easy_stage3
                                   : updateTime_Easy)))
-                      : updateTime_Easy))));
+                      : (levels == 'Hard'
+                          ? updateTime_Hard
+                          : (levels == 'Infinite'
+                              ? updateTime_Hard
+                              : updateTime_Easy))))));
     });
   }
 
@@ -8268,7 +8566,9 @@ class _KegelScreenState extends State<KegelScreen>
                         : (levels == 'Super Easy'
                             ? (stages == '1'
                                 ? 6
-                                : (stages == '2' ? 8 : (stages == '3' ? 10 : 6)))
+                                : (stages == '2'
+                                    ? 8
+                                    : (stages == '3' ? 10 : 6)))
                             : 7)));
             i++) {
           await Future.delayed(const Duration(milliseconds: 600), () {

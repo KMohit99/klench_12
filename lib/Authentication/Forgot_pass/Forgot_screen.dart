@@ -169,6 +169,7 @@ class _ForgotScreenState extends State<ForgotScreen> {
                         Container(
                           child: CommonTextFormField(
                             labelText: 'Email Address',
+                            maxLines: 1,
                             controller:
                                 _forgotPasswordController.emailAddressController,
                             iconData: IconButton(
@@ -244,6 +245,8 @@ class _ForgotScreenState extends State<ForgotScreen> {
                               child: Container(
                                 child: CommonTextFormField_reversed(
                                   labelText: 'Phone number',
+                                  maxLines: 1,
+                                  keyboardType: TextInputType.number,
                                   controller:
                                       _forgotPasswordController.MobilenoController,
                                   iconData: IconButton(

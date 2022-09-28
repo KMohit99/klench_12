@@ -9,12 +9,12 @@ const database = admin.firestore();
 //     return console.log('successful timer update');
 // });
 
-exports.sendNotification = functions.pubs.schedule('* * * * *').onRun(async (context) => {
+exports.sendNotification = functions.pubsub.schedule('* * * * *').onRun(async (context) => {
     //check whether notification should be sent
     //send it if yes
 
-    const query = await database.collection("notifications")
-        .where("whenToNotify", '<=', admin.firestorm.Timestamp.now())
+    const query = await database.collection("notifications/")
+        .where("whenToNotify", '<=', admin.firestore.Timestamp.now())
         .where("notificationSent", "==", false).get();
 
     query.forEach(async snapshot => {
@@ -33,10 +33,11 @@ exports.sendNotification = functions.pubs.schedule('* * * * *').onRun(async (con
             token: androidNotificationToken,
             data: { click_action: 'FLUTTER_NOTIFICATION_CLICK' }
         };
-
+        console.log("Successful Sent");
         admin.messaging().send(message).then(response => {
             return console.log("Successful Message Sent");
         }).catch(error => {
+        console.log(error);
             return console.log("Error Sending Message");
         });
     }

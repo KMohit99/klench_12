@@ -1,13 +1,14 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
+// import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:http/http.dart' as http;
 import 'package:klench_/Authentication/SingIn/controller/SignIn_controller.dart';
 import 'package:klench_/Dashboard/dashboard_screen.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 import 'dart:convert' as convert;
 import 'home.dart';
 import 'instagram_constanr.dart';
@@ -29,15 +30,15 @@ class InstagramView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Builder(builder: (context) {
-      final webview = FlutterWebviewPlugin();
+      // final webview = FlutterWebviewPlugin();
       final InstagramModel instagram = InstagramModel();
 
-      buildRedirectToHome(webview, instagram, context);
+      // buildRedirectToHome(webview, instagram, context);
 
-      return WebviewScaffold(
-        url: InstagramConstant.instance.url,
-        resizeToAvoidBottomInset: true,
-        appBar: buildAppBar(context),
+      return WebView(
+        initialUrl: InstagramConstant.instance.url,
+        // resizeToAvoidBottomInset: true,
+        // appBar: buildAppBar(context),
       );
     });
   }
@@ -163,45 +164,45 @@ class InstagramView extends StatelessWidget {
   //   }
   // }
 
-  Future<void> buildRedirectToHome(FlutterWebviewPlugin webview,
-      InstagramModel instagram, BuildContext context) async {
-    webview.onUrlChanged.listen((String url) async {
-      if (url.contains(InstagramConstant.redirectUri)) {
-        instagram.getAuthorizationCode(url);
-        await instagram.getTokenAndUserID().then((isDone) {
-          if (isDone) {
-            instagram.getUserProfile().then((isDone) async {
-              await webview.close();
-
-              // isLoading(true);
-              // await social_group_login(
-              //     username: instagram.username.toString(),
-              //     login_type: login_type,
-              //     context: context,
-              //     fullname: instagram.username.toString());
-
-              print('${instagram.username} logged in!');
-              await _loginScreenController.SignUpAPi(
-                context: context,
-                type: 'instagram',
-                username: instagram.username!,
-              );
-
-              // await Get.to(DashboardScreen());
-              // await Navigator.of(context).push(
-              //   MaterialPageRoute(
-              //     builder: (context) => HomeView(
-              //       token: instagram.authorizationCode.toString(),
-              //       name: instagram.username.toString(),
-              //     ),
-              //   ),
-              // );
-            });
-          }
-        });
-      }
-    });
-  }
+  // Future<void> buildRedirectToHome(WebView webview,
+  //     InstagramModel instagram, BuildContext context) async {
+  //   webview.onProgress.listen((String url) async {
+  //     if (url.contains(InstagramConstant.redirectUri)) {
+  //       instagram.getAuthorizationCode(url);
+  //       await instagram.getTokenAndUserID().then((isDone) {
+  //         if (isDone) {
+  //           instagram.getUserProfile().then((isDone) async {
+  //             await webview.close();
+  //
+  //             // isLoading(true);
+  //             // await social_group_login(
+  //             //     username: instagram.username.toString(),
+  //             //     login_type: login_type,
+  //             //     context: context,
+  //             //     fullname: instagram.username.toString());
+  //
+  //             print('${instagram.username} logged in!');
+  //             await _loginScreenController.SignUpAPi(
+  //               context: context,
+  //               type: 'instagram',
+  //               username: instagram.username!,
+  //             );
+  //
+  //             // await Get.to(DashboardScreen());
+  //             // await Navigator.of(context).push(
+  //             //   MaterialPageRoute(
+  //             //     builder: (context) => HomeView(
+  //             //       token: instagram.authorizationCode.toString(),
+  //             //       name: instagram.username.toString(),
+  //             //     ),
+  //             //   ),
+  //             // );
+  //           });
+  //         }
+  //       });
+  //     }
+  //   });
+  // }
 
   AppBar buildAppBar(BuildContext context) => AppBar(
         backgroundColor: Colors.white,

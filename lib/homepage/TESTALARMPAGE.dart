@@ -158,9 +158,9 @@ class _AlarmPageState extends State<AlarmPage> {
                                 borderRadius:
                                 BorderRadius.all(Radius.circular(24)),
                               ),
-                              child: FlatButton(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 32, vertical: 16),
+                              child: ElevatedButton(
+                                // padding: const EdgeInsets.symmetric(
+                                //     horizontal: 32, vertical: 16),
                                 onPressed: () {
                                   _alarmTimeString =
                                       DateFormat('HH:mm').format(DateTime.now());
@@ -180,7 +180,7 @@ class _AlarmPageState extends State<AlarmPage> {
                                             padding: const EdgeInsets.all(32),
                                             child: Column(
                                               children: [
-                                                FlatButton(
+                                                ElevatedButton(
                                                   onPressed: () async {
                                                     var selectedTime =
                                                     await showTimePicker(

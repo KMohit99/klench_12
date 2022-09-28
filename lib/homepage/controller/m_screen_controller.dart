@@ -32,6 +32,7 @@ class Masturbation_screen_controller {
     required List<ListMethodClass> method_data,
   }) async {
     String id_user = await PreferenceManager().getPref(URLConstants.id);
+    // print
 
     // showLoader(context);
     var url = (URLConstants.base_url + URLConstants.masturbation_post);

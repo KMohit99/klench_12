@@ -8,12 +8,20 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 import 'package:klench_/splash_Screen.dart';
+import 'package:klench_/utils/UrlConstrant.dart';
 
+import 'Authentication/SignUp/local_auth_api.dart';
+import 'Authentication/SingIn/SigIn_screen.dart';
+import 'Authentication/SingIn/controller/SignIn_controller.dart';
+import 'Dashboard/dashboard_screen.dart';
+import 'front_page/FrontpageScreen.dart';
 import 'getx_pagination/Bindings_class.dart';
 import 'getx_pagination/binding_utils.dart';
 import 'getx_pagination/page_route.dart';
+import 'homepage/controller/kegel_excercise_controller.dart';
 import 'messaging_service.dart';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -32,8 +40,16 @@ Future<void> main() async {
   // FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   //
   // await _msgService.init();
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
   runApp(MyApp());
+}
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  // If you're going to use other Firebase services in the background, such as Firestore,
+  // make sure you call `initializeApp` before using other Firebase services.
+  await Firebase.initializeApp();
+
+  print("Handling a background message: ${message.messageId}");
 }
 
 Future<void> saveTokenToDatabase(String token) async {
@@ -59,6 +75,13 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   final FirebaseMessaging _fcm = FirebaseMessaging.instance;
 
+  //
+  // static Future<void> _throwGetMessage(RemoteMessage message) async {
+  //   print("PUSH RECEIVED");
+  //   await Firebase.initializeApp();
+  //   bFirebaseMessaging.showPushFromBackground(message);
+  // }
+
   var token;
   @override
   void initState() {
@@ -66,22 +89,10 @@ class _MyAppState extends State<MyApp> {
     //   print('This is Token: ' '${token}');
     // });
     // setupToken();
+    FlutterNativeSplash.remove();
+    init();
 
     super.initState();
-    if (Platform.isIOS) {
-      _fcm.requestPermission(
-        alert: true,
-        announcement: false,
-        badge: true,
-        carPlay: false,
-        criticalAlert: false,
-        provisional: false,
-        sound: true,
-      );
-      FirebaseMessaging.onMessage.listen((event) {
-        print("IOS Registered");
-      });
-    }
 
     // _fcm.configure(
     //   onMessage: (Map<String, dynamic> message) async {
@@ -101,21 +112,60 @@ class _MyAppState extends State<MyApp> {
 
 
     // workaround for onLaunch: When the app is completely closed (not in the background) and opened directly from the push notification
-    _fcm.getInitialMessage().then((RemoteMessage? message) {
+    FirebaseMessaging.instance.getInitialMessage().then((RemoteMessage? message) {
       print('getInitialMessage data: ${message!.data}');
     });
+
+
+    // FirebaseMessaging.onBackgroundMessage(_throwGetMessage);
 
     // onMessage: When the app is open and it receives a push notification
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       print("onMessage data: ${message.data}");
+      // showDialog(
+      //   context: context,
+      //   builder: (context) => AlertDialog(
+      //     content: ListTile(
+      //       title: Text(message.data['notification']['title']),
+      //       subtitle: Text(message.data['notification']['body']),
+      //     ),
+      //     actions: <Widget>[
+      //       ElevatedButton(
+      //         child: Text('Ok'),
+      //         onPressed: () => Navigator.of(context).pop(),
+      //       ),
+      //     ],
+      //   ),
+      // );
     });
-
+    FirebaseMessaging.onMessageOpenedApp.listen((message) {
+      print('Message clicked!');
+    });
     // replacement for onResume: When the app is in the background and opened directly from the push notification.
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
       print('onMessageOpenedApp data: ${message.data}');
     });
   }
   String? _token;
+  init() async {
+    if (Platform.isIOS)  {
+      await _fcm.requestPermission(alert: true,
+        announcement: false,
+        badge: true,
+        carPlay: false,
+        criticalAlert: false,
+        provisional: false,
+        sound: true,);
+      // FirebaseMessaging.onMessage.listen((event) {
+      //   print("IOS Registered");
+      // });
+      // _fcm.onIosSettingsRegistered.listen((event) {
+      //   print("IOS Registered");
+      // });
+    }
+  }
+
+
 
   Future<void> setupToken() async {
     // Get the token each time the application loads
@@ -127,6 +177,7 @@ class _MyAppState extends State<MyApp> {
     // Any time the token refreshes, store this in the database too.
     FirebaseMessaging.instance.onTokenRefresh.listen(saveTokenToDatabase);
   }
+
 
   // This widget is the root of your application.
   @override
