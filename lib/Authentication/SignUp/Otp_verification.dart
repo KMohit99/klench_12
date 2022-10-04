@@ -32,40 +32,40 @@ class _VerifyOtpState extends State<VerifyOtp> {
       SignUpScreenController(),
       tag: SignUpScreenController().toString());
 
-  // verifyPhonenumber() async {
-  //   await FirebaseAuth.instance.verifyPhoneNumber(
-  //       phoneNumber: _signUpScreenController.dialCodedigits + _signUpScreenController.phoneController.text,
-  //       verificationCompleted: (PhoneAuthCredential credential) async {
-  //         await FirebaseAuth.instance.signInWithCredential(credential)
-  //             .then((value) {
-  //           if (value.user != null) {
-  //             // Navigator.push(context,
-  //             //     MaterialPageRoute(builder: (context) => createUser()));
-  //             print("Otp verifiredddddddd");
-  //           }
-  //         });
-  //       },
-  //       verificationFailed: (FirebaseAuthException e) {
-  //         print(e.message);
-  //         // ScaffoldMessenger.of(context).showSnackBar(
-  //         //     SnackBar(content: Text(e.message.toString()),
-  //         //       duration: const Duration(seconds: 10),)
-  //         // );
-  //       },
-  //       codeSent: (String verificationId, int? resendToken) {
-  //         setState(() {
-  //           varification= verificationId;
-  //         });
-  //       },
-  //       codeAutoRetrievalTimeout: (String verificationId) {
-  //         setState(() {
-  //           varification = verificationId;
-  //         });
-  //       },
-  //       timeout: Duration(seconds: 60)
-  //
-  //   );
-  // }
+  verifyPhonenumber() async {
+    await FirebaseAuth.instance.verifyPhoneNumber(
+        phoneNumber: _signUpScreenController.dialCodedigits + _signUpScreenController.phoneController.text,
+        verificationCompleted: (PhoneAuthCredential credential) async {
+          await FirebaseAuth.instance.signInWithCredential(credential)
+              .then((value) {
+            if (value.user != null) {
+              // Navigator.push(context,
+              //     MaterialPageRoute(builder: (context) => createUser()));
+              print("Otp verifiredddddddd");
+            }
+          });
+        },
+        verificationFailed: (FirebaseAuthException e) {
+          print(e.message);
+          // ScaffoldMessenger.of(context).showSnackBar(
+          //     SnackBar(content: Text(e.message.toString()),
+          //       duration: const Duration(seconds: 10),)
+          // );
+        },
+        codeSent: (String verificationId, int? resendToken) {
+          setState(() {
+            varification= verificationId;
+          });
+        },
+        codeAutoRetrievalTimeout: (String verificationId) {
+          setState(() {
+            varification = verificationId;
+          });
+        },
+        timeout: Duration(seconds: 60)
+
+    );
+  }
 
 
   final BoxDecoration pinOTPDecoration = BoxDecoration(

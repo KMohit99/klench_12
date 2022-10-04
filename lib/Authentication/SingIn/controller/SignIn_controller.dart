@@ -28,6 +28,7 @@ import '../social_signup_details.dart';
 class SignInScreenController extends GetxController {
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  dynamic userData;
 
   SingInModel? singInModel;
   RxBool isLoading = false.obs;
@@ -160,7 +161,8 @@ class SignInScreenController extends GetxController {
         // await Get.to(DashboardScreen());
 
         return userInfoModel;
-      } else {
+      }
+      else {
         isuserinfoLoading(false);
 
         // hideLoader(context);

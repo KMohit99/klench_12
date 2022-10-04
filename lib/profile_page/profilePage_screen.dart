@@ -272,12 +272,13 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
       // executes after build
       init();
     });
-
     super.initState();
   }
 
+
   init() async {
     await _signInScreenController.GetUserInfo(context);
+    // print("LEvelsssssssssssssssss $levels");
     if (_signInScreenController.userInfoModel!.error == true) {
       Navigator.pushReplacement(
           context,
@@ -376,8 +377,9 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
                       backgroundColor: Colors.transparent,
                       automaticallyImplyLeading: false,
                       title: Text(
-                        _signInScreenController
-                            .userInfoModel!.data![0].username!,
+                        'Profile',
+                        // _signInScreenController
+                        //     .userInfoModel!.data![0].username!,
                         style: FontStyleUtility.h16(
                             fontColor: ColorUtils.primary_gold, family: 'PM'),
                       ),
@@ -1113,7 +1115,7 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
                                     ),
                                     Container(
                                       width: screenWidth,
-                                      height: 140,
+                                      height: 120,
                                       child: GridView.builder(
                                           padding:
                                               EdgeInsets.symmetric(vertical: 0),
@@ -1216,20 +1218,27 @@ class _ProfilePageScreenState extends State<ProfilePageScreen> {
                                           }),
                                     ),
                                     Container(
+                                      margin: EdgeInsets.symmetric(horizontal: 15),
                                       child: Text(
-                                        'Short descriptions regarding each level',
+                                        (_profile_page_controller.selected_difficulty == 'Easy'
+                                            ? "Hold 8 seconds, push 2 seconds, set of 8"
+                                            : (_profile_page_controller.selected_difficulty == 'Normal'
+                                                ? "Hold 10 seconds, push 2 seconds, set of 10"
+                                                : (_profile_page_controller.selected_difficulty == 'Super Easy'
+                                                    ? "stage 1 : Hold 2 seconds, push 2 seconds, set of 4 \nstage 2 : Hold 4 seconds, push 2 seconds, set of 6 \nstage 3 : Hold 6 seconds, push 2 seconds, set of 8"
+                                                    : (_profile_page_controller.selected_difficulty == 'Hard'
+                                                        ? "Hold 12 seconds, push 2 seconds, set of 12"
+                                                        : (_profile_page_controller.selected_difficulty == 'Infinite'
+                                                            ? "Hold 12 seconds, push 2 seconds, set of 12"
+                                                            : "kegel info"))))),
+                                        textAlign: TextAlign.justify,
                                         style: FontStyleUtility.h15(
                                             fontColor: Colors.white,
                                             family: 'PM'),
                                       ),
                                     ),
-                                    Container(
-                                      child: Text(
-                                        'Short descriptions regarding each level',
-                                        style: FontStyleUtility.h15(
-                                            fontColor: Colors.white,
-                                            family: 'PM'),
-                                      ),
+                                    SizedBox(
+                                      height: 15,
                                     ),
                                   ],
                                 ),

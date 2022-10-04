@@ -47,7 +47,7 @@
 	<key>FacebookDisplayName</key>
 	<string>Klench_iOS</string>
 	<key>FirebaseAppDelegateProxyEnabled</key>
-    <string>0</string>
+	<false/>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>fbapi</string>

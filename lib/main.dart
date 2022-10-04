@@ -1,3 +1,5 @@
+
+
 import 'dart:async';
 import 'dart:io';
 
@@ -116,7 +118,6 @@ class _MyAppState extends State<MyApp> {
       print('getInitialMessage data: ${message!.data}');
     });
 
-
     // FirebaseMessaging.onBackgroundMessage(_throwGetMessage);
 
     // onMessage: When the app is open and it receives a push notification
@@ -145,6 +146,8 @@ class _MyAppState extends State<MyApp> {
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
       print('onMessageOpenedApp data: ${message.data}');
     });
+
+
   }
   String? _token;
   init() async {

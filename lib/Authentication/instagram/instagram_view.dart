@@ -18,7 +18,7 @@ import 'instagram_model.dart';
 // import 'package:instagram_login/instagram_constant.dart';
 // import 'package:instagram_login/instagram_model.dart';
 
-class InstagramView extends StatelessWidget {
+class InstagramView extends StatefulWidget {
   final String login_type;
   final BuildContext context;
 
@@ -27,183 +27,119 @@ class InstagramView extends StatelessWidget {
 
   // LoginModel? loginModel;
 
+
+  static const String scope = 'user_profile,user_media';
+  static const String responseType = 'code';
+
+  // Your Instagram config information in facebook developer site.
+  static final  String appId = '724311555515234'; //ex 202181494449441
+  static final  String appSecret = '02bef57d91954f2b183ec9143d06a1dd'; //ex ec0660294c82039b12741caba60f440c
+  static final String redirectUri = 'https://github.com/KMohit99'; //ex https://github.com/loydkim
+  static final String initialUrl = 'https://api.instagram.com/oauth/authorize?client_id=$appId&redirect_uri=$redirectUri&scope=user_profile,user_media&response_type=$responseType';
+
+  @override
+  State<InstagramView> createState() => _InstagramViewState();
+}
+
+class _InstagramViewState extends State<InstagramView> {
+  final authFunctionUrl = 'https://klench12.firebaseapp.com/__/auth/handler';
+ //ex https://us-central1-signuptest-beb58.cloudfunctions.net/makeCustomToken
+
   @override
   Widget build(BuildContext context) {
     return Builder(builder: (context) {
-      // final webview = FlutterWebviewPlugin();
+      final webview = WebView();
       final InstagramModel instagram = InstagramModel();
 
       // buildRedirectToHome(webview, instagram, context);
-
-      return WebView(
-        initialUrl: InstagramConstant.instance.url,
-        // resizeToAvoidBottomInset: true,
-        // appBar: buildAppBar(context),
+      return Scaffold(
+        appBar: buildAppBar(context),
+        body: WebView(
+          initialUrl: InstagramView.initialUrl,
+          navigationDelegate: (NavigationRequest request) {
+            if(request.url.startsWith(InstagramView.redirectUri)){
+              if(request.url.contains('error')) print('the url error');
+              var startIndex = request.url.indexOf('code=');
+              var endIndex = request.url.lastIndexOf('#');
+              var code = request.url.substring(startIndex + 5,endIndex);
+              _logIn(code);
+              return NavigationDecision.prevent;
+            }
+            return NavigationDecision.navigate;
+          },
+          onPageStarted: (url) => print("Page started " + url),
+          javascriptMode: JavascriptMode.unrestricted,
+          gestureNavigationEnabled: true,
+          initialMediaPlaybackPolicy: AutoMediaPlaybackPolicy.always_allow,
+          // onPageFinished: (url) async {
+          //   // print('${instagram.username} logged in!');
+          //   await _loginScreenController.SignUpAPi(
+          //     context: context,
+          //     type: 'instagram',
+          //     username: _loginScreenController.userData['username'],
+          //   );
+          // },
+        ),
       );
+      //   WebView(
+      //   initialUrl: InstagramConstant.instance.url,
+      //   // resizeToAvoidBottomInset: true,
+      //   // appBar: buildAppBar(context),
+      // );
     });
   }
 
-  //
-  // Future<dynamic> social_group_login({
-  //   required BuildContext context,
-  //   required String login_type,
-  //   required String username,
-  //   required String fullname,
-  // }) async {
-  //   debugPrint('0-0-0-0-0-0-0 username');
-  //   // try {
-  //   //
-  //   // } catch (e) {
-  //   //   print('0-0-0-0-0-0- SignIn Error :- ${e.toString()}');
-  //   // }
-  //   // isLoading(true);
-  //   Map data = {
-  //     'fullName': fullname,
-  //     'userName': username,
-  //     'email': " ",
-  //     'phone': " ",
-  //     'parent_email': " ",
-  //     'password': " ",
-  //     'gender': " ",
-  //     'location': " ",
-  //     'referral_code': " ",
-  //     'image': " ",
-  //     'profileUrl': " ",
-  //     'socialId': " ",
-  //     'social_type': "instagram",
-  //     'type': login_type,
-  //   };
-  //   print(data);
-  //   // String body = json.encode(data);
-  //
-  //   var url = (URLConstants.base_url + URLConstants.socailsignUpApi);
-  //   print("url : $url");
-  //   print("body : $data");
-  //
-  //   var response = await http.post(
-  //     Uri.parse(url),
-  //     body: data,
-  //   );
-  //   print("response.body ${response.body}");
-  //   print("response.request ${response.request}");
-  //   print("response.statusCode ${response.statusCode}");
-  //   // var final_data = jsonDecode(response.body);
-  //
-  //   // print('final data $final_data');
-  //
-  //   if (response.statusCode == 200) {
-  //     // isLoading(false);
-  //     var data = jsonDecode(response.body);
-  //     loginModel = LoginModel.fromJson(data);
-  //     print("loginModel");
-  //     print("wwwwwwwwwwwww ${loginModel!.user![0].type!}");
-  //     if (loginModel!.error == false) {
-  //       Fluttertoast.showToast(
-  //         msg: "login successfully",
-  //         textColor: Colors.white,
-  //         backgroundColor: Colors.black,
-  //         toastLength: Toast.LENGTH_LONG,
-  //         gravity: ToastGravity.BOTTOM,
-  //       );
-  //       await PreferenceManager()
-  //           .setPref(URLConstants.id, loginModel!.user![0].id!);
-  //
-  //       await getUserInfo_social();
-  //       await Get.to(Dashboard());
-  //     } else {
-  //       print('Please try again');
-  //     }
-  //   } else {
-  //     print('Please try again');
-  //   }
-  // }
+  Future<void>  _logIn(String code) async {
+    // setState(() => _stackIndex = 2);
 
+    try {
+      // Step 1. Get user's short token using facebook developers account information
+      // Http post to Instagram access token URL.
+      final http.Response response = await http.post(
+          Uri.parse("https://api.instagram.com/oauth/access_token"),
+          body: {
+            "client_id": InstagramView.appId,
+            "redirect_uri": InstagramView.redirectUri,
+            "client_secret": InstagramView.appSecret,
+            "code": code,
+            "grant_type": "authorization_code"
+          });
+
+      // Step 2. Change Instagram Short Access Token -> Long Access Token.
+      final http.Response responseLongAccessToken = await http.get(
+          Uri.parse('https://graph.instagram.com/access_token?grant_type=ig_exchange_token&client_secret=${InstagramView.appSecret}&access_token=${json.decode(response.body)['access_token']}'));
+
+      // Step 3. Take User's Instagram Information using LongAccessToken
+      final http.Response responseUserData = await http.get(
+          Uri.parse('https://graph.instagram.com/${json.decode(response.body)['user_id'].toString()}?fields=id,username,account_type,media_count&access_token=${json.decode(responseLongAccessToken.body)['access_token']}'));
+
+      // Step 4. Making Custom Token For Firebase Authentication using Firebase Function.
+      final http.Response responseCustomToken = await http.get(
+          Uri.parse('$authFunctionUrl?instagramToken=${json.decode(responseUserData.body)['id']}'));
+
+
+      // Change the variable status.
+      setState(() {
+        _loginScreenController.userData = json.decode(responseUserData.body);
+      });
+      print("_loginScreenController.userData['username']");
+      print(_loginScreenController.userData['username']);
+      await _loginScreenController.SignUpAPi(
+        context: context,
+        type: 'instagram',
+        username: _loginScreenController.userData['username'],
+      );
+    }catch(e) {
+      print(e.toString());
+    }
+  }
+
+  //
   final SignInScreenController _loginScreenController = Get.put(
       SignInScreenController(),
       tag: SignInScreenController().toString());
 
   // Future<dynamic> getUserInfo_social() async {
-  //   _loginScreenController.isuserinfoLoading(true);
-  //   String id_user = await PreferenceManager().getPref(URLConstants.id);
-  //   print("UserID $id_user");
-  //   String url = (URLConstants.base_url +
-  //       URLConstants.user_info_social_Api +
-  //       "?id=$id_user");
-  //   // debugPrint('Get Sales Token ${tokens.toString()}');
-  //   // try {
-  //   // } catch (e) {
-  //   //   print('1-1-1-1 Get Purchase ${e.toString()}');
-  //   // }
-  //
-  //   http.Response response = await http.get(Uri.parse(url));
-  //
-  //   print('Response request: ${response.request}');
-  //   print('Response status: ${response.statusCode}');
-  //   print('Response body: ${response.body}');
-  //
-  //   if (response.statusCode == 200 || response.statusCode == 201) {
-  //     var data = convert.jsonDecode(response.body);
-  //     _loginScreenController.userInfoModel_email = UserInfoModel.fromJson(data);
-  //     _loginScreenController.getUSerModelList(_loginScreenController.userInfoModel_email);
-  //     if (_loginScreenController.userInfoModel_email!.error == false) {
-  //       debugPrint(
-  //           '2-2-2-2-2-2 Inside the product Controller Details ${_loginScreenController.userInfoModel_email!.data!.length}');
-  //       _loginScreenController.isuserinfoLoading(false);
-  //       // CommonWidget().showToaster(msg: data["success"].toString());
-  //       return _loginScreenController.userInfoModel_email;
-  //     } else {
-  //       // CommonWidget().showToaster(msg: msg.toString());
-  //       return null;
-  //     }
-  //   } else if (response.statusCode == 422) {
-  //     // CommonWidget().showToaster(msg: msg.toString());
-  //   } else if (response.statusCode == 401) {
-  //     // CommonService().unAuthorizedUser();
-  //   } else {
-  //     // CommonWidget().showToaster(msg: msg.toString());
-  //   }
-  // }
-
-  // Future<void> buildRedirectToHome(WebView webview,
-  //     InstagramModel instagram, BuildContext context) async {
-  //   webview.onProgress.listen((String url) async {
-  //     if (url.contains(InstagramConstant.redirectUri)) {
-  //       instagram.getAuthorizationCode(url);
-  //       await instagram.getTokenAndUserID().then((isDone) {
-  //         if (isDone) {
-  //           instagram.getUserProfile().then((isDone) async {
-  //             await webview.close();
-  //
-  //             // isLoading(true);
-  //             // await social_group_login(
-  //             //     username: instagram.username.toString(),
-  //             //     login_type: login_type,
-  //             //     context: context,
-  //             //     fullname: instagram.username.toString());
-  //
-  //             print('${instagram.username} logged in!');
-  //             await _loginScreenController.SignUpAPi(
-  //               context: context,
-  //               type: 'instagram',
-  //               username: instagram.username!,
-  //             );
-  //
-  //             // await Get.to(DashboardScreen());
-  //             // await Navigator.of(context).push(
-  //             //   MaterialPageRoute(
-  //             //     builder: (context) => HomeView(
-  //             //       token: instagram.authorizationCode.toString(),
-  //             //       name: instagram.username.toString(),
-  //             //     ),
-  //             //   ),
-  //             // );
-  //           });
-  //         }
-  //       });
-  //     }
-  //   });
-  // }
-
   AppBar buildAppBar(BuildContext context) => AppBar(
         backgroundColor: Colors.white,
         elevation: 0,

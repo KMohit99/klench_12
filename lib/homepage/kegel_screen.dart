@@ -576,7 +576,7 @@ class _KegelScreenState extends State<KegelScreen>
           elapsedTime = transformMilliSeconds(watch.elapsedMilliseconds);
           // percent += 1;
           // Future.delayed(Duration(microseconds: 500), () {
-          Vibration.vibrate();
+          (four_started ? Vibration.cancel() : Vibration.vibrate());
           // });
           // if (percent >= 100) {
           //   percent = 0.0;
@@ -663,6 +663,7 @@ class _KegelScreenState extends State<KegelScreen>
                   elapsedTime = '00';
                   four_started = false;
                   watch.reset();
+                  watch3.reset();
                 });
                 start_animation();
 
@@ -700,7 +701,7 @@ class _KegelScreenState extends State<KegelScreen>
               elapsedTime = '00';
               percent = 0.0;
               watch.reset();
-              CommonWidget().showToaster(msg: '${9 - counter} Times left');
+              CommonWidget().showToaster(msg: '${12 - counter} Times left');
               counter++;
               print(counter);
               four_started = true;
@@ -770,6 +771,7 @@ class _KegelScreenState extends State<KegelScreen>
                   elapsedTime = '00';
                   four_started = false;
                   watch.reset();
+                  watch3.reset();
                 });
                 start_animation();
 
@@ -998,61 +1000,9 @@ class _KegelScreenState extends State<KegelScreen>
     _animationController_button =
         AnimationController(vsync: this, duration: const Duration(seconds: 5));
     _animationController_button!.forward();
-    _animation_button =
-        Tween(begin: 200.0, end: 150.0).animate(_animationController_button!)
-          ..addStatusListener((status) {
-            print(status);
-            if (status == AnimationStatus.completed) {
-              // vibration_hold();
-              setState(() {
-                // _status = 'Hold';
-
-                shadow_animation_pause = true;
-                _animationController_shadow2!.stop();
-                Future.delayed(Duration(seconds: 5), () {
-                  _animationController_shadow2!.repeat(reverse: true);
-                  // vibration();
-                  setState(() {
-                    // print(_status);
-                    shadow_animation_pause = false;
-                  });
-                });
-                // print("$_status _status");
-                // print("shadow_animation_pause $shadow_animation_pause");
-              });
-              Future.delayed(Duration(seconds: 5), () {
-                _animationController!.reverse();
-                // vibration();
-
-                setState(() {
-                  // _status = 'Exhale';
-                  // print(_status);
-                });
-              });
-            } else if (status == AnimationStatus.dismissed) {
-              // vibration_hold();
-              setState(() {
-                // _status = 'Hold';
-                // print(_status);
-              });
-              Future.delayed(Duration(seconds: 5), () {
-                _animationController!.forward();
-                vibration();
-                setState(() {
-                  // _status = 'Inhale';
-                  // print(_status);
-                });
-              });
-            }
-            // print(status);
-            // if (status == AnimationStatus.completed) {
-            //   setState(() {});
-            //   _animationController_button!.reverse();
-            // } else if (status == AnimationStatus.dismissed) {
-            //   setState(() {});
-            //   _animationController_button!.forward();
-            // }
-          });
+    _animation_button = Tween(begin: 200.0, end: 150.0)
+        .animate(_animationController_button!)
+      ..addStatusListener((status) {});
     _animationController_shadow1 =
         AnimationController(vsync: this, duration: Duration(seconds: 1));
     _animationController_shadow1!.forward();
@@ -8307,13 +8257,19 @@ class _KegelScreenState extends State<KegelScreen>
                                       (levels == 'Easy'
                                           ? "Each exercise has a duration of 8 seconds and stop for 2 seconds (repeating the process 8 times is considered 1 set). \nUser needs to complete 3 sets per day"
                                           : (levels == 'Normal'
-                                              ? "Each exercise has a duration of 10 seconds and stop for 2 seconds, repeating the process 10 times is considered 1 set. \nUser needs to complete 3 sets per day"
+                                              ? "Each exercise has a duration of 10 seconds and stop for 2 seconds (repeating the process 10 times is considered 1 set). \nUser needs to complete 3 sets per day"
                                               : (levels == 'Super Easy'
-                                                  ? "Each exercise has a duration of 6 seconds and stop for 2 seconds, repeating the process 10 times is considered 1 set. \nUser needs to complete 3 sets per day"
+                                                  ? (stages == '1'
+                                                      ? "Each exercise has a duration of 2 seconds and stop for 2 seconds (repeating the process 4 times is considered 1 set). \nUser needs to complete 3 sets per day"
+                                                      : (stages == '2'
+                                                          ? "Each exercise has a duration of 4 seconds and stop for 2 seconds (repeating the process 6 times is considered 1 set). \nUser needs to complete 3 sets per day"
+                                                          : (stages == '3'
+                                                              ? "Each exercise has a duration of 6 seconds and stop for 2 seconds (repeating the process 8 times is considered 1 set). \nUser needs to complete 3 sets per day"
+                                                              : "Each exercise has a duration of 2 seconds and stop for 2 seconds (repeating the process 4 times is considered 1 set). \nUser needs to complete 3 sets per day")))
                                                   : (levels == 'Hard'
-                                                      ? "Each exercise has a duration of 12 seconds and stop for 2 seconds, repeating the process 10 times is considered 1 set. \nUser needs to complete 3 sets per day"
+                                                      ? "Each exercise has a duration of 12 seconds and stop for 2 seconds (repeating the process 12 times is considered 1 set). \nUser needs to complete 3 sets per day"
                                                       : (levels == 'Infinite'
-                                                          ? "Each exercise has a duration of 12 seconds and stop for 2 seconds, repeating the process 10 times is considered 1 set. \nUser needs to complete 3 sets per day"
+                                                          ? "Each exercise has a duration of 12 seconds and stop for 2 seconds (repeating the process 12 times is considered 1 set). \nUser needs to complete 3 sets per day"
                                                           : "kegel info"))))),
                                       textAlign: TextAlign.justify,
                                       style: FontStyleUtility.h16(
@@ -8384,7 +8340,9 @@ class _KegelScreenState extends State<KegelScreen>
                                   : updateTime_Easy)))
                       : (levels == 'Hard'
                           ? updateTime_Hard
-                          : updateTime_Easy)))));
+                          : (levels == 'Infinite'
+                              ? updateTime_Hard
+                              : updateTime_Easy))))));
     });
   }
 

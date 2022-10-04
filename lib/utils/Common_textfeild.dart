@@ -299,10 +299,10 @@ class CommonTextFormField extends StatelessWidget {
   final IconButton? iconData;
   final TextAlign? align;
   final FocusNode? textFocusNode;
+  final int? maxLength;
   final ValueChanged? onFieldSubmitted;
 
   FormFieldValidator<String>? validator;
-
   final Function(String)? onChanged;
   final bool? enabled;
   final bool? touch = false;
@@ -324,7 +324,7 @@ class CommonTextFormField extends StatelessWidget {
     this.enabled,
     this.height,
     this.iconData,
-    this.textFocusNode, this.onFieldSubmitted,
+    this.textFocusNode, this.onFieldSubmitted, this.maxLength,
   }) : super(key: key);
 
   @override
@@ -356,7 +356,7 @@ class CommonTextFormField extends StatelessWidget {
             ],
             borderRadius: BorderRadius.circular(10)),
         child: TextFormField(
-          maxLength: 150,
+          maxLength: maxLength,
           onChanged: onChanged,
           enabled: enabled,
           validator: validator,

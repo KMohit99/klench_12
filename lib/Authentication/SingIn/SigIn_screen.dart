@@ -172,8 +172,10 @@ class _SignInScreenState extends State<SignInScreen> {
                           onTap: () async {
                             await _signInScreenController.SignInAPi(
                                 context: context);
-                            if (_signInScreenController.userInfoModel!.error ==
-                                false) {
+                            if (_signInScreenController.singInModel!.error ==
+                                    false &&
+                                _signInScreenController.userInfoModel!.error ==
+                                    false) {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
@@ -182,7 +184,7 @@ class _SignInScreenState extends State<SignInScreen> {
                           },
                           title_text: 'Sign In',
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 0,
                         ),
                         // common_button_gold(

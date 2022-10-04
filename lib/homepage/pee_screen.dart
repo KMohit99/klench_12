@@ -5,6 +5,7 @@ import 'dart:math';
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dotted_border/dotted_border.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -69,6 +70,73 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
   int counter = 0;
   int sets = 0;
 
+
+  updateTime_hard(Timer timer) {
+    if (watch.isRunning) {
+      if (mounted) {
+        setState(() {
+          // print("startstop Inside=$startStop");
+          elapsedTime = transformMilliSeconds(watch.elapsedMilliseconds);
+          // percent += 1;
+          // if ( Vibration.hasCustomVibrationsSupport() ==true) {
+          // Vibration.vibrate(duration: 1000);
+          // } else {
+          // Future.delayed(Duration(microseconds: 500),(){
+          Vibration.vibrate();
+          // });
+          // }
+          // if (percent >= 100) {
+          //   percent = 0.0;
+          // }
+          if (elapsedTime == '06') {
+            stopWatch_finish();
+            // _animationController_shadow1!.reverse();
+            setState(() {
+              elapsedTime = 'PUSH';
+              percent = 0.0;
+              watch.reset();
+              // CommonWidget().showToaster(msg: '${7 - counter} Times left');
+              counter++;
+              // print(counter);
+              // paused_time.clear();
+            });
+            Future.delayed(const Duration(seconds: 4), () {
+              // if (counter == 10) {
+              //   stopWatch_finish();
+              //   setState(() {
+              //     elapsedTime = '00';
+              //     // watch.stop();
+              //     counter = 0;
+              //   });
+              // sets++;
+              // print('Sets-------$sets');
+              // if (sets == 3) {
+              //   stopWatch_finish();
+              //   setState(() {
+              //     elapsedTime = '00';
+              //     percent = 0.0;
+              //     // watch.stop();
+              //     counter = 0;
+              //   });
+              //   CommonWidget().showToaster(msg: "Method Complete");
+              //   Future.delayed(Duration(seconds: 5), () {
+              //     CommonWidget().showErrorToaster(
+              //         msg:
+              //         "After one month it will automatically switch to Hard");
+              //   });
+              // }
+              // } else {
+              _animationController!.reverse();
+              _animationController_button!.reverse();
+              startWatch();
+              // }
+            });
+          }
+        });
+      }
+    }
+  }
+
   updateTime_normal(Timer timer) {
     if (watch.isRunning) {
       if (mounted) {
@@ -80,7 +148,7 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
           // Vibration.vibrate(duration: 1000);
           // } else {
           // Future.delayed(Duration(microseconds: 500),(){
-            Vibration.vibrate();
+          Vibration.vibrate();
           // });
           // }
           // if (percent >= 100) {
@@ -143,7 +211,7 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
           elapsedTime = transformMilliSeconds(watch.elapsedMilliseconds);
           // percent += 1;
           // Future.delayed(Duration(seconds: 1), () {
-            Vibration.vibrate();
+          Vibration.vibrate();
           // });
 
           // if (percent >= 100) {
@@ -200,13 +268,13 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
 
   updateTime_super_easy(Timer timer) {
     if (watch.isRunning) {
-      if (mounted)  {
+      if (mounted) {
         setState(() {
           // print("startstop Inside=$startStop");
           elapsedTime = transformMilliSeconds(watch.elapsedMilliseconds);
           // percent += 1;
           // Future.delayed(Duration(microseconds: 500), () {
-            Vibration.vibrate();
+          Vibration.vibrate();
           // });
 
           // if (percent >= 100) {
@@ -337,86 +405,35 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
     _animation_button =
         Tween(begin: 200.0, end: 150.0).animate(_animationController_button!)
           ..addStatusListener((status) {
-            print(status);
-            if (status == AnimationStatus.completed) {
-              // vibration_hold();
-              setState(() {
-                // _status = 'Hold';
-
-                shadow_animation_pause = true;
-                _animationController_shadow2!.stop();
-                Future.delayed(Duration(seconds: 5), () {
-                  _animationController_shadow2!.repeat(reverse: true);
-                  // vibration();
-                  setState(() {
-                    // print(_status);
-                    shadow_animation_pause = false;
-                  });
-                });
-                // print("$_status _status");
-                // print("shadow_animation_pause $shadow_animation_pause");
-              });
-              Future.delayed(Duration(seconds: 5), () {
-                _animationController!.reverse();
-                // vibration();
-
-                setState(() {
-                  // _status = 'Exhale';
-                  // print(_status);
-                });
-              });
-            } else if (status == AnimationStatus.dismissed) {
-              // vibration_hold();
-              setState(() {
-                // _status = 'Hold';
-                // print(_status);
-              });
-              Future.delayed(Duration(seconds: 5), () {
-                _animationController!.forward();
-                vibration();
-                setState(() {
-                  // _status = 'Inhale';
-                  // print(_status);
-                });
-              });
-            }
-            // print(status);
-            // if (status == AnimationStatus.completed) {
-            //   setState(() {});
-            //   _animationController_button!.reverse();
-            // } else if (status == AnimationStatus.dismissed) {
-            //   setState(() {});
-            //   _animationController_button!.forward();
-            // }
           });
     _animationController_shadow1 =
         AnimationController(vsync: this, duration: Duration(seconds: 1));
     _animationController_shadow1!.forward();
     _animation_shadow1 =
-    Tween(begin: 0.0, end: 65.0).animate(_animationController_shadow1!)
-      ..addStatusListener((status) {
-        print(status);
-        if (status == AnimationStatus.completed) {
-          // print("elapsedTime");
-          setState(() {
-            shadow_animation1_completed = true;
-            // print(shadow_animation1_completed);
+        Tween(begin: 0.0, end: 65.0).animate(_animationController_shadow1!)
+          ..addStatusListener((status) {
+            print(status);
+            if (status == AnimationStatus.completed) {
+              // print("elapsedTime");
+              setState(() {
+                shadow_animation1_completed = true;
+                // print(shadow_animation1_completed);
+              });
+            }
+            // shadow_animation1_completed = true;
           });
-        }
-        // shadow_animation1_completed = true;
-      });
 
     _animationController_shadow2 =
         AnimationController(vsync: this, duration: Duration(milliseconds: 100));
     _animationController_shadow2!.repeat(reverse: true);
     _animation_shadow2 =
-    Tween(begin: 65.0, end: 70.0).animate(_animationController_shadow2!)
-      ..addStatusListener((status) {
-        if (shadow_animation_pause == true) {}
-        // print(status);
-        // if (status == AnimationStatus.completed) {}
-        // shadow_animation1_completed = true;
-      });
+        Tween(begin: 65.0, end: 70.0).animate(_animationController_shadow2!)
+          ..addStatusListener((status) {
+            if (shadow_animation_pause == true) {}
+            // print(status);
+            // if (status == AnimationStatus.completed) {}
+            // shadow_animation1_completed = true;
+          });
 
     // _animationController_textK =
     //     AnimationController(vsync: this, duration: Duration(seconds: 5));
@@ -583,7 +600,8 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
 
   getdata() async {
     await _signInScreenController.GetUserInfo(context);
-
+    String? fcmToken = await FirebaseMessaging.instance.getToken();
+    print(fcmToken);
     // await _masturbation_screen_controller.MasturbationData_get_API(context);
     levels = await PreferenceManager().getPref(URLConstants.levels);
     print('Inside');
@@ -1110,32 +1128,33 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
                                 height: 150,
                                 width: 150,
                                 decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: Colors.black,
-                                    // boxShadow: [
-                                    //   BoxShadow(
-                                    //     color: (animation_started
-                                    //         ? HexColor('#F5C921')
-                                    //         : Colors.transparent),
-                                    //     blurRadius: (animation_started
-                                    //         ? _animation!.value
-                                    //         : 0),
-                                    //     spreadRadius: (animation_started
-                                    //         ? _animation!.value
-                                    //         : 0),
-                                    //   )
-                                    // ]
+                                  shape: BoxShape.circle,
+                                  color: Colors.black,
+                                  // boxShadow: [
+                                  //   BoxShadow(
+                                  //     color: (animation_started
+                                  //         ? HexColor('#F5C921')
+                                  //         : Colors.transparent),
+                                  //     blurRadius: (animation_started
+                                  //         ? _animation!.value
+                                  //         : 0),
+                                  //     spreadRadius: (animation_started
+                                  //         ? _animation!.value
+                                  //         : 0),
+                                  //   )
+                                  // ]
                                   boxShadow: [
                                     BoxShadow(
-                                        color: (animation_started
-                                            ? HexColor('#F5C921')
-                                            : Colors.transparent),
-                                        spreadRadius: (animation_started
-                                            ? (shadow_animation1_completed
-                                            ? _animation_shadow2!.value
-                                            : _animation_shadow1!.value)
-                                            : 0),
-                                      blurRadius: 35,)
+                                      color: (animation_started
+                                          ? HexColor('#F5C921')
+                                          : Colors.transparent),
+                                      spreadRadius: (animation_started
+                                          ? (shadow_animation1_completed
+                                              ? _animation_shadow2!.value
+                                              : _animation_shadow1!.value)
+                                          : 0),
+                                      blurRadius: 35,
+                                    )
                                   ],
                                 ),
                               ),
@@ -1587,17 +1606,17 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
                                               blurRadius: 10.0,
                                             ),
                                           ],
-                                    // boxShadow: [
-                                    //   BoxShadow(
-                                    //       color:
-                                    //       ColorUtils.primary_gold.withOpacity(0.5),
-                                    //       spreadRadius: (animation_started
-                                    //           ? (shadow_animation1_completed
-                                    //           ? _animation_shadow2!.value
-                                    //           : _animation_shadow1!.value)
-                                    //           : 0),
-                                    //       blurRadius: 0)
-                                    // ],
+                                          // boxShadow: [
+                                          //   BoxShadow(
+                                          //       color:
+                                          //       ColorUtils.primary_gold.withOpacity(0.5),
+                                          //       spreadRadius: (animation_started
+                                          //           ? (shadow_animation1_completed
+                                          //           ? _animation_shadow2!.value
+                                          //           : _animation_shadow1!.value)
+                                          //           : 0),
+                                          //       blurRadius: 0)
+                                          // ],
                                         )
                                       : const BoxDecoration(
                                           shape: BoxShape.circle,
@@ -1623,26 +1642,21 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
                                     children: [
                                       Container(
                                         alignment: Alignment.center,
-                                        child: Text(
-                                          'P',
-                                          style: GoogleFonts.sourceSerifPro(
-                                            textStyle:  TextStyle(
-                                                color: HexColor('#F5C921')
-                                                    .withOpacity(0.2),
-                                                fontSize: (animation_started
-                                                    ? _animation_textK!.value
-                                                    : text_k_size),
-                                                fontWeight: FontWeight.w600),
-                                          )
-
-                                        ),
+                                        child: Text('P',
+                                            style: GoogleFonts.sourceSerifPro(
+                                              textStyle: TextStyle(
+                                                  color: HexColor('#F5C921')
+                                                      .withOpacity(0.2),
+                                                  fontSize: (animation_started
+                                                      ? _animation_textK!.value
+                                                      : text_k_size),
+                                                  fontWeight: FontWeight.w600),
+                                            )),
                                       ),
                                       Container(
                                         alignment: Alignment.center,
                                         child: Text(
-                                          (timer_started
-                                              ?elapsedTime
-                                              : ''),
+                                          (timer_started ? elapsedTime : ''),
                                           style: TextStyle(
                                               color: Colors.white,
                                               fontSize: (animation_started
@@ -2271,12 +2285,16 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
                                   Container(
                                     child: Text(
                                       (levels == 'Easy'
-                                          ? "The device will vibrate for 3 seconds and stop for 4 seconds, \ncontinuing the same process until user presses the finish button."
+                                          ?"The device will vibrate for 3 seconds and stop for 4 seconds, \ncontinuing the same process until the user presses the finish button."
                                           : (levels == 'Normal'
-                                              ? "The device will vibrate for 4 seconds and stop for 3 seconds, \ncontinuing the same process until user presses the finish button."
+                                              ? "The device will vibrate for 4 seconds and stop for 3 seconds, \ncontinuing the same process until the user presses the finish button."
                                               : (levels == 'Super Easy'
-                                                  ? "The device will vibrate for 2 seconds and stop for 5 seconds, \ncontinuing the same process until user presses the finish button."
-                                                  : "kegel info"))),
+                                                  ? "The device will vibrate for 2 seconds and stop for 5 seconds, \ncontinuing the same process until the user presses the finish button."
+                                                  : (levels == 'Hard'
+                                                      ? "The device will vibrate for 5 seconds and stop for 2 seconds, \ncontinuing the same process until the user presses the finish button."
+                                                      : (levels == 'Infinite'
+                                                          ? "The device will vibrate for 5 seconds and stop for 2 seconds, \ncontinuing the same process until the user presses the finish button."
+                                                          : "Pee info"))))),
                                       textAlign: TextAlign.justify,
                                       style: FontStyleUtility.h16(
                                           fontColor: ColorUtils.primary_grey,
@@ -2581,7 +2599,11 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
                   ? updateTime_normal
                   : (levels == 'Super Easy'
                       ? updateTime_super_easy
-                      : updateTime_easy))));
+                      : (levels == 'Hard'
+                          ? updateTime_hard
+                          : (levels == 'Infinite'
+                              ? updateTime_hard
+                              : updateTime_easy))))));
     });
   }
 
@@ -2658,14 +2680,14 @@ class _PeeScreenState extends State<PeeScreen> with TickerProviderStateMixin {
               );
         } else if (Platform.isIOS) {
           // iOS-specific code
-          for (var   i = 0;
-          i <=
-              (levels == 'Easy'
-                  ? 5
-                  : (levels == 'Normal'
-                  ? 6
-                  : (levels == 'Super Easy' ? 4 : 5)));
-          i++) {
+          for (var i = 0;
+              i <=
+                  (levels == 'Easy'
+                      ? 5
+                      : (levels == 'Normal'
+                          ? 6
+                          : (levels == 'Super Easy' ? 4 : 5)));
+              i++) {
             await Future.delayed(const Duration(milliseconds: 600), () {
               Vibration.vibrate();
             });

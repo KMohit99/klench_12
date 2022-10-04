@@ -114,7 +114,7 @@ class SignUpScreenController extends GetxController {
           filename: imgFile!.path.split("/").last);
       request.files.add(files);
     }
-    request.fields['username'] = usernameController.text;
+    request.fields['username'] = usernameController.text.toLowerCase();
     request.fields['fullName'] = fullnameController.text;
     request.fields['countryCode'] = dialCodedigits;
     request.fields['phone'] = phoneController.text;

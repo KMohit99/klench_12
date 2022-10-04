@@ -2,8 +2,10 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:avatar_glow/avatar_glow.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -54,8 +56,9 @@ class _WarmUpScreenState extends State<WarmUpScreen>
           elapsedTime = transformMilliSeconds(watch.elapsedMilliseconds);
           if (Platform.isAndroid) {
             // vibration();
+            (four_started ? Vibration.cancel() : Vibration.vibrate());
           } else {
-            Vibration.vibrate();
+            (four_started ? Vibration.cancel() : Vibration.vibrate());
           }
           if (elapsedTime == '11') {
             stopWatch_finish();
@@ -262,6 +265,12 @@ class _WarmUpScreenState extends State<WarmUpScreen>
       seconds_timer = seconds_timer! - reduceSecondsBy;
     });
     print("seconds $seconds_timer");
+    if (Platform.isAndroid) {
+      // vibration();
+      (four_started ? Vibration.cancel() : Vibration.vibrate());
+    } else {
+      (four_started ? Vibration.cancel() : Vibration.vibrate());
+    }
     if (seconds_timer! <= 0) {
       setState(() {
         reverse_started = false;
@@ -510,6 +519,8 @@ class _WarmUpScreenState extends State<WarmUpScreen>
     if (animation_started == true) {
       _animationController!.dispose();
       _animationController_button!.dispose();
+      _animationController_shadow1!.dispose();
+      _animationController_shadow2!.dispose();
     }
     if (animation_started_middle == true) {
       _animationController_middle!.dispose();
@@ -520,7 +531,7 @@ class _WarmUpScreenState extends State<WarmUpScreen>
 
   @override
   Widget build(BuildContext context) {
-    final seconds = myDuration.inSeconds.remainder(60);
+    var seconds = myDuration.inSeconds.remainder(60);
     // final seconds2 = myDuration2.inSeconds.remainder(60);
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
@@ -1207,10 +1218,10 @@ class _WarmUpScreenState extends State<WarmUpScreen>
                                       )
                                     : const SizedBox.shrink()),
                                 Container(
-                                  height: (animation_started
+                                  height: (animation_started || reverse_started
                                       ? _animation_button!.value
                                       : button_height),
-                                  width: (animation_started
+                                  width: (animation_started || reverse_started
                                       ? _animation_button!.value
                                       : button_height),
                                   decoration: (animation_started
@@ -1232,26 +1243,45 @@ class _WarmUpScreenState extends State<WarmUpScreen>
                                             ),
                                           ],
                                         )
-                                      : const BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          image: DecorationImage(
-                                              alignment: Alignment.center,
-                                              image: AssetImage(
-                                                  AssetUtils.home_button)),
-                                          // boxShadow: [
-                                          //   BoxShadow(
-                                          //     color: (animation_started
-                                          //         ? HexColor('#F5C921')
-                                          //         : Colors.transparent),
-                                          //     blurRadius: (animation_started
-                                          //         ? _animation!.value
-                                          //         : 0),
-                                          //     spreadRadius: (animation_started
-                                          //         ? _animation!.value
-                                          //         : 0),
-                                          //   )
-                                          // ]
-                                        )),
+                                      : (reverse_started
+                                          ? BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              border: Border.all(
+                                                  color: Colors.greenAccent,
+                                                  width: 2.5),
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  color: HexColor(
+                                                      '#409C46'), // darker color
+                                                ),
+                                                BoxShadow(
+                                                  color: HexColor('#000000'),
+                                                  // background color
+                                                  spreadRadius: -7.0,
+                                                  blurRadius: 10.0,
+                                                ),
+                                              ],
+                                            )
+                                          : const BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              image: DecorationImage(
+                                                  alignment: Alignment.center,
+                                                  image: AssetImage(
+                                                      AssetUtils.home_button)),
+                                              // boxShadow: [
+                                              //   BoxShadow(
+                                              //     color: (animation_started
+                                              //         ? HexColor('#F5C921')
+                                              //         : Colors.transparent),
+                                              //     blurRadius: (animation_started
+                                              //         ? _animation!.value
+                                              //         : 0),
+                                              //     spreadRadius: (animation_started
+                                              //         ? _animation!.value
+                                              //         : 0),
+                                              //   )
+                                              // ]
+                                            ))),
                                   child: Stack(
                                     children: [
                                       Container(
@@ -1261,9 +1291,12 @@ class _WarmUpScreenState extends State<WarmUpScreen>
                                               textStyle: TextStyle(
                                                   color: HexColor('#409C46')
                                                       .withOpacity(0.4),
-                                                  fontSize: (animation_started
-                                                      ? _animation_textK!.value
-                                                      : text_k_size),
+                                                  fontSize:
+                                                      (animation_started ||
+                                                              reverse_started
+                                                          ? _animation_textK!
+                                                              .value
+                                                          : text_k_size),
                                                   fontWeight: FontWeight.w600),
                                             )),
                                       ),
@@ -2106,7 +2139,9 @@ class _WarmUpScreenState extends State<WarmUpScreen>
                                 }
                                 elapsedTime2 = '00';
                                 // percent = 0.0;s
-                                watch2.reset();
+                                if (watch2.isRunning) {
+                                  watch2.reset();
+                                }
                                 // countdownTimer2!.cancel();
                                 // if(countdownTimer2!.isActive) {
                                 //   countdownTimer2!.cancel();
@@ -2120,7 +2155,9 @@ class _WarmUpScreenState extends State<WarmUpScreen>
                                 button_height = 150;
                                 text_k_size = 70;
                                 text_time_size = 25;
-                                watch.reset();
+                                if (watch.isRunning) {
+                                  watch.reset();
+                                }
                                 // paused_time.clear();
                               });
                             } // print('method_time : ${method_time[0].total_time}');
@@ -2157,6 +2194,31 @@ class _WarmUpScreenState extends State<WarmUpScreen>
                               )),
                         ),
                       ),
+                      // CarouselSlider(
+                      //   options: CarouselOptions(
+                      //       height: 100.0,
+                      //       aspectRatio: 4/5,
+                      //       enlargeCenterPage : false,
+                      //       enableInfiniteScroll: true,
+                      //       // initialPage: 1,
+                      //       autoPlayAnimationDuration: Duration(seconds: 1),
+                      //       autoPlay: (animation_started ? true : false)
+                      //   ),
+                      //   items: ['Ready',"Set","Kegel",'4','5'].map((i) {
+                      //     return Builder(
+                      //       builder: (BuildContext context) {
+                      //         return Container(
+                      //             width: MediaQuery.of(context).size.width/2,
+                      //             margin: EdgeInsets.symmetric(horizontal: 5.0),
+                      //             decoration: BoxDecoration(
+                      //                 color: Colors.amber
+                      //             ),
+                      //             child: Text('text $i', style: TextStyle(fontSize: 16.0),)
+                      //         );
+                      //       },
+                      //     );
+                      //   }).toList(),
+                      // ),
                       const SizedBox(
                         height: 28,
                       ),
@@ -2273,7 +2335,7 @@ class _WarmUpScreenState extends State<WarmUpScreen>
   startWatch() {
     // vibration();
     if (Platform.isAndroid) {
-      vibration();
+      // vibration();
     }
     // start_animation();
     setState(() {
@@ -2398,12 +2460,12 @@ class _WarmUpScreenState extends State<WarmUpScreen>
       print("Device Support Custom Vibration");
       print("Device Support Custom Vibration22");
       // Android-specific code
-      for (var i = 0; i < 10; i++) {
+      for (var i = 0; i < 15; i++) {
         print("elapsedTime $i");
         Vibration.vibrate(
           // pattern: [100, 100,100, 100,100, 100,100, 100,],
-          //   pattern: [500, 1000, 500, 2000],
-          duration: 2000,
+          duration: 3500,
+          intensities: [1, 0],
           amplitude: (i == 0
               ? 0
               : (i == 1
@@ -2435,15 +2497,6 @@ class _WarmUpScreenState extends State<WarmUpScreen>
                                                                   : (i == 14
                                                                       ? 140
                                                                       : 0))))))))))))))),
-          // intensities: (i == 0
-          //     ? [1, 0]
-          //     : (i == 2
-          //         ? [1, 50]
-          //         : (i == 4
-          //             ? [1, 100]
-          //             : (i == 6
-          //                 ? [1, 120]
-          //                 : (i == 8 ? [1, 158] : [1, 0]))))));
         );
       }
     } else {

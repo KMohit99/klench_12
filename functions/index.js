@@ -33,6 +33,7 @@ exports.sendNotification = functions.pubsub.schedule('* * * * *').onRun(async (c
             token: androidNotificationToken,
             data: { click_action: 'FLUTTER_NOTIFICATION_CLICK' }
         };
+
         console.log("Successful Sent");
         admin.messaging().send(message).then(response => {
             return console.log("Successful Message Sent");

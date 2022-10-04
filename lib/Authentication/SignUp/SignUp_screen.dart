@@ -41,6 +41,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
   List<String> gender_list = <String>['Male', 'Female', 'Prefer not say'];
   var reg = RegExp(
       r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+  var reg2 =
+      RegExp(r'^[a-z]+$');
   var alpha_numeric =
       RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{6,}$');
 
@@ -807,13 +809,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   controller:
                                       _signUpScreenController.phoneController,
                                   labelText: 'Enter Mobile Number',
+                                  maxLength: 10,
                                   maxLines: 1,
                                   textFocusNode: Mobile_Focus,
                                   onFieldSubmitted: (value) {
                                     FocusScope.of(context)
                                         .requestFocus(Email_Focus);
                                   },
-                                  // keyboardType: TextInputType.number,
+                                  keyboardType: TextInputType.number,
                                   iconData: IconButton(
                                     visualDensity: VisualDensity(
                                         horizontal: -4, vertical: -4),
@@ -1484,7 +1487,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       //           "Your password must contain minimum 6 character");
                       //   return;
                       // }
-
                       if (_signUpScreenController.passwordController.text !=
                           _signUpScreenController
                               .confirmPasswordController.text) {
@@ -1511,6 +1513,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       //       .showErrorToaster(msg: "Please upload Profile image");
                       //   return;
                       // }
+                      if (!reg2.hasMatch(
+                          _signUpScreenController.usernameController.text)) {
+                        CommonWidget()
+                            .showErrorToaster(msg: "Username should only be in lowercase");
+                        return;
+                      }
                       if (alpha_num) {
                         await submit();
                         await _signUpScreenController.SendOtpAPi(

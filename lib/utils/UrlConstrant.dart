@@ -39,6 +39,8 @@ class URLConstants {
   static const pee_get = "get-pee.php";
   static const pee_post = "pee.php";
 
+  ///contact_us
+  static const contact_post = "contact-us.php";
 
   static String id = "id";
   static String trial = 'false';
